@@ -10,7 +10,7 @@ script:
   - yarn run build
 
 deploy:
-  provider: pages       
+  provider: firebase       
   skip-cleaning: true
   github-token: $GITHUB_TOKEN
   local_dir: build
