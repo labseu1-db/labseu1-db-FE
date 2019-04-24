@@ -13,6 +13,5 @@ deploy:
   provider: firebase  
   token: $FIREBASE_TOKEN   
   skip-cleaning: true
-  local_dir: build
   on:
     branch: master
