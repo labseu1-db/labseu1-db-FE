@@ -12,6 +12,6 @@ script:
 deploy:
   provider: firebase  
   token: $FIREBASE_TOKEN   
-  skip-cleaning: true
+  skip-cleanup: true
   on:
     branch: master
