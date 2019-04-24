@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import firebase from '../firebase/firebase';
 
 export default class RegisterForm extends Component {
@@ -19,10 +19,16 @@ export default class RegisterForm extends Component {
         db.settings({
             timestampsInSnapshots: true
         });
-        const userRef = db.collection("users").add({
+        db.collection("users").add({
             firstName: this.state.firstName,
             lastName: this.state.lastName
-        });
+        })
+            .then(docRef => {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(error => {
+                console.log("Error adding document", error);
+            })
         this.setState({
             firstName: '',
             lastName: ''
@@ -32,8 +38,8 @@ export default class RegisterForm extends Component {
     render() {
         return (
             <div>
-                <input type="text" name="firstName" value={this.state.firstName} />
-                <input type="text" name="lastName" value={this.state.lastName} />
+                <input type="text" name="firstName" value={this.state.firstName} onChange={this.changeInput} />
+                <input type="text" name="lastName" value={this.state.lastName} onChange={this.changeInput} />
                 <button type="submit" onClick={this.addUser}>Register</button>
             </div>
         )
