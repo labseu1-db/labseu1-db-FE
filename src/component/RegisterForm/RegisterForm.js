@@ -16,9 +16,6 @@ export default class RegisterForm extends Component {
     addUser = e => {
         e.preventDefault();
         const db = firebase.firestore();
-        db.settings({
-            timestampsInSnapshots: true
-        });
         db.collection("users").add({
             firstName: this.state.firstName,
             lastName: this.state.lastName
