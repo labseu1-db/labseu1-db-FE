@@ -4,22 +4,28 @@ import db from './db';
 export default function DisplayData() {
   const [users, setUsers] = useState([]);
 
-  const showUsers = () => {
-    db.collection('users').onSnapshot(querySnapshot => {
-      const users = [];
-      querySnapshot.forEach(doc => {
-        users.push(doc.data());
+  //fetchUsers listens to real-time updates and gets the data from the database
+  //data are the saved in users state using
+  const fetchUsers = () => {
+    db.collection('users')
+      .orderBy('firstName')
+      .onSnapshot(querySnapshot => {
+        const users = [];
+        querySnapshot.forEach(doc => {
+          users.push(doc.data());
+        });
+        setUsers(users);
       });
-      setUsers(users);
-    });
   };
 
+  //useEffect (substitute for ComponentDidMount) renders new user when new user is added
   useEffect(() => {
-    showUsers();
+    fetchUsers();
   }, [users]);
 
   return (
     <div>
+      <h2>Users in database:</h2>
       {users.map((user, index) => {
         return (
           <div key={index}>

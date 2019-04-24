@@ -1,6 +1,7 @@
 const firebase = require('firebase/app');
 require('firebase/firestore');
 
+//Firebase configuration
 firebase.initializeApp({
   apiKey: 'AIzaSyD59KY_n3nhHH1g1VhoBFs_xlYnnM0BgEU',
   authDomain: 'labseu1-db.firebaseapp.com',
