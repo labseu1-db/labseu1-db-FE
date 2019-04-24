@@ -10,9 +10,10 @@ script:
   - yarn run build
 
 deploy:
-  provider: firebase       
+  provider: firebase  
+  token:
+    secure: ••••••••••••••••     
   skip-cleaning: true
-  github-token: $GITHUB_TOKEN
   local_dir: build
   on:
     branch: master
