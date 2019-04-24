@@ -11,7 +11,7 @@ script:
 
 deploy:
   provider: firebase  
-  firebase-token: $FIREBASE_TOKEN   
+  token: $FIREBASE_TOKEN   
   skip-cleaning: true
   local_dir: build
   on:
