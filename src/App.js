@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import DisplayData from './Components/DisplayData';
+import Sidebar from './Components/Sidebar';
 
 function App() {
-  return <DisplayData />;
+  return <Sidebar />;
 }
 
 export default App;
