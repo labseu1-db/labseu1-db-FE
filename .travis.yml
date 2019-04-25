@@ -1,9 +1,10 @@
 language: node_js
 node_js: node
-cache: yarn
-
+cache: 
+  directories:
+  - node_modules
 install:
-  - yarn install
+  - npm install
 
 script:
   - yarn test
@@ -13,5 +14,6 @@ deploy:
   provider: firebase  
   token: $FIREBASE_TOKEN   
   skip-cleanup: true
+  local_dir: build
   on:
     branch: dev
