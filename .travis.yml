@@ -1,5 +1,6 @@
 language: node_js
-node_js: node
+node_js: 
+  - "stable"
 cache: 
   directories:
   - node_modules
@@ -13,7 +14,7 @@ script:
 deploy:
   provider: firebase  
   token: $FIREBASE_TOKEN   
-  skip-cleanup: true
+  skip-cleanup: false
   local_dir: build
   on:
     branch: dev
