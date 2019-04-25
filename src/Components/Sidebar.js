@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import db from './db';
 
-export default function DisplayData() {
+export default function Sidebar() {
   const [usersName, setUserName] = useState([]);
   const [listOfOrganisations, setListOfOrganisations] = useState([]);
   const [listOfSpaces, setListOfSpaces] = useState([]);
