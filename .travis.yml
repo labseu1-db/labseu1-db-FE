@@ -14,4 +14,4 @@ deploy:
   token: $FIREBASE_TOKEN   
   skip-cleanup: true
   on:
-    branch: master
+    branch: dev
