@@ -13,7 +13,7 @@ script:
 deploy:
   provider: firebase  
   token: $FIREBASE_TOKEN   
-  skip-cleanup: false
+  skip-cleanup: true
   local_dir: build
   on:
     branch: dev
