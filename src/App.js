@@ -1,9 +1,18 @@
-import React from 'react';
-import './App.css';
-import DisplayData from './Components/DisplayData';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 
-function App() {
-  return <DisplayData />;
+import store from './redux/store';
+
+import AddCompany from './Components/AddCompany';
+
+class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <AddCompany />
+      </Provider>
+    );
+  }
 }
 
 export default App;
