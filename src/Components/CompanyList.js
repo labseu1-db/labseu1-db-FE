@@ -14,7 +14,7 @@ class CompanyList extends Component {
   }
 
   render() {
-    const companyNames = this.props.companiesTEST.map(name => this.renderCompany(name));
+    const companyNames = this.props.companies.map(name => this.renderCompany(name));
 
     return (
       <div>
@@ -40,7 +40,7 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        companiesTEST: 'companiesTEST'
+        collection: 'companiesTEST'
       }
     ];
   })
