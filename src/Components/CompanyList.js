@@ -5,31 +5,35 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 class CompanyList extends Component {
+  //Proptypes check - not required, but preferable
   static propTypes = {
     company: PropTypes.arrayOf(PropTypes.string)
   };
 
-  renderCompany(company) {
-    return <div key={company}>{company}</div>;
-  }
-
+  //Get all companies from database, map trough them and render their names
   render() {
-    const companyNames = this.props.companies.map(name => this.renderCompany(name));
-
+    const companyNamesInDatabase = this.props.companyNames;
     return (
       <div>
-        <div>{companyNames}</div>
+        {companyNamesInDatabase.map(compName => {
+          return <div key={compName}>{compName}</div>;
+        })}
       </div>
     );
   }
 }
 
+//We are now using information from database => we need mapStateToProps:
+//if there are no companies, return empty array
+//if there are companies, map trough them and get their names
+//WEIRD thing: there is a "order" required to have - I am not sure why, but it doesn't work without it
 const mapStateToProps = state => {
   return {
-    companies: state.firestore.ordered.companiesTEST ? state.firestore.ordered.companiesTEST.map(c => c.companyName) : []
+    companyNames: state.firestore.ordered.companiesTEST ? state.firestore.ordered.companiesTEST.map(c => c.companyName) : []
   };
 };
 
+//We are not dispatching anything => mapDispatchToProps is empty
 const mapDispatchToProps = {};
 
 export default compose(
