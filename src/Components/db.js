@@ -3,12 +3,12 @@ require('firebase/firestore');
 
 //Firebase configuration
 firebase.initializeApp({
-  apiKey: 'AIzaSyD59KY_n3nhHH1g1VhoBFs_xlYnnM0BgEU',
-  authDomain: 'labseu1-db.firebaseapp.com',
-  databaseURL: 'https://labseu1-db.firebaseio.com',
-  projectId: 'labseu1-db',
-  storageBucket: 'labseu1-db.appspot.com',
-  messagingSenderId: '952063624780'
+  apiKey: "AIzaSyAnlNryT9tKH9im9-1nSobapAewvi3V3s8",
+  authDomain: "labseu1-db-test.firebaseapp.com",
+  databaseURL: "https://labseu1-db-test.firebaseio.com",
+  projectId: "labseu1-db-test",
+  storageBucket: "labseu1-db-test.appspot.com",
+  messagingSenderId: "280261803917"
 });
 const db = firebase.firestore();
 
