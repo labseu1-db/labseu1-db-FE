@@ -14,7 +14,7 @@ class AddCompany extends Component {
 
   addCompany() {
     this.props.firestore.add(
-      { collection: 'test-companies' },
+      { collection: 'companiesTEST' },
       {
         companyName: this.state.company
       }
@@ -25,10 +25,10 @@ class AddCompany extends Component {
   render() {
     return (
       <div>
-        <input type="text" value={this.state.company} onChange={evt => this.setState({ company: evt.target.value })} />
+        <input type="text" value={this.state.company} onChange={e => this.setState({ company: e.target.value })} />
         <button
-          onClick={evt => {
-            evt.preventDefault();
+          onClick={e => {
+            e.preventDefault();
             this.addCompany();
           }}>
           Add Company
