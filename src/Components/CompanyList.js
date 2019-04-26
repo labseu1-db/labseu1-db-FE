@@ -15,6 +15,7 @@ class CompanyList extends Component {
     const companyNamesInDatabase = this.props.companyNames;
     return (
       <div>
+        <h2>These are the companies</h2>
         {companyNamesInDatabase.map(compName => {
           return <div key={compName}>{compName}</div>;
         })}

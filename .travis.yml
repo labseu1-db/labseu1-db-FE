@@ -6,8 +6,8 @@ cache:
 install:
   - yarn install
 script:
-  - yarn test
   - yarn run build
+  - yarn test
 deploy:
   provider: firebase
   token: $FIREBASE_TOKEN
