@@ -36,6 +36,7 @@ const mapStateToProps = state => {
 //We are not dispatching anything => mapDispatchToProps is empty
 const mapDispatchToProps = {};
 
+//Connect to Firestore
 export default compose(
   connect(
     mapStateToProps,
