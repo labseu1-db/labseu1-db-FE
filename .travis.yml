@@ -8,11 +8,11 @@ install:
 script:
   - yarn test
   - yarn run build
-    deploy:
-      provider: firebase  
-      token: $FIREBASE_TOKEN   
-      skip-cleanup: false
-      skip-cleanup: true
-      local_dir: build
-      on:
-        branch: dev
+deploy:
+  provider: firebase  
+  token: $FIREBASE_TOKEN   
+  skip-cleanup: true
+  local_dir: build
+  on:
+    branch: dev
+
