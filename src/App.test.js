@@ -13,4 +13,5 @@ it('renders without crashing', () => {
     div
   );
   ReactDOM.unmountComponentAtNode(div);
+  afterAll(() => setTimeout(() => process.exit(), 1000));
 });
