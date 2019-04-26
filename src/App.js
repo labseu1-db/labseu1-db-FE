@@ -1,9 +1,15 @@
 import React from 'react';
 import './App.css';
-import DisplayData from './Components/DisplayData';
+import Sidebar from './Components/Sidebar';
+import HomeScreen from './Components/HomeScreen';
 
 function App() {
-  return <DisplayData />;
+  return (
+    <div>
+      <Sidebar />
+      <HomeScreen />
+    </div>
+  );
 }
 
 export default App;
