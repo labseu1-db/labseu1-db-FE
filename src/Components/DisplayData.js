@@ -7,15 +7,13 @@ export default function DisplayData() {
   //fetchUsers listens to real-time updates and gets the data from the database
   //data are the saved in users state using
   const fetchUsers = () => {
-    db.collection('users')
-      .orderBy('firstName')
-      .onSnapshot(querySnapshot => {
-        const users = [];
-        querySnapshot.forEach(doc => {
-          users.push(doc.data());
-        });
-        setUsers(users);
+    db.collection('users2').onSnapshot(querySnapshot => {
+      const users = [];
+      querySnapshot.forEach(doc => {
+        users.push(doc.data());
       });
+      setUsers(users);
+    });
   };
 
   //useEffect (substitute for ComponentDidMount) renders new user when new user is added
@@ -27,11 +25,7 @@ export default function DisplayData() {
     <div>
       <h2>Users in database:</h2>
       {users.map((user, index) => {
-        return (
-          <div key={index}>
-            {user.firstName} {user.lastName}
-          </div>
-        );
+        return <div key={index}>{user.fullName}</div>;
       })}
     </div>
   );
