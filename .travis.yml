@@ -1,17 +1,18 @@
 language: node_js
-node_js: node
-cache: yarn
-
+node_js: lts/*
+cache: 
+  directories:
+  - node_modules
 install:
   - yarn install
-
 script:
   - yarn test
   - yarn run build
-
-deploy:
-  provider: firebase  
-  token: $FIREBASE_TOKEN   
-  skip-cleanup: true
-  on:
-    branch: master
+    deploy:
+      provider: firebase  
+      token: $FIREBASE_TOKEN   
+      skip-cleanup: false
+      skip-cleanup: true
+      local_dir: build
+      on:
+        branch: master
