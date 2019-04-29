@@ -1,8 +1,3 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-
 /*
 Company profile settings
 
@@ -15,21 +10,16 @@ Company profile settings
 - [ ]  Subscription type
 */
 
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+
 class CompanyProfileEndpoint extends Component {
   render() {
     return (
       <div>
-        <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
-        </div>
-        <h2>These are the companies</h2>
+        <h2>Company Profile Endpoint</h2>
         {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
           return <div key={ITEM.ID}>{ITEM}</div>;
         })}

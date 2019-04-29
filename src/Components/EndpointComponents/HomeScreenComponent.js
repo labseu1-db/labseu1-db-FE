@@ -1,24 +1,23 @@
+/*
+Home screen
+For each thread:
+- [x]  Thread name
+- [x]  Thread topic
+- [x]  Date thread created
+- [x]  Full name of user who created it
+- [x]  User profile picture
+- [ ]  When was the last comment created
+*/
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-/*
-Home screen
-
-For each thread:
-
-- [x]  Thread name
-- [x]  Thread topic
-- [x]  Date thread created
-- [x]  Full name of user who created it
-- [ ]  User profile picture
-- [ ]  When was the last comment created
-*/
-
 class HomeScreenEndpoint extends Component {
   render() {
     console.log(this.props.threads);
+    console.log(this.props.users);
     return (
       <div>
         <h1>Home Screen Endpoint</h1>
@@ -32,6 +31,13 @@ class HomeScreenEndpoint extends Component {
             </div>
           );
         })}
+        {this.props.users.map(u => {
+          return (
+            <div key={u.id}>
+              <div>User profile picture: {u.profileUrl}</div>
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -39,11 +45,11 @@ class HomeScreenEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    users: state.firestore.ordered.users ? state.firestore.ordered.users : []
   };
 };
 
-//We are not dispatching anything => mapDispatchToProps is empty
 const mapDispatchToProps = {};
 
 //Connect to Firestore
@@ -56,6 +62,9 @@ export default compose(
     return [
       {
         collection: 'threads'
+      },
+      {
+        collection: 'users'
       }
     ];
   })
