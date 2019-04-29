@@ -1,37 +1,44 @@
+/*
+For each comment:
+
+- [x]  Comment body
+- [x]  Date comment created
+- [x]  Full name of user who created it
+- [x]  User profile picture
+- [x]  Array of ids of people who liked it
+- [x]  Decision Boolean
+*/
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-/*
-For each comment:
-
-- [ ]  Comment body
-- [ ]  Date comment created
-- [ ]  Full name of user who created it
-- [ ]  User profile picture
-- [ ]  Array of ids of people who liked it
-- [ ]  Decision Boolean
-
-*/
-
 class CommentEndpoint extends Component {
   render() {
     return (
       <div>
-        <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
-        </div>
-        <h2>These are the companies</h2>
-        {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
-          return <div key={ITEM.ID}>{ITEM}</div>;
+        <h2>Comment Endpoint</h2>
+        {this.props.comments.map(c => {
+          return (
+            <div key={c.id}>
+              <div>Comment body: {c.commentBody}</div>
+              <div>Comment created at: {c.commentCreatedAt.seconds}</div>
+              <div>Comment created by: {c.commentCreatedByUserName}</div>
+              <div>Comment created by: {c.commentCreatedByUserName}</div>
+              <div>Is comments decision: {c.isCommentDecided}</div>
+              {c.arrayOfUserIdsWhoLiked.map(u => {
+                return <div key={u}>Ids of users who liked the comment: {u}</div>;
+              })}
+            </div>
+          );
+        })}
+        {this.props.users.map(u => {
+          return (
+            <div key={u.id}>
+              <div>User profile picture: {u.profileUrl}</div>
+            </div>
+          );
         })}
       </div>
     );
@@ -40,11 +47,11 @@ class CommentEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    ARRAY_OF_ITEMS_FROM_DATABASE: state.firestore.ordered.COLLECTION ? state.firestore.ordered.COLLECTION.map(c => c.COLLECTION_ITEM) : []
+    comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : [],
+    users: state.firestore.ordered.users ? state.firestore.ordered.users : []
   };
 };
 
-//We are not dispatching anything => mapDispatchToProps is empty
 const mapDispatchToProps = {};
 
 //Connect to Firestore
@@ -56,7 +63,10 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'COLLECTION'
+        collection: 'comments'
+      },
+      {
+        collection: 'users'
       }
     ];
   })
