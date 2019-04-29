@@ -8,31 +8,29 @@ Home screen
 
 For each thread:
 
-- [ ]  Thread name
-- [ ]  Thread topic
-- [ ]  Date thread created
-- [ ]  Full name of user who created it
+- [x]  Thread name
+- [x]  Thread topic
+- [x]  Date thread created
+- [x]  Full name of user who created it
 - [ ]  User profile picture
 - [ ]  When was the last comment created
 */
 
 class HomeScreenEndpoint extends Component {
   render() {
+    console.log(this.props.threads);
     return (
       <div>
-        <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
-        </div>
-        <h2>These are the companies</h2>
-        {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
-          return <div key={ITEM.ID}>{ITEM}</div>;
+        <h1>Home Screen Endpoint</h1>
+        {this.props.threads.map(t => {
+          return (
+            <div key={t.id}>
+              <div>Thread name: {t.threadName}</div>
+              <div>Thread topic: {t.threadTopic}</div>
+              <div>Thread created at: {t.threadCreatedAt.seconds}</div>
+              <div>Thread created by: {t.threadCreatedByUserName}</div>
+            </div>
+          );
         })}
       </div>
     );
@@ -41,7 +39,7 @@ class HomeScreenEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    ARRAY_OF_ITEMS_FROM_DATABASE: state.firestore.ordered.COLLECTION ? state.firestore.ordered.COLLECTION.map(c => c.COLLECTION_ITEM) : []
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
   };
 };
 
@@ -57,7 +55,7 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'COLLECTION'
+        collection: 'threads'
       }
     ];
   })
