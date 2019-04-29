@@ -1,35 +1,35 @@
+/*
+Sidebar
+- [x]  User’s full name
+- [x]  Profile picture
+- [x]  List of organisation names (middle left dropdown)
+- [x]  Space names for the chosen organisation 
+*/
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-/*
-Sidebar
-
-- [ ]  User’s full name
-- [ ]  Profile picture
-- [ ]  List of organisation names (middle left dropdown)
-- [ ]  Space names for the chosen organisation 
-
-*/
-
 class SidebarEndpoint extends Component {
   render() {
     return (
       <div>
-        <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
-        </div>
-        <h2>These are the companies</h2>
-        {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
-          return <div key={ITEM.ID}>{ITEM}</div>;
+        <h2>Sidebar Endpoint</h2>
+        {this.props.users.map(u => {
+          return (
+            <div key={u.id}>
+              <div>User's name: {u.fullName}</div>
+              <div>User's profile picture: {u.profileUrl}</div>
+              <div>User's profile picte: {u.profileUrl}</div>
+              {u.arrayOfOrgs.map(o => {
+                return <div key={o.orgId}>Organisation Name: {o.orgName}</div>;
+              })}
+              {u.arrayOfSpaceNames.map((s, index) => {
+                return <div key={index}>Space Name: {s}</div>;
+              })}
+            </div>
+          );
         })}
       </div>
     );
@@ -38,7 +38,7 @@ class SidebarEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    ARRAY_OF_ITEMS_FROM_DATABASE: state.firestore.ordered.COLLECTION ? state.firestore.ordered.COLLECTION.map(c => c.COLLECTION_ITEM) : []
+    users: state.firestore.ordered.users ? state.firestore.ordered.users : []
   };
 };
 
@@ -54,7 +54,7 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'COLLECTION'
+        collection: 'users'
       }
     ];
   })
