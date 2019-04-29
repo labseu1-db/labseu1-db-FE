@@ -16,30 +16,36 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 class CommentEndpoint extends Component {
   render() {
+    const firstComment = this.props.comments[0];
     return (
       <div>
         <h2>Comment Endpoint</h2>
-        {this.props.comments.map(c => {
-          return (
-            <div key={c.id}>
-              <div>Comment body: {c.commentBody}</div>
-              <div>Comment created at: {c.commentCreatedAt.seconds}</div>
-              <div>Comment created by: {c.commentCreatedByUserName}</div>
-              <div>Comment created by: {c.commentCreatedByUserName}</div>
-              <div>Is comments decision: {c.isCommentDecided}</div>
-              {c.arrayOfUserIdsWhoLiked.map(u => {
+        <div>
+          Comment body:{' '}
+          {firstComment ? (
+            <span> {firstComment.commentBody}</span>
+          ) : (
+            <span role="img" aria-label="crying">
+              😢
+            </span>
+          )}
+        </div>
+        {firstComment && <div>Comment created at: {firstComment.commentCreatedAt.seconds}</div>}
+        {firstComment && <div>Comment created by: {firstComment.commentCreatedByUserName}</div>}
+        {firstComment && <div>Is comments decision: {firstComment.isCommentDecided.toString()}</div>}
+
+        {/* {c.arrayOfUserIdsWhoLiked.map(u => {
                 return <div key={u}>Ids of users who liked the comment: {u}</div>;
               })}
-            </div>
-          );
-        })}
-        {this.props.users.map(u => {
+            </div> */}
+
+        {/* {this.props.users.map(u => {
           return (
             <div key={u.id}>
               <div>User profile picture: {u.profileUrl}</div>
             </div>
           );
-        })}
+        })} */}
       </div>
     );
   }

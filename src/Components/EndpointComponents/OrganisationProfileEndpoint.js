@@ -1,4 +1,4 @@
-/*
+/* WIP - needs to be checked
 Company profile settings
 
 - [x]  Organisation name
