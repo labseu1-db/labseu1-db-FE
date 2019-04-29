@@ -37,7 +37,7 @@ class CommentEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    comment: state.firestore.ordered.comments ? state.firestore.ordered.comments[0] : []
+    comment: state.firestore.ordered.comments ? state.firestore.ordered.comments[0]:[]
   };
 };
 

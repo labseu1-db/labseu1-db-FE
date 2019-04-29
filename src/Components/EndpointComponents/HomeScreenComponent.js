@@ -5,8 +5,9 @@ For each thread:
 - [x]  Thread topic
 - [x]  Date thread created
 - [x]  Full name of user who created it
-- [x]  User profile picture
-- [ ]  When was the last comment created
+- [ ]  User profile picture - WE SHOULD ADD PROFILE PICTURE TO THREAD OR NOT USE IT
+- [ ]  When was the last comment created - WE SHOULD KEEP DATE OF THE LATEST COMMENT
+*/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -15,28 +16,14 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 class HomeScreenEndpoint extends Component {
   render() {
-    console.log(this.props.threads);
-    console.log(this.props.users);
+    console.log(this.props.thread)
     return (
       <div>
-        <h1>Home Screen Endpoint</h1>
-        {this.props.threads.map(t => {
-          return (
-            <div key={t.id}>
-              <div>Thread name: {t.threadName}</div>
-              <div>Thread topic: {t.threadTopic}</div>
-              <div>Thread created at: {t.threadCreatedAt.seconds}</div>
-              <div>Thread created by: {t.threadCreatedByUserName}</div>
-            </div>
-          );
-        })}
-        {this.props.users.map(u => {
-          return (
-            <div key={u.id}>
-              <div>User profile picture: {u.profileUrl}</div>
-            </div>
-          );
-        })}
+        <h2>HomeScreen Endpoint</h2>
+        {this.props.thread.threadName && <div>{this.props.thread.threadName}</div>}
+        {this.props.thread.threadTopic && <div>{this.props.thread.threadTopic}</div>}
+        {this.props.thread.threadCreatedAt && <div>{this.props.thread.threadCreatedAt.seconds}</div>}
+        {this.props.thread.threadCreatedByUserName && <div>{this.props.thread.threadCreatedByUserName}</div>}
       </div>
     );
   }
@@ -44,8 +31,7 @@ class HomeScreenEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    users: state.firestore.ordered.users ? state.firestore.ordered.users : []
+    thread: state.firestore.ordered.threads ? state.firestore.ordered.threads[0]:[]
   };
 };
 
@@ -60,13 +46,10 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'threads'
-      },
-      {
-        collection: 'users'
+        collection: 'threads',
+        doc: '9c1327dc-81d9-45aa-bc8a-792232e96fab'
       }
     ];
   })
 )(HomeScreenEndpoint);
 
-*/

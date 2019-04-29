@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <CommentEndpoint />
+        <HomeScreenEndpoint />
         {/* <AddCompany />
         <CompanyList /> */}
       </div>
