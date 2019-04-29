@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-class AddCompany extends Component {
+export class AddCompany extends Component {
   //Proptypes check - not required, but preferable
   static propTypes = {
     firestore: PropTypes.shape({
@@ -49,7 +49,7 @@ class AddCompany extends Component {
   }
 }
 
-//As we are not getting any props ffrom database - this is empty
+//As we are not getting any props from database - this is empty
 const mapStateToProps = state => {
   return {};
 };

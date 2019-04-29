@@ -16,8 +16,8 @@ class CompanyList extends Component {
     return (
       <div>
         <h2>These are the companies</h2>
-        {companyNamesInDatabase.map(compName => {
-          return <div key={compName}>{compName}</div>;
+        {companyNamesInDatabase.map((compName, index) => {
+          return <div key={index}>{compName}</div>;
         })}
       </div>
     );
