@@ -31,7 +31,6 @@ class AuthButton extends Component {
   
 
 	render() {
-		console.log(this.props.auth);
 		if (!isLoaded(this.props.auth)) {
 			return null;
 		}
