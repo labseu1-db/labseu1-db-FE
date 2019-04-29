@@ -21,7 +21,7 @@ const enhancers = [
   reduxFirestore(firebase),
   //This will be used for authenticaton - users are going to be stored in the firestore database
   reactReduxFirebase(firebase, {
-    userProfile: 'users',
+    userProfile: 'authedUsers',
     useFirestoreForProfile: true
   })
 ];
