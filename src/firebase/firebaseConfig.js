@@ -1,11 +1,11 @@
 //Firebase configuration - test database
 const firebaseConfig = {
-  apiKey: 'AIzaSyD59KY_n3nhHH1g1VhoBFs_xlYnnM0BgEU',
-  authDomain: 'labseu1-db.firebaseapp.com',
-  databaseURL: 'https://labseu1-db.firebaseio.com',
-  projectId: 'labseu1-db',
-  storageBucket: 'labseu1-db.appspot.com',
-  messagingSenderId: '952063624780'
+  apiKey: "AIzaSyBJ0HuZibBnUeo-AsJhJ_vXv_BIDh8s_NY",
+  authDomain: "labseu1-db-test2.firebaseapp.com",
+  databaseURL: "https://labseu1-db-test2.firebaseio.com",
+  projectId: "labseu1-db-test2",
+  storageBucket: "labseu1-db-test2.appspot.com",
+  messagingSenderId: "1025548965547"
 };
 
 export default firebaseConfig;

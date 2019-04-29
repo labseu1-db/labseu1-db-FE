@@ -1,3 +1,4 @@
+/*
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -12,7 +13,7 @@ Thread
 - [ ]  Date thread created
 - [ ]  Full name of user who created it
 - [ ]  User profile picture
-*/
+
 
 class ThreadEndpoint extends Component {
   state = { ITEM_NAME: '' };
@@ -73,3 +74,6 @@ export default compose(
     ];
   })
 )(ThreadEndpoint);
+
+
+*/

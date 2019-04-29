@@ -7,7 +7,6 @@ Company profile settings
 - [x]  User email list
 - [x]  Admin list
 - [x]  Subscription type
-*/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -62,3 +61,5 @@ export default compose(
     ];
   })
 )(OrganisationProfileEndpoint);
+
+*/

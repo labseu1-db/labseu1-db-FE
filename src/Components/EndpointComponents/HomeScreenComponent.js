@@ -7,7 +7,6 @@ For each thread:
 - [x]  Full name of user who created it
 - [x]  User profile picture
 - [ ]  When was the last comment created
-*/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -69,3 +68,5 @@ export default compose(
     ];
   })
 )(HomeScreenEndpoint);
+
+*/

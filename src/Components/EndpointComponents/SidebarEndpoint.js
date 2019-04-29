@@ -4,7 +4,6 @@ Sidebar
 - [x]  Profile picture
 - [x]  List of organisation names (middle left dropdown)
 - [x]  Space names for the chosen organisation 
-*/
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -59,3 +58,5 @@ export default compose(
     ];
   })
 )(SidebarEndpoint);
+
+*/

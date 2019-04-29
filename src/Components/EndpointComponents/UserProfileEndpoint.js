@@ -1,3 +1,5 @@
+/*
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -12,7 +14,7 @@ User profile settings**
 - [ ]  Profile picture
 - [ ]  List of organisations
 - [ ]  Whether user is admin or not for each org
-*/
+
 
 class UserProfileEndpoint extends Component {
   state = { ITEM_NAME: '' };
@@ -73,3 +75,5 @@ export default compose(
     ];
   })
 )(UserProfileEndpoint);
+
+*/

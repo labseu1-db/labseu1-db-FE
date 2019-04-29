@@ -1,3 +1,4 @@
+/*
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -13,7 +14,7 @@ Spaces
 - [ ]  Full name of user who created it
 - [ ]  Users who have access
 - [ ]  User profile picture 
-*/
+
 
 class SpaceEndpoint extends Component {
   state = { ITEM_NAME: '' };
@@ -74,3 +75,5 @@ export default compose(
     ];
   })
 )(SpaceEndpoint);
+
+*/
