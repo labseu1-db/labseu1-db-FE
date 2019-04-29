@@ -16,7 +16,9 @@ class AuthButton extends Component {
 	state = {
 		email: '',
 		password: '',
-		username: ''
+    username: '',
+    loginEmail: '',
+    loginPassword: ''
 	};
 
 	handleInputChange = (e) => {
@@ -25,7 +27,8 @@ class AuthButton extends Component {
 
 	createNewUser = ({ email, password, username }) => {
 		this.props.firebase.createUser({ email, password }, { username, email });
-	};
+  };
+  
 
 	render() {
 		console.log(this.props.auth);
@@ -36,18 +39,35 @@ class AuthButton extends Component {
 			return (
 				<div>
 					<form>
-						<input name="username" type="text" onChange={this.handleInputChange} />
 						<input name="email" type="email" onChange={this.handleInputChange} />
 						<input name="password" type="password" onChange={this.handleInputChange} />
+						<input name="username" type="text" onChange={this.handleInputChange} />
 						<button
 							onClick={() =>
 								this.createNewUser({
 									email: this.state.email,
 									password: this.state.password,
 									username: this.state.username
-								})}
+                })
+                }
 						>
 							Register
+						</button>
+					</form>
+
+          <form>
+						<input name="loginEmail" type="email" onChange={this.handleInputChange} />
+						<input name="loginPassword" type="password" onChange={this.handleInputChange} />
+						<button
+              onClick={(e) => {
+                e.preventDefault();
+								this.props.firebase.login({
+									email: this.state.loginEmail,
+									password: this.state.loginPassword,
+                })}
+                }
+						>
+							Login
 						</button>
 					</form>
 
@@ -72,7 +92,9 @@ class AuthButton extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { auth: state.firebase.auth };
+	return { 
+    auth: state.firebase.auth,
+    profile: state.firebase.profile };
 };
 
 const mapDispatchToProps = (dispatch) => {
