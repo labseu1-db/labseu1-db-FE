@@ -13,28 +13,37 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 class UserProfileEndpoint extends Component {
+  generalStyle = {
+    lineHeight: 2,
+    fontFamily: 'Helvetica'
+  };
+
+  boldSpan = {
+    fontWeight: 'bold'
+  };
+
   render() {
     const activeUser = this.props.user;
     const notPassingTest = '❌';
 
     console.log(activeUser);
     return (
-      <div>
+      <div style={this.generalStyle}>
         <h2>USER PROFILE SETTINGS</h2>
         <div>
-          <span>Full Name: </span>
+          <span style={this.boldSpan}>Full Name: </span>
           {activeUser.fullName ? <span>{activeUser.fullName}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span>Email: </span>
+          <span style={this.boldSpan}>Email: </span>
           {activeUser.userEmail ? <span>{activeUser.userEmail}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span>Profile picture: </span>
+          <span style={this.boldSpan}>Profile picture: </span>
           {activeUser.profileUrl ? <span>{activeUser.profileUrl}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span>List of orgs: </span>
+          <span style={this.boldSpan}>List of orgs: </span>
           {activeUser.arrayOfOrgs ? (
             activeUser.arrayOfOrgs.map(o => {
               return (
