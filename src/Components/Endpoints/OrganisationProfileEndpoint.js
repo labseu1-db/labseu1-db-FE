@@ -1,12 +1,12 @@
-/* WIP - needs to be checked
-Company profile settings
+//  WIP - needs to be checked
+// Company profile settings
 
-- [x]  Organisation name
-- [x]  Organisation mission
-- [ ]  Logo
-- [x]  User email list
-- [x]  Admin list
-- [x]  Subscription type
+// - [x]  Organisation name
+// - [x]  Organisation mission
+// - [ ]  Logo  - image in the url/ actual image stored in the firebase cloud
+// - [x]  User email list
+// - [x]  Admin list
+// - [x]  Subscription type
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -18,21 +18,29 @@ class OrganisationProfileEndpoint extends Component {
     return (
       <div>
         <h2>Organisation Profile Endpoint</h2>
-        {this.props.organisations.map(o => {
-          return (
-            <div key={o.id}>
-              <div>Organisation name: {o.orgName}</div>
-              <div>Organisation name: {o.orgMission}</div>
-              {o.arrayOfUsers.map(u => {
-                return <div key={u.userId}>User: {u.userEmail}</div>;
-              })}
-              {o.arrayOfAdmins.map(a => {
-                return <div key={a.userId}>Admin: {a.userEmail}</div>;
-              })}
-              <div>Premium: {o.isPremium}</div>
-            </div>
-          );
-        })}
+        {this.props.organisation.orgName && <div>OrganisationName: {this.props.organisation.orgName}</div>}
+        {this.props.organisation.orgMission && <div>OrganisationMission: {this.props.organisation.orgMission}</div>}
+        {this.props.organisation.arrayOfUsers && (
+          <div>
+            arrayOfUsers:{' '}
+            {this.props.organisation.arrayOfUsers.map((u, index) => (
+              <div key={index}>
+                userEmail: {u.userEmail} userId: {u.userId}
+              </div>
+            ))}
+          </div>
+        )}
+        {this.props.organisation.arrayOfAdmins && (
+          <div>
+            arrayOfAdmins:{' '}
+            {this.props.organisation.arrayOfAdmins.map((u, index) => (
+              <div key={index}>
+                userEmail: {u.userEmail} userId: {u.userId}
+              </div>
+            ))}
+          </div>
+        )}
+        {this.props.organisation.isPremium && <div>Premium: {this.props.organisation.isPremium.toString()}</div>}
       </div>
     );
   }
@@ -40,7 +48,7 @@ class OrganisationProfileEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    organisations: state.firestore.ordered.organisations ? state.firestore.ordered.organisations : []
+    organisation: state.firestore.ordered.organisations ? state.firestore.ordered.organisations[0] : []
   };
 };
 
@@ -56,10 +64,9 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'organisations'
+        collection: 'organisations',
+        doc: '977ab9e8-5f6a-44c1-9fc7-a68c4d771701'
       }
     ];
   })
 )(OrganisationProfileEndpoint);
-
-*/
