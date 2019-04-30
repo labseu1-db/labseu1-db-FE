@@ -13,15 +13,45 @@ class SpaceThreads extends Component {
             return (
               <div key={t.threadId}>
                 <div>
-                  {' '}
-                  {ok}
                   <strong>Name: </strong>
-                  {t.threadName}
+                  {t.threadName && (
+                    <span>
+                      {ok} {t.threadName}
+                    </span>
+                  )}
                 </div>
-                <div>Topic: {t.threadTopic}</div>
-                <div>Created at: {t.threadCreatedAt.seconds}</div>
-                <div>Created by: {t.threadCreatedByUserName}</div>
-                <div>Prrofile: www.profile.com/{t.threadCreatedByUserId}</div>
+                <div>
+                  <strong>Topic: </strong>
+                  {t.threadTopic && (
+                    <span>
+                      {ok} {t.threadTopic}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <strong>Created at: </strong>
+                  {t.threadCreatedAt && (
+                    <span>
+                      {ok} {t.threadCreatedAt.seconds}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <strong>Created by: </strong>
+                  {t.threadCreatedByUserName && (
+                    <span>
+                      {ok} {t.threadCreatedByUserName}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <strong>Profile: </strong>
+                  {t.threadCreatedByUserId && (
+                    <span>
+                      {ok} www.profile.com/{t.threadCreatedByUserId}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}

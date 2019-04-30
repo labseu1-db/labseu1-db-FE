@@ -37,19 +37,20 @@ class SpaceEndpoint extends Component {
           <SDSpan>Ids of user with access: </SDSpan>
           {activeSpace.arrayOfUserIdsInSpace && (
             <span>
+              {ok}
               {activeSpace.arrayOfUserIdsInSpace.map(id => {
-                return (
-                  <div key={id}>
-                    {ok} {id}
-                  </div>
-                );
+                return <div key={id}>{id}</div>;
               })}
             </span>
           )}
         </div>
         <div>
           <SDSpan> Threads in space: </SDSpan>
-          {activeSpace.spaceId && <SpaceThreads activeSpaceId={activeSpace.spaceId} />}
+          {activeSpace.spaceId && (
+            <span>
+              {ok} <SpaceThreads activeSpaceId={activeSpace.spaceId} />
+            </span>
+          )}
         </div>
       </SDCard>
     );
