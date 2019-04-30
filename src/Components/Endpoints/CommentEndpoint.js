@@ -16,7 +16,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 class CommentEndpoint extends Component {
   render() {
-    console.log(this.props.comment)
+    console.log(this.props.comment);
     return (
       <div>
         <h2>Comment Endpoint</h2>
@@ -24,12 +24,13 @@ class CommentEndpoint extends Component {
         {this.props.comment.commentCreatedAt && <div>{this.props.comment.commentCreatedAt.seconds}</div>}
         {this.props.comment.commentCreatedByUserName && <div>{this.props.comment.commentCreatedByUserName}</div>}
         {this.props.comment.isCommendDecided && <div>{this.props.comment.isCommendDecided.toString()}</div>}
-        {this.props.comment.arrayOfUserIdsWhoLiked && <div>{this.props.comment.arrayOfUserIdsWhoLiked.map(u => {
-          return (
-            <div key={u}>{u}
-            </div>
-          )
-        })}</div>}
+        {this.props.comment.arrayOfUserIdsWhoLiked && (
+          <div>
+            {this.props.comment.arrayOfUserIdsWhoLiked.map(u => {
+              return <div key={u}>{u}</div>;
+            })}
+          </div>
+        )}
       </div>
     );
   }
@@ -37,7 +38,7 @@ class CommentEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    comment: state.firestore.ordered.comments ? state.firestore.ordered.comments[0]:[]
+    comment: state.firestore.ordered.comments ? state.firestore.ordered.comments[0] : []
   };
 };
 
@@ -53,7 +54,7 @@ export default compose(
     return [
       {
         collection: 'comments',
-        doc: '02233f0c-d49b-4cf5-849e-3d86e962447c'
+        doc: '035f8964-b26c-4637-9b65-11774027e9f9'
       }
     ];
   })
