@@ -2,12 +2,12 @@
 Home screen
 - [x]  Threads ids list
 For each thread:
-- []  Thread name
-- []  Thread topic
-- []  Date thread created
-- []  Full name of user who created it
-- [ ]  User profile picture - WE SHOULD ADD PROFILE PICTURE TO THREAD OR NOT USE IT
-- [ ]  When was the last comment created - WE SHOULD KEEP DATE OF THE LATEST COMMENT
+- [x]  Thread name
+- [x]  Thread topic
+- [x]  Date thread created
+- [x]  Full name of user who created it
+- [x]  User profile picture 
+- [x]  When was the last comment created - NOT SURE IF IT WORKS, HARD TO TEST WITHOUT DATA
 */
 
 import React, { Component } from 'react';
@@ -32,7 +32,7 @@ class HomeScreenEndpoint extends Component {
       <SDCard>
         <h2>ENDPOINT FOR HOME SCREEN</h2>
         <div>
-          <SDSpan>Threads ids list: </SDSpan>
+          <SDSpan>Space ids list: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
             <span>
               {ok}

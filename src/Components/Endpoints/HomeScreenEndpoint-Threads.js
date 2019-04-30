@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+import HomeScreenComments from './HomeScreenEndpoint-Comments';
+
 class HomeScreenThreads extends Component {
   render() {
     const ok = '✅';
@@ -20,22 +22,12 @@ class HomeScreenThreads extends Component {
                     </span>
                   )}
                 </div>
-                <div>
-                  Topic:
-                  {t.threadTopic && <span>{t.threadTopic}</span>}
-                </div>
-                <div>
-                  Created at:
-                  {t.threadCreatedAt && <span>{t.threadCreatedAt.seconds}</span>}
-                </div>
-                <div>
-                  Created by:
-                  {t.threadCreatedByUserName && <span>{t.threadCreatedByUserName}</span>}
-                </div>
-                <div>
-                  Profile:
-                  {t.threadCreatedByUserId && <span>www.profile.com/{t.threadCreatedByUserId}</span>}
-                </div>
+                <div>Id: {t.id && <span>{t.id}</span>}</div>
+                <div>Topic: {t.threadTopic && <span>{t.threadTopic}</span>}</div>
+                <div>Created at: {t.threadCreatedAt && <span>{t.threadCreatedAt.seconds}</span>}</div>
+                <div>Created by: {t.threadCreatedByUserName && <span>{t.threadCreatedByUserName}</span>}</div>
+                <div>Profile: {t.threadCreatedByUserId && <span>www.profile.com/{t.threadCreatedByUserId}</span>}</div>
+                <div>Last Comment created at: {t.id && <HomeScreenComments activeThreadId={t.id} />}</div>
               </div>
             );
           })}

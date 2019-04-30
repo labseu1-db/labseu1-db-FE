@@ -23,7 +23,6 @@ class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
     const ok = '✅';
-    console.log(activeComment);
     return (
       <SDCard>
         <h2>ENDPOINT FOR COMMENT</h2>
