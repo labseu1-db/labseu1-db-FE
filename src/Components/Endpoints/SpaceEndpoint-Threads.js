@@ -20,22 +20,10 @@ class SpaceThreads extends Component {
                     </span>
                   )}
                 </div>
-                <div>
-                  Topic:
-                  {t.threadTopic && <span>{t.threadTopic}</span>}
-                </div>
-                <div>
-                  Created at:
-                  {t.threadCreatedAt && <span>{t.threadCreatedAt.seconds}</span>}
-                </div>
-                <div>
-                  Created by:
-                  {t.threadCreatedByUserName && <span>{t.threadCreatedByUserName}</span>}
-                </div>
-                <div>
-                  Profile:
-                  {t.threadCreatedByUserId && <span>www.profile.com/{t.threadCreatedByUserId}</span>}
-                </div>
+                <div>Topic: {t.threadTopic && <span>{t.threadTopic}</span>}</div>
+                <div>Created at: {t.threadCreatedAt && <span>{t.threadCreatedAt.seconds}</span>}</div>
+                <div>Created by: {t.threadCreatedByUserName && <span>{t.threadCreatedByUserName}</span>}</div>
+                <div>Profile: {t.threadCreatedByUserId && <span>www.profile.com/{t.threadCreatedByUserId}</span>}</div>
               </div>
             );
           })}

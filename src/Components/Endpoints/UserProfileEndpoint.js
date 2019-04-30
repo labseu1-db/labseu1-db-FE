@@ -23,7 +23,7 @@ class UserProfileEndpoint extends Component {
 
     return (
       <SDCard>
-        <h2>ENDPOINT FOR USER PROFILE</h2>
+        <h2>User Profile Endpoint</h2>
         <div>
           <SDSpan>Full Name: </SDSpan>
           {activeUser.fullName && (
@@ -55,14 +55,16 @@ class UserProfileEndpoint extends Component {
               return (
                 <div key={o.orgId}>
                   <div>
-                    <SDSpan>Org Name: </SDSpan>
+                    <SDSpan>Name: </SDSpan>
                     <span>
                       {ok} {o.orgName}{' '}
                     </span>
                   </div>
                   <div>
-                    <span>Admin: </span>
-                    <span>{o.isAdmin.toString()} </span>
+                    <SDSpan>Admin: </SDSpan>
+                    <span>
+                      {ok} {o.isAdmin.toString()}{' '}
+                    </span>
                   </div>
                 </div>
               );

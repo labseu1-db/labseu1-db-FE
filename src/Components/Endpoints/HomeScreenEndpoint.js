@@ -27,10 +27,11 @@ class HomeScreenEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
     const ok = '✅';
-
+    const exclamation = '❗';
     return (
       <SDCard>
-        <h2>ENDPOINT FOR HOME SCREEN</h2>
+        <h2>Home Screen Endpoint</h2>
+        <div>{`${exclamation}WE SHOULD TEST THE LATEST COMMENT IN THREAD - NOT ENOUGH DATA ATM${exclamation}`}</div>
         <div>
           <SDSpan>Space ids list: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
@@ -44,7 +45,7 @@ class HomeScreenEndpoint extends Component {
         </div>
 
         <div>
-          <SDSpan>Threads: </SDSpan>
+          <SDSpan>List of threads: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
             <span>
               {ok}

@@ -5,42 +5,69 @@ Sidebar
 - [x]  List of organisation names (middle left dropdown)
 - [x]  Space names for the chosen organisation 
 */
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
 
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
+
+const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
 class SidebarEndpoint extends Component {
   render() {
-    console.log(this.props.user);
+    const activeUser = this.props.user;
+    const ok = '✅';
     return (
-      <div>
+      <SDCard>
         <h2>Sidebar Endpoint</h2>
-        {this.props.user.fullName && <h3>{this.props.user.fullName}</h3>}
-        {this.props.user.profileUrl && (
-          <img src={this.props.user.profileUrl} alt="profileImage" />
-        )}
-        {this.props.user.arrayOfOrgs && (
+        <div>
+          <SDSpan>Full Name: </SDSpan>
+          {activeUser.fullName && (
+            <span>
+              {ok} {activeUser.fullName}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>List of organisations: </SDSpan>
+          {activeUser.arrayOfOrgs && (
+            <div>
+              {activeUser.arrayOfOrgs.map(org => (
+                <div key={org.id}>
+                  <SDSpan>Name: </SDSpan>
+                  <span>
+                    {ok} {org.orgName}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div>
+          <SDSpan>List of spaces: </SDSpan>
+          {activeUser.arrayOfSpaceNames && (
+            <div>
+              {activeUser.arrayOfSpaceNames.map(space => (
+                <div key={space}>
+                  <SDSpan>Name: </SDSpan>
+                  <span>
+                    {ok} {space}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {activeUser.id && (
           <div>
-            {this.props.user.arrayOfOrgs.map((org, index) => (
-              <div key={index}>
-                {" "}
-                <h4>{org.orgName}</h4>
-              </div>
-            ))}
+            <SDSpan>Profile: </SDSpan>
+            <span>
+              {ok} www.profile.com/{activeUser.id}
+            </span>
           </div>
         )}
-        {this.props.user.arrayOfSpaceNames && (
-          <div>
-            {this.props.user.arrayOfSpaceNames.map((space, index) => (
-              <div key={index}>
-                {" "}
-                <h4>{space.arrayOfSpaceNames}</h4>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      </SDCard>
     );
   }
 }
@@ -63,9 +90,23 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "users",
-        doc: "035f8964-b26c-4637-9b65-11774027e9f9"
+        collection: 'users',
+        doc: `${userDoc}`
       }
     ];
   })
 )(SidebarEndpoint);
+
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+  width: 30%;
+`;
+
+const SDSpan = styled.span`
+  font-weight: bold;
+`;

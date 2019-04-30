@@ -3,8 +3,10 @@ import styled from 'styled-components';
 
 // import AddCompany from './Components/AddCompany';
 // import CompanyList from './Components/CompanyList';
+import SidebarEndpoint from './Components/Endpoints/SidebarEndpoint';
 import HomeScreenEndpoint from './Components/Endpoints/HomeScreenEndpoint';
 import UserProfileEndpoint from './Components/Endpoints/UserProfileEndpoint';
+import OrganisationProfileEndpoint from './Components/Endpoints/OrganisationProfileEndpoint';
 import SpaceEndpoint from './Components/Endpoints/SpaceEndpoint';
 import ThreadEndpoint from './Components/Endpoints/ThreadEndpoint';
 import CommentEndpoint from './Components/Endpoints/CommentEndpoint';
@@ -13,11 +15,13 @@ class App extends Component {
   render() {
     return (
       <SDApp>
+        <SidebarEndpoint />
         <HomeScreenEndpoint />
-        <UserProfileEndpoint />
         <SpaceEndpoint />
         <ThreadEndpoint />
         <CommentEndpoint />
+        <UserProfileEndpoint />
+        <OrganisationProfileEndpoint />
       </SDApp>
     );
   }

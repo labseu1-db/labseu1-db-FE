@@ -28,7 +28,7 @@ class SpaceEndpoint extends Component {
 
     return (
       <SDCard>
-        <h2>ENDPOINT FOR SPACE</h2>
+        <h2>Space Endpoint</h2>
         <div>
           <SDSpan>Space name: </SDSpan>
           {activeSpace.spaceName && (

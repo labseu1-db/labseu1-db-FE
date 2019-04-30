@@ -6,8 +6,7 @@
 - [x]  Array of ids of people who liked it
 - [x]  Decision Boolean
 
-- [ ]  User profile picture - WE SHOULD ADD PROFILE PICTURE TO COMMENT OR NOT USE IT
-WE NEED userId here
+- [ ]  User profile picture - WE SHOULD ADD USERID TO COMMENT 
 */
 
 import React, { Component } from 'react';
@@ -23,9 +22,12 @@ class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
     const ok = '✅';
+    const exclamation = '❗';
     return (
       <SDCard>
-        <h2>ENDPOINT FOR COMMENT</h2>
+        <h2>Comment Endpoint</h2>
+        <div>{`${exclamation}WE SHOULD ADD USERID TO COMMENT TO HAVE ACCESS TO PROFILE PICTURE${exclamation}`}</div>
+
         <div>
           <SDSpan>Comment body: </SDSpan>
           {activeComment.commentBody && (

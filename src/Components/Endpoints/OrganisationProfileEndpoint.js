@@ -12,36 +12,62 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
+const orgDoc = '977ab9e8-5f6a-44c1-9fc7-a68c4d771701';
 class OrganisationProfileEndpoint extends Component {
   render() {
+    const activeOrg = this.props.organisation;
+    const ok = '✅';
     return (
-      <div>
+      <SDCard>
         <h2>Organisation Profile Endpoint</h2>
-        {this.props.organisation.orgName && <div>OrganisationName: {this.props.organisation.orgName}</div>}
-        {this.props.organisation.orgMission && <div>OrganisationMission: {this.props.organisation.orgMission}</div>}
-        {this.props.organisation.arrayOfUsers && (
-          <div>
-            arrayOfUsers:{' '}
-            {this.props.organisation.arrayOfUsers.map((u, index) => (
-              <div key={index}>
-                userEmail: {u.userEmail} userId: {u.userId}
+        <div>
+          <SDSpan>Org Name: </SDSpan>
+          {activeOrg.orgName && (
+            <span>
+              {ok} {activeOrg.orgName}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Org Mission: </SDSpan>
+          {activeOrg.orgMission && (
+            <span>
+              {ok} {activeOrg.orgMission}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>List of Users: </SDSpan>
+          {activeOrg.arrayOfUsers &&
+            activeOrg.arrayOfUsers.map(u => (
+              <div key={u.userId}>
+                <div>Id: {u.userId}</div>
+                <div>Email: {u.userEmail}</div>
               </div>
             ))}
-          </div>
-        )}
-        {this.props.organisation.arrayOfAdmins && (
-          <div>
-            arrayOfAdmins:{' '}
-            {this.props.organisation.arrayOfAdmins.map((u, index) => (
-              <div key={index}>
-                userEmail: {u.userEmail} userId: {u.userId}
+        </div>
+
+        <div>
+          <SDSpan>List of Admins: </SDSpan>
+          {activeOrg.arrayOfAdmins &&
+            activeOrg.arrayOfAdmins.map(u => (
+              <div key={u.userId}>
+                <div>Id: {u.userId}</div>
+                <div>Email: {u.userEmail}</div>
               </div>
             ))}
-          </div>
-        )}
-        {this.props.organisation.isPremium && <div>Premium: {this.props.organisation.isPremium.toString()}</div>}
-      </div>
+        </div>
+        <div>
+          <SDSpan>Is Premium: </SDSpan>
+          {activeOrg.id && (
+            <span>
+              {ok} {activeOrg.isPremium.toString()}
+            </span>
+          )}
+        </div>
+      </SDCard>
     );
   }
 }
@@ -65,8 +91,22 @@ export default compose(
     return [
       {
         collection: 'organisations',
-        doc: '977ab9e8-5f6a-44c1-9fc7-a68c4d771701'
+        doc: `${orgDoc}`
       }
     ];
   })
 )(OrganisationProfileEndpoint);
+
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+  width: 30%;
+`;
+
+const SDSpan = styled.span`
+  font-weight: bold;
+`;

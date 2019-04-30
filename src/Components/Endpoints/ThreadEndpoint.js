@@ -25,7 +25,7 @@ class ThreadEndpoint extends Component {
 
     return (
       <SDCard>
-        <h2>ENDPOINT FOR THREAD</h2>
+        <h2>Thread Endpoint</h2>
         <div>
           <SDSpan>Space name: </SDSpan>
           {activeThread.spaceId && (
