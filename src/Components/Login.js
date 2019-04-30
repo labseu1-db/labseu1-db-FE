@@ -37,14 +37,14 @@ class Login extends Component {
           <input name="loginEmail" type="email" onChange={this.handleInputChange} />
           <input name="loginPassword" type="password" onChange={this.handleInputChange} />
           <button
-            onClick={(e) => {
+            onClick={(e) => { 
               e.preventDefault();
               this.props.firebase.login({
                 email: this.state.loginEmail,
                 password: this.state.loginPassword
               }).then( res => {
                 console.log(this.props.history)
-                this.props.history.push('/register')
+                this.props.history.push('/homescreen')
 
               });
             }}

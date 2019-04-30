@@ -14,6 +14,9 @@ const PrivateRoute = ({ component: Component, authStatus, ...rest }) => {
   return <Route {...rest} render={(props) => (!isEmpty(authStatus) ? <Component {...props} /> : <Redirect to='/login'/>)} />;
 };
 
+
+
+
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,

@@ -11,19 +11,23 @@ import PrivateRoute from './Components/PrivateRouteHOC'
 
 
 class App extends Component {
-	render() {
-		return (
-			<div>
-        <Route 
-          exact 
-          path="/register" 
-          render={(props) => <Register {...props}/>} 
+  render() {
+    return (
+      <div>
+        <Route
+          exact
+          path="/register"
+          render={(props) => <Register {...props} />}
         />
-				<Route exact path="/login" component={Login} />
+        <Route
+          exact
+          path="/login"
+          render={(props) => <Login {...props} />}
+        />
         <PrivateRoute path='/homescreen' component={FakeHome} authStatus={this.props.auth} />
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {

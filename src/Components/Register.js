@@ -27,16 +27,15 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createAndLogInNewUser = async ({ email, password, username }) => {
-    await this.props.firebase.createUser({ email, password }, { username, email });
-    await this.props.firebase.login({ email, password });
-    // this.props.history.replace('/homescreen');
-    this.setState({
-      email: '',
-      password: '',
-      password2: '',
-      username: '',
-    });
+  createAndLogInNewUser = ({ email, password, username }) => {
+    this.props.firebase.createUser({ email, password }, { username, email })
+      .then(() => {
+        this.props.firebase.login({ email, password });
+      })
+      .then(() => {
+        this.props.history.replace('/homescreen');
+      })
+      .catch( err => console.log(err))
   };
 
   render() {
@@ -57,7 +56,7 @@ class Register extends Component {
           <div>Username</div>
           <input name="username" type="text" onChange={this.handleInputChange} />
           <button
-            onClick={(e) => {
+            onClick={(e) => { 
               e.preventDefault();
               this.createAndLogInNewUser({
                 email: this.state.email,
