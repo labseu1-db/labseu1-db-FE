@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import LoaderExampleLoader from './Spinner';
 
-class AuthButton extends Component {
+class Login extends Component {
 	static propTypes = {
 		auth: PropTypes.object,
 		firebase: PropTypes.shape({
@@ -16,9 +17,9 @@ class AuthButton extends Component {
 	state = {
 		email: '',
 		password: '',
-    username: '',
-    loginEmail: '',
-    loginPassword: ''
+		username: '',
+		loginEmail: '',
+		loginPassword: ''
 	};
 
 	handleInputChange = (e) => {
@@ -27,58 +28,39 @@ class AuthButton extends Component {
 
 	createNewUser = ({ email, password, username }) => {
 		this.props.firebase.createUser({ email, password }, { username, email });
-  };
-  
+	};
 
 	render() {
 		if (!isLoaded(this.props.auth)) {
-			return null;
+			return <LoaderExampleLoader />;
 		}
 		if (isEmpty(this.props.auth)) {
 			return (
 				<div>
 					<form>
-						<input name="email" type="email" onChange={this.handleInputChange} />
-						<input name="password" type="password" onChange={this.handleInputChange} />
-						<input name="username" type="text" onChange={this.handleInputChange} />
-						<button
-							onClick={() =>
-								this.createNewUser({
-									email: this.state.email,
-									password: this.state.password,
-									username: this.state.username
-                })
-                }
-						>
-							Register
-						</button>
-					</form>
-
-          <form>
 						<input name="loginEmail" type="email" onChange={this.handleInputChange} />
 						<input name="loginPassword" type="password" onChange={this.handleInputChange} />
 						<button
-              onClick={(e) => {
-                e.preventDefault();
+							onClick={(e) => {
+								e.preventDefault();
 								this.props.firebase.login({
 									email: this.state.loginEmail,
-									password: this.state.loginPassword,
-                })}
-                }
+									password: this.state.loginPassword
+								});
+							}}
 						>
 							Login
 						</button>
 					</form>
 
 					<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-						Log in with Google
+						Sign in with Google
 					</button>
 				</div>
 			);
 		}
 		return (
 			<button
-				style={{ width: '20rem' }}
 				onClick={async () => {
 					await this.props.firebase.logout();
 					this.props.clearFirestore();
@@ -91,9 +73,10 @@ class AuthButton extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { 
-    auth: state.firebase.auth,
-    profile: state.firebase.profile };
+	return {
+		auth: state.firebase.auth,
+		profile: state.firebase.profile
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -102,4 +85,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(AuthButton);
+export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Login);

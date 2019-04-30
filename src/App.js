@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-
-import AddCompany from './Components/AddCompany';
-import CompanyList from './Components/CompanyList';
-import AuthButton from './Components/AuthButton';
+import Register from './Components/Register';
+import Login from './Components/Login';
+import { Route } from 'react-router-dom';
 
 class App extends Component {
-  render() {
-    return (
-      <div>
-        <AuthButton />
-        <AddCompany />
-        <CompanyList />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/login" component={Login} />
+			</div>
+		);
+	}
 }
 
 export default App;
