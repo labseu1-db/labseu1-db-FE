@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // import CompanyList from './Components/CompanyList';
 import UserProfileEndpoint from './Components/Endpoints/UserProfileEndpoint';
 import ThreadEndpoint from './Components/Endpoints/ThreadEnpoint';
+import SpaceEndpoint from './Components/Endpoints/SpaceEndpoint';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
       <SDApp>
         <UserProfileEndpoint />
         <ThreadEndpoint />
+        <SpaceEndpoint />
       </SDApp>
     );
   }
@@ -19,7 +21,8 @@ class App extends Component {
 
 const SDApp = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
+  justify-content: center;
 `;
 
 export default App;

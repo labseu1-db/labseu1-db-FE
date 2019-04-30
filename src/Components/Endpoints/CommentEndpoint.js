@@ -54,7 +54,7 @@ export default compose(
     return [
       {
         collection: 'comments',
-        doc: '035f8964-b26c-4637-9b65-11774027e9f9'
+        doc: '02233f0c-d49b-4cf5-849e-3d86e962447c'
       }
     ];
   })

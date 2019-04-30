@@ -1,60 +1,59 @@
-/*
+// Endpoints for: Spaces
+
+// - [x]  Space name
+// - [x]  Users who have access to space
+// For each thread:
+// - [x]  Thread name
+// - [x]  Thread topic
+// - [x]  Date thread created
+// - [x]  Full name of user who created it
+// - [x]  User profile picture
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
-/*
-Spaces
-- [ ]  Space name
-- [ ]  For each thread:
-- [ ]  Thread name
-- [ ]  Thread topic
-- [ ]  Date thread created
-- [ ]  Full name of user who created it
-- [ ]  Users who have access
-- [ ]  User profile picture 
-
+import SpaceThreads from './SpaceEndpoint-Threads';
 
 class SpaceEndpoint extends Component {
-  state = { ITEM_NAME: '' };
-
-  ADD_ITEM() {
-    this.props.firestore.add(
-      //collection name
-      { collection: 'COLLECTION' },
-      //add state.company info to field companyName in collection
-      {
-        ITEM: this.state.ITEM_NAME
-      }
-    );
-  }
-
   render() {
+    const activeSpace = this.props.space;
+    const notPassingTest = '❌';
+    console.log(activeSpace);
+
     return (
-      <div>
+      <SDCard>
+        <h2>SPACE</h2>
         <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
+          <SDSpan>Space name: </SDSpan>
+          {activeSpace.spaceName ? <span>{activeSpace.spaceName}</span> : <span>{notPassingTest}</span>}
         </div>
-        <h2>These are the companies</h2>
-        {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
-          return <div key={ITEM.ID}>{ITEM}</div>;
-        })}
-      </div>
+        <div>
+          <SDSpan>Ids of user with access: </SDSpan>
+          {activeSpace.arrayOfUserIdsInSpace ? (
+            <span>
+              {activeSpace.arrayOfUserIdsInSpace.map(id => {
+                return <div key={id}>{id}</div>;
+              })}
+            </span>
+          ) : (
+            <span>{notPassingTest}</span>
+          )}
+        </div>
+        <div>
+          <SDSpan> Threads in space: </SDSpan>
+          {activeSpace.spaceId && <SpaceThreads activeSpaceId={activeSpace.spaceId} />}
+        </div>
+      </SDCard>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    ARRAY_OF_ITEMS_FROM_DATABASE: state.firestore.ordered.COLLECTION ? state.firestore.ordered.COLLECTION.map(c => c.COLLECTION_ITEM) : []
+    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
   };
 };
 
@@ -70,10 +69,23 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'COLLECTION'
+        collection: 'spaces',
+        doc: '00d4f259-5363-4427-bd44-87f484cd44ca'
       }
     ];
   })
 )(SpaceEndpoint);
 
-*/
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+  width: 30%;
+`;
+
+const SDSpan = styled.span`
+  font-weight: bold;
+`;

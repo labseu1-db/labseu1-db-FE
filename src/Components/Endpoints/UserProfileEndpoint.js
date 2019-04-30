@@ -86,6 +86,7 @@ const SDCard = styled.div`
   margin: 10px;
   padding: 10px;
   background-color: #eaeef7;
+  width: 30%;
 `;
 
 const SDSpan = styled.span`
