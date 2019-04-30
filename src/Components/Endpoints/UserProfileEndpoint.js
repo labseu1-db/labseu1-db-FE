@@ -12,6 +12,9 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
+//Doc uuid() variable for user
+const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
+
 class UserProfileEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
@@ -19,7 +22,7 @@ class UserProfileEndpoint extends Component {
 
     return (
       <SDCard>
-        <h2>USER PROFILE SETTINGS</h2>
+        <h2>ENDPOINT FOR USER PROFILE</h2>
         <div>
           <SDSpan>Full Name: </SDSpan>
           {activeUser.fullName && (
@@ -90,7 +93,7 @@ export default compose(
     return [
       {
         collection: 'users',
-        doc: '035f8964-b26c-4637-9b65-11774027e9f9'
+        doc: `${userDoc}`
       }
     ];
   })

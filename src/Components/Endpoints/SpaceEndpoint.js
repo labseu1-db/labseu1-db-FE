@@ -15,7 +15,10 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
+//Import Components
 import SpaceThreads from './SpaceEndpoint-Threads';
+
+const spaceDoc = '00d4f259-5363-4427-bd44-87f484cd44ca';
 
 class SpaceEndpoint extends Component {
   render() {
@@ -24,7 +27,7 @@ class SpaceEndpoint extends Component {
 
     return (
       <SDCard>
-        <h2>SPACE</h2>
+        <h2>ENDPOINT FOR SPACE</h2>
         <div>
           <SDSpan>Space name: </SDSpan>
           {activeSpace.spaceName && (
@@ -76,7 +79,7 @@ export default compose(
     return [
       {
         collection: 'spaces',
-        doc: '00d4f259-5363-4427-bd44-87f484cd44ca'
+        doc: `${spaceDoc}`
       }
     ];
   })
