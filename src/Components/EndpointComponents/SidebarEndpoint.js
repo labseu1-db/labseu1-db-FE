@@ -4,32 +4,42 @@ Sidebar
 - [x]  Profile picture
 - [x]  List of organisation names (middle left dropdown)
 - [x]  Space names for the chosen organisation 
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+*/
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 class SidebarEndpoint extends Component {
   render() {
+    console.log(this.props.user);
     return (
       <div>
         <h2>Sidebar Endpoint</h2>
-        {this.props.users.map(u => {
-          return (
-            <div key={u.id}>
-              <div>User's name: {u.fullName}</div>
-              <div>User's profile picture: {u.profileUrl}</div>
-              <div>User's profile picte: {u.profileUrl}</div>
-              {u.arrayOfOrgs.map(o => {
-                return <div key={o.orgId}>Organisation Name: {o.orgName}</div>;
-              })}
-              {u.arrayOfSpaceNames.map((s, index) => {
-                return <div key={index}>Space Name: {s}</div>;
-              })}
-            </div>
-          );
-        })}
+        {this.props.user.fullName && <h3>{this.props.user.fullName}</h3>}
+        {this.props.user.profileUrl && (
+          <img src={this.props.user.profileUrl} alt="profileImage" />
+        )}
+        {this.props.user.arrayOfOrgs && (
+          <div>
+            {this.props.user.arrayOfOrgs.map((org, index) => (
+              <div key={index}>
+                {" "}
+                <h4>{org.orgName}</h4>
+              </div>
+            ))}
+          </div>
+        )}
+        {this.props.user.arrayOfSpaceNames && (
+          <div>
+            {this.props.user.arrayOfSpaceNames.map((space, index) => (
+              <div key={index}>
+                {" "}
+                <h4>{space.arrayOfSpaceNames}</h4>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -37,7 +47,7 @@ class SidebarEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.firestore.ordered.users ? state.firestore.ordered.users : []
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
   };
 };
 
@@ -53,10 +63,9 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'users'
+        collection: "users",
+        doc: "035f8964-b26c-4637-9b65-11774027e9f9"
       }
     ];
   })
 )(SidebarEndpoint);
-
-*/

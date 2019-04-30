@@ -5,12 +5,13 @@ import CompanyList from './Components/CompanyList';
 import HomeScreenEndpoint from './Components/EndpointComponents/HomeScreenComponent';
 import CommentEndpoint from './Components/EndpointComponents/CommentEndpoint';
 import OrganisationProfileEndpoint from './Components/EndpointComponents/OrganisationProfileEndpoint';
+import SidebarEndpoint from './Components/EndpointComponents/SidebarEndpoint';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <OrganisationProfileEndpoint />
+        <SidebarEndpoint />
         {/* <AddCompany />
         <CompanyList /> */}
       </div>
