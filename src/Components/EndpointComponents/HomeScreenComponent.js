@@ -47,7 +47,7 @@ export default compose(
     return [
       {
         collection: 'threads',
-        doc: '9c1327dc-81d9-45aa-bc8a-792232e96fab'
+        doc: '030fa39c-b9e3-4f6d-aeb4-8cf0b5a9cb0b'
       }
     ];
   })
