@@ -16,30 +16,50 @@ import styled from 'styled-components';
 class ThreadEndpoint extends Component {
   render() {
     const activethread = this.props.thread;
-    const notPassingTest = '❌';
+    const ok = '✅';
 
     return (
       <SDCard>
         <h2>THREAD</h2>
         <div>
           <SDSpan>Thread name: </SDSpan>
-          {activethread.threadName ? <span>{activethread.threadName}</span> : <span>{notPassingTest}</span>}
+          {activethread.threadName && (
+            <span>
+              {ok} {activethread.threadName}
+            </span>
+          )}
         </div>
         <div>
-          <SDSpan>Thread topic:</SDSpan>
-          {activethread.threadTopic ? <span>{activethread.threadTopic}</span> : <span>{notPassingTest}</span>}
+          <SDSpan>Thread topic: </SDSpan>
+          {activethread.threadTopic && (
+            <span>
+              {ok} {activethread.threadTopic}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>Thread created at: </SDSpan>
-          {activethread.threadCreatedAt ? <span>{activethread.threadCreatedAt.seconds}</span> : <span>{notPassingTest}</span>}
+          {activethread.threadCreatedAt && (
+            <span>
+              {ok} {activethread.threadCreatedAt.seconds}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>Thread created by: </SDSpan>
-          {activethread.threadCreatedByUserName ? <span>{activethread.threadCreatedByUserName}</span> : <span>{notPassingTest}</span>}
+          {activethread.threadCreatedByUserName && (
+            <span>
+              {ok} {activethread.threadCreatedByUserName}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>User profile picture: </SDSpan>
-          {activethread.threadCreatedByUserId ? <span>www.images.com/{activethread.threadCreatedByUserId}</span> : <span>{notPassingTest}</span>}
+          {activethread.threadCreatedByUserId && (
+            <span>
+              {ok} www.profile.com/{activethread.threadCreatedByUserId}
+            </span>
+          )}
         </div>
       </SDCard>
     );

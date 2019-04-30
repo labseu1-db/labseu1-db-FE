@@ -5,7 +5,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 class SpaceThreads extends Component {
   render() {
-    console.log(this.props.threads);
+    const ok = '✅';
     return (
       <div>
         {this.props.threads &&
@@ -13,6 +13,8 @@ class SpaceThreads extends Component {
             return (
               <div key={t.threadId}>
                 <div>
+                  {' '}
+                  {ok}
                   <strong>Name: </strong>
                   {t.threadName}
                 </div>

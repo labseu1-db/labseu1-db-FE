@@ -20,26 +20,31 @@ import SpaceThreads from './SpaceEndpoint-Threads';
 class SpaceEndpoint extends Component {
   render() {
     const activeSpace = this.props.space;
-    const notPassingTest = '❌';
-    console.log(activeSpace);
+    const ok = '✅';
 
     return (
       <SDCard>
         <h2>SPACE</h2>
         <div>
           <SDSpan>Space name: </SDSpan>
-          {activeSpace.spaceName ? <span>{activeSpace.spaceName}</span> : <span>{notPassingTest}</span>}
+          {activeSpace.spaceName && (
+            <span>
+              {ok} {activeSpace.spaceName}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>Ids of user with access: </SDSpan>
-          {activeSpace.arrayOfUserIdsInSpace ? (
+          {activeSpace.arrayOfUserIdsInSpace && (
             <span>
               {activeSpace.arrayOfUserIdsInSpace.map(id => {
-                return <div key={id}>{id}</div>;
+                return (
+                  <div key={id}>
+                    {ok} {id}
+                  </div>
+                );
               })}
             </span>
-          ) : (
-            <span>{notPassingTest}</span>
           )}
         </div>
         <div>

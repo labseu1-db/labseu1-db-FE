@@ -15,39 +15,56 @@ import styled from 'styled-components';
 class UserProfileEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
-    const notPassingTest = '❌';
+    const ok = '✅';
 
     return (
       <SDCard>
         <h2>USER PROFILE SETTINGS</h2>
         <div>
           <SDSpan>Full Name: </SDSpan>
-          {activeUser.fullName ? <span>{activeUser.fullName}</span> : <span>{notPassingTest}</span>}
+          {activeUser.fullName && (
+            <span>
+              {ok} {activeUser.fullName}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>Email: </SDSpan>
-          {activeUser.userEmail ? <span>{activeUser.userEmail}</span> : <span>{notPassingTest}</span>}
+          {activeUser.userEmail && (
+            <span>
+              {ok} {activeUser.userEmail}
+            </span>
+          )}
         </div>
         <div>
           <SDSpan>Profile picture: </SDSpan>
-          {activeUser.profileUrl ? <span>{activeUser.profileUrl}</span> : <span>{notPassingTest}</span>}
+          {activeUser.profileUrl && (
+            <span>
+              {ok} {activeUser.profileUrl}
+            </span>
+          )}
         </div>
         <div>
-          <SDSpan>List of orgs: </SDSpan>
-          {activeUser.arrayOfOrgs ? (
+          <SDSpan>List of organisations: </SDSpan>
+          {activeUser.arrayOfOrgs &&
             activeUser.arrayOfOrgs.map(o => {
               return (
-                <ul key={o.orgId}>
-                  <li>
-                    <div>{o.orgName} </div>
-                    <div>admin: {o.isAdmin.toString()} </div>
-                  </li>
-                </ul>
+                <div key={o.orgId}>
+                  <div>
+                    <SDSpan>Name: </SDSpan>
+                    <span>
+                      {ok} {o.orgName}{' '}
+                    </span>
+                  </div>
+                  <div>
+                    <SDSpan>Admin: </SDSpan>
+                    <span>
+                      {ok} {o.isAdmin.toString()}{' '}
+                    </span>
+                  </div>
+                </div>
               );
-            })
-          ) : (
-            <span>{notPassingTest}</span>
-          )}
+            })}
         </div>
       </SDCard>
     );
