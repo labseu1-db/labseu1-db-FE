@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import Spinner from './semantic-components/Spinner';
 
@@ -27,66 +27,64 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createAndLogInNewUser = ({ email, password, username }) => {
-    this.props.firebase.createUser({ email, password }, { username, email });
-    this.props.firebase.login({ email, password });
+  createAndLogInNewUser = async ({ email, password, username }) => {
+    await this.props.firebase.createUser({ email, password }, { username, email });
+    await this.props.firebase.login({ email, password });
+    // this.props.history.replace('/homescreen');
+    this.setState({
+      email: '',
+      password: '',
+      password2: '',
+      username: '',
+    });
   };
 
   render() {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    if (isEmpty(this.props.auth)) {
-      return (
-        <div>
-          <h1>Register a new account!</h1>
-          <Link to="/login"> Already have an account? </Link>
-          <form>
-            <div>Email</div>
-            <input name="email" type="email" onChange={this.handleInputChange} />
-            <div>Password</div>
-            <input name="password" type="password" onChange={this.handleInputChange} />
-            <div>Re-enter password</div>
-            <input name="password2" type="password" onChange={this.handleInputChange} />
-            <div>Username</div>
-            <input name="username" type="text" onChange={this.handleInputChange} />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                this.createAndLogInNewUser({
-                  email: this.state.email,
-                  password: this.state.password,
-                  username: this.state.username
-                })
-              }
-
-              }
-            >
-              Register
-						</button>
-          </form>
-
-          <button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-            Register with Google
-					</button>
-        </div >
-      );
-    }
     return (
       <div>
-        <div>YOU ARE LOGGED IN</div>
-        <button
-          onClick={async () => {
-            await this.props.firebase.logout();
-            this.props.clearFirestore();
-          }}
-        >
-          Logout
-        </button>
-      </div>
-    )
+        <h1>Register a new account!</h1>
+        <Link to="/login"> Already have an account? </Link>
+        <form>
+          <div>Email</div>
+          <input name="email" type="email" onChange={this.handleInputChange} />
+          <div>Password</div>
+          <input name="password" type="password" onChange={this.handleInputChange} />
+          <div>Re-enter password</div>
+          <input name="password2" type="password" onChange={this.handleInputChange} />
+          <div>Username</div>
+          <input name="username" type="text" onChange={this.handleInputChange} />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              this.createAndLogInNewUser({
+                email: this.state.email,
+                password: this.state.password,
+                username: this.state.username
+              })
+            }
+
+            }
+          >
+            Register
+						</button>
+        </form>
+
+        <button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+          Register with Google
+					</button>
+      </div >
+    );
   }
+  // return (
+  //   <div>
+  //     <Redirect to='/homescreen' />
+  //   </div>
+  // )
 }
+
 
 const mapStateToProps = (state) => {
   return {

@@ -14,15 +14,17 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Route exact path="/register" component={Register} />
+        <Route 
+          exact 
+          path="/register" 
+          render={(props) => <Register {...props}/>} 
+        />
 				<Route exact path="/login" component={Login} />
-        <PrivateRoute path='/homescreen' component={FakeHome} token={this.props.auth} />
+        <PrivateRoute path='/homescreen' component={FakeHome} authStatus={this.props.auth} />
 			</div>
 		);
 	}
 }
-
-// export default App;
 
 const mapStateToProps = (state) => {
   return {

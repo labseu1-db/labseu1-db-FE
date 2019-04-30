@@ -29,48 +29,51 @@ class Login extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    if (isEmpty(this.props.auth)) {
-      return (
-        <div>
-          <h1>Log in!</h1>
-          <Link to="/register"> Don't have an account? </Link>
-          <form>
-            <input name="loginEmail" type="email" onChange={this.handleInputChange} />
-            <input name="loginPassword" type="password" onChange={this.handleInputChange} />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.firebase.login({
-                  email: this.state.loginEmail,
-                  password: this.state.loginPassword
-                });
-              }}
-            >
-              Login
-						</button>
-          </form>
-
-          <button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-            Sign in with Google
-					</button>
-        </div>
-      );
-    }
     return (
       <div>
-        <div>YOU ARE LOGGED IN</div>
-        <button
-          onClick={async () => {
-            await this.props.firebase.logout();
-            this.props.clearFirestore();
-          }}
-        >
-          Logout
-			</button>
+        <h1>Log in!</h1>
+        <Link to="/register"> Don't have an account? </Link>
+        <form>
+          <input name="loginEmail" type="email" onChange={this.handleInputChange} />
+          <input name="loginPassword" type="password" onChange={this.handleInputChange} />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.firebase.login({
+                email: this.state.loginEmail,
+                password: this.state.loginPassword
+              }).then( res => {
+                console.log(this.props.history)
+                this.props.history.push('/register')
+
+              });
+            }}
+          >
+            Login
+						</button>
+        </form>
+
+        <button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+          Sign in with Google
+					</button>
       </div>
     );
   }
+  // return (
+  //   <div>
+  //     <div>YOU ARE LOGGED IN</div>
+  //     <button
+  //       onClick={async () => {
+  //         await this.props.firebase.logout();
+  //         this.props.clearFirestore();
+  //       }}
+  //     >
+  //       Logout
+  // 	</button>
+  //   </div>
+  // );
 }
+
 
 const mapStateToProps = (state) => {
   return {
