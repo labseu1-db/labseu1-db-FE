@@ -24,26 +24,20 @@ const spaceDoc = '00d4f259-5363-4427-bd44-87f484cd44ca';
 class SpaceEndpoint extends Component {
   render() {
     const activeSpace = this.props.space;
-    const ok = '✅';
 
     return (
       <SDCard>
         <h2>Space Endpoint</h2>
         <div>
           <SDSpan>Space name: </SDSpan>
-          {activeSpace.spaceName && (
-            <span>
-              {ok} {activeSpace.spaceName}
-            </span>
-          )}
+          {activeSpace.spaceName && <span>{activeSpace.spaceName}</span>}
         </div>
         <div>
           <SDSpan>Ids of user with access: </SDSpan>
           {activeSpace.arrayOfUserIdsInSpace && (
             <span>
-              {ok}
               {activeSpace.arrayOfUserIdsInSpace.map(id => {
-                return <div key={id}>{id}</div>;
+                return <div key={id}>• {id}</div>;
               })}
             </span>
           )}
@@ -52,7 +46,7 @@ class SpaceEndpoint extends Component {
           <SDSpan> Threads in space: </SDSpan>
           {activeSpace.spaceId && (
             <span>
-              {ok} <SpaceThreads activeSpaceId={activeSpace.spaceId} />
+              <SpaceThreads activeSpaceId={activeSpace.spaceId} />
             </span>
           )}
         </div>

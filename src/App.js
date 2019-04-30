@@ -16,12 +16,13 @@ class App extends Component {
     return (
       <SDApp>
         <SidebarEndpoint />
-        <HomeScreenEndpoint />
+        <UserProfileEndpoint />
+        <OrganisationProfileEndpoint />
+
         <SpaceEndpoint />
         <ThreadEndpoint />
         <CommentEndpoint />
-        <UserProfileEndpoint />
-        <OrganisationProfileEndpoint />
+        <HomeScreenEndpoint />
       </SDApp>
     );
   }

@@ -16,43 +16,32 @@ const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
 class SidebarEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
-    const ok = '✅';
     return (
       <SDCard>
         <h2>Sidebar Endpoint</h2>
         <div>
           <SDSpan>Full Name: </SDSpan>
-          {activeUser.fullName && (
-            <span>
-              {ok} {activeUser.fullName}
-            </span>
-          )}
+          {activeUser.fullName && <span>{activeUser.fullName}</span>}
         </div>
         <div>
-          <SDSpan>List of organisations: </SDSpan>
+          <SDSpan>List of organisation names: </SDSpan>
           {activeUser.arrayOfOrgs && (
             <div>
               {activeUser.arrayOfOrgs.map(org => (
                 <div key={org.id}>
-                  <SDSpan>Name: </SDSpan>
-                  <span>
-                    {ok} {org.orgName}
-                  </span>
+                  <span>• {org.orgName}</span>
                 </div>
               ))}
             </div>
           )}
         </div>
         <div>
-          <SDSpan>List of spaces: </SDSpan>
+          <SDSpan>List of space names: </SDSpan>
           {activeUser.arrayOfSpaceNames && (
             <div>
               {activeUser.arrayOfSpaceNames.map(space => (
                 <div key={space}>
-                  <SDSpan>Name: </SDSpan>
-                  <span>
-                    {ok} {space}
-                  </span>
+                  <span>• {space}</span>
                 </div>
               ))}
             </div>
@@ -62,9 +51,7 @@ class SidebarEndpoint extends Component {
         {activeUser.id && (
           <div>
             <SDSpan>Profile: </SDSpan>
-            <span>
-              {ok} www.profile.com/{activeUser.id}
-            </span>
+            <span>www.profile.com/{activeUser.id}</span>
           </div>
         )}
       </SDCard>

@@ -21,7 +21,6 @@ const commentDoc = '02922338-8155-4634-85af-15c4fb7b225c';
 class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
-    const ok = '✅';
     const exclamation = '❗';
     return (
       <SDCard>
@@ -30,46 +29,29 @@ class CommentEndpoint extends Component {
 
         <div>
           <SDSpan>Comment body: </SDSpan>
-          {activeComment.commentBody && (
-            <span>
-              {ok} {activeComment.commentBody}
-            </span>
-          )}
+          {activeComment.commentBody && <span>{activeComment.commentBody}</span>}
         </div>
         <div>
           <SDSpan>Comment created at: </SDSpan>
-          {activeComment.commentCreatedAt && (
-            <span>
-              {ok} {activeComment.commentCreatedAt.seconds}
-            </span>
-          )}
+          {activeComment.commentCreatedAt && <span>{activeComment.commentCreatedAt.seconds}</span>}
         </div>
         <div>
           <SDSpan>Comment created by: </SDSpan>
-          {activeComment.commentCreatedByUserName && (
-            <span>
-              {ok} {activeComment.commentCreatedByUserName}
-            </span>
-          )}
+          {activeComment.commentCreatedByUserName && <span>{activeComment.commentCreatedByUserName}</span>}
         </div>
         <div>
-          <SDSpan>Comment liked by: </SDSpan>
+          <SDSpan>Comment liked by these user ids: </SDSpan>
           {activeComment.arrayOfUserIdsWhoLiked && (
             <span>
-              {ok}
               {activeComment.arrayOfUserIdsWhoLiked.map(id => {
-                return <div key={id}>{id}</div>;
+                return <div key={id}>• {id}</div>;
               })}
             </span>
           )}
         </div>
         <div>
           <SDSpan>Comment is decision: </SDSpan>
-          {activeComment.id && (
-            <span>
-              {ok} {activeComment.isCommentDecided.toString()}
-            </span>
-          )}
+          {activeComment.id && <span>{activeComment.isCommentDecided.toString()}</span>}
         </div>
       </SDCard>
     );

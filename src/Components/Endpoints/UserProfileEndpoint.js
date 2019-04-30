@@ -19,34 +19,21 @@ const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
 class UserProfileEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
-    const ok = '✅';
 
     return (
       <SDCard>
         <h2>User Profile Endpoint</h2>
         <div>
           <SDSpan>Full Name: </SDSpan>
-          {activeUser.fullName && (
-            <span>
-              {ok} {activeUser.fullName}
-            </span>
-          )}
+          {activeUser.fullName && <span>{activeUser.fullName}</span>}
         </div>
         <div>
           <SDSpan>Email: </SDSpan>
-          {activeUser.userEmail && (
-            <span>
-              {ok} {activeUser.userEmail}
-            </span>
-          )}
+          {activeUser.userEmail && <span>{activeUser.userEmail}</span>}
         </div>
         <div>
           <SDSpan>Profile picture: </SDSpan>
-          {activeUser.profileUrl && (
-            <span>
-              {ok} {activeUser.profileUrl}
-            </span>
-          )}
+          {activeUser.profileUrl && <span>{activeUser.profileUrl}</span>}
         </div>
         <div>
           <SDSpan>List of organisations: </SDSpan>
@@ -55,16 +42,12 @@ class UserProfileEndpoint extends Component {
               return (
                 <div key={o.orgId}>
                   <div>
-                    <SDSpan>Name: </SDSpan>
-                    <span>
-                      {ok} {o.orgName}{' '}
-                    </span>
+                    <SDSpan>• Name: </SDSpan>
+                    <span>{o.orgName} </span>
                   </div>
                   <div>
-                    <SDSpan>Admin: </SDSpan>
-                    <span>
-                      {ok} {o.isAdmin.toString()}{' '}
-                    </span>
+                    <span>admin: </span>
+                    <span>{o.isAdmin.toString()} </span>
                   </div>
                 </div>
               );

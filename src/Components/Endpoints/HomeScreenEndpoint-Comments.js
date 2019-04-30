@@ -5,16 +5,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 class HomeScreenComments extends Component {
   render() {
-    const ok = '✅';
-    return (
-      <span>
-        {this.props.comment.commentCreatedAt && (
-          <span>
-            {ok} {this.props.comment.commentCreatedAt.seconds}
-          </span>
-        )}
-      </span>
-    );
+    return <span>{this.props.comment.commentCreatedAt && <span>{this.props.comment.commentCreatedAt.seconds}</span>}</span>;
   }
 }
 

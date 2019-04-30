@@ -18,54 +18,41 @@ const orgDoc = '977ab9e8-5f6a-44c1-9fc7-a68c4d771701';
 class OrganisationProfileEndpoint extends Component {
   render() {
     const activeOrg = this.props.organisation;
-    const ok = '✅';
     return (
       <SDCard>
         <h2>Organisation Profile Endpoint</h2>
         <div>
           <SDSpan>Org Name: </SDSpan>
-          {activeOrg.orgName && (
-            <span>
-              {ok} {activeOrg.orgName}
-            </span>
-          )}
+          {activeOrg.orgName && <span>{activeOrg.orgName}</span>}
         </div>
         <div>
           <SDSpan>Org Mission: </SDSpan>
-          {activeOrg.orgMission && (
-            <span>
-              {ok} {activeOrg.orgMission}
-            </span>
-          )}
+          {activeOrg.orgMission && <span>{activeOrg.orgMission}</span>}
         </div>
         <div>
           <SDSpan>List of Users: </SDSpan>
           {activeOrg.arrayOfUsers &&
             activeOrg.arrayOfUsers.map(u => (
               <div key={u.userId}>
+                <div>• {u.userEmail}</div>
                 <div>Id: {u.userId}</div>
-                <div>Email: {u.userEmail}</div>
               </div>
             ))}
         </div>
 
         <div>
-          <SDSpan>List of Admins: </SDSpan>
+          <SDSpan>List of Admins ids: </SDSpan>
           {activeOrg.arrayOfAdmins &&
             activeOrg.arrayOfAdmins.map(u => (
               <div key={u.userId}>
-                <div>Id: {u.userId}</div>
-                <div>Email: {u.userEmail}</div>
+                <div>• {u.userEmail}</div>
+                <div>id: {u.userId}</div>
               </div>
             ))}
         </div>
         <div>
           <SDSpan>Is Premium: </SDSpan>
-          {activeOrg.id && (
-            <span>
-              {ok} {activeOrg.isPremium.toString()}
-            </span>
-          )}
+          {activeOrg.id && <span>{activeOrg.isPremium.toString()}</span>}
         </div>
       </SDCard>
     );

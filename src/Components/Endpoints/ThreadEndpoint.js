@@ -21,7 +21,6 @@ const threadDoc = '030fa39c-b9e3-4f6d-aeb4-8cf0b5a9cb0b';
 class ThreadEndpoint extends Component {
   render() {
     const activeThread = this.props.thread;
-    const ok = '✅';
 
     return (
       <SDCard>
@@ -30,49 +29,29 @@ class ThreadEndpoint extends Component {
           <SDSpan>Space name: </SDSpan>
           {activeThread.spaceId && (
             <span>
-              {ok} <ThreadSpace activeSpaceId={activeThread.spaceId} />
+              <ThreadSpace activeSpaceId={activeThread.spaceId} />
             </span>
           )}
         </div>
         <div>
           <SDSpan>Thread name: </SDSpan>
-          {activeThread.threadName && (
-            <span>
-              {ok} {activeThread.threadName}
-            </span>
-          )}
+          {activeThread.threadName && <span>{activeThread.threadName}</span>}
         </div>
         <div>
           <SDSpan>Thread topic: </SDSpan>
-          {activeThread.threadTopic && (
-            <span>
-              {ok} {activeThread.threadTopic}
-            </span>
-          )}
+          {activeThread.threadTopic && <span>{activeThread.threadTopic}</span>}
         </div>
         <div>
           <SDSpan>Thread created at: </SDSpan>
-          {activeThread.threadCreatedAt && (
-            <span>
-              {ok} {activeThread.threadCreatedAt.seconds}
-            </span>
-          )}
+          {activeThread.threadCreatedAt && <span>{activeThread.threadCreatedAt.seconds}</span>}
         </div>
         <div>
           <SDSpan>Thread created by: </SDSpan>
-          {activeThread.threadCreatedByUserName && (
-            <span>
-              {ok} {activeThread.threadCreatedByUserName}
-            </span>
-          )}
+          {activeThread.threadCreatedByUserName && <span>{activeThread.threadCreatedByUserName}</span>}
         </div>
         <div>
           <SDSpan>User profile picture: </SDSpan>
-          {activeThread.threadCreatedByUserId && (
-            <span>
-              {ok} www.profile.com/{activeThread.threadCreatedByUserId}
-            </span>
-          )}
+          {activeThread.threadCreatedByUserId && <span>www.profile.com/{activeThread.threadCreatedByUserId}</span>}
         </div>
       </SDCard>
     );

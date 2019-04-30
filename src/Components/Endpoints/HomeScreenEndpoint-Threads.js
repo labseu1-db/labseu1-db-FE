@@ -7,7 +7,6 @@ import HomeScreenComments from './HomeScreenEndpoint-Comments';
 
 class HomeScreenThreads extends Component {
   render() {
-    const ok = '✅';
     return (
       <div>
         {this.props.threads &&
@@ -15,12 +14,8 @@ class HomeScreenThreads extends Component {
             return (
               <div key={t.threadId}>
                 <div>
-                  <strong>Thread Name: </strong>
-                  {t.threadName && (
-                    <span>
-                      {ok} {t.threadName}
-                    </span>
-                  )}
+                  <strong>• Thread Name: </strong>
+                  {t.threadName && <span>{t.threadName}</span>}
                 </div>
                 <div>Id: {t.id && <span>{t.id}</span>}</div>
                 <div>Topic: {t.threadTopic && <span>{t.threadTopic}</span>}</div>

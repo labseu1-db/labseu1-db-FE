@@ -26,7 +26,6 @@ const orgDoc = '53eac322-ae74-4dd5-8cee-357104ce997a';
 class HomeScreenEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
-    const ok = '✅';
     const exclamation = '❗';
     return (
       <SDCard>
@@ -36,9 +35,8 @@ class HomeScreenEndpoint extends Component {
           <SDSpan>Space ids list: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
             <span>
-              {ok}
               {activeUser.arrayOfSpaceIds.map(id => {
-                return <div key={id}>{id}</div>;
+                return <div key={id}>• {id}</div>;
               })}
             </span>
           )}
@@ -48,7 +46,6 @@ class HomeScreenEndpoint extends Component {
           <SDSpan>List of threads: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
             <span>
-              {ok}
               {activeUser.arrayOfSpaceIds.map(id => {
                 return <HomeScreenThreads key={id} activeSpaceId={id} activeOrgId={orgDoc} />;
               })}
