@@ -1,37 +1,76 @@
-/*
-For each comment:
+/* Endpoints for each comment:
 
 - [x]  Comment body
 - [x]  Date comment created
 - [x]  Full name of user who created it
-- [ ]  User profile picture - WE SHOULD ADD PROFILE PICTURE TO COMMENT OR NOT USE IT
 - [x]  Array of ids of people who liked it
 - [x]  Decision Boolean
+
+- [ ]  User profile picture - WE SHOULD ADD PROFILE PICTURE TO COMMENT OR NOT USE IT
+WE NEED userId here
 */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
+
+//Doc uuid() variable for user
+const commentDoc = '02922338-8155-4634-85af-15c4fb7b225c';
 
 class CommentEndpoint extends Component {
   render() {
-    console.log(this.props.comment);
+    const activeComment = this.props.comment;
+    const ok = '✅';
+    console.log(activeComment);
     return (
-      <div>
-        <h2>Comment Endpoint</h2>
-        {this.props.comment.commentBody && <div>{this.props.comment.commentBody}</div>}
-        {this.props.comment.commentCreatedAt && <div>{this.props.comment.commentCreatedAt.seconds}</div>}
-        {this.props.comment.commentCreatedByUserName && <div>{this.props.comment.commentCreatedByUserName}</div>}
-        {this.props.comment.isCommendDecided && <div>{this.props.comment.isCommendDecided.toString()}</div>}
-        {this.props.comment.arrayOfUserIdsWhoLiked && (
-          <div>
-            {this.props.comment.arrayOfUserIdsWhoLiked.map(u => {
-              return <div key={u}>{u}</div>;
-            })}
-          </div>
-        )}
-      </div>
+      <SDCard>
+        <h2>ENDPOINT FOR COMMENT</h2>
+        <div>
+          <SDSpan>Comment body: </SDSpan>
+          {activeComment.commentBody && (
+            <span>
+              {ok} {activeComment.commentBody}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Comment created at: </SDSpan>
+          {activeComment.commentCreatedAt && (
+            <span>
+              {ok} {activeComment.commentCreatedAt.seconds}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Comment created by: </SDSpan>
+          {activeComment.commentCreatedByUserName && (
+            <span>
+              {ok} {activeComment.commentCreatedByUserName}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Comment liked by: </SDSpan>
+          {activeComment.arrayOfUserIdsWhoLiked && (
+            <span>
+              {ok}
+              {activeComment.arrayOfUserIdsWhoLiked.map(id => {
+                return <div key={id}>{id}</div>;
+              })}
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Comment is decision: </SDSpan>
+          {activeComment.id && (
+            <span>
+              {ok} {activeComment.isCommentDecided.toString()}
+            </span>
+          )}
+        </div>
+      </SDCard>
     );
   }
 }
@@ -42,6 +81,7 @@ const mapStateToProps = state => {
   };
 };
 
+//We are not dispatching anything => mapDispatchToProps is empty
 const mapDispatchToProps = {};
 
 //Connect to Firestore
@@ -54,8 +94,22 @@ export default compose(
     return [
       {
         collection: 'comments',
-        doc: '02233f0c-d49b-4cf5-849e-3d86e962447c'
+        doc: `${commentDoc}`
       }
     ];
   })
 )(CommentEndpoint);
+
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+  width: 30%;
+`;
+
+const SDSpan = styled.span`
+  font-weight: bold;
+`;
