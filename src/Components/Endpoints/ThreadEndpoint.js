@@ -1,6 +1,5 @@
 // Endpoints for: Thread
-
-// - [ ]  Space name
+// - [x]  Space name
 // - [x]  Thread name
 // - [x]  Thread topic
 // - [x]  Date thread created
@@ -13,54 +12,65 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
+//Import components
+import ThreadSpace from './ThreadEndpoint-Space';
+
 //Doc uuid() variable for thread
 const threadDoc = '030fa39c-b9e3-4f6d-aeb4-8cf0b5a9cb0b';
 
 class ThreadEndpoint extends Component {
   render() {
-    const activethread = this.props.thread;
+    const activeThread = this.props.thread;
     const ok = '✅';
 
     return (
       <SDCard>
         <h2>ENDPOINT FOR THREAD</h2>
         <div>
-          <SDSpan>Thread name: </SDSpan>
-          {activethread.threadName && (
+          <SDSpan>Space name: </SDSpan>
+          {activeThread.spaceId && (
             <span>
-              {ok} {activethread.threadName}
+              {ok} <ThreadSpace activeSpaceId={activeThread.spaceId} />
+            </span>
+          )}
+        </div>
+        <div>
+          <SDSpan>Thread name: </SDSpan>
+          {activeThread.threadName && (
+            <span>
+              {ok} {activeThread.threadName}
             </span>
           )}
         </div>
         <div>
           <SDSpan>Thread topic: </SDSpan>
-          {activethread.threadTopic && (
+          {activeThread.threadTopic && (
             <span>
-              {ok} {activethread.threadTopic}
+              {ok} {activeThread.threadTopic}
             </span>
           )}
         </div>
         <div>
           <SDSpan>Thread created at: </SDSpan>
-          {activethread.threadCreatedAt && (
+          {activeThread.threadCreatedAt && (
             <span>
-              {ok} {activethread.threadCreatedAt.seconds}
+              {ok} {activeThread.threadCreatedAt.seconds}
             </span>
           )}
         </div>
         <div>
           <SDSpan>Thread created by: </SDSpan>
-          {activethread.threadCreatedByUserName && (
+          {activeThread.threadCreatedByUserName && (
             <span>
-              {ok} {activethread.threadCreatedByUserName}
+              {ok} {activeThread.threadCreatedByUserName}
             </span>
           )}
         </div>
         <div>
           <SDSpan>User profile picture: </SDSpan>
-          {activethread.threadCreatedByUserId && (
+          {activeThread.threadCreatedByUserId && (
             <span>
-              {ok} www.profile.com/{activethread.threadCreatedByUserId}
+              {ok} www.profile.com/{activeThread.threadCreatedByUserId}
             </span>
           )}
         </div>

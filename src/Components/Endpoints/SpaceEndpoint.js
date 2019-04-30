@@ -18,6 +18,7 @@ import styled from 'styled-components';
 //Import Components
 import SpaceThreads from './SpaceEndpoint-Threads';
 
+//Doc uuid() variable for space
 const spaceDoc = '00d4f259-5363-4427-bd44-87f484cd44ca';
 
 class SpaceEndpoint extends Component {

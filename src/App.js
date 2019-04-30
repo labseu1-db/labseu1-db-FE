@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // import AddCompany from './Components/AddCompany';
 // import CompanyList from './Components/CompanyList';
 import UserProfileEndpoint from './Components/Endpoints/UserProfileEndpoint';
-import ThreadEndpoint from './Components/Endpoints/ThreadEnpoint';
+import ThreadEndpoint from './Components/Endpoints/ThreadEndpoint';
 import SpaceEndpoint from './Components/Endpoints/SpaceEndpoint';
 
 class App extends Component {

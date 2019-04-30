@@ -1,10 +1,11 @@
 // Endpoints for: User profile settings
-
 // - [x]  Full name of user
 // - [x]  Email
 // - [x]  Profile picture
 // - [x]  List of organisations
 // - [x]  Whether user is admin or not for each org
+
+// - [ ] User Password - NOT NEEDED
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
