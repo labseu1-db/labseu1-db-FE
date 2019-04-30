@@ -1,5 +1,4 @@
-// Endpoints for:
-// User profile settings
+// Endpoints for: User profile settings
 
 // - [x]  Full name of user
 // - [x]  Email
@@ -11,39 +10,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 class UserProfileEndpoint extends Component {
-  generalStyle = {
-    lineHeight: 2,
-    fontFamily: 'Helvetica'
-  };
-
-  boldSpan = {
-    fontWeight: 'bold'
-  };
-
   render() {
     const activeUser = this.props.user;
     const notPassingTest = '❌';
 
-    console.log(activeUser);
     return (
-      <div style={this.generalStyle}>
+      <SDCard>
         <h2>USER PROFILE SETTINGS</h2>
         <div>
-          <span style={this.boldSpan}>Full Name: </span>
+          <SDSpan>Full Name: </SDSpan>
           {activeUser.fullName ? <span>{activeUser.fullName}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span style={this.boldSpan}>Email: </span>
+          <SDSpan>Email: </SDSpan>
           {activeUser.userEmail ? <span>{activeUser.userEmail}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span style={this.boldSpan}>Profile picture: </span>
+          <SDSpan>Profile picture: </SDSpan>
           {activeUser.profileUrl ? <span>{activeUser.profileUrl}</span> : <span>{notPassingTest}</span>}
         </div>
         <div>
-          <span style={this.boldSpan}>List of orgs: </span>
+          <SDSpan>List of orgs: </SDSpan>
           {activeUser.arrayOfOrgs ? (
             activeUser.arrayOfOrgs.map(o => {
               return (
@@ -59,7 +49,7 @@ class UserProfileEndpoint extends Component {
             <span>{notPassingTest}</span>
           )}
         </div>
-      </div>
+      </SDCard>
     );
   }
 }
@@ -88,3 +78,16 @@ export default compose(
     ];
   })
 )(UserProfileEndpoint);
+
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+`;
+
+const SDSpan = styled.span`
+  font-weight: bold;
+`;

@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 // import AddCompany from './Components/AddCompany';
 // import CompanyList from './Components/CompanyList';
-// import HomeScreenEndpoint from './Components/EndpointComponents/HomeScreenComponent';
-// import CommentEndpoint from './Components/EndpointComponents/CommentEndpoint';
 import UserProfileEndpoint from './Components/Endpoints/UserProfileEndpoint';
+import ThreadEndpoint from './Components/Endpoints/ThreadEnpoint';
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <SDApp>
         <UserProfileEndpoint />
-      </div>
+        <ThreadEndpoint />
+      </SDApp>
     );
   }
 }
+
+const SDApp = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
 
 export default App;

@@ -1,59 +1,54 @@
-/*
+// Endpoints for: Thread
+
+// - [ ]  Space name
+// - [x]  Thread name
+// - [x]  Thread topic
+// - [x]  Date thread created
+// - [x]  Full name of user who created it
+// - [x]  User profile picture
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-
-/*
-Thread
-
-- [ ]  Space name
-- [ ]  Thread name
-- [ ]  Thread topic
-- [ ]  Date thread created
-- [ ]  Full name of user who created it
-- [ ]  User profile picture
-
+import styled from 'styled-components';
 
 class ThreadEndpoint extends Component {
-  state = { ITEM_NAME: '' };
-
-  ADD_ITEM() {
-    this.props.firestore.add(
-      //collection name
-      { collection: 'COLLECTION' },
-      //add state.company info to field companyName in collection
-      {
-        ITEM: this.state.ITEM_NAME
-      }
-    );
-  }
-
   render() {
+    const activethread = this.props.thread;
+    const notPassingTest = '❌';
+
     return (
-      <div>
+      <SDCard>
+        <h2>THREAD</h2>
         <div>
-          <input type="text" value={this.state.ITEM_NAME} onChange={e => this.setState({ ITEM_NAME: e.target.value })} />
-          <button
-            onClick={e => {
-              e.preventDefault();
-              this.ADD_ITEM();
-            }}>
-            Add Item
-          </button>
+          <SDSpan>Thread name: </SDSpan>
+          {activethread.threadName ? <span>{activethread.threadName}</span> : <span>{notPassingTest}</span>}
         </div>
-        <h2>These are the companies</h2>
-        {this.props.ARRAY_OF_ITEMS_FROM_DATABASE.map(ITEM => {
-          return <div key={ITEM.ID}>{ITEM}</div>;
-        })}
-      </div>
+        <div>
+          <SDSpan>Thread topic:</SDSpan>
+          {activethread.threadTopic ? <span>{activethread.threadTopic}</span> : <span>{notPassingTest}</span>}
+        </div>
+        <div>
+          <SDSpan>Thread created at: </SDSpan>
+          {activethread.threadCreatedAt ? <span>{activethread.threadCreatedAt.seconds}</span> : <span>{notPassingTest}</span>}
+        </div>
+        <div>
+          <SDSpan>Thread created by: </SDSpan>
+          {activethread.threadCreatedByUserName ? <span>{activethread.threadCreatedByUserName}</span> : <span>{notPassingTest}</span>}
+        </div>
+        <div>
+          <SDSpan>User profile picture: </SDSpan>
+          {activethread.threadCreatedByUserId ? <span>www.images.com/{activethread.threadCreatedByUserId}</span> : <span>{notPassingTest}</span>}
+        </div>
+      </SDCard>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    ARRAY_OF_ITEMS_FROM_DATABASE: state.firestore.ordered.COLLECTION ? state.firestore.ordered.COLLECTION.map(c => c.COLLECTION_ITEM) : []
+    thread: state.firestore.ordered.threads ? state.firestore.ordered.threads[0] : []
   };
 };
 
@@ -69,11 +64,22 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'COLLECTION'
+        collection: 'threads',
+        doc: '030fa39c-b9e3-4f6d-aeb4-8cf0b5a9cb0b'
       }
     ];
   })
 )(ThreadEndpoint);
 
+//Styling
+const SDCard = styled.div`
+  line-height: 2;
+  font-family: 'Helvetica';
+  margin: 10px;
+  padding: 10px;
+  background-color: #eaeef7;
+`;
 
-*/
+const SDSpan = styled.span`
+  font-weight: bold;
+`;
