@@ -55,16 +55,14 @@ class UserProfileEndpoint extends Component {
               return (
                 <div key={o.orgId}>
                   <div>
-                    <SDSpan>Name: </SDSpan>
+                    <SDSpan>Org Name: </SDSpan>
                     <span>
                       {ok} {o.orgName}{' '}
                     </span>
                   </div>
                   <div>
-                    <SDSpan>Admin: </SDSpan>
-                    <span>
-                      {ok} {o.isAdmin.toString()}{' '}
-                    </span>
+                    <span>Admin: </span>
+                    <span>{o.isAdmin.toString()} </span>
                   </div>
                 </div>
               );

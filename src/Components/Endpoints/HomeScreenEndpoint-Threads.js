@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-class SpaceThreads extends Component {
+class HomeScreenThreads extends Component {
   render() {
     const ok = '✅';
     return (
@@ -64,8 +64,8 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['spaceId', '==', props.activeSpaceId]]
+        where: [['spaceId', '==', props.activeSpaceId], ['orgId', '==', props.activeOrgId]]
       }
     ];
   })
-)(SpaceThreads);
+)(HomeScreenThreads);
