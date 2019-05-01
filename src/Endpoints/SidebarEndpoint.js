@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
-const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
+const userDoc = '0662c975-7bad-45f7-ae5b-b1d1c6389bf1';
 class SidebarEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
@@ -27,8 +27,8 @@ class SidebarEndpoint extends Component {
           <SDSpan>List of organisation names: </SDSpan>
           {activeUser.arrayOfOrgs && (
             <div>
-              {activeUser.arrayOfOrgs.map(org => (
-                <div key={org.id}>
+              {activeUser.arrayOfOrgs.map((org, index) => (
+                <div key={index}>
                   <span>• {org.orgName}</span>
                 </div>
               ))}
@@ -39,8 +39,8 @@ class SidebarEndpoint extends Component {
           <SDSpan>List of space names: </SDSpan>
           {activeUser.arrayOfSpaceNames && (
             <div>
-              {activeUser.arrayOfSpaceNames.map(space => (
-                <div key={space}>
+              {activeUser.arrayOfSpaceNames.map((space, index) => (
+                <div key={index}>
                   <span>• {space}</span>
                 </div>
               ))}

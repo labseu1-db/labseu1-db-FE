@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import ThreadSpace from './ThreadEndpoint-Space';
 
 //Doc uuid() variable for thread
-const threadDoc = '030fa39c-b9e3-4f6d-aeb4-8cf0b5a9cb0b';
+const threadDoc = '0a7c401b-4d2d-464c-928a-c9347739508c';
 
 class ThreadEndpoint extends Component {
   render() {

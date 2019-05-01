@@ -16,17 +16,14 @@ import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Doc uuid() variable for user
-const commentDoc = '02922338-8155-4634-85af-15c4fb7b225c';
+const commentDoc = '00ca546f-606a-4e63-9454-9ca621c74502';
 
 class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
-    const exclamation = '❗';
     return (
       <SDCard>
         <h2>Comment Endpoint</h2>
-        <div>{`${exclamation}WE SHOULD ADD USERID TO COMMENT TO HAVE ACCESS TO PROFILE PICTURE${exclamation}`}</div>
-
         <div>
           <SDSpan>Comment body: </SDSpan>
           {activeComment.commentBody && <span>{activeComment.commentBody}</span>}

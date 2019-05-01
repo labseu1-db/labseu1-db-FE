@@ -14,7 +14,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Doc uuid() variable for user
-const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
+const userDoc = '0662c975-7bad-45f7-ae5b-b1d1c6389bf1';
 
 class UserProfileEndpoint extends Component {
   render() {

@@ -19,7 +19,7 @@ import styled from 'styled-components';
 import SpaceThreads from './SpaceEndpoint-Threads';
 
 //Doc uuid() variable for space
-const spaceDoc = '00d4f259-5363-4427-bd44-87f484cd44ca';
+const spaceDoc = '020b6233-9c97-4c4a-97d6-da410cc987b2';
 
 class SpaceEndpoint extends Component {
   render() {

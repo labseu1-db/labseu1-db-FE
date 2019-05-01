@@ -20,8 +20,8 @@ import styled from 'styled-components';
 import HomeScreenThreads from './HomeScreenEndpoint-Threads';
 
 //Doc uuid() variable for thread
-const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
-const orgDoc = '53eac322-ae74-4dd5-8cee-357104ce997a';
+const userDoc = '0662c975-7bad-45f7-ae5b-b1d1c6389bf1';
+const orgDoc = '0a32fa08-4098-47a7-9aa2-7d8cc68df49c';
 
 class HomeScreenEndpoint extends Component {
   render() {
@@ -30,7 +30,7 @@ class HomeScreenEndpoint extends Component {
     return (
       <SDCard>
         <h2>Home Screen Endpoint</h2>
-        <div>{`${exclamation}WE SHOULD TEST THE LATEST COMMENT IN THREAD - NOT ENOUGH DATA ATM${exclamation}`}</div>
+        <div>{`${exclamation} before using in production we should test the latest comment - not enough data to test it out`}</div>
         <div>
           <SDSpan>Space ids list: </SDSpan>
           {activeUser.arrayOfSpaceIds && (
