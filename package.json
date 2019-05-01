@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "firebase": "5.10.0",
-    "firebaseui": "^3.6.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "5.1.1",
@@ -33,5 +32,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0"
   }
 }
