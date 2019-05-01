@@ -18,7 +18,8 @@ class Login extends Component {
 
   state = {
     loginEmail: '',
-    loginPassword: ''
+    loginPassword: '',
+    error: ''
   };
 
   componentWillUpdate() {
@@ -31,7 +32,52 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  passwordlessSignIn = loginEmail => {
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: 'http://localhost:3000/homescreen',
+      // This must be true.
+      handleCodeInApp: true
+      // iOS: {
+      //   bundleId: 'com.example.ios'
+      // },
+      // android: {
+      //   packageName: 'com.example.android',
+      //   installApp: true,
+      //   minimumVersion: '12'
+      // },
+      // dynamicLinkDomain: 'localhost'
+    };
+
+    const INITIAL_STATE = {
+      loginEmail: '',
+      loginPassword: '',
+      error: null
+    };
+
+    this.props.firebase
+      .auth()
+      .sendSignInLinkToEmail(loginEmail, actionCodeSettings)
+      .then(function() {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', loginEmail);
+      })
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+      })
+      .catch(function(error) {
+        // Some error occurred, you can inspect the code: error.code
+        console.log('passwordlessSignIn error:', error);
+      });
+  };
+
   render() {
+    const { loginEmail, loginPassword, error } = this.state;
+    const isInvalid = loginPassword === '' || loginEmail === '';
+
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
@@ -54,12 +100,25 @@ class Login extends Component {
             onChange={this.handleInputChange}
           />
           <button
+            disabled={isInvalid}
             onClick={e => {
+              const INITIAL_STATE = {
+                loginEmail: '',
+                loginPassword: '',
+                error: null
+              };
               e.preventDefault();
-              this.props.firebase.login({
-                email: this.state.loginEmail,
-                password: this.state.loginPassword
-              });
+              this.props.firebase
+                .login({
+                  email: this.state.loginEmail,
+                  password: this.state.loginPassword
+                })
+                .then(() => {
+                  this.setState({ ...INITIAL_STATE });
+                })
+                .catch(error => {
+                  this.setState({ error });
+                });
             }}
           >
             Login
@@ -68,11 +127,19 @@ class Login extends Component {
 
         <button
           onClick={() =>
-            this.props.firebase.login({ provider: 'google', type: 'popup' })
+            this.props.firebase
+              .login({ provider: 'google', type: 'popup' })
+              .catch(error => {
+                this.setState({ error });
+              })
           }
         >
           Sign in with Google
         </button>
+        <button onClick={() => this.passwordlessSignIn(this.state.loginEmail)}>
+          Sign in with Email
+        </button>
+        {error && <p>{error.message}</p>}
       </div>
     );
   }
