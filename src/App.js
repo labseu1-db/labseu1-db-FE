@@ -7,7 +7,6 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
-// import PrivateRoute from './Components/PrivateRouteHOC';
 
 class App extends Component {
 	render() {
@@ -16,11 +15,6 @@ class App extends Component {
 				<Route exact path='/register' render={(props) => <Register {...props} />} />
 				<Route exact path='/login' render={(props) => <Login {...props} />} />
 				<Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
-				{/* <PrivateRoute
-          path='/homescreen'
-          component={FakeHome}
-          authStatus={this.props.auth}
-        /> */}
 			</div>
 		);
 	}
