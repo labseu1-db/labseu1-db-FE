@@ -21,7 +21,13 @@ class Login extends Component {
     loginPassword: ''
   };
 
-  handleInputChange = (e) => {
+  componentWillUpdate() {
+    if (!isEmpty(this.props.auth)) {
+      this.props.history.push('/homescreen');
+    }
+  }
+
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -32,30 +38,38 @@ class Login extends Component {
     return (
       <div>
         <h1>Log in!</h1>
-        <Link to="/register"> Don't have an account? </Link>
+        <Link to='/register'> Don't have an account? </Link>
         <form>
-          <input name="loginEmail" type="email" onChange={this.handleInputChange} />
-          <input name="loginPassword" type="password" onChange={this.handleInputChange} />
+          <input
+            name='loginEmail'
+            type='email'
+            onChange={this.handleInputChange}
+          />
+          <input
+            name='loginPassword'
+            type='password'
+            onChange={this.handleInputChange}
+          />
           <button
-            onClick={(e) => { 
+            onClick={e => {
               e.preventDefault();
               this.props.firebase.login({
                 email: this.state.loginEmail,
                 password: this.state.loginPassword
-              }).then( res => {
-                console.log(this.props.history)
-                this.props.history.push('/homescreen')
-
               });
             }}
           >
             Login
-						</button>
+          </button>
         </form>
 
-        <button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+        <button
+          onClick={() =>
+            this.props.firebase.login({ provider: 'google', type: 'popup' })
+          }
+        >
           Sign in with Google
-					</button>
+        </button>
       </div>
     );
   }
@@ -74,18 +88,23 @@ class Login extends Component {
   // );
 }
 
-
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Login);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(Login);

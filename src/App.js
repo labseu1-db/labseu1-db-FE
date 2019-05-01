@@ -6,9 +6,8 @@ import { Route } from 'react-router-dom';
 
 import Register from './Components/Register';
 import Login from './Components/Login';
-import FakeHome from './Components/FakeHome'
-import PrivateRoute from './Components/PrivateRouteHOC'
-
+import FakeHome from './Components/FakeHome';
+import PrivateRoute from './Components/PrivateRouteHOC';
 
 class App extends Component {
   render() {
@@ -16,31 +15,37 @@ class App extends Component {
       <div>
         <Route
           exact
-          path="/register"
-          render={(props) => <Register {...props} />}
+          path='/register'
+          render={props => <Register {...props} />}
         />
-        <Route
-          exact
-          path="/login"
-          render={(props) => <Login {...props} />}
+        <Route exact path='/login' render={props => <Login {...props} />} />
+        <PrivateRoute
+          path='/homescreen'
+          component={FakeHome}
+          authStatus={this.props.auth}
         />
-        <PrivateRoute path='/homescreen' component={FakeHome} authStatus={this.props.auth} />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(App);
