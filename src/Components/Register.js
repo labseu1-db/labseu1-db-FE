@@ -32,6 +32,15 @@ class Register extends Component {
     }
   }
 
+  // componentDidMount() {
+  //   if (!isLoaded(this.props.auth)) {
+  //     return <Spinner />;
+  //   }
+  //   if (!isEmpty(this.props.auth)) {
+  //     return null;
+  //   }
+  // }
+
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
