@@ -35,6 +35,9 @@ class Login extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
+    if (!isEmpty(this.props.auth)) {
+      return null;
+    }
     return (
       <div>
         <h1>Log in!</h1>
@@ -73,19 +76,6 @@ class Login extends Component {
       </div>
     );
   }
-  // return (
-  //   <div>
-  //     <div>YOU ARE LOGGED IN</div>
-  //     <button
-  //       onClick={async () => {
-  //         await this.props.firebase.logout();
-  //         this.props.clearFirestore();
-  //       }}
-  //     >
-  //       Logout
-  // 	</button>
-  //   </div>
-  // );
 }
 
 const mapStateToProps = state => {
