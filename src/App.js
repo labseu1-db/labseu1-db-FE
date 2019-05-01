@@ -4,15 +4,19 @@ import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { Route } from 'react-router-dom';
 
+<<<<<<< HEAD
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
 // import PrivateRoute from './Components/PrivateRouteHOC';
 
+=======
+>>>>>>> 11713306571d18ece301d7ba228be3a8c9e6d11f
 class App extends Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         <Route
           exact
           path='/register'
@@ -29,6 +33,9 @@ class App extends Component {
           component={FakeHome}
           authStatus={this.props.auth}
         /> */}
+=======
+        text
+>>>>>>> 11713306571d18ece301d7ba228be3a8c9e6d11f
       </div>
     );
   }
