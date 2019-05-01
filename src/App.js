@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 // import AddCompany from './Components/AddCompany';
 // import CompanyList from './Components/CompanyList';
-import SidebarEndpoint from './Components/Endpoints/SidebarEndpoint';
-import HomeScreenEndpoint from './Components/Endpoints/HomeScreenEndpoint';
-import UserProfileEndpoint from './Components/Endpoints/UserProfileEndpoint';
-import OrganisationProfileEndpoint from './Components/Endpoints/OrganisationProfileEndpoint';
-import SpaceEndpoint from './Components/Endpoints/SpaceEndpoint';
-import ThreadEndpoint from './Components/Endpoints/ThreadEndpoint';
-import CommentEndpoint from './Components/Endpoints/CommentEndpoint';
+import SidebarEndpoint from './Endpoints/SidebarEndpoint';
+import HomeScreenEndpoint from './Endpoints/HomeScreenEndpoint';
+import UserProfileEndpoint from './Endpoints/UserProfileEndpoint';
+import OrganisationProfileEndpoint from './Endpoints/OrganisationProfileEndpoint';
+import SpaceEndpoint from './Endpoints/SpaceEndpoint';
+import ThreadEndpoint from './Endpoints/ThreadEndpoint';
+import CommentEndpoint from './Endpoints/CommentEndpoint';
 
 class App extends Component {
   render() {
@@ -18,7 +18,6 @@ class App extends Component {
         <SidebarEndpoint />
         <UserProfileEndpoint />
         <OrganisationProfileEndpoint />
-
         <SpaceEndpoint />
         <ThreadEndpoint />
         <CommentEndpoint />
