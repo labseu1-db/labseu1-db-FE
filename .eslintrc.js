@@ -1,3 +1,6 @@
 module.exports = {
-    "extends": ["prettier"]
+  extends: ['prettier'],
+  rules: {
+    quotes: [2, 'single', { avoidEscape: true }]
+  }
 };
