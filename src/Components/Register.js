@@ -38,7 +38,7 @@ class Register extends Component {
   //   }
   //   if (!isEmpty(this.props.auth)) {
   //     return null;
-  //   }
+  //
   // }
 
   handleInputChange = e => {
