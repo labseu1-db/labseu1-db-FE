@@ -36,18 +36,9 @@ class Login extends Component {
     const actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be whitelisted in the Firebase Console.
-      url: 'http://localhost:3000/homescreen',
+      url: 'http://localhost:3000/passwordlesscheck',
       // This must be true.
       handleCodeInApp: true
-      // iOS: {
-      //   bundleId: 'com.example.ios'
-      // },
-      // android: {
-      //   packageName: 'com.example.android',
-      //   installApp: true,
-      //   minimumVersion: '12'
-      // },
-      // dynamicLinkDomain: 'localhost'
     };
 
     const INITIAL_STATE = {
@@ -68,15 +59,16 @@ class Login extends Component {
       .then(() => {
         this.setState({ ...INITIAL_STATE });
       })
-      .catch(function(error) {
-        // Some error occurred, you can inspect the code: error.code
-        console.log('passwordlessSignIn error:', error);
+      .catch(error => {
+        this.setState({ error: error.message });
+        console.log(error);
       });
   };
 
   render() {
     const { loginEmail, loginPassword, error } = this.state;
     const isInvalid = loginPassword === '' || loginEmail === '';
+    const passwordlessIsInvalid = loginEmail === '';
 
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -136,7 +128,10 @@ class Login extends Component {
         >
           Sign in with Google
         </button>
-        <button onClick={() => this.passwordlessSignIn(this.state.loginEmail)}>
+        <button
+          disabled={passwordlessIsInvalid}
+          onClick={() => this.passwordlessSignIn(this.state.loginEmail)}
+        >
           Sign in with Email
         </button>
         {error && <p>{error.message}</p>}

@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
+import PasswordlessCheck from './Components/PasswordlessCheck';
 // import PrivateRoute from './Components/PrivateRouteHOC';
 
 class App extends Component {
@@ -24,11 +25,11 @@ class App extends Component {
           path='/homescreen'
           render={props => <FakeHome {...props} />}
         />
-        {/* <PrivateRoute
-          path='/homescreen'
-          component={FakeHome}
-          authStatus={this.props.auth}
-        /> */}
+        <Route
+          exact
+          path='/passwordlesscheck'
+          render={props => <PasswordlessCheck {...props} />}
+        />
       </div>
     );
   }
