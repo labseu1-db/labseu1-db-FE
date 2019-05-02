@@ -120,6 +120,7 @@ class Login extends Component {
                 name='loginPassword'
                 type='password'
                 onChange={this.handleInputChange}
+                placeholder='········'
               />
               <StyledIcon
                 src={showPassword}
