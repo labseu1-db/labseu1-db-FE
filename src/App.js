@@ -19,7 +19,6 @@ class App extends Component {
         {/* <SidebarEndpoint />
         <UserProfileEndpoint />
         <OrganisationProfileEndpoint />
-
         <SpaceEndpoint />
         <ThreadEndpoint />
         <CommentEndpoint />

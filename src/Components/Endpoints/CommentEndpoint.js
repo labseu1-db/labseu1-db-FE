@@ -18,7 +18,7 @@ import styled from 'styled-components';
 //Doc uuid() variable for user
 const commentDoc = '02922338-8155-4634-85af-15c4fb7b225c';
 
-class CommentEndpoint extends Component {
+export class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
     const exclamation = '❗';
