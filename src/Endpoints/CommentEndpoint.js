@@ -18,7 +18,7 @@ import styled from 'styled-components';
 //Doc uuid() variable for user
 const commentDoc = '00ca546f-606a-4e63-9454-9ca621c74502';
 
-class CommentEndpoint extends Component {
+export class CommentEndpoint extends Component {
   render() {
     const activeComment = this.props.comment;
     return (

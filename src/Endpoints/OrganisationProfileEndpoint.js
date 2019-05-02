@@ -14,8 +14,8 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
-const orgDoc = '03d65b16-5de8-4621-ace3-d8ef2c7cb51a';
-class OrganisationProfileEndpoint extends Component {
+const orgDoc = '977ab9e8-5f6a-44c1-9fc7-a68c4d771701';
+export class OrganisationProfileEndpoint extends Component {
   render() {
     const activeOrg = this.props.organisation;
     return (

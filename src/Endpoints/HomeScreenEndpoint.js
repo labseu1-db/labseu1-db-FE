@@ -23,7 +23,7 @@ import HomeScreenThreads from './HomeScreenEndpoint-Threads';
 const userDoc = '0662c975-7bad-45f7-ae5b-b1d1c6389bf1';
 const orgDoc = '0a32fa08-4098-47a7-9aa2-7d8cc68df49c';
 
-class HomeScreenEndpoint extends Component {
+export class HomeScreenEndpoint extends Component {
   render() {
     const activeUser = this.props.user;
     const exclamation = '❗';
