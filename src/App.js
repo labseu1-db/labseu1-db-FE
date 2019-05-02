@@ -1,28 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import ForgotPassword from './Components/ForgotPassword'
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <ForgotPassword />
-    </div>
-  );
+// import AddCompany from './Components/AddCompany';
+// import CompanyList from './Components/CompanyList';
+import SidebarEndpoint from './Endpoints/SidebarEndpoint';
+import HomeScreenEndpoint from './Endpoints/HomeScreenEndpoint';
+import UserProfileEndpoint from './Endpoints/UserProfileEndpoint';
+import OrganisationProfileEndpoint from './Endpoints/OrganisationProfileEndpoint';
+import SpaceEndpoint from './Endpoints/SpaceEndpoint';
+import ThreadEndpoint from './Endpoints/ThreadEndpoint';
+import CommentEndpoint from './Endpoints/CommentEndpoint';
+import ForgotPassword from './Components/ForgotPassword';
+
+class App extends Component {
+  render() {
+    return (
+      <SDApp>
+        {/* <SidebarEndpoint />
+        <UserProfileEndpoint />
+        <OrganisationProfileEndpoint />
+        <SpaceEndpoint />
+        <ThreadEndpoint />
+        <CommentEndpoint />
+        <HomeScreenEndpoint /> */}
+        <ForgotPassword />
+      </SDApp>
+    );
+  }
 }
+
+const SDApp = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+`;
 
 export default App;
