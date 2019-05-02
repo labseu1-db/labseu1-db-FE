@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar Endpoint match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bdVaJa QUjQF"
+  >
+    <h2>
+      Sidebar Endpoint
+    </h2>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Full Name: 
+      </span>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        List of organisation names: 
+      </span>
+      <div>
+        <div>
+          <span>
+            • Google
+          </span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        List of space names: 
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
