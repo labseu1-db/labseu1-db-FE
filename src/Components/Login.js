@@ -116,7 +116,7 @@ class Login extends Component {
                 onChange={this.handleInputChange}
               />
             </StyledLabel>
-            <button>Forgot Password?</button>
+            <PasswordlessButton>Forgot Password?</PasswordlessButton>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
               <StyledButton
@@ -148,7 +148,10 @@ class Login extends Component {
           <Button
             color='google plus'
             onClick={() =>
-              this.props.firebase.login({ provider: 'google', type: 'popup' })
+              this.props.firebase.login({
+                provider: 'google',
+                type: 'popup'
+              })
             }
           >
             <Icon name='google plus' /> Sign in with Google
