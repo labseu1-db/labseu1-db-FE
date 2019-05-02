@@ -10,19 +10,21 @@ import OrganisationProfileEndpoint from './Components/Endpoints/OrganisationProf
 import SpaceEndpoint from './Components/Endpoints/SpaceEndpoint';
 import ThreadEndpoint from './Components/Endpoints/ThreadEndpoint';
 import CommentEndpoint from './Components/Endpoints/CommentEndpoint';
+import ForgotPassword from './Components/ForgotPassword';
 
 class App extends Component {
   render() {
     return (
       <SDApp>
-        <SidebarEndpoint />
+        {/* <SidebarEndpoint />
         <UserProfileEndpoint />
         <OrganisationProfileEndpoint />
 
         <SpaceEndpoint />
         <ThreadEndpoint />
         <CommentEndpoint />
-        <HomeScreenEndpoint />
+        <HomeScreenEndpoint /> */}
+        <ForgotPassword />
       </SDApp>
     );
   }
