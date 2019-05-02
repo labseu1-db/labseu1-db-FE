@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import {Link} from 'react-router-dom';
+import { Form } from 'semantic-ui-react';
+import { StyledFormDiv, StyledForgotPasswordPage, StyledParagraph, StyledInput, InputDiv, StyledLabel } from './StyledComponents/ForgotPasswordStyled';
 
 
 
@@ -25,18 +28,29 @@ class ForgotPassword extends React.Component {
     submitHandler = (email, event) => {
         event.preventDefault();
         this.props.firebase.resetPassword(email).then(
-            () => console.log('it worked')
+            () => {
+                console.log('it worked')
+            }
         ).catch(error => {
             console.log(error);
         })
     }
 
+
     render() {
         return (
-            <div>
-                <input type='email' name='emailAddress' onChange={this.changeInput} />
-                <button type='submit' onClick={(event) => this.submitHandler(this.state.emailAddress, event)}>Submit</button>
-            </div>
+            <StyledForgotPasswordPage>
+                <h1>Forgot Password</h1>
+                <StyledFormDiv>
+                    <StyledParagraph>{"Please enter your email address and\nwe'll send you an email to reset your password"}</StyledParagraph>
+                    <InputDiv>
+                        <StyledLabel>Email Address</StyledLabel>
+                        <StyledInput type='email' name='emailAddress' placeholder="you@example.com" onChange={this.changeInput} />
+                    </InputDiv>
+                    <button type='submit' onClick={(event) => this.submitHandler(this.state.emailAddress, event)}>Send Link</button>
+                </StyledFormDiv>
+                <Link to='/login'>Back to Sign In</Link>
+            </StyledForgotPasswordPage>
         )
     }
 }
