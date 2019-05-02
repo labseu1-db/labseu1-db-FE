@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+export const StyledModalEnvContainer = styled.div`
+  width: 40vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  margin-right: 15px;
+`;
+
+export const StyledModalContainer = styled.div`
+  min-height: 100%;
+  width: 100%;
+`;
+
 export const StyledModalText = styled.div`
   line-height: 1.6;
   padding: 25px;
@@ -25,6 +41,7 @@ export const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;
   text-align: center;
   font-weight: 300;
+  color: black;
 `;
 
 export const StyledModalCard = styled.div`

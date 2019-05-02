@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 import {
   StyledModalText,
   StyledModalH1,
@@ -8,6 +8,7 @@ import {
   StyledModalLabel,
   StyledModalInput,
   StyledModalButton,
+  StyledModalAdder,
   SDModalMainButtonContainer,
   StyledActionButtonsContainer,
   StyledProgressContainer,
@@ -16,47 +17,65 @@ import {
   StyledModalEnvContainer
 } from '../styled-components/StyledModal';
 
-import InviteYourTeamModal from './InviteYourTeamModal';
+import CreateSpacesModal from './CreateSpacesModal';
 
-export default class CreateCompanyModal extends Component {
-  state = { open: false };
+export default class InviteYourTeamModal extends Component {
+  state = { open: false, inputs: ['input-0'] };
 
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
 
+  appendInput = () => {
+    let newInput = `input-${this.state.inputs.length}`;
+    this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+  };
   render() {
     const { open } = this.state;
+
     return (
-      <Modal onOpen={this.open} closeOnEscape="true" onClose={this.close} open={open} trigger={<Button>Create organisation</Button>} basic size="tiny">
+      <Modal
+        open={open}
+        basic
+        size="tiny"
+        onOpen={this.open}
+        onClose={this.close}
+        trigger={
+          <SDModalMainButtonContainer>
+            <StyledModalButton>Next</StyledModalButton>
+          </SDModalMainButtonContainer>
+        }>
         <StyledModalEnvContainer>
           <StyledModalContainer>
             <StyledProgressContainer>
               <StyledProgressDot className="active" />
-              <StyledProgressDot />
+              <StyledProgressDot className="active" />
               <StyledProgressDot />
               <StyledProgressDot />
             </StyledProgressContainer>
             <StyledModalH1>
-              <Modal.Header content="Create an organisation" />
+              <Modal.Header content="Invite your team" />
             </StyledModalH1>
             <StyledModalCard>
               <Modal.Content>
-                <StyledModalText>
-                  Organisations are the shared home for your team. Use organisations to get a bird's eye view of discussionsand decisions happening across your organisation.
-                </StyledModalText>
                 <StyledModalForm>
-                  <StyledModalLabel>
-                    Organisation name <span className="ligther-font">(Company, nonprofit, school, team)</span>
-                  </StyledModalLabel>
-                  <StyledModalInput name="orgName" type="text" />
+                  <StyledModalLabel className="email-heading">Email addresses</StyledModalLabel>
+                  <StyledModalInput placeholder="Email address" />
+                  <StyledModalInput placeholder="Email address" />
+                  <StyledModalInput placeholder="Email address" />
+                  <div id="dynamicInput">
+                    {this.state.inputs.map(input => (
+                      <StyledModalInput placeholder="Email address" key={input} />
+                    ))}
+                  </div>
                 </StyledModalForm>
+                <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
               </Modal.Content>
               <Modal.Actions>
                 <StyledActionButtonsContainer>
-                  <InviteYourTeamModal />
+                  <CreateSpacesModal />
                   <SDModalMainButtonContainer>
                     <StyledModalButton className="cancel-button" onClick={this.close}>
-                      Cancel
+                      Skip
                     </StyledModalButton>
                   </SDModalMainButtonContainer>
                 </StyledActionButtonsContainer>
@@ -68,5 +87,3 @@ export default class CreateCompanyModal extends Component {
     );
   }
 }
-
-//Stylin

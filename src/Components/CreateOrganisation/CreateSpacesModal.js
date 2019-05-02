@@ -8,23 +8,18 @@ import {
   StyledModalLabel,
   StyledModalInput,
   StyledModalButton,
-  StyledModalAdder,
   SDModalMainButtonContainer,
   StyledActionButtonsContainer,
-  StyledProgressContainer,
-  StyledProgressDot
+  StyledProgressDot,
+  StyledProgressContainer
 } from '../styled-components/StyledModal';
 
-export default class Modal1 extends Component {
-  state = { open: false, inputs: ['input-0'] };
+export default class CreateSpacesModals extends Component {
+  state = { open: false };
 
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
 
-  appendInput = () => {
-    let newInput = `input-${this.state.inputs.length}`;
-    this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
-  };
   render() {
     const { open } = this.state;
 
@@ -43,34 +38,29 @@ export default class Modal1 extends Component {
         <StyledProgressContainer>
           <StyledProgressDot className="active" />
           <StyledProgressDot className="active" />
-          <StyledProgressDot />
+          <StyledProgressDot className="active" />
           <StyledProgressDot />
         </StyledProgressContainer>
         <StyledModalH1>
-          <Modal.Header content="Invite your team" />
+          <Modal.Header content="Modal2" />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
+            <StyledModalText>
+              Organisations are the shared home for your team. Use organisations to get a bird's eye view of discussionsand decisions happening across your organisation.
+            </StyledModalText>
             <StyledModalForm>
-              <StyledModalLabel className="email-heading">Email addresses</StyledModalLabel>
-              <StyledModalInput placeholder="Email address" />
-              <StyledModalInput placeholder="Email address" />
-              <StyledModalInput placeholder="Email address" />
-              <div id="dynamicInput">
-                {this.state.inputs.map(input => (
-                  <StyledModalInput placeholder="Email address" key={input} />
-                ))}
-              </div>
+              <StyledModalLabel>
+                Organisation name <span className="ligther-font">(Company, nonprofit, school, team)</span>
+              </StyledModalLabel>
+              <StyledModalInput name="orgName" type="text" />
             </StyledModalForm>
-            <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
           </Modal.Content>
           <Modal.Actions>
             <StyledActionButtonsContainer>
               {/* <NestedModal2 /> */}
               <SDModalMainButtonContainer>
-                <StyledModalButton className="cancel-button" onClick={this.close}>
-                  Skip
-                </StyledModalButton>
+                <StyledModalButton className="cancel-button">Cancel</StyledModalButton>
               </SDModalMainButtonContainer>
             </StyledActionButtonsContainer>
           </Modal.Actions>
