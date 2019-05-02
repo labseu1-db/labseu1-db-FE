@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment Endpoint match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bdVaJa QUjQF"
+  >
+    <h2>
+      Comment Endpoint
+    </h2>
+    <div>
+      ❗WE SHOULD ADD USERID TO COMMENT TO HAVE ACCESS TO PROFILE PICTURE❗
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Comment body: 
+      </span>
+      <span>
+        Apple
+      </span>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Comment created at: 
+      </span>
+      <span>
+        12345678
+      </span>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Comment created by: 
+      </span>
+      <span>
+        Test Username
+      </span>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Comment liked by these user ids: 
+      </span>
+      <span>
+        <div>
+          • 1
+        </div>
+        <div>
+          • 3
+        </div>
+        <div>
+          • 5
+        </div>
+      </span>
+    </div>
+    <div>
+      <span
+        class="sc-bwzfXH hZEuEv"
+      >
+        Comment is decision: 
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
