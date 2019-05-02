@@ -41,6 +41,7 @@ export const StyledInput = styled.input`
 `;
 
 export const StyledLabel = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -56,10 +57,9 @@ export const StyledLowerSignIn = styled.div`
 export const StyledIcon = styled.img`
   height: 16px;
   width: 16px;
-  float: right;
-  margin-left: -85px;
-  margin-top: -11px;
-  position: relative;
+  position: absolute;
+  top: 4px;
+  right: 0;
   z-index: 2;
   cursor: pointer;
 `;

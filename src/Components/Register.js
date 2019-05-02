@@ -34,7 +34,8 @@ class Register extends Component {
   state = {
     email: '',
     password: '',
-    fullName: ''
+    fullName: '',
+    error: null
   };
 
   componentWillUpdate() {
@@ -112,6 +113,8 @@ class Register extends Component {
                     email: this.state.email,
                     password: this.state.password,
                     fullName: this.state.fullName
+                  }).catch(() => {
+                    this.setState({ error });
                   });
                 }}
               >

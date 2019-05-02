@@ -89,7 +89,7 @@ class Login extends Component {
   };
 
   render() {
-    const { loginEmail, loginPassword, error } = this.state;
+    const { loginEmail, loginPassword } = this.state;
     const isInvalid = loginPassword === '' || loginEmail === '';
     const passwordlessIsInvalid = loginEmail === '';
 
