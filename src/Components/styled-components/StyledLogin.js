@@ -4,30 +4,36 @@ export const StyledLogin = styled.div`
 	margin: 0 auto;
 	width: 100%;
 	max-width: 1000px;
-	border: 1px solid red;
 	padding-top: 50px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background-color: #faf9f7;
 `;
 
 export const StyledForm = styled.form`
-	border: 1px solid blue;
-	width: 350px;
+	width: 450px;
 	padding: 30px 20px;
+	margin-bottom: 30px;
 	display: flex;
 	flex-direction: column;
 	background-color: white;
 	border-radius: 10px;
-	/* align-items: flex-end; */
+	-webkit-box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
+	-moz-box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
+	box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
 `;
 
 export const StyledInput = styled.input`
-	width: 70%
+	width: 70%;
 	border: none;
-	border-bottom: 1px solid gray;
+	border-bottom: 2px solid lightgray;
 	padding: 5px 0;
 	margin-bottom: 10px;
+	&:focus {
+		border-bottom: 2px solid #6c48f2;
+		outline: none;
+	}
 `;
 
 export const StyledLabel = styled.div`

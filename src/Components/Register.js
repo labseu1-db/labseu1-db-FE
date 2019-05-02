@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Link } from 'react-router-dom';
 
+import { StyledButton } from './styled-components/StyledButton';
+import { StyledLogin, StyledForm, StyledInput, StyledLabel } from './styled-components/StyledLogin';
+import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 
 class Register extends Component {
@@ -53,19 +55,26 @@ class Register extends Component {
 			return null;
 		}
 		return (
-			<div>
-				<h1>Register a new account!</h1>
-				<Link to='/login'> Already have an account? </Link>
-				<form>
-					<div>Email</div>
-					<input name='email' type='email' onChange={this.handleInputChange} />
-					<div>Password</div>
-					<input name='password' type='password' onChange={this.handleInputChange} />
-					<div>Re-enter password</div>
-					<input name='password2' type='password' onChange={this.handleInputChange} />
-					<div>Username</div>
-					<input name='username' type='text' onChange={this.handleInputChange} />
-					<button
+			<StyledLogin>
+				<StyledH1>Register a new account!</StyledH1>
+				<StyledForm>
+					<StyledLabel>
+						<StyledPLabel>Email</StyledPLabel>
+						<StyledInput name='email' type='email' onChange={this.handleInputChange} />
+					</StyledLabel>
+					<StyledLabel>
+						<StyledPLabel>Password</StyledPLabel>
+						<StyledInput name='password' type='password' onChange={this.handleInputChange} />
+					</StyledLabel>
+					<StyledLabel>
+						<StyledPLabel>Re-enter password</StyledPLabel>
+						<StyledInput name='password2' type='password' onChange={this.handleInputChange} />
+					</StyledLabel>
+					<StyledLabel>
+						<StyledPLabel>Username</StyledPLabel>
+						<StyledInput name='username' type='text' onChange={this.handleInputChange} />
+					</StyledLabel>
+					<StyledButton
 						onClick={(e) => {
 							e.preventDefault();
 							this.createAndLogInNewUser({
@@ -75,14 +84,15 @@ class Register extends Component {
 							});
 						}}
 					>
-						Register
-					</button>
-				</form>
+						Register &#62;
+					</StyledButton>
+				</StyledForm>
 
 				<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
 					Sign in with Google
 				</button>
-			</div>
+				<StyledLink to='/login'> Already have an account? </StyledLink>
+			</StyledLogin>
 		);
 	}
 }

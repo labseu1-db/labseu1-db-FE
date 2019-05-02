@@ -8,10 +8,10 @@ export const StyledButton = styled.button`
 	color: white;
 	border-radius: 15px;
 	position: relative;
-	left: 210px;
+	left: 310px;
 
 	border: none;
 	&:hover {
-		background-color: blue;
+		background-color: #6c48f2;
 	}
 `;

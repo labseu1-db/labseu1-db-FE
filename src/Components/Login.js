@@ -46,7 +46,7 @@ class Login extends Component {
 				<StyledH1>Log in!</StyledH1>
 				<StyledForm>
 					<StyledLabel>
-						<StyledPLabel>Email Adress</StyledPLabel>
+						<StyledPLabel>Email Address</StyledPLabel>
 						<StyledInput name='loginEmail' type='email' onChange={this.handleInputChange} />
 					</StyledLabel>
 					<StyledLabel>
@@ -62,10 +62,12 @@ class Login extends Component {
 							});
 						}}
 					>
-						Login
+						Login &#62;
 					</StyledButton>
 				</StyledForm>
-				<GoogleButton onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} />
+				<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+					Sign in with Google
+				</button>
 				<StyledLink to='/register'> Don't have an account? </StyledLink>
 			</StyledLogin>
 		);
