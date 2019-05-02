@@ -14,4 +14,4 @@ deploy:
   skip-cleanup: true
   local_dir: build
   on:
-    branch: dev
+    branch: master
