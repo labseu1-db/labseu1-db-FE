@@ -1,12 +1,10 @@
 import styled from 'styled-components';
-import loginAnimation from '../animations/LoginAnimation';
 
 export const StyledLogin = styled.div`
 	margin: 0 auto;
 	width: 100%;
 	height: 100vh;
 	padding-top: 50px;
-
 	background-color: #faf9f7;
 `;
 
@@ -25,9 +23,9 @@ export const StyledForm = styled.form`
 	flex-direction: column;
 	background-color: white;
 	border-radius: 10px;
-	-webkit-box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
-	-moz-box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
-	box-shadow: 0px 18px 35px -34px rgba(92, 92, 91, 1);
+	-webkit-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
+	-moz-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
+	box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
 `;
 
 export const StyledInput = styled.input`

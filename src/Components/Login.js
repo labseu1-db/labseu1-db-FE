@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { Button, Icon } from 'semantic-ui-react';
 
 import { StyledButton } from './styled-components/StyledButton';
 import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon } from './styled-components/StyledLogin';
@@ -22,7 +23,8 @@ class Login extends Component {
 
 	state = {
 		loginEmail: '',
-		loginPassword: ''
+		loginPassword: '',
+		error: null
 	};
 
 	componentWillUpdate() {
@@ -35,7 +37,46 @@ class Login extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 
+	togglePassword = () => {
+		let temp = document.getElementById('typepass');
+		if (temp.type === 'password') {
+			temp.type = 'text';
+		} else {
+			temp.type = 'password';
+		}
+	};
+
+	passwordlessSignIn = (loginEmail) => {
+		const actionCodeSettings = {
+			url: 'http://localhost:3000/passwordlesscheck',
+			handleCodeInApp: true
+		};
+
+		const INITIAL_STATE = {
+			loginEmail: '',
+			loginPassword: '',
+			error: null
+		};
+
+		this.props.firebase
+			.auth()
+			.sendSignInLinkToEmail(loginEmail, actionCodeSettings)
+			.then(function() {
+				window.localStorage.setItem('emailForSignIn', loginEmail);
+			})
+			.then(() => {
+				this.setState({ ...INITIAL_STATE });
+			})
+			.catch((error) => {
+				this.setState({ error: error.message }); // not working
+			});
+	};
+
 	render() {
+		const { loginEmail, loginPassword, error } = this.state;
+		const isInvalid = loginPassword === '' || loginEmail === '';
+		const passwordlessIsInvalid = loginEmail === '';
+
 		if (!isLoaded(this.props.auth)) {
 			return <Spinner />;
 		}
@@ -45,7 +86,7 @@ class Login extends Component {
 		return (
 			<StyledLogin>
 				<StyledLoginCon>
-					<StyledH1>Log in!</StyledH1>
+					<StyledH1>Sign in</StyledH1>
 					<StyledForm>
 						<StyledLabel>
 							<StyledPLabel>Email Address</StyledPLabel>
@@ -53,24 +94,52 @@ class Login extends Component {
 						</StyledLabel>
 						<StyledLabel>
 							<StyledPLabel>Password</StyledPLabel>
-							<StyledInput name='loginPassword' type='password' onChange={this.handleInputChange} />
+							<StyledInput
+								id='typepass'
+								name='loginPassword'
+								type='password'
+								onChange={this.handleInputChange}
+							/>
 						</StyledLabel>
 						<StyledButton
+							disabled={isInvalid}
 							onClick={(e) => {
+								const INITIAL_STATE = {
+									loginEmail: '',
+									loginPassword: '',
+									error: null
+								};
 								e.preventDefault();
-								this.props.firebase.login({
-									email: this.state.loginEmail,
-									password: this.state.loginPassword
-								});
+								this.props.firebase
+									.login({
+										email: this.state.loginEmail,
+										password: this.state.loginPassword
+									})
+									.then(() => {
+										this.setState({ ...INITIAL_STATE });
+									})
+									.catch((error) => {
+										this.setState({ error });
+									});
 							}}
 						>
 							Login &#62;
 						</StyledButton>
 					</StyledForm>
-					<GoogleButton onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} />
+					<Button
+						color='google plus'
+						onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}
+					>
+						<Icon name='google plus' /> Sign in with Google
+					</Button>
+					<StyledLink
+						disabled={passwordlessIsInvalid}
+						onClick={() => this.passwordlessSignIn(this.state.loginEmail)}
+					>
+						Email Me a Link to Sign In
+					</StyledLink>
 					<StyledLink to='/register'> Don't have an account? </StyledLink>
 				</StyledLoginCon>
-
 				<LoginAnimation />
 			</StyledLogin>
 		);

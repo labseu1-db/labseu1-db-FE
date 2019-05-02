@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { Button, Icon } from 'semantic-ui-react';
 
 import { StyledButton } from './styled-components/StyledButton';
 import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon } from './styled-components/StyledLogin';
@@ -22,8 +23,7 @@ class Register extends Component {
 	state = {
 		email: '',
 		password: '',
-		password2: '',
-		username: ''
+		fullName: ''
 	};
 
 	componentWillUpdate() {
@@ -39,9 +39,9 @@ class Register extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 
-	createAndLogInNewUser = ({ email, password, username }) => {
+	createAndLogInNewUser = ({ email, password, fullName }) => {
 		this.props.firebase
-			.createUser({ email, password }, { username, email })
+			.createUser({ email, password }, { fullName, email })
 			.then(() => {
 				this.props.firebase.login({ email, password });
 			})
@@ -68,13 +68,10 @@ class Register extends Component {
 							<StyledPLabel>Password</StyledPLabel>
 							<StyledInput name='password' type='password' onChange={this.handleInputChange} />
 						</StyledLabel>
+
 						<StyledLabel>
-							<StyledPLabel>Re-enter password</StyledPLabel>
-							<StyledInput name='password2' type='password' onChange={this.handleInputChange} />
-						</StyledLabel>
-						<StyledLabel>
-							<StyledPLabel>Username</StyledPLabel>
-							<StyledInput name='username' type='text' onChange={this.handleInputChange} />
+							<StyledPLabel>Full Name</StyledPLabel>
+							<StyledInput name='fullName' type='text' onChange={this.handleInputChange} />
 						</StyledLabel>
 						<StyledButton
 							onClick={(e) => {
@@ -82,7 +79,7 @@ class Register extends Component {
 								this.createAndLogInNewUser({
 									email: this.state.email,
 									password: this.state.password,
-									username: this.state.username
+									fullName: this.state.fullName
 								});
 							}}
 						>
@@ -90,9 +87,12 @@ class Register extends Component {
 						</StyledButton>
 					</StyledForm>
 
-					<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-						Sign in with Google
-					</button>
+					<Button
+						color='google plus'
+						onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}
+					>
+						<Icon name='google plus' /> Sign in with Google
+					</Button>
 					<StyledLink to='/login'> Already have an account? </StyledLink>
 				</StyledLoginCon>
 				<LoginAnimation />
