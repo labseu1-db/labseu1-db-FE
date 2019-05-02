@@ -4,12 +4,27 @@ export const StyledButton = styled.button`
   font-size: 1.1rem;
   width: 100px;
   padding: 5px 15px;
-  background-color: lightgray;
+  background-color: #6c48f2;
   color: white;
   border-radius: 15px;
   border: none;
+  cursor: pointer;
+  &:disabled {
+    background-color: lightgray;
+  }
+`;
+
+export const ForgotPasswordButton = styled.button`
+  font-family: 'Open Sans', sans-serif;
+  padding-right: 75px;
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 300;
+  background: none;
+  border: none;
+  cursor: pointer;
   &:hover {
-    background-color: #6c48f2;
+    color: #6c48f2;
   }
 `;
 

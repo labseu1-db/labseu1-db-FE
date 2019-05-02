@@ -5,14 +5,18 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Button, Icon } from 'semantic-ui-react';
 
-import { StyledButton } from './styled-components/StyledButton';
+import {
+  StyledButton,
+  ForgotPasswordButton
+} from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn
+  StyledLowerSignIn,
+  StyledIcon
 } from './styled-components/StyledLogin';
 import {
   StyledH1,
@@ -22,6 +26,7 @@ import {
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
+import showPassword from '../images/showPassword.png';
 
 class Login extends Component {
   static propTypes = {
@@ -105,6 +110,7 @@ class Login extends Component {
                 name='loginEmail'
                 type='email'
                 onChange={this.handleInputChange}
+                placeholder='tonystark@example.com'
               />
             </StyledLabel>
             <StyledLabel>
@@ -115,8 +121,13 @@ class Login extends Component {
                 type='password'
                 onChange={this.handleInputChange}
               />
+              <StyledIcon
+                src={showPassword}
+                alt='showPassword'
+                onClick={this.togglePassword}
+              />
             </StyledLabel>
-            <PasswordlessButton>Forgot Password?</PasswordlessButton>
+            <ForgotPasswordButton>Forgot Password?</ForgotPasswordButton>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
               <StyledButton

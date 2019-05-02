@@ -52,3 +52,15 @@ export const StyledLowerSignIn = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const StyledIcon = styled.img`
+  /* position: absolute;
+  right: 35.3%;
+  bottom: 80.5vh;
+  z-index: 2; */
+  float: right;
+  margin-left: -85px;
+  margin-top: -11px;
+  position: relative;
+  z-index: 2;
+`;
