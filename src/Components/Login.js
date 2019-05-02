@@ -26,7 +26,7 @@ import {
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
-import showPassword from '../images/showPassword.png';
+import showPassword from '../images/showPassword.svg';
 
 class Login extends Component {
   static propTypes = {
