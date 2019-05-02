@@ -27,8 +27,8 @@ export class SidebarEndpoint extends Component {
           <SDSpan>List of organisation names: </SDSpan>
           {activeUser.arrayOfOrgs && (
             <div>
-              {activeUser.arrayOfOrgs.map(org => (
-                <div key={org.id}>
+              {activeUser.arrayOfOrgs.map((org, idx) => (
+                <div key={idx}>
                   <span>• {org.orgName}</span>
                 </div>
               ))}
