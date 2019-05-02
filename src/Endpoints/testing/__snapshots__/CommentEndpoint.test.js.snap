@@ -9,9 +9,6 @@ exports[`Comment Endpoint match snapshot 1`] = `
       Comment Endpoint
     </h2>
     <div>
-      ❗WE SHOULD ADD USERID TO COMMENT TO HAVE ACCESS TO PROFILE PICTURE❗
-    </div>
-    <div>
       <span
         class="sc-bwzfXH hZEuEv"
       >

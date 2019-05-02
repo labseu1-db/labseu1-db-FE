@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, cleanup} from 'react-testing-library';
-import { HomeScreenEndpoint } from './HomeScreenEndpoint';
+import { HomeScreenEndpoint } from '../HomeScreenEndpoint';
 
 const user = {
     arrayOfOrgs: [

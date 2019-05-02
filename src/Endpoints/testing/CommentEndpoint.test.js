@@ -1,6 +1,6 @@
 import React from 'react';
 import * as rtl from 'react-testing-library';
-import { CommentEndpoint } from './CommentEndpoint';
+import { CommentEndpoint } from '../CommentEndpoint';
 
 const comment = {
   commentBody: 'Apple',

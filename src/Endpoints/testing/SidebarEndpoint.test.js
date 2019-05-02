@@ -1,7 +1,7 @@
 import React from 'react';
 import * as rtl from 'react-testing-library';
 
-import { SidebarEndpoint } from './SidebarEndpoint';
+import { SidebarEndpoint } from '../SidebarEndpoint';
 
 const sidebar = {
   arrayOfOrgs: [

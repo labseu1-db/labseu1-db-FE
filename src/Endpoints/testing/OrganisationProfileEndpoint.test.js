@@ -1,6 +1,6 @@
 import React from 'react';
 import * as rtl from 'react-testing-library';
-import {OrganisationProfileEndpoint} from './OrganisationProfileEndpoint';
+import {OrganisationProfileEndpoint} from '../OrganisationProfileEndpoint';
 
 const org = {
     arrayOfAdmins:  [
