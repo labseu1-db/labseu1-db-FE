@@ -8,16 +8,23 @@ import {
   StyledModalLabel,
   StyledModalInput,
   StyledModalButton,
+  StyledModalAdder,
   SDModalMainButtonContainer,
-  StyledActionButtonsContainer
+  StyledActionButtonsContainer,
+  StyledProgressContainer,
+  StyledProgressDot
 } from '../styled-components/StyledModal';
 
 export default class Modal1 extends Component {
-  state = { open: false };
+  state = { open: false, inputs: ['input-0'] };
 
   open = () => this.setState({ open: true });
   close = () => this.setState({ open: false });
 
+  appendInput = () => {
+    let newInput = `input-${this.state.inputs.length}`;
+    this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+  };
   render() {
     const { open } = this.state;
 
@@ -33,26 +40,37 @@ export default class Modal1 extends Component {
             <StyledModalButton>Next</StyledModalButton>
           </SDModalMainButtonContainer>
         }>
+        <StyledProgressContainer>
+          <StyledProgressDot className="active" />
+          <StyledProgressDot className="active" />
+          <StyledProgressDot />
+          <StyledProgressDot />
+        </StyledProgressContainer>
         <StyledModalH1>
-          <Modal.Header content="Modal1" />
+          <Modal.Header content="Invite your team" />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
-            <StyledModalText>
-              Organisations are the shared home for your team. Use organisations to get a bird's eye view of discussionsand decisions happening across your organisation.
-            </StyledModalText>
             <StyledModalForm>
-              <StyledModalLabel>
-                Organisation name <span className="ligther-font">(Company, nonprofit, school, team)</span>
-              </StyledModalLabel>
-              <StyledModalInput name="orgName" type="text" />
+              <StyledModalLabel className="email-heading">Email addresses</StyledModalLabel>
+              <StyledModalInput placeholder="Email address" />
+              <StyledModalInput placeholder="Email address" />
+              <StyledModalInput placeholder="Email address" />
+              <div id="dynamicInput">
+                {this.state.inputs.map(input => (
+                  <StyledModalInput placeholder="Email address" key={input} />
+                ))}
+              </div>
             </StyledModalForm>
+            <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
           </Modal.Content>
           <Modal.Actions>
             <StyledActionButtonsContainer>
               {/* <NestedModal2 /> */}
               <SDModalMainButtonContainer>
-                <StyledModalButton className="cancel-button">Cancel</StyledModalButton>
+                <StyledModalButton className="cancel-button" onClick={this.close}>
+                  Skip
+                </StyledModalButton>
               </SDModalMainButtonContainer>
             </StyledActionButtonsContainer>
           </Modal.Actions>

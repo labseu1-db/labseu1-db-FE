@@ -5,7 +5,22 @@ export const StyledModalText = styled.div`
   padding: 25px;
   color: black;
 `;
+export const StyledProgressContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  .active {
+    background-color: white;
+    border: 1px solid white;
+  }
+`;
 
+export const StyledProgressDot = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid white;
+  margin: 0 5px;
+`;
 export const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;
   text-align: center;
@@ -24,25 +39,44 @@ export const StyledModalForm = styled.form`
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
+  .email-heading {
+    padding-bottom: 40px;
+  }
 `;
 
 export const StyledModalLabel = styled.div`
   font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  padding-bottom: 2px;
+  padding-bottom: 10px;
   color: black;
   .ligther-font {
     font-size: 0.8rem;
-    color: gray;
+    color: lightgray;
   }
 `;
+
+export const StyledModalAdder = styled.div`
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6c48f2;
+  padding: 0 25px;
+  cursor: pointer;
+`;
+
 export const StyledModalInput = styled.input`
   width: 100%;
   border: none;
   border-bottom: 2px solid lightgray;
   padding: 10px 0;
   margin-bottom: 10px;
+  .email-input {
+    &::placeholder {
+      font-size: 1.2rem;
+    }
+  }
+
   &:focus {
     border-bottom: 2px solid #6c48f2;
     outline: none;
