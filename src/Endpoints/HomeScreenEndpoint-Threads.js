@@ -10,9 +10,9 @@ class HomeScreenThreads extends Component {
     return (
       <div>
         {this.props.threads &&
-          this.props.threads.map(t => {
+          this.props.threads.map((t, index) => {
             return (
-              <div key={t.threadId}>
+              <div key={index}>
                 <div>
                   <strong>• Thread Name: </strong>
                   {t.threadName && <span>{t.threadName}</span>}
