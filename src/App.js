@@ -7,30 +7,38 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
+import CreateOrganisation from './Components/CreateOrganisation/Modals';
 
 class App extends Component {
-	render() {
-		return (
-			<div>
-				<Route exact path='/register' render={(props) => <Register {...props} />} />
-				<Route exact path='/login' render={(props) => <Login {...props} />} />
-				<Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <Route exact path="/register" render={props => <Register {...props} />} />
+        <Route exact path="/login" render={props => <Login {...props} />} />
+        <Route exact path="/createorganisation" render={props => <CreateOrganisation {...props} />} />
+        <Route exact path="/homescreen" render={props => <FakeHome {...props} />} />
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-	return {
-		auth: state.firebase.auth,
-		profile: state.firebase.profile
-	};
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-	};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(App);
