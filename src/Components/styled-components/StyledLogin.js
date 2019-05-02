@@ -1,14 +1,20 @@
 import styled from 'styled-components';
+import loginAnimation from '../animations/LoginAnimation';
 
 export const StyledLogin = styled.div`
 	margin: 0 auto;
 	width: 100%;
-	max-width: 1000px;
+	height: 100vh;
 	padding-top: 50px;
+
+	background-color: #faf9f7;
+`;
+
+export const StyledLoginCon = styled.div`
+	height: 70%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #faf9f7;
 `;
 
 export const StyledForm = styled.form`

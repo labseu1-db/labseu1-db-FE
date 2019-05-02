@@ -5,9 +5,10 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 
 import { StyledButton } from './styled-components/StyledButton';
-import { StyledLogin, StyledForm, StyledInput, StyledLabel } from './styled-components/StyledLogin';
+import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon } from './styled-components/StyledLogin';
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
+import LoginAnimation from './animations/LoginAnimation';
 
 class Register extends Component {
 	static propTypes = {
@@ -56,42 +57,45 @@ class Register extends Component {
 		}
 		return (
 			<StyledLogin>
-				<StyledH1>Register a new account!</StyledH1>
-				<StyledForm>
-					<StyledLabel>
-						<StyledPLabel>Email</StyledPLabel>
-						<StyledInput name='email' type='email' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledLabel>
-						<StyledPLabel>Password</StyledPLabel>
-						<StyledInput name='password' type='password' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledLabel>
-						<StyledPLabel>Re-enter password</StyledPLabel>
-						<StyledInput name='password2' type='password' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledLabel>
-						<StyledPLabel>Username</StyledPLabel>
-						<StyledInput name='username' type='text' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledButton
-						onClick={(e) => {
-							e.preventDefault();
-							this.createAndLogInNewUser({
-								email: this.state.email,
-								password: this.state.password,
-								username: this.state.username
-							});
-						}}
-					>
-						Register &#62;
-					</StyledButton>
-				</StyledForm>
+				<StyledLoginCon>
+					<StyledH1>Register a new account!</StyledH1>
+					<StyledForm>
+						<StyledLabel>
+							<StyledPLabel>Email</StyledPLabel>
+							<StyledInput name='email' type='email' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledLabel>
+							<StyledPLabel>Password</StyledPLabel>
+							<StyledInput name='password' type='password' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledLabel>
+							<StyledPLabel>Re-enter password</StyledPLabel>
+							<StyledInput name='password2' type='password' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledLabel>
+							<StyledPLabel>Username</StyledPLabel>
+							<StyledInput name='username' type='text' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledButton
+							onClick={(e) => {
+								e.preventDefault();
+								this.createAndLogInNewUser({
+									email: this.state.email,
+									password: this.state.password,
+									username: this.state.username
+								});
+							}}
+						>
+							Register &#62;
+						</StyledButton>
+					</StyledForm>
 
-				<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-					Sign in with Google
-				</button>
-				<StyledLink to='/login'> Already have an account? </StyledLink>
+					<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+						Sign in with Google
+					</button>
+					<StyledLink to='/login'> Already have an account? </StyledLink>
+				</StyledLoginCon>
+				<LoginAnimation />
 			</StyledLogin>
 		);
 	}

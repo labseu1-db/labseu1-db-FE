@@ -5,10 +5,11 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 
 import { StyledButton } from './styled-components/StyledButton';
-import { StyledLogin, StyledForm, StyledInput, StyledLabel } from './styled-components/StyledLogin';
+import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon } from './styled-components/StyledLogin';
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import GoogleButton from './semantic-components/GoogleButton';
+import LoginAnimation from './animations/LoginAnimation';
 
 class Login extends Component {
 	static propTypes = {
@@ -43,32 +44,34 @@ class Login extends Component {
 		}
 		return (
 			<StyledLogin>
-				<StyledH1>Log in!</StyledH1>
-				<StyledForm>
-					<StyledLabel>
-						<StyledPLabel>Email Address</StyledPLabel>
-						<StyledInput name='loginEmail' type='email' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledLabel>
-						<StyledPLabel>Password</StyledPLabel>
-						<StyledInput name='loginPassword' type='password' onChange={this.handleInputChange} />
-					</StyledLabel>
-					<StyledButton
-						onClick={(e) => {
-							e.preventDefault();
-							this.props.firebase.login({
-								email: this.state.loginEmail,
-								password: this.state.loginPassword
-							});
-						}}
-					>
-						Login &#62;
-					</StyledButton>
-				</StyledForm>
-				<button onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
-					Sign in with Google
-				</button>
-				<StyledLink to='/register'> Don't have an account? </StyledLink>
+				<StyledLoginCon>
+					<StyledH1>Log in!</StyledH1>
+					<StyledForm>
+						<StyledLabel>
+							<StyledPLabel>Email Address</StyledPLabel>
+							<StyledInput name='loginEmail' type='email' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledLabel>
+							<StyledPLabel>Password</StyledPLabel>
+							<StyledInput name='loginPassword' type='password' onChange={this.handleInputChange} />
+						</StyledLabel>
+						<StyledButton
+							onClick={(e) => {
+								e.preventDefault();
+								this.props.firebase.login({
+									email: this.state.loginEmail,
+									password: this.state.loginPassword
+								});
+							}}
+						>
+							Login &#62;
+						</StyledButton>
+					</StyledForm>
+					<GoogleButton onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })} />
+					<StyledLink to='/register'> Don't have an account? </StyledLink>
+				</StyledLoginCon>
+
+				<LoginAnimation />
 			</StyledLogin>
 		);
 	}
