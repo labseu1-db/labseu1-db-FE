@@ -68,7 +68,7 @@ export const StyledModalLabel = styled.div`
   color: black;
   .ligther-font {
     font-size: 0.8rem;
-    color: lightgray;
+    color: #bdc3c9;
   }
 `;
 
@@ -84,7 +84,7 @@ export const StyledModalAdder = styled.div`
 export const StyledModalInput = styled.input`
   width: 100%;
   border: none;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid #bdc3c9;
   padding: 10px 0;
   margin-bottom: 10px;
   .email-input {

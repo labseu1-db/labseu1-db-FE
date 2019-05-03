@@ -30,15 +30,21 @@ export default class CreateCompanyModal extends Component {
           <Modal.Actions>
             <style.StyledActionButtonsContainer>
               <style.StyledModalButton
-                className="cancel-button"
                 onClick={e => {
                   e.preventDefault();
-                  this.props.showModal('Modal2');
+                  this.props.showModal('InviteYourTeamModal');
                 }}>
                 Next
               </style.StyledModalButton>
               <style.SDModalMainButtonContainer>
-                <style.StyledModalButton className="cancel-button">Cancel</style.StyledModalButton>
+                <style.StyledModalButton
+                  className="cancel-button"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props.showModal(null);
+                  }}>
+                  Cancel
+                </style.StyledModalButton>
               </style.SDModalMainButtonContainer>
             </style.StyledActionButtonsContainer>
           </Modal.Actions>

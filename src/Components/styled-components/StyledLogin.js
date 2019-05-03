@@ -36,7 +36,7 @@ export const StyledForm = styled.form`
 export const StyledInput = styled.input`
   width: 70%;
   border: none;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid #bdc3c9;
   padding: 5px 0;
   margin-bottom: 10px;
   &:focus {

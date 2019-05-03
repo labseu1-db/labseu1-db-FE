@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
-import {
-  StyledModalText,
-  StyledModalH1,
-  StyledModalCard,
-  StyledModalForm,
-  StyledModalLabel,
-  StyledModalInput,
-  StyledModalButton,
-  StyledModalAdder,
-  SDModalMainButtonContainer,
-  StyledActionButtonsContainer,
-  StyledProgressContainer,
-  StyledProgressDot,
-  StyledModalContainer,
-  StyledModalEnvContainer
-} from '../styled-components/StyledModal';
+import * as style from '../styled-components/StyledModal';
 
 import CreateSpacesModal from './CreateSpacesModal';
 
@@ -26,44 +11,56 @@ export default class InviteYourTeamModal extends Component {
     let newInput = `input-${this.state.inputs.length}`;
     this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
   };
+
   render() {
     return (
       <Modal closeOnEscape={true} open={this.props.shoudlBeOpen} basic size="tiny">
-        <StyledProgressContainer>
-          <StyledProgressDot className="active" />
-          <StyledProgressDot className="active" />
-          <StyledProgressDot />
-          <StyledProgressDot />
-        </StyledProgressContainer>
-        <StyledModalH1>
+        <style.StyledProgressContainer>
+          <style.StyledProgressDot className="active" />
+          <style.StyledProgressDot className="active" />
+          <style.StyledProgressDot />
+          <style.StyledProgressDot />
+        </style.StyledProgressContainer>
+        <style.StyledModalH1>
           <Modal.Header content="Invite your team" />
-        </StyledModalH1>
-        <StyledModalCard>
+        </style.StyledModalH1>
+        <style.StyledModalCard>
           <Modal.Content>
-            <StyledModalForm>
-              <StyledModalLabel className="email-heading">Email addresses</StyledModalLabel>
-              <StyledModalInput placeholder="Email address" />
-              <StyledModalInput placeholder="Email address" />
-              <StyledModalInput placeholder="Email address" />
+            <style.StyledModalForm>
+              <style.StyledModalLabel className="email-heading">Email addresses</style.StyledModalLabel>
+              <style.StyledModalInput placeholder="Email address" />
+              <style.StyledModalInput placeholder="Email address" />
+              <style.StyledModalInput placeholder="Email address" />
               <div id="dynamicInput">
                 {this.state.inputs.map(input => (
-                  <StyledModalInput placeholder="Email address" key={input} />
+                  <style.StyledModalInput placeholder="Email address" key={input} />
                 ))}
               </div>
-            </StyledModalForm>
-            <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
+            </style.StyledModalForm>
+            <style.StyledModalAdder onClick={() => this.appendInput()}>Add more emails</style.StyledModalAdder>
           </Modal.Content>
           <Modal.Actions>
-            <StyledActionButtonsContainer>
-              <CreateSpacesModal />
-              <SDModalMainButtonContainer>
-                <StyledModalButton className="cancel-button" onClick={this.close}>
+            <style.StyledActionButtonsContainer>
+              <style.StyledModalButton
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.showModal('CreateSpacesModal');
+                }}>
+                Next
+              </style.StyledModalButton>
+              <style.SDModalMainButtonContainer>
+                <style.StyledModalButton
+                  className="cancel-button"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props.showModal('CreateSpacesModal');
+                  }}>
                   Skip
-                </StyledModalButton>
-              </SDModalMainButtonContainer>
-            </StyledActionButtonsContainer>
+                </style.StyledModalButton>
+              </style.SDModalMainButtonContainer>
+            </style.StyledActionButtonsContainer>
           </Modal.Actions>
-        </StyledModalCard>
+        </style.StyledModalCard>
       </Modal>
     );
   }
