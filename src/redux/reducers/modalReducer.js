@@ -1,10 +1,10 @@
 import * as types from '../actions/actionTypes';
 
-export function modal(activeModal = 'Modal2', action) {
+export function modal(state = { activeModal: null }, action) {
   switch (action.type) {
     case types.RENDER_MODAL:
-      return action.payolad;
+      return { ...state, activeModal: action.payload };
     default:
-      return activeModal;
+      return state;
   }
 }
