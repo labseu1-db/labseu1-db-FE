@@ -128,7 +128,7 @@ class Login extends Component {
                 onClick={this.togglePassword}
               />
             </StyledLabel>
-            <ForgotPasswordButton>Forgot Password?</ForgotPasswordButton>
+            <ForgotPasswordButton onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordButton>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
               <StyledButton

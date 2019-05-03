@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Button, Icon } from 'semantic-ui-react';
+import {Link} from 'react-router-dom'
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -12,7 +13,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn,
+  StyledLowerSignInPasswordless,
   StyledIcon
 } from './styled-components/StyledLogin';
 import {
@@ -25,7 +26,7 @@ import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
 import showPassword from '../images/showPassword.svg';
 
-class PasswordlessSubmit extends Component {
+class ForgotPassword extends Component {
   static propTypes = {
         firestore: PropTypes.shape({
             add: PropTypes.func.isRequired
@@ -37,19 +38,23 @@ class PasswordlessSubmit extends Component {
         error: null
     }
 
-    // const INITIAL_STATE = {
-    //   loginEmail: '',
-    //   error: null
-    // };
+    INITIAL_STATE = {
+      loginEmail: '',
+      error: null
+    };
 
     submitHandler = (email, event) => {
+        console.log(email)
         event.preventDefault();
         this.props.firebase.resetPassword(email).then(
             () => {
-                console.log('it worked')
+                this.props.history.push('/login');
             }
-        ).catch(error => {
-            console.log(error);
+        ).then(() => {
+            alert('Email has been sent!');
+        })
+        .catch(error => {
+            this.setState({error: error});
         })
     }
 
@@ -66,13 +71,6 @@ class PasswordlessSubmit extends Component {
     render() {
     const { loginEmail } = this.state;
     const isInvalid = loginEmail === '';
-
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-    if (!isEmpty(this.props.auth)) {
-      return null;
-    }
     return (
       <StyledLogin>
         <StyledLoginCon>
@@ -87,8 +85,7 @@ class PasswordlessSubmit extends Component {
                 placeholder='tonystark@example.com'
               />
             </StyledLabel>
-            <StyledLowerSignIn>
-              <StyledLink />
+            <StyledLowerSignInPasswordless>
               <StyledSendEmailButton
                 disabled={isInvalid}
                 onClick={event => {
@@ -97,7 +94,7 @@ class PasswordlessSubmit extends Component {
               >
                 Send Email &#62;
               </StyledSendEmailButton>
-            </StyledLowerSignIn>
+            </StyledLowerSignInPasswordless>
           </StyledForm>
           <StyledLink to='/login'>Back to Log In</StyledLink>
         </StyledLoginCon>
@@ -108,22 +105,17 @@ class PasswordlessSubmit extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
+  return {};
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
-};
+//As we are not dispatching anything - this is empty
+const mapDispatchToProps = {};
 
+//Connect to Firestore
 export default compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firebaseConnect()
-)(PasswordlessSubmit);
+  firestoreConnect()
+)(ForgotPassword);
