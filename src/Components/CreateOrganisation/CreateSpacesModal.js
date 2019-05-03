@@ -30,7 +30,7 @@ export default class CreateSpacesModal extends Component {
         <style.StyledProgressContainer>
           <style.StyledProgressDot className="active" />
           <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot />
+          <style.StyledProgressDot className="active" />
           <style.StyledProgressDot />
         </style.StyledProgressContainer>
         <style.StyledModalH1>
@@ -75,7 +75,7 @@ export default class CreateSpacesModal extends Component {
                     e.preventDefault();
                     this.props.showModal('InviteYourTeamModal');
                   }}>
-                  Skip
+                  Back
                 </style.StyledModalButton>
               </style.SDModalMainButtonContainer>
             </style.StyledActionButtonsContainer>

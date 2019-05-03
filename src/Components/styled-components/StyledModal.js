@@ -89,7 +89,7 @@ export const StyledModalAdder = styled.div`
 `;
 
 export const StyledModalInput = styled.input`
-  width: 100%;
+  width: 98%;
   border: none;
   border-bottom: 2px solid #bdc3c9;
   padding: 10px 0 5px 0;
@@ -173,4 +173,17 @@ export const StyledSpacesModalCard = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+`;
+
+export const CharacterLeft = styled.div`
+  width: 2%;
+  padding-left: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #bdc3c9;
+`;
+
+export const StyledLableContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;

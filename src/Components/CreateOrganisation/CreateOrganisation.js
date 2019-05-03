@@ -6,14 +6,23 @@ import { firebaseConnect } from 'react-redux-firebase';
 import { showModal } from '../../redux/actions/actionCreators';
 
 import CreateOrganisationModal from './CreateOrganisationModal';
-import InviteYourTeamModal from './CreateSpacesModal';
-import CreateSpacesModal from './InviteYourTeamModal';
+import InviteYourTeamModal from './InviteYourTeamModal';
+import CreateSpacesModal from './CreateSpacesModal';
 
 class CreateOrganisation extends Component {
+  state = {
+    orgName: null
+  };
+
+  addOrgName = name => {
+    this.setState({ name });
+  };
   render() {
     return (
       <div>
-        {this.props.activeModal === 'CreateOrganisationModal' && <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
+        {this.props.activeModal === 'CreateOrganisationModal' && (
+          <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addOrgName={this.addOrgName} />
+        )}
         {this.props.activeModal === 'InviteYourTeamModal' && <InviteYourTeamModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
         {this.props.activeModal === 'CreateSpacesModal' && <CreateSpacesModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
         <button
