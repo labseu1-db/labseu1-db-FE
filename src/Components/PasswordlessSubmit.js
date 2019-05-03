@@ -11,7 +11,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn
+  StyledLowerSignInPasswordless
 } from './styled-components/StyledLogin';
 import {
   StyledH1,
@@ -48,7 +48,7 @@ class PasswordlessSubmit extends Component {
   passwordlessSignIn = (loginEmail, event) => {
     event.preventDefault();
     const actionCodeSettings = {
-      url: 'http://localhost:3000/passwordlesscheck',
+      url: 'https://labseu1-db-test2.firebaseapp.com/passwordlesscheck',
       handleCodeInApp: true
     };
 
@@ -63,6 +63,9 @@ class PasswordlessSubmit extends Component {
       .sendSignInLinkToEmail(loginEmail, actionCodeSettings)
       .then(function() {
         window.localStorage.setItem('emailForSignIn', loginEmail);
+      })
+      .then(() => {
+        alert(`Email sent to ${loginEmail}`);
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -96,8 +99,8 @@ class PasswordlessSubmit extends Component {
                 placeholder='tonystark@example.com'
               />
             </StyledLabel>
-            <StyledLowerSignIn>
-              <StyledLink />
+            <StyledLowerSignInPasswordless>
+              {/* <StyledLink /> */}
               <StyledSendEmailButton
                 disabled={isInvalid}
                 onClick={event => {
@@ -106,7 +109,7 @@ class PasswordlessSubmit extends Component {
               >
                 Send Email &#62;
               </StyledSendEmailButton>
-            </StyledLowerSignIn>
+            </StyledLowerSignInPasswordless>
           </StyledForm>
           <StyledLink to='/login'>Back to Log In with Password</StyledLink>
         </StyledLoginCon>
