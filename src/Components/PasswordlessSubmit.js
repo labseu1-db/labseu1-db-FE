@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -12,8 +11,7 @@ import {
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn,
-  StyledIcon
+  StyledLowerSignIn
 } from './styled-components/StyledLogin';
 import {
   StyledH1,
@@ -22,8 +20,6 @@ import {
 } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
-import { PasswordlessButton } from './styled-components/StyledButton';
-import showPassword from '../images/showPassword.svg';
 
 class PasswordlessSubmit extends Component {
   static propTypes = {
