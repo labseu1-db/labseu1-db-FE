@@ -153,7 +153,7 @@ class Login extends Component {
 										});
 								}}
 							>
-								Sign In &#62;
+								Sign In
 							</StyledButton>
 						</StyledLowerSignIn>
 					</StyledForm>
