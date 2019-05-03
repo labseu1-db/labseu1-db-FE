@@ -41,7 +41,6 @@ export const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;
   text-align: center;
   font-weight: 300;
-  color: black;
 `;
 
 export const StyledModalCard = styled.div`

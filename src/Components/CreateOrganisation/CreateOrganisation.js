@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import Spinner from '../semantic-components/Spinner';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { firebaseConnect } from 'react-redux-firebase';
+
+import CreateOrganisationModal from './CreateOrganisationModal';
+import InviteYourTeamModal from './InviteYourTeamModal';
+import CreateSpacesModal from './CreateSpacesModal';
 
 class CreateOrganisation extends Component {
-  state = { open: false };
-
-  open = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
-
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  state = { whichModalShouldBeOpened: '' };
 
   render() {
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
+    if (this.props.modal === 'Modal1') {
+      return <CreateOrganisationModal shoudlBeOpen={true} changeModal={this.changeModal} />;
+    }
+    if (this.props.modal === 'Modal2') {
+      return <InviteYourTeamModal shoudlBeOpen={true} />;
+    }
+    if (this.state.whichModalShouldBeOpened === 'Modal3') {
+      return <CreateSpacesModal shoudlBeOpen={true} />;
     }
     return (
-      <div>
-        <button>Create organisation</button>
-      </div>
+      <button
+        onClick={() => {
+          this.setState({ whichModalShouldBeOpened: 'Modal1' });
+        }}>
+        Click
+      </button>
     );
   }
 }
@@ -30,7 +34,8 @@ class CreateOrganisation extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    modal: state.modal
   };
 };
 

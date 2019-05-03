@@ -15,26 +15,9 @@ import {
 } from '../styled-components/StyledModal';
 
 export default class CreateSpacesModals extends Component {
-  state = { open: false };
-
-  open = () => this.setState({ open: true });
-  close = () => this.setState({ open: false });
-
   render() {
-    const { open } = this.state;
-
     return (
-      <Modal
-        open={open}
-        basic
-        size="tiny"
-        onOpen={this.open}
-        onClose={this.close}
-        trigger={
-          <SDModalMainButtonContainer>
-            <StyledModalButton>Next</StyledModalButton>
-          </SDModalMainButtonContainer>
-        }>
+      <Modal closeOnEscape={true} open={this.props.shoudlBeOpen} basic size="tiny">
         <StyledProgressContainer>
           <StyledProgressDot className="active" />
           <StyledProgressDot className="active" />

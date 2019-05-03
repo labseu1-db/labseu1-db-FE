@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
-import CreateOrganisationModal from './Components/CreateOrganisation/CreateOrganisationModal';
+import CreateOrganisation from './Components/CreateOrganisation/CreateOrganisation';
 
 class App extends Component {
   render() {
@@ -15,7 +15,7 @@ class App extends Component {
       <div>
         <Route exact path="/register" render={props => <Register {...props} />} />
         <Route exact path="/login" render={props => <Login {...props} />} />
-        <Route exact path="/createorganisation" render={props => <CreateOrganisationModal {...props} />} />
+        <Route exact path="/createorganisation" render={props => <CreateOrganisation {...props} />} />
         <Route exact path="/homescreen" render={props => <FakeHome {...props} />} />
       </div>
     );
