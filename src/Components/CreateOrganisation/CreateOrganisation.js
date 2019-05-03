@@ -6,8 +6,8 @@ import { firebaseConnect } from 'react-redux-firebase';
 import { showModal } from '../../redux/actions/actionCreators';
 
 import CreateOrganisationModal from './CreateOrganisationModal';
-import InviteYourTeamModal from './InviteYourTeamModal';
-import CreateSpacesModal from './CreateSpacesModal';
+import InviteYourTeamModal from './CreateSpacesModal';
+import CreateSpacesModal from './InviteYourTeamModal';
 
 class CreateOrganisation extends Component {
   render() {

@@ -21,6 +21,13 @@ export const StyledModalText = styled.div`
   padding: 25px;
   color: black;
 `;
+
+export const StyledModalTextInForm = styled.div`
+  line-height: 1.6;
+  color: black;
+  padding-bottom: 25px;
+`;
+
 export const StyledProgressContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -55,7 +62,7 @@ export const StyledModalForm = styled.form`
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
-  .email-heading {
+  .heading {
     padding-bottom: 40px;
   }
 `;
@@ -76,7 +83,7 @@ export const StyledModalAdder = styled.div`
   font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #6c48f2;
+  color: #5c4df2;
   padding: 0 25px;
   cursor: pointer;
 `;
@@ -85,16 +92,14 @@ export const StyledModalInput = styled.input`
   width: 100%;
   border: none;
   border-bottom: 2px solid #bdc3c9;
-  padding: 10px 0;
+  padding: 10px 0 5px 0;
   margin-bottom: 10px;
-  .email-input {
-    &::placeholder {
-      font-size: 1.2rem;
-    }
+  &::placeholder {
+    font-size: 1.2rem;
   }
 
   &:focus {
-    border-bottom: 2px solid #6c48f2;
+    border-bottom: 2px solid #5c4df2;
     outline: none;
   }
 `;
@@ -107,16 +112,16 @@ export const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #6c48f2;
+  background-color: #5c4df2;
 `;
 
 export const SDModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #6c48f2;
+    color: #5c4df2;
     background-color: white;
-    border: 2px solid #6c48f2;
+    border: 2px solid #5c4df2;
   }
 `;
 
@@ -124,4 +129,48 @@ export const StyledActionButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: row-reverse;
+`;
+
+export const StyledModalSpacesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  .eggplant {
+    background-color: #403b4f;
+  }
+  .darkgreen {
+    background-color: #2e7c87;
+  }
+  .violet {
+    background-color: #5c44f2;
+  }
+  .darkolive {
+    background-color: #36484e;
+  }
+  .yellow {
+    background-color: #d99e49;
+  }
+  .red {
+    background-color: #f26551;
+  }
+  .lightblue {
+    background-color: #19a9e3;
+  }
+  .green {
+    background-color: #19bd98;
+  }
+`;
+
+export const StyledSpacesModalCard = styled.div`
+  width: 23%;
+  color: white;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;

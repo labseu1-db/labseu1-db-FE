@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
-import CreateSpacesModal from './CreateSpacesModal';
-
 export default class InviteYourTeamModal extends Component {
   state = { open: false, inputs: ['input-0'] };
 
@@ -14,7 +12,7 @@ export default class InviteYourTeamModal extends Component {
 
   render() {
     return (
-      <Modal closeOnEscape={true} open={this.props.shoudlBeOpen} basic size="tiny">
+      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
         <style.StyledProgressContainer>
           <style.StyledProgressDot className="active" />
           <style.StyledProgressDot className="active" />
@@ -27,7 +25,7 @@ export default class InviteYourTeamModal extends Component {
         <style.StyledModalCard>
           <Modal.Content>
             <style.StyledModalForm>
-              <style.StyledModalLabel className="email-heading">Email addresses</style.StyledModalLabel>
+              <style.StyledModalLabel className="heading">Email addresses</style.StyledModalLabel>
               <style.StyledModalInput placeholder="Email address" />
               <style.StyledModalInput placeholder="Email address" />
               <style.StyledModalInput placeholder="Email address" />

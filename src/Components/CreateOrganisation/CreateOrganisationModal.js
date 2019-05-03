@@ -5,7 +5,7 @@ import * as style from '../styled-components/StyledModal';
 export default class CreateCompanyModal extends Component {
   render() {
     return (
-      <Modal closeOnEscape={true} open={this.props.shoudlBeOpen} basic size="tiny">
+      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
         <style.StyledProgressContainer>
           <style.StyledProgressDot className="active" />
           <style.StyledProgressDot />
