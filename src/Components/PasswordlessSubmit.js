@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
-import { Link } from 'react-router-dom';
-import { Form } from 'semantic-ui-react';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { Button, Icon } from 'semantic-ui-react';
 
+import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
-  StyledFormDiv,
-  StyledForgotPasswordPage,
-  StyledParagraph,
+  StyledLogin,
+  StyledForm,
   StyledInput,
-  InputDiv
-} from './styled-components/ForgotPasswordStyled';
-import { StyledH1, StyledPLabel } from './styled-components/StyledText';
-import { StyledLabel } from './styled-components/StyledLogin';
-import { StyledButton } from './styled-components/StyledButton';
+  StyledLabel,
+  StyledLoginCon,
+  StyledLowerSignIn,
+  StyledIcon
+} from './styled-components/StyledLogin';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
+import LoginAnimation from './animations/LoginAnimation';
+import { PasswordlessButton } from './styled-components/StyledButton';
+import showPassword from '../images/showPassword.svg';
 
-class PasswordlessSubmit extends React.Component {
+class PasswordlessSubmit extends Component {
+  static propTypes = {
+    auth: PropTypes.object,
+    firebase: PropTypes.shape({
+      login: PropTypes.func.isRequired,
+      logout: PropTypes.func.isRequired
+    })
+  };
+
   state = {
-    emailAddress: '',
+    loginEmail: '',
     error: null
   };
 
@@ -28,6 +44,10 @@ class PasswordlessSubmit extends React.Component {
       this.props.history.push('/homescreen');
     }
   }
+
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   passwordlessSignIn = (loginEmail, event) => {
     event.preventDefault();
@@ -56,15 +76,9 @@ class PasswordlessSubmit extends React.Component {
       });
   };
 
-  changeInput = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-
   render() {
-    const { emailAddress } = this.state;
-    const isInvalid = emailAddress === '';
+    const { loginEmail } = this.state;
+    const isInvalid = loginEmail === '';
 
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -73,49 +87,52 @@ class PasswordlessSubmit extends React.Component {
       return null;
     }
     return (
-      <StyledForgotPasswordPage>
-        <StyledH1>Passwordless Sign In</StyledH1>
-        <StyledFormDiv>
-          <StyledParagraph>
-            {
-              "Please enter your email address and\nwe'll send you a link to log in"
-            }
-          </StyledParagraph>
-          <StyledLabel>
-            <StyledPLabel>Email Address</StyledPLabel>
-            <StyledInput
-              type='email'
-              name='emailAddress'
-              placeholder='tonystark@example.com'
-              onChange={this.changeInput}
-            />
-          </StyledLabel>
-          <StyledButton
-            disabled={isInvalid}
-            type='submit'
-            onClick={event =>
-              this.passwordlessSignIn(this.state.emailAddress, event)
-            }
-          >
-            Send Email
-          </StyledButton>
-        </StyledFormDiv>
-        <Link to='/login'>Back to Sign In</Link>
-      </StyledForgotPasswordPage>
+      <StyledLogin>
+        <StyledLoginCon>
+          <StyledH1>Passwordless Sign In</StyledH1>
+          <StyledForm>
+            <StyledLabel>
+              <StyledPLabel>Email Address</StyledPLabel>
+              <StyledInput
+                name='loginEmail'
+                type='email'
+                onChange={this.handleInputChange}
+                placeholder='tonystark@example.com'
+              />
+            </StyledLabel>
+            <StyledLowerSignIn>
+              <StyledLink />
+              <StyledSendEmailButton
+                disabled={isInvalid}
+                onClick={event => {
+                  this.passwordlessSignIn(this.state.loginEmail, event);
+                }}
+              >
+                Send Email &#62;
+              </StyledSendEmailButton>
+            </StyledLowerSignIn>
+          </StyledForm>
+          <StyledLink to='/login'>Back to Log In with Password</StyledLink>
+        </StyledLoginCon>
+        <LoginAnimation />
+      </StyledLogin>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
   };
 };
 
-//As we are not dispatching anything - this is empty
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
+};
 
-//Connect to Firestore
 export default compose(
   connect(
     mapStateToProps,
