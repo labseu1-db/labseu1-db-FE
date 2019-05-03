@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
-import {Link} from 'react-router-dom'
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -13,18 +11,14 @@ import {
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignInPasswordless,
-  StyledIcon
+  StyledLowerSignInPasswordless
 } from './styled-components/StyledLogin';
 import {
   StyledH1,
   StyledLink,
   StyledPLabel
 } from './styled-components/StyledText';
-import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
-import { PasswordlessButton } from './styled-components/StyledButton';
-import showPassword from '../images/showPassword.svg';
 
 class ForgotPassword extends Component {
   static propTypes = {
