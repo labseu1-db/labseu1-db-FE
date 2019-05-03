@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firebaseConnect } from 'react-redux-firebase';
+import { Route } from 'react-router-dom';
 
-// import AddCompany from './Components/AddCompany';
-// import CompanyList from './Components/CompanyList';
-import SidebarEndpoint from './Endpoints/SidebarEndpoint';
-import HomeScreenEndpoint from './Endpoints/HomeScreenEndpoint';
-import UserProfileEndpoint from './Endpoints/UserProfileEndpoint';
-import OrganisationProfileEndpoint from './Endpoints/OrganisationProfileEndpoint';
-import SpaceEndpoint from './Endpoints/SpaceEndpoint';
-import ThreadEndpoint from './Endpoints/ThreadEndpoint';
-import CommentEndpoint from './Endpoints/CommentEndpoint';
+import Register from './Components/Register';
+import Login from './Components/Login';
+import FakeHome from './Components/FakeHome';
+import PasswordlessCheck from './Components/PasswordlessCheck';
 
 class App extends Component {
-  render() {
-    return (
-      <SDApp>
-        <SidebarEndpoint />
-        <UserProfileEndpoint />
-        <OrganisationProfileEndpoint />
-        <SpaceEndpoint />
-        <ThreadEndpoint />
-        <CommentEndpoint />
-        <HomeScreenEndpoint />
-      </SDApp>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Route exact path='/register' render={(props) => <Register {...props} />} />
+				<Route exact path='/login' render={(props) => <Login {...props} />} />
+				<Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
+				<Route exact path='/passwordlesscheck' render={(props) => <PasswordlessCheck {...props} />} />
+			</div>
+		);
+	}
 }
 
-const SDApp = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: center;
-`;
+const mapStateToProps = (state) => {
+	return {
+		auth: state.firebase.auth,
+		profile: state.firebase.profile
+	};
+};
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+	};
+};
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
