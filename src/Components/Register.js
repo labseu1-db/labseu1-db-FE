@@ -51,19 +51,21 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createAndLogInNewUser = ({ email, password, fullName }) => {
+  createAndLogInNewUser = e => {
+    const { email, password, fullName } = this.state;
+    const INITIAL_STATE = {
+      email: '',
+      password: '',
+      fullName: '',
+      error: null
+    };
+    e.preventDefault();
     this.props.firebase
       .createUser({ email, password }, { fullName, email })
       .then(() => {
         this.props.firebase.login({ email, password });
       })
       .catch(error => {
-        const INITIAL_STATE = {
-          email: '',
-          password: '',
-          fullName: '',
-          error: null
-        };
         this.setState({ ...INITIAL_STATE, error });
       });
   };
@@ -82,7 +84,7 @@ class Register extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Register</StyledH1>
-          <StyledForm>
+          <StyledForm onSubmit={this.createAndLogInNewUser}>
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
               <StyledInput
@@ -118,14 +120,7 @@ class Register extends Component {
               <StyledLink to='/login'> Already have an account? </StyledLink>
               <StyledButton
                 disabled={isInvalid}
-                onClick={e => {
-                  e.preventDefault();
-                  this.createAndLogInNewUser({
-                    email: this.state.email,
-                    password: this.state.password,
-                    fullName: this.state.fullName
-                  });
-                }}
+                onClick={this.createAndLogInNewUser}
               >
                 Register
               </StyledButton>

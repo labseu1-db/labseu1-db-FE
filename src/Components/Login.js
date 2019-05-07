@@ -65,9 +65,6 @@ class Login extends Component {
         email: this.state.loginEmail,
         password: this.state.loginPassword
       })
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-      })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       });

@@ -89,7 +89,11 @@ class PasswordlessSubmit extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Passwordless Sign In</StyledH1>
-          <StyledForm>
+          <StyledForm
+            onSubmit={event => {
+              this.passwordlessSignIn(this.state.loginEmail, event);
+            }}
+          >
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
@@ -101,7 +105,6 @@ class PasswordlessSubmit extends Component {
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
-              {/* <StyledLink /> */}
               <StyledSendEmailButton
                 disabled={isInvalid}
                 onClick={event => {
