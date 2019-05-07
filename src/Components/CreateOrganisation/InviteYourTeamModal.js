@@ -3,11 +3,21 @@ import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
 export default class InviteYourTeamModal extends Component {
-  state = { open: false, inputs: ['input-0'] };
+  state = { open: false, inputs: ['', '', '', ''] };
 
   appendInput = () => {
-    let newInput = `input-${this.state.inputs.length}`;
-    this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+    this.setState(prevState => ({ inputs: prevState.inputs.concat(['']) }));
+  };
+
+  addEmail = (email, index) => {
+    this.setState(pr => ({
+      inputs: pr.inputs.map((value, i) => {
+        if (i === index) {
+          return email;
+        }
+        return value;
+      })
+    }));
   };
 
   render() {
@@ -26,12 +36,16 @@ export default class InviteYourTeamModal extends Component {
           <Modal.Content>
             <style.StyledModalForm>
               <style.StyledModalLabel className="heading">Email addresses</style.StyledModalLabel>
-              <style.StyledModalInput placeholder="Email address" />
-              <style.StyledModalInput placeholder="Email address" />
-              <style.StyledModalInput placeholder="Email address" />
               <div id="dynamicInput">
-                {this.state.inputs.map(input => (
-                  <style.StyledModalInput placeholder="Email address" key={input} />
+                {this.state.inputs.map((input, i) => (
+                  <style.StyledModalInput
+                    placeholder="Email address"
+                    value={this.state.inputs[i]}
+                    onChange={e => {
+                      this.addEmail(e.target.value, i);
+                    }}
+                    key={i}
+                  />
                 ))}
               </div>
             </style.StyledModalForm>
@@ -42,6 +56,7 @@ export default class InviteYourTeamModal extends Component {
               <style.StyledModalButton
                 onClick={e => {
                   e.preventDefault();
+                  this.props.addTeamEmailAddress(this.state.inputs);
                   this.props.showModal('CreateSpacesModal');
                 }}>
                 Next

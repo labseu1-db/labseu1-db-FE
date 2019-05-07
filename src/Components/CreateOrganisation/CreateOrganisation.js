@@ -11,11 +11,16 @@ import CreateSpacesModal from './CreateSpacesModal';
 
 class CreateOrganisation extends Component {
   state = {
-    orgName: null
+    orgName: null,
+    teamEmailAddress: []
   };
 
   addOrgName = name => {
-    this.setState({ name });
+    this.setState({ orgName: name });
+  };
+
+  addTeamEmailAddress = emails => {
+    this.setState({ teamEmailAddress: emails });
   };
   render() {
     return (
@@ -23,7 +28,9 @@ class CreateOrganisation extends Component {
         {this.props.activeModal === 'CreateOrganisationModal' && (
           <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addOrgName={this.addOrgName} />
         )}
-        {this.props.activeModal === 'InviteYourTeamModal' && <InviteYourTeamModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
+        {this.props.activeModal === 'InviteYourTeamModal' && (
+          <InviteYourTeamModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addTeamEmailAddress={this.addTeamEmailAddress} />
+        )}
         {this.props.activeModal === 'CreateSpacesModal' && <CreateSpacesModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
         <button
           onClick={e => {

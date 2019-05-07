@@ -4,14 +4,14 @@ import * as style from '../styled-components/StyledModal';
 
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
-    { name: 'Product', color: 'eggplant' },
-    { name: 'Engineering', color: 'darkgreen' },
-    { name: 'Recruiting', color: 'violet' },
-    { name: 'Design', color: 'darkolive' },
-    { name: 'Marketing', color: 'yellow' },
-    { name: 'Reviews', color: 'red' },
-    { name: 'Announcements', color: 'lightblue' },
-    { name: 'Research', color: 'green' }
+    { name: 'Product', color: 'eggplant', active: false },
+    { name: 'Engineering', color: 'darkgreen', active: false },
+    { name: 'Recruiting', color: 'violet', active: false },
+    { name: 'Design', color: 'darkolive', active: false },
+    { name: 'Marketing', color: 'yellow', active: false },
+    { name: 'Reviews', color: 'red', active: false },
+    { name: 'Announcements', color: 'lightblue', active: false },
+    { name: 'Research', color: 'green', active: false }
   ];
 
   state = {
@@ -47,7 +47,12 @@ export default class CreateSpacesModal extends Component {
               <style.StyledModalSpacesContainer>
                 {this.spacesExamples.map(s => {
                   return (
-                    <style.StyledSpacesModalCard className={s.color} key={s.name} onClick={() => this.addSpace(s.name)}>
+                    <style.StyledSpacesModalCard
+                      className={`${s.active && 'border'} ${s.color}`}
+                      key={s.name}
+                      onClick={() => {
+                        this.addSpace(s.name);
+                      }}>
                       {s.name}
                     </style.StyledSpacesModalCard>
                   );
