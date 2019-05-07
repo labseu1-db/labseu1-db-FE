@@ -14,20 +14,6 @@ export const StyledButton = styled.button`
   }
 `;
 
-export const StyledSendEmailButton = styled.button`
-  font-size: 1.3rem;
-  width: 150px;
-  padding: 5px 15px;
-  background-color: #6c48f2;
-  color: white;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  &:disabled {
-    background-color: lightgray;
-  }
-`;
-
 export const ForgotPasswordButton = styled.button`
   font-family: 'Open Sans', sans-serif;
   padding-right: 75px;
@@ -39,6 +25,20 @@ export const ForgotPasswordButton = styled.button`
   cursor: pointer;
   &:hover {
     color: #6c48f2;
+  }
+`;
+
+export const StyledSendEmailButton = styled.button`
+  font-size: 1.3rem;
+  width: 150px;
+  padding: 5px 15px;
+  background-color: #6c48f2;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  &:disabled {
+    background-color: lightgray;
   }
 `;
 
