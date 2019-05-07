@@ -62,36 +62,9 @@ class Login extends Component {
     }
   };
 
-  passwordlessSignIn = loginEmail => {
-    const actionCodeSettings = {
-      url: 'http://localhost:3000/passwordlesscheck',
-      handleCodeInApp: true
-    };
-
-    const INITIAL_STATE = {
-      loginEmail: '',
-      loginPassword: '',
-      error: null
-    };
-
-    this.props.firebase
-      .auth()
-      .sendSignInLinkToEmail(loginEmail, actionCodeSettings)
-      .then(function() {
-        window.localStorage.setItem('emailForSignIn', loginEmail);
-      })
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-      })
-      .catch(error => {
-        this.setState({ error: error.message }); // not working
-      });
-  };
-
   render() {
     const { loginEmail, loginPassword } = this.state;
     const isInvalid = loginPassword === '' || loginEmail === '';
-    const passwordlessIsInvalid = loginEmail === '';
 
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -169,8 +142,7 @@ class Login extends Component {
             <Icon name='google plus' /> Sign in with Google
           </Button>
           <PasswordlessButton
-            disabled={passwordlessIsInvalid}
-            onClick={() => this.passwordlessSignIn(this.state.loginEmail)}
+            onClick={() => this.props.history.push('/passwordlesssubmit')}
           >
             Email Me a Link to Sign In
           </PasswordlessButton>
