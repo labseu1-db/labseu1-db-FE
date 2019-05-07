@@ -19,6 +19,7 @@ import {
   StyledPLabel
 } from './styled-components/StyledText';
 import LoginAnimation from './animations/LoginAnimation';
+import {Icon, Message} from 'semantic-ui-react';
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -48,8 +49,12 @@ class ForgotPassword extends Component {
             alert('Email has been sent!');
         })
         .catch(error => {
-            this.setState({error: error});
-        })
+        const INITIAL_STATE = {
+          loginEmail: '',
+          error: null
+        };
+        this.setState({ ...INITIAL_STATE, error });
+        });
     }
 
     componentWillUpdate() {
@@ -69,19 +74,12 @@ class ForgotPassword extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
-          {this.state.error && 
-              <div className="ui negative message">
-                <i className="close icon" onClick={() => this.setState({error: null})}></i>
-                <div className="header">
-                  Invalid Credentials
-                </div>
-                <p>The email you typed in, doesn't exist</p>
-              </div>}
           <StyledForm>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
                 name='loginEmail'
+                value={this.state.loginEmail}
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
@@ -91,13 +89,19 @@ class ForgotPassword extends Component {
               <StyledSendEmailButton
                 disabled={isInvalid}
                 onClick={event => {
-                  this.submitHandler(this.state.loginEmail, event);
+                  this.submitHandler(this.state.loginEmail, event)
                 }}
               >
                 Send Email &#62;
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
           </StyledForm>
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <StyledLink to='/login'>Back to Log In</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />

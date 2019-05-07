@@ -63,7 +63,7 @@ class Register extends Component {
   };
 
   render() {
-    const { email, password, fullName, error } = this.state;
+    const { email, password, fullName} = this.state;
     const isInvalid = email === '' || password === '' || fullName === '';
 
     if (!isLoaded(this.props.auth)) {
