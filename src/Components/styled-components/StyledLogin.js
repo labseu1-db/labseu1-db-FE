@@ -59,6 +59,13 @@ export const StyledLowerSignIn = styled.div`
 	align-items: center;
 `;
 
+export const StyledLowerSignInPasswordless = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
 export const StyledIcon = styled.img`
 	height: 16px;
 	width: 16px;

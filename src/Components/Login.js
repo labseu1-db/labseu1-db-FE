@@ -61,123 +61,95 @@ class Login extends Component {
 		}
 	};
 
-	passwordlessSignIn = (loginEmail) => {
-		const actionCodeSettings = {
-			url: 'http://localhost:3000/passwordlesscheck',
-			handleCodeInApp: true
-		};
+  render() {
+    const { loginEmail, loginPassword } = this.state;
+    const isInvalid = loginPassword === '' || loginEmail === '';
 
-		const INITIAL_STATE = {
-			loginEmail: '',
-			loginPassword: '',
-			error: null
-		};
-
-		this.props.firebase
-			.auth()
-			.sendSignInLinkToEmail(loginEmail, actionCodeSettings)
-			.then(function() {
-				window.localStorage.setItem('emailForSignIn', loginEmail);
-			})
-			.then(() => {
-				this.setState({ ...INITIAL_STATE });
-			})
-			.catch((error) => {
-				this.setState({ error: error.message }); // not working
-			});
-	};
-
-	render() {
-		const { loginEmail, loginPassword } = this.state;
-		const isInvalid = loginPassword === '' || loginEmail === '';
-		const passwordlessIsInvalid = loginEmail === '';
-
-		if (!isLoaded(this.props.auth)) {
-			return <Spinner />;
-		}
-		if (!isEmpty(this.props.auth)) {
-			return null;
-		}
-		return (
-			<StyledLogin>
-				<StyledLoginCon>
-					<StyledH1>Sign in</StyledH1>
-					<StyledForm>
-						<StyledLabel>
-							<StyledPLabel>Email Address</StyledPLabel>
-							<StyledInput
-								name='loginEmail'
-								type='email'
-								onChange={this.handleInputChange}
-								placeholder='tonystark@example.com'
-							/>
-						</StyledLabel>
-						<StyledLabel>
-							<StyledPLabel>Password</StyledPLabel>
-							<StyledInput
-								id='typepass'
-								name='loginPassword'
-								type='password'
-								onChange={this.handleInputChange}
-								placeholder='········'
-							/>
-							<StyledIcon
-								id='passwordIcon'
-								src={showPassword}
-								alt='showPassword'
-								onClick={this.togglePassword}
-							/>
-						</StyledLabel>
-						<ForgotPasswordButton>Forgot Password?</ForgotPasswordButton>
-						<StyledLowerSignIn>
-							<StyledLink to='/register'> Don't have an account? </StyledLink>
-							<StyledButton
-								disabled={isInvalid}
-								onClick={(e) => {
-									const INITIAL_STATE = {
-										loginEmail: '',
-										loginPassword: '',
-										error: null
-									};
-									e.preventDefault();
-									this.props.firebase
-										.login({
-											email: this.state.loginEmail,
-											password: this.state.loginPassword
-										})
-										.then(() => {
-											this.setState({ ...INITIAL_STATE });
-										})
-										.catch((error) => {
-											this.setState({ error });
-										});
-								}}
-							>
-								Sign In
-							</StyledButton>
-						</StyledLowerSignIn>
-					</StyledForm>
-					<Button
-						color='google plus'
-						onClick={() =>
-							this.props.firebase.login({
-								provider: 'google',
-								type: 'popup'
-							})}
-					>
-						<Icon name='google plus' /> Sign in with Google
-					</Button>
-					<PasswordlessButton
-						disabled={passwordlessIsInvalid}
-						onClick={() => this.passwordlessSignIn(this.state.loginEmail)}
-					>
-						Email Me a Link to Sign In
-					</PasswordlessButton>
-				</StyledLoginCon>
-				<LoginAnimation />
-			</StyledLogin>
-		);
-	}
+    if (!isLoaded(this.props.auth)) {
+      return <Spinner />;
+    }
+    if (!isEmpty(this.props.auth)) {
+      return null;
+    }
+    return (
+      <StyledLogin>
+        <StyledLoginCon>
+          <StyledH1>Sign in</StyledH1>
+          <StyledForm>
+            <StyledLabel>
+              <StyledPLabel>Email Address</StyledPLabel>
+              <StyledInput
+                name='loginEmail'
+                type='email'
+                onChange={this.handleInputChange}
+                placeholder='tonystark@example.com'
+              />
+            </StyledLabel>
+            <StyledLabel>
+              <StyledPLabel>Password</StyledPLabel>
+              <StyledInput
+                id='typepass'
+                name='loginPassword'
+                type='password'
+                onChange={this.handleInputChange}
+                placeholder='········'
+              />
+              <StyledIcon
+                src={showPassword}
+                alt='showPassword'
+                onClick={this.togglePassword}
+              />
+            </StyledLabel>
+            <ForgotPasswordButton>Forgot Password?</ForgotPasswordButton>
+            <StyledLowerSignIn>
+              <StyledLink to='/register'> Don't have an account? </StyledLink>
+              <StyledButton
+                disabled={isInvalid}
+                onClick={e => {
+                  const INITIAL_STATE = {
+                    loginEmail: '',
+                    loginPassword: '',
+                    error: null
+                  };
+                  e.preventDefault();
+                  this.props.firebase
+                    .login({
+                      email: this.state.loginEmail,
+                      password: this.state.loginPassword
+                    })
+                    .then(() => {
+                      this.setState({ ...INITIAL_STATE });
+                    })
+                    .catch(error => {
+                      this.setState({ error });
+                    });
+                }}
+              >
+                Sign In &#62;
+              </StyledButton>
+            </StyledLowerSignIn>
+          </StyledForm>
+          <Button
+            color='google plus'
+            onClick={() =>
+              this.props.firebase.login({
+                provider: 'google',
+                type: 'popup'
+              })
+            }
+          >
+            <Icon name='google plus' /> Sign in with Google
+          </Button>
+          <PasswordlessButton
+            onClick={() => this.props.history.push('/passwordlesssubmit')}
+          >
+            Email Me a Link to Sign In
+          </PasswordlessButton>
+        </StyledLoginCon>
+        <LoginAnimation />
+      </StyledLogin>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {

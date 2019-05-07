@@ -14,6 +14,20 @@ export const StyledButton = styled.button`
 	}
 `;
 
+export const StyledSendEmailButton = styled.button`
+	font-size: 1.3rem;
+	width: 150px;
+	padding: 5px 15px;
+	background-color: var(--main-color);
+	color: white;
+	border-radius: 15px;
+	border: none;
+	cursor: pointer;
+	&:disabled {
+		background-color: var(--disabled-button);
+	}
+`;
+
 export const ForgotPasswordButton = styled.div`
 	font-family: 'Open Sans', sans-serif;
 	padding-left: 125px;
