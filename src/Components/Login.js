@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Message } from 'semantic-ui-react';
 
 import {
   StyledButton,
@@ -53,6 +53,23 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleLogIn = e => {
+    const INITIAL_STATE = {
+      loginEmail: '',
+      loginPassword: '',
+      error: null
+    };
+    e.preventDefault();
+    this.props.firebase
+      .login({
+        email: this.state.loginEmail,
+        password: this.state.loginPassword
+      })
+      .catch(error => {
+        this.setState({ ...INITIAL_STATE, error });
+      });
+  };
+
   togglePassword = () => {
     let temp = document.getElementById('typepass');
     if (temp.type === 'password') {
@@ -76,11 +93,12 @@ class Login extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Sign in</StyledH1>
-          <StyledForm>
+          <StyledForm onSubmit={this.handleLogIn}>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
                 name='loginEmail'
+                value={this.state.loginEmail}
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
@@ -91,6 +109,7 @@ class Login extends Component {
               <StyledInput
                 id='typepass'
                 name='loginPassword'
+                value={this.state.loginPassword}
                 type='password'
                 onChange={this.handleInputChange}
                 placeholder='········'
@@ -104,32 +123,17 @@ class Login extends Component {
             <ForgotPasswordButton onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordButton>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
-              <StyledButton
-                disabled={isInvalid}
-                onClick={e => {
-                  const INITIAL_STATE = {
-                    loginEmail: '',
-                    loginPassword: '',
-                    error: null
-                  };
-                  e.preventDefault();
-                  this.props.firebase
-                    .login({
-                      email: this.state.loginEmail,
-                      password: this.state.loginPassword
-                    })
-                    .then(() => {
-                      this.setState({ ...INITIAL_STATE });
-                    })
-                    .catch(error => {
-                      this.setState({ error });
-                    });
-                }}
-              >
+              <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
                 Sign In &#62;
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <Button
             color='google plus'
             onClick={() =>

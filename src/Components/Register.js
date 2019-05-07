@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Message } from 'semantic-ui-react';
 
 import { StyledButton } from './styled-components/StyledButton';
 import {
@@ -51,19 +51,27 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createAndLogInNewUser = ({ email, password, fullName }) => {
+  createAndLogInNewUser = e => {
+    const { email, password, fullName } = this.state;
+    const INITIAL_STATE = {
+      email: '',
+      password: '',
+      fullName: '',
+      error: null
+    };
+    e.preventDefault();
     this.props.firebase
       .createUser({ email, password }, { fullName, email })
       .then(() => {
         this.props.firebase.login({ email, password });
       })
       .catch(error => {
-        this.setState({ error });
+        this.setState({ ...INITIAL_STATE, error });
       });
   };
 
   render() {
-    const { email, password, fullName} = this.state;
+    const { email, password, fullName } = this.state;
     const isInvalid = email === '' || password === '' || fullName === '';
 
     if (!isLoaded(this.props.auth)) {
@@ -76,11 +84,12 @@ class Register extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Register</StyledH1>
-          <StyledForm>
+          <StyledForm onSubmit={this.createAndLogInNewUser}>
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
               <StyledInput
                 name='fullName'
+                value={this.state.fullName}
                 type='text'
                 onChange={this.handleInputChange}
                 placeholder='Tony Stark'
@@ -90,6 +99,7 @@ class Register extends Component {
               <StyledPLabel>Email</StyledPLabel>
               <StyledInput
                 name='email'
+                value={this.state.email}
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
@@ -99,6 +109,7 @@ class Register extends Component {
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
                 name='password'
+                value={this.state.password}
                 type='password'
                 onChange={this.handleInputChange}
                 placeholder='········'
@@ -109,20 +120,18 @@ class Register extends Component {
               <StyledLink to='/login'> Already have an account? </StyledLink>
               <StyledButton
                 disabled={isInvalid}
-                onClick={e => {
-                  e.preventDefault();
-                  this.createAndLogInNewUser({
-                    email: this.state.email,
-                    password: this.state.password,
-                    fullName: this.state.fullName
-                  })
-                }}
+                onClick={this.createAndLogInNewUser}
               >
                 Register
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
-
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <Button
             color='google plus'
             onClick={() =>
