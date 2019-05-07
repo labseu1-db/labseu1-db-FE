@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Message } from 'semantic-ui-react';
 
 import {
   StyledButton,
@@ -81,6 +81,7 @@ class Login extends Component {
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
                 name='loginEmail'
+                value={this.state.loginEmail}
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
@@ -91,6 +92,7 @@ class Login extends Component {
               <StyledInput
                 id='typepass'
                 name='loginPassword'
+                value={this.state.loginPassword}
                 type='password'
                 onChange={this.handleInputChange}
                 placeholder='········'
@@ -122,7 +124,7 @@ class Login extends Component {
                       this.setState({ ...INITIAL_STATE });
                     })
                     .catch(error => {
-                      this.setState({ error });
+                      this.setState({ ...INITIAL_STATE, error });
                     });
                 }}
               >
@@ -130,6 +132,12 @@ class Login extends Component {
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <Button
             color='google plus'
             onClick={() =>
