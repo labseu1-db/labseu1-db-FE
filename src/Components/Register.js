@@ -57,7 +57,9 @@ class Register extends Component {
       .then(() => {
         this.props.firebase.login({ email, password });
       })
-      .catch(err => console.log(err));
+      .catch(error => {
+        this.setState({ error });
+      });
   };
 
   render() {
@@ -113,9 +115,7 @@ class Register extends Component {
                     email: this.state.email,
                     password: this.state.password,
                     fullName: this.state.fullName
-                  }).catch(() => {
-                    this.setState({ error });
-                  });
+                  })
                 }}
               >
                 Register

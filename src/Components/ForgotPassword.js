@@ -69,6 +69,14 @@ class ForgotPassword extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
+          {this.state.error && 
+              <div className="ui negative message">
+                <i className="close icon" onClick={() => this.setState({error: null})}></i>
+                <div className="header">
+                  Invalid Credentials
+                </div>
+                <p>The email you typed in, doesn't exist</p>
+              </div>}
           <StyledForm>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
