@@ -39,7 +39,6 @@ class ForgotPassword extends Component {
     };
 
     submitHandler = (email, event) => {
-        console.log(email)
         event.preventDefault();
         this.props.firebase.resetPassword(email).then(
             () => {
