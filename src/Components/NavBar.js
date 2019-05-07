@@ -7,7 +7,7 @@ export default function NavBar() {
         <NavBarContainer>
             <InnerContainer className="nav-bar-top">
                 <InnerContainer className="nav-bar-user-information">
-                    <img src="http://lorempixel.com/640/480" />
+                    <img src="http://lorempixel.com/640/480" alt="user" />
                     <InnerContainer>
                       Full Name
                     </InnerContainer>
