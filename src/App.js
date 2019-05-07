@@ -7,32 +7,56 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
+import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 
 class App extends Component {
-	render() {
-		return (
-			<div>
-				<Route exact path='/register' render={(props) => <Register {...props} />} />
-				<Route exact path='/login' render={(props) => <Login {...props} />} />
-				<Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
-				<Route exact path='/passwordlesscheck' render={(props) => <PasswordlessCheck {...props} />} />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <Route
+          exact
+          path='/register'
+          render={props => <Register {...props} />}
+        />
+        <Route exact path='/login' render={props => <Login {...props} />} />
+        <Route
+          exact
+          path='/homescreen'
+          render={props => <FakeHome {...props} />}
+        />
+        <Route
+          exact
+          path='/passwordlesssubmit'
+          render={props => <PasswordlessSubmit {...props} />}
+        />
+        <Route
+          exact
+          path='/passwordlesscheck'
+          render={props => <PasswordlessCheck {...props} />}
+        />
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-	return {
-		auth: state.firebase.auth,
-		profile: state.firebase.profile
-	};
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-	};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(App);
