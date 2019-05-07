@@ -5,62 +5,61 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Button, Icon } from 'semantic-ui-react';
 
+import { StyledButton, ForgotPasswordButton } from './styled-components/StyledButton';
 import {
-  StyledButton,
-  ForgotPasswordButton
-} from './styled-components/StyledButton';
-import {
-  StyledLogin,
-  StyledForm,
-  StyledInput,
-  StyledLabel,
-  StyledLoginCon,
-  StyledLowerSignIn,
-  StyledIcon
+	StyledLogin,
+	StyledForm,
+	StyledInput,
+	StyledLabel,
+	StyledLoginCon,
+	StyledLowerSignIn,
+	StyledIcon
 } from './styled-components/StyledLogin';
-import {
-  StyledH1,
-  StyledLink,
-  StyledPLabel
-} from './styled-components/StyledText';
+import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
 import showPassword from '../images/showPassword.svg';
+import hidePassword from '../images/hidePassword.svg';
 
 class Login extends Component {
-  static propTypes = {
-    auth: PropTypes.object,
-    firebase: PropTypes.shape({
-      login: PropTypes.func.isRequired,
-      logout: PropTypes.func.isRequired
-    })
-  };
+	static propTypes = {
+		auth: PropTypes.object,
+		firebase: PropTypes.shape({
+			login: PropTypes.func.isRequired,
+			logout: PropTypes.func.isRequired
+		})
+	};
 
-  state = {
-    loginEmail: '',
-    loginPassword: '',
-    error: null
-  };
+	state = {
+		loginEmail: '',
+		loginPassword: '',
+		error: null
+	};
 
-  componentWillUpdate() {
-    if (!isEmpty(this.props.auth)) {
-      this.props.history.push('/homescreen');
-    }
-  }
+	componentWillUpdate() {
+		if (!isEmpty(this.props.auth)) {
+			this.props.history.push('/homescreen');
+		}
+	}
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+	handleInputChange = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
 
-  togglePassword = () => {
-    let temp = document.getElementById('typepass');
-    if (temp.type === 'password') {
-      temp.type = 'text';
-    } else {
-      temp.type = 'password';
-    }
-  };
+	togglePassword = () => {
+		let temp = document.getElementById('typepass');
+		let passwordIcon = document.getElementById('passwordIcon');
+		if (temp.type === 'password') {
+			temp.type = 'text';
+			passwordIcon.src = hidePassword;
+			passwordIcon.alt = 'hidePassword';
+		} else {
+			temp.type = 'password';
+			passwordIcon.src = showPassword;
+			passwordIcon.alt = 'showPassword';
+		}
+	};
 
   render() {
     const { loginEmail, loginPassword } = this.state;
@@ -153,23 +152,17 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
+const mapStateToProps = (state) => {
+	return {
+		auth: state.firebase.auth,
+		profile: state.firebase.profile
+	};
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+const mapDispatchToProps = (dispatch) => {
+	return {
+		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+	};
 };
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firebaseConnect()
-)(Login);
+export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Login);
