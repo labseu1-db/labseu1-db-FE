@@ -161,10 +161,13 @@ export const StyledModalSpacesContainer = styled.div`
   .green {
     background-color: #19bd98;
   }
+  .borderclass {
+    border: 2px solid #5c4df2;
+  }
 `;
 
 export const StyledSpacesModalCard = styled.div`
-  width: 23%;
+  width: 24%;
   color: white;
   padding: 20px;
   margin-bottom: 10px;

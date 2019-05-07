@@ -12,7 +12,8 @@ import CreateSpacesModal from './CreateSpacesModal';
 class CreateOrganisation extends Component {
   state = {
     orgName: null,
-    teamEmailAddress: []
+    teamEmailAddress: ['', '', '', ''],
+    createdSpaces: []
   };
 
   addOrgName = name => {
@@ -22,6 +23,11 @@ class CreateOrganisation extends Component {
   addTeamEmailAddress = emails => {
     this.setState({ teamEmailAddress: emails });
   };
+
+  addCreatedSpaces = spaces => {
+    this.setState({ createdSpaces: spaces });
+  };
+
   render() {
     return (
       <div>
@@ -29,9 +35,17 @@ class CreateOrganisation extends Component {
           <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addOrgName={this.addOrgName} />
         )}
         {this.props.activeModal === 'InviteYourTeamModal' && (
-          <InviteYourTeamModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addTeamEmailAddress={this.addTeamEmailAddress} />
+          <InviteYourTeamModal
+            shoudlBeOpen={true}
+            showModal={this.props.showModal}
+            activeModal={this.props.activeModal}
+            addTeamEmailAddress={this.addTeamEmailAddress}
+            teamEmailAddress={this.state.teamEmailAddress}
+          />
         )}
-        {this.props.activeModal === 'CreateSpacesModal' && <CreateSpacesModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} />}
+        {this.props.activeModal === 'CreateSpacesModal' && (
+          <CreateSpacesModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addCreatedSpaces={this.addCreatedSpaces} />
+        )}
         <button
           onClick={e => {
             e.preventDefault();

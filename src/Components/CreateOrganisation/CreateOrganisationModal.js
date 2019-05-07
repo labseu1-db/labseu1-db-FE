@@ -18,7 +18,6 @@ export default class CreateCompanyModal extends Component {
           <style.StyledProgressDot className="active" />
           <style.StyledProgressDot />
           <style.StyledProgressDot />
-          <style.StyledProgressDot />
         </style.StyledProgressContainer>
         <style.StyledModalH1>
           <Modal.Header content="Create an organisation" />

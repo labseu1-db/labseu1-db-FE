@@ -3,7 +3,7 @@ import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
 export default class InviteYourTeamModal extends Component {
-  state = { open: false, inputs: ['', '', '', ''] };
+  state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]] };
 
   appendInput = () => {
     this.setState(prevState => ({ inputs: prevState.inputs.concat(['']) }));
@@ -26,7 +26,6 @@ export default class InviteYourTeamModal extends Component {
         <style.StyledProgressContainer>
           <style.StyledProgressDot className="active" />
           <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot />
           <style.StyledProgressDot />
         </style.StyledProgressContainer>
         <style.StyledModalH1>
