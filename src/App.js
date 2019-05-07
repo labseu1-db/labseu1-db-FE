@@ -9,6 +9,7 @@ import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
+import ForgotPassword from './Components/ForgotPassword';
 
 class App extends Component {
   render() {
@@ -34,6 +35,11 @@ class App extends Component {
           exact
           path='/passwordlesscheck'
           render={props => <PasswordlessCheck {...props} />}
+        />
+        <Route
+          exact
+          path='/forgotPassword'
+          render={props => <ForgotPassword {...props} />}
         />
       </div>
     );
