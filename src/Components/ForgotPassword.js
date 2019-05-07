@@ -39,7 +39,6 @@ class ForgotPassword extends Component {
     };
 
     submitHandler = (email, event) => {
-        console.log(email)
         event.preventDefault();
         this.props.firebase.resetPassword(email).then(
             () => {
@@ -74,7 +73,10 @@ class ForgotPassword extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
-          <StyledForm>
+          <StyledForm onSubmit={event => {
+            this.submitHandler(this.state.loginEmail, event)
+          }}
+          >
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
