@@ -14,7 +14,8 @@
 		"redux-firestore": "0.7.3",
 		"semantic-ui-css": "^2.4.1",
 		"semantic-ui-react": "^0.86.0",
-		"styled-components": "^4.2.0"
+		"styled-components": "^4.2.0",
+		"uuid": "^3.3.2"
 	},
 	"scripts": {
 		"start": "react-scripts start",
@@ -26,8 +27,16 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
-		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	},
 	"devDependencies": {
 		"eslint": "^5.16.0",
