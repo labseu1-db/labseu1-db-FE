@@ -5,15 +5,16 @@ import { Icon } from 'semantic-ui-react';
 export default function NavBar() {
 	return (
 		<NavBarContainer>
-			<InnerContainer className='nav-bar-top'>
-				<InnerContainer className='nav-bar-user-information'>
-					<img src='http://lorempixel.com/640/480' alt='user' />
+			<HeaderContainer className='nav-bar-user-information'>
+				<InnerContainerHorizontal>
+					<StyledImage src='http://lorempixel.com/640/480' alt='user' />
 					<InnerContainer>Full Name</InnerContainer>
-				</InnerContainer>
-				<InnerContainer className='notification-icons'>
+					<Icon name='arrow down' />
+				</InnerContainerHorizontal>
+				<div>
 					<Icon name='cog' />
-				</InnerContainer>
-			</InnerContainer>
+				</div>
+			</HeaderContainer>
 			<InnerContainer className='nav-bar-main-section'>
 				<InnerContainer className='home-screen-link'>
 					<Icon name='home' />
@@ -33,14 +34,30 @@ export default function NavBar() {
 	);
 }
 
-const InnerContainer = styled.div`
+const HeaderContainer = styled.div`
+	width: 100%;
 	border: 1px solid pink;
-	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `;
+
+const InnerContainerHorizontal = styled.div`
+	border: 1px solid pink;
+	display: flex;
+	align-items: center;
+`;
+
+const InnerContainer = styled.div`border: 1px solid pink;`;
 
 const NavBarContainer = styled.div`
 	border: 1px solid pink;
-	padding: 5px;
 	height: 100vh;
 	width: 15vw;
+`;
+
+const StyledImage = styled.img`
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
 `;
