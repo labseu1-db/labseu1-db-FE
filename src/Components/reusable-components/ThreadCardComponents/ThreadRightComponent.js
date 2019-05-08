@@ -10,11 +10,11 @@ function ThreadRightComponent(props) {
   return (
     <StyledRightContainer>
       <div className="row-with-image">
-        <img src={messageIconDarkgray} />
+        <img src={messageIconDarkgray} alt="message icon" />
         <div>{numberOfComments}</div>
       </div>
       <div className="row-with-image">
-        <img src={heartIconDarkgray} />
+        <img src={heartIconDarkgray} alt="heart icon" />
         <div>{numberOfLikes}</div>
       </div>
     </StyledRightContainer>

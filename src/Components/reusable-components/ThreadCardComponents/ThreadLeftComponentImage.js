@@ -15,12 +15,12 @@ function ThreadLeftComponentImage(props) {
       <div className="line" />
       {checked === 'true' && (
         <div className="initial-small true">
-          <img src={checkIconWhite} />
+          <img src={checkIconWhite} alt="check icon" />
         </div>
       )}
       {checked === 'false' && (
         <div className="initial-small false">
-          <img src={closeIconWhite} />
+          <img src={closeIconWhite} alt="close icon" />
         </div>
       )}
     </StyledImagesContainer>
