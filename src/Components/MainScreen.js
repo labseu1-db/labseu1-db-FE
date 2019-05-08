@@ -10,7 +10,8 @@ import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 
-export default function MainScreen() {
+//Main component
+function MainScreen() {
   return (
     <StyledMainScreen>
       <StyledFirstRow>
@@ -62,6 +63,7 @@ export default function MainScreen() {
   );
 }
 
+//Styling
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
@@ -74,3 +76,6 @@ const StyledFirstRow = styled.div`
   align-items: flex-start;
   margin-bottom: 5vh;
 `;
+
+//Default export
+export default MainScreen;

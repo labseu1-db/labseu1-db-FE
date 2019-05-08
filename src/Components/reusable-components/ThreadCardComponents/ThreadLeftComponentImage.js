@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import checkIconWhite from '../../../images/icon-check-white.svg';
 import closeIconWhite from '../../../images/icon-close-white.svg';
 
+//Main component
 function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
@@ -75,4 +76,5 @@ const StyledImagesContainer = styled.div`
   }
 `;
 
+//Default export
 export default ThreadLeftComponentImage;

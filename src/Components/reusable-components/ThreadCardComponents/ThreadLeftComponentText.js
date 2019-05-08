@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+//Main component
 function ThreadLeftComponentText(props) {
   const { createdBy, createdAt, space, checked } = props;
   return (
@@ -52,4 +53,5 @@ const StyledLeftContainer = styled.div`
   }
 `;
 
+//Default export
 export default ThreadLeftComponentText;

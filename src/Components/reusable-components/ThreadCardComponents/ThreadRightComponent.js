@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
 import heartIconDarkgray from '../../../images/icon-heart-darkgray.svg';
 
+//Main component
 function ThreadRightComponent(props) {
   const { numberOfComments, numberOfLikes } = props;
   return (
@@ -36,4 +37,5 @@ const StyledRightContainer = styled.div`
   }
 `;
 
+//Default export
 export default ThreadRightComponent;

@@ -7,6 +7,7 @@ import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentT
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
 import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
+//Main component
 function ThreadCard(props) {
   const { createdBy, createdAt, space, heading, info, numberOfComments, numberOfLikes, checked } = props;
   return (
@@ -21,7 +22,7 @@ function ThreadCard(props) {
   );
 }
 
-//Stylin
+//Styling
 const StyledThreadContainer = styled.div`
   background-color: white;
   padding: 15px;
@@ -33,4 +34,5 @@ const StyledThreadContainer = styled.div`
   cursor: pointer;
 `;
 
+//Default export
 export default ThreadCard;
