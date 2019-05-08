@@ -173,9 +173,11 @@ const NavBarContainer = styled.div`
   font-size: 13px;
 `;
 
+
 const StyledImage = styled.img`
   height: 32px;
   width: 32px;
   border-radius: 50%;
   margin-right: 8px;
 `;
+
