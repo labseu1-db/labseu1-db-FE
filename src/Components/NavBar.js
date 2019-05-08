@@ -8,23 +8,30 @@ export default function NavBar() {
       <HeaderContainer className='nav-bar-user-information'>
         <InnerContainerHorizontal>
           <StyledImage src='http://lorempixel.com/640/480' alt='user' />
-          <InnerContainer>Full Name</InnerContainer>
-          <Icon name='arrow down' />
+          <div>Samar Victoryman</div>
+          <Icon name='chevron down' />
         </InnerContainerHorizontal>
         <div>
           <Icon name='cog' />
         </div>
       </HeaderContainer>
       <InnerContainer className='nav-bar-main-section'>
-        <InnerContainer className='home-screen-link'>
-          <Icon name='home' />
+        <HomeContainer className='home-screen-link'>
+          <Icon name='home' size='large' />
           <span>Home</span>
-        </InnerContainer>
+        </HomeContainer>
+
         <InnerContainer className='org-menu'>
           <InnerContainer className='organisation-component'>
-            <InnerContainer className='organisation-name'>
-              Organisation name
-            </InnerContainer>
+            <OuterOrgContainer>
+              <OrgContainer className='organisation-name'>
+                <Icon name='building outline' size='large' />
+                <span>Organisation name</span>
+              </OrgContainer>
+              <div>
+                <Icon name='plus' size='small' />
+              </div>
+            </OuterOrgContainer>
             <InnerContainer className='space'>space 1</InnerContainer>
             <InnerContainer className='space'>space 2</InnerContainer>
             <InnerContainer className='space'>space 3</InnerContainer>
@@ -38,30 +45,51 @@ export default function NavBar() {
 
 const HeaderContainer = styled.div`
   width: 100%;
-  border: 1px solid pink;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 12px;
 `;
 
 const InnerContainerHorizontal = styled.div`
-  border: 1px solid pink;
+  width: 80%;
   display: flex;
   align-items: center;
 `;
 
 const InnerContainer = styled.div`
-  border: 1px solid pink;
+  /* border: 1px solid pink; */
+`;
+
+const HomeContainer = styled(InnerContainerHorizontal)`
+  margin-top: 130px;
+  align-items: baseline;
+`;
+
+const OrgContainer = styled(InnerContainerHorizontal)`
+  margin-top: 50px;
+  margin-bottom: 20px;
+  align-items: baseline;
+`;
+
+const OuterOrgContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 `;
 
 const NavBarContainer = styled.div`
   border: 1px solid pink;
   height: 100vh;
-  width: 15vw;
+  width: 220px;
+  padding-left: 15px;
+  padding-right: 12px;
 `;
 
 const StyledImage = styled.img`
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  margin-right: 7px;
 `;
