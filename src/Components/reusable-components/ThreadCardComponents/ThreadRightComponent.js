@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 //Import icons
 import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
-import heartIconDarkgray from '../../../images/icon-heart-darkgray.svg';
 
 //Main component
 function ThreadRightComponent(props) {
-  const { numberOfComments, numberOfLikes } = props;
+  const { numberOfComments } = props;
   return (
     <StyledRightContainer>
       <div className="row-with-image">

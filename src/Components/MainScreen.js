@@ -27,7 +27,7 @@ function MainScreen(props) {
         props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
           let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
-          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={date} space="Staff" heading={t.threadName} info={t.threadTopic} numberOfComments="5" checked="true" />;
+          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={date} spaceId={t.spaceId} threadId={t.id} heading={t.threadName} info={t.threadTopic} checked="true" />;
         })}
     </StyledMainScreen>
   );
@@ -47,6 +47,7 @@ const StyledFirstRow = styled.div`
   margin-bottom: 5vh;
 `;
 
+//Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
