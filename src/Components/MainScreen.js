@@ -17,7 +17,7 @@ export default function MainScreen() {
       <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
       <ScreenSectionHeading heading="Recent" />
       <ThreadCard
-        createdBy="Austen"
+        createdBy="Kusten"
         createdAt="4/2 at 7:10pm"
         space="Staff"
         heading="This is called threads"
