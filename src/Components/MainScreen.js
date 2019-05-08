@@ -24,6 +24,7 @@ export default function MainScreen() {
         info="It is a better place for long term discussions that is not fully integrated with Slack yet,but we are working on it so we have something that should clearly be..."
         numberOfComments="5"
         numberOfLikes="6"
+        checked="false"
       />
     </StyledMainScreen>
   );
@@ -32,5 +33,5 @@ export default function MainScreen() {
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
-  padding: 10% 2% 15% 10%;
+  padding: 10% 2% 10% 15%;
 `;
