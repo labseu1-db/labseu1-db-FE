@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
@@ -11,7 +14,8 @@ import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 
 //Main component
-function MainScreen() {
+function MainScreen(props) {
+  console.log(props.threads);
   return (
     <StyledMainScreen>
       <StyledFirstRow>
@@ -19,46 +23,10 @@ function MainScreen() {
         <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
-      <ThreadCard
-        createdBy="Lusten"
-        createdAt="4/2 at 7:10pm"
-        space="Staff"
-        heading="This is called threads"
-        info="It is a better place for long term discussions that is not fully integrated with Slack yet. "
-        numberOfComments="5"
-        numberOfLikes="6"
-        checked="true"
-      />
-      <ThreadCard
-        createdBy="Justen"
-        createdAt="4/2 at 7:10pm"
-        space="Staff"
-        heading="This is called threads"
-        info="It is a better place for long term discussions that is not fully integrated with Slack yet, but we are working on it so we have something that should clearly be awesome."
-        numberOfComments="5"
-        numberOfLikes="6"
-        checked="false"
-      />
-      <ThreadCard
-        createdBy="Austen"
-        createdAt="4/2 at 7:10pm"
-        space="Staff"
-        heading="This is called threads"
-        info="It is a better place for long term discussions that is not fully integrated with Slack."
-        numberOfComments="5"
-        numberOfLikes="6"
-        checked="false"
-      />
-      <ThreadCard
-        createdBy="Kusten"
-        createdAt="4/2 at 7:10pm"
-        space="Staff"
-        heading="This is called threads"
-        info="It is a better place for long term discussions that is not fully integrated with Slack yet, but we are working on it so we have something that should clearly be fuully integrated with Slack yet. What do you think?"
-        numberOfComments="5"
-        numberOfLikes="6"
-        checked="true"
-      />
+      {props.threads.length &&
+        props.threads.map(t => {
+          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={t.createdAt} space="Staff" heading={t.threadName} info={t.threadTopic} numberOfComments="5" checked="true" />;
+        })}
     </StyledMainScreen>
   );
 }
@@ -77,5 +45,27 @@ const StyledFirstRow = styled.div`
   margin-bottom: 5vh;
 `;
 
-//Default export
-export default MainScreen;
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'threads',
+        where: [['orgId', '==', 'f61a149b-6530-4ae1-b953-84b899ffc646']]
+      }
+    ];
+  })
+)(MainScreen);

@@ -14,10 +14,6 @@ function ThreadRightComponent(props) {
         <img src={messageIconDarkgray} alt="message icon" />
         <div>{numberOfComments}</div>
       </div>
-      <div className="row-with-image">
-        <img src={heartIconDarkgray} alt="heart icon" />
-        <div>{numberOfLikes}</div>
-      </div>
     </StyledRightContainer>
   );
 }
@@ -29,8 +25,10 @@ const StyledRightContainer = styled.div`
   .row-with-image {
     display: flex;
     align-items: center;
+
     font-size: 0.9rem;
     img {
+      padding-top: 2px;
       width: 40%;
       margin-right: 5px;
     }
