@@ -63,6 +63,11 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  div:nth-child(2) {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const InnerContainerHorizontal = styled.div`
