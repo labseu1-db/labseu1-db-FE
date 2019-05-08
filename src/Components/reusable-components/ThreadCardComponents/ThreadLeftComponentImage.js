@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import checkIconWhite from '../../../images/icon-check-white.svg';
 import closeIconWhite from '../../../images/icon-close-white.svg';
 
-function ThreadImageComponent(props) {
+function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
     <StyledImagesContainer>
@@ -34,7 +34,6 @@ const StyledImagesContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
   .initial-large {
     background-color: #00bc98;
     color: white;
@@ -70,10 +69,10 @@ const StyledImagesContainer = styled.div`
   }
   .line {
     background: linear-gradient(#bdc3c9, #bdc3c9) no-repeat center/1px 100%;
-    width: 55px;
-    height: 55px;
+    width: 30px;
+    height: 30px;
     margin: 10px 0;
   }
 `;
 
-export default ThreadImageComponent;
+export default ThreadLeftComponentImage;

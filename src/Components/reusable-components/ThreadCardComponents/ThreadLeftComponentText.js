@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function ThreadLeftComponent(props) {
+function ThreadLeftComponentText(props) {
   const { createdBy, createdAt, space, checked } = props;
   return (
     <StyledLeftContainer>
@@ -26,8 +26,7 @@ const StyledLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  border: 1px solid black;
+  justify-content: flex-start;
   height: 100%;
   .top {
     color: #374750;
@@ -39,7 +38,7 @@ const StyledLeftContainer = styled.div`
     height: 20%;
   }
   .middle {
-    min-height: 60%;
+    height: 60px;
   }
 
   .bottom {
@@ -50,4 +49,4 @@ const StyledLeftContainer = styled.div`
   }
 `;
 
-export default ThreadLeftComponent;
+export default ThreadLeftComponentText;

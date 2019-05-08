@@ -2,17 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import components
-import ThreadImageContainer from './ThreadCardComponents/ThreadImageComponent';
-import ThreadLeftContainer from './ThreadCardComponents/ThreadLeftComponent';
+import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
+import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
+import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
 
 function ThreadCard(props) {
   const { createdBy, createdAt, space, heading, info, numberOfComments, numberOfLikes, checked } = props;
   return (
     <div>
       <StyledThreadContainer>
-        <ThreadImageContainer checked={checked} createdBy={createdBy} />
-        <ThreadLeftContainer createdBy={createdBy} createdAt={createdAt} space={space} checked={checked} />
-        <ThreadMiddleContainer />
+        <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
+        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={space} checked={checked} />
+        <ThreadMiddleComponent heading={heading} info={info} />
         <ThreadRightContainer />
       </StyledThreadContainer>
     </div>
@@ -22,18 +23,16 @@ function ThreadCard(props) {
 //Stylin
 const StyledThreadContainer = styled.div`
   background-color: white;
-  padding: 10px;
+  padding: 15px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   height: 150px;
 `;
 
-const ThreadMiddleContainer = styled.div`
-  width: 60%;
-`;
-
 const ThreadRightContainer = styled.div`
-  width: 10%;
+  width: 5%;
+  height: 100%;
+  background: blue;
 `;
 export default ThreadCard;
