@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
 import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
+import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 function ThreadCard(props) {
   const { createdBy, createdAt, space, heading, info, numberOfComments, numberOfLikes, checked } = props;
@@ -14,7 +15,7 @@ function ThreadCard(props) {
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={space} checked={checked} />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightContainer />
+        <ThreadRightComponent numberOfComments={numberOfComments} numberOfLikes={numberOfLikes} />
       </StyledThreadContainer>
     </div>
   );
@@ -30,9 +31,4 @@ const StyledThreadContainer = styled.div`
   height: 150px;
 `;
 
-const ThreadRightContainer = styled.div`
-  width: 5%;
-  height: 100%;
-  background: blue;
-`;
 export default ThreadCard;
