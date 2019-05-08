@@ -37,19 +37,15 @@ export default function NavBar() {
             </OuterOrgContainer>
             <SpaceContainer>
               <div>
-                <Icon name='star outline' />
                 <span>Space 1</span>
               </div>
               <div>
-                <Icon name='star outline' />
                 <span>Space 2</span>
               </div>
               <div>
-                <Icon name='star outline' />
                 <span>Space 3</span>
               </div>
               <div>
-                <Icon name='star outline' />
                 <span>Space 4</span>
               </div>
             </SpaceContainer>
@@ -158,7 +154,7 @@ const SpaceContainer = styled.div`
   margin-left: 8px;
   line-height: 30px;
   span {
-    margin-left: 6px;
+    margin-left: 40px;
     &:hover {
       color: #f64e49;
       cursor: pointer;
