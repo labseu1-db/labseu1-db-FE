@@ -7,6 +7,7 @@ import cancelIconBlack from '../images/icon-cancel-black.svg';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
+import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 
 export default function MainScreen() {
@@ -14,7 +15,7 @@ export default function MainScreen() {
     <div>
       <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
       <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
-      <ScreenButton content="Dismiss all" icon={cancelIconBlack} backgroundColor="white" color="#374750" border="1px solid #BDC3C9" />
+      <ScreenSectionHeading heading="Recent" />
     </div>
   );
 }
