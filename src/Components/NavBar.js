@@ -8,68 +8,129 @@ export default function NavBar() {
       <HeaderContainer className='nav-bar-user-information'>
         <InnerContainerHorizontal>
           <StyledImage src='http://lorempixel.com/640/480' alt='user' />
-          <div>Samar Victoryman</div>
-          <Icon name='chevron down' />
+          <div>Samar Vir</div>
+          <Icon name='chevron down' size='small' />
         </InnerContainerHorizontal>
         <div>
           <Icon name='cog' />
         </div>
       </HeaderContainer>
+
       <InnerContainer className='nav-bar-main-section'>
         <HomeContainer className='home-screen-link'>
           <Icon name='home' size='large' />
           <span>Home</span>
         </HomeContainer>
 
-        <InnerContainer className='org-menu'>
-          <InnerContainer className='organisation-component'>
+        <div className='org-menu'>
+          <div className='organisation-component'>
             <OuterOrgContainer>
               <OrgContainer className='organisation-name'>
                 <Icon name='building outline' size='large' />
                 <span>Organisation name</span>
+                <Icon name='chevron down' size='small' />
               </OrgContainer>
               <div>
                 <Icon name='plus' size='small' />
               </div>
             </OuterOrgContainer>
-            <InnerContainer className='space'>space 1</InnerContainer>
-            <InnerContainer className='space'>space 2</InnerContainer>
-            <InnerContainer className='space'>space 3</InnerContainer>
-            <InnerContainer className='space'>space 4</InnerContainer>
-          </InnerContainer>
-        </InnerContainer>
+            <SpaceContainer>
+              <div>
+                <Icon name='star outline' />
+                <span>Space 1</span>
+              </div>
+              <div>
+                <Icon name='star outline' />
+                <span>Space 2</span>
+              </div>
+              <div>
+                <Icon name='star outline' />
+                <span>Space 3</span>
+              </div>
+              <div>
+                <Icon name='star outline' />
+                <span>Space 4</span>
+              </div>
+            </SpaceContainer>
+          </div>
+        </div>
       </InnerContainer>
     </NavBarContainer>
   );
 }
 
 const HeaderContainer = styled.div`
+  padding-left: 32px;
+  padding-right: 32px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 12px;
 `;
 
 const InnerContainerHorizontal = styled.div`
-  width: 80%;
   display: flex;
   align-items: center;
+  div {
+    margin-right: 8px;
+  }
+  &:hover {
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 3px 3px 13px -10px #000;
+    border-radius: 16px;
+    .chevron {
+      color: #f64e49;
+    }
+    /* box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); */
+  }
+  div {
+    color: rgb(55, 71, 80);
+  }
 `;
 
 const InnerContainer = styled.div`
-  /* border: 1px solid pink; */
+  padding-top: 40px;
+  padding-left: 32px;
+  padding-bottom: 16px;
 `;
 
-const HomeContainer = styled(InnerContainerHorizontal)`
-  margin-top: 130px;
+const HomeContainer = styled.div`
+  padding-left: 4px;
+  display: flex;
   align-items: baseline;
+  span {
+    padding-left: 12px;
+  }
+  span:hover {
+    color: #f64e49;
+    cursor: pointer;
+  }
 `;
 
-const OrgContainer = styled(InnerContainerHorizontal)`
-  margin-top: 50px;
-  margin-bottom: 20px;
+const OrgContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
   align-items: baseline;
+  color: rgb(55, 71, 80);
+  font-size: 14px;
+  font-weight: 600;
+  span {
+    padding-right: 8px;
+  }
+  &:hover {
+    cursor: pointer;
+    border-radius: 16px;
+    box-shadow: 3px 3px 13px -10px #000;
+    .chevron {
+      color: #f64e49;
+    }
+  }
 `;
 
 const OuterOrgContainer = styled.div`
@@ -77,19 +138,36 @@ const OuterOrgContainer = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  div:nth-child(2) {
+    display: flex;
+  }
+`;
+
+const SpaceContainer = styled.div`
+  margin-left: 8px;
+  line-height: 30px;
+  span {
+    margin-left: 6px;
+    &:hover {
+      color: #f64e49;
+      cursor: pointer;
+    }
+  }
 `;
 
 const NavBarContainer = styled.div`
   border: 1px solid pink;
   height: 100vh;
-  width: 220px;
-  padding-left: 15px;
-  padding-right: 12px;
+  width: 309px;
+  padding-top: 32px;
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  color: #9c9c9c;
+  font-size: 13px;
 `;
 
 const StyledImage = styled.img`
-  height: 50px;
-  width: 50px;
+  height: 32px;
+  width: 32px;
   border-radius: 50%;
-  margin-right: 7px;
+  margin-right: 8px;
 `;
