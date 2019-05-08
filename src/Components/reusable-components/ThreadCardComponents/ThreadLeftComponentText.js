@@ -7,12 +7,12 @@ function ThreadLeftComponentText(props) {
     <StyledLeftContainer>
       <div className="top">
         <div className="bold">{createdBy} started a thread</div>
-        <div>
+        <div className="lighter-color">
           {createdAt} in {space}
         </div>
       </div>
       <div className="middle"> </div>
-      <div className="bottom">
+      <div className="bottom lighter-color">
         {checked === 'true' && <div>You're all caught up</div>}
         {checked === 'false' && <div>You're not caught up</div>}
       </div>
@@ -28,6 +28,9 @@ const StyledLeftContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   height: 100%;
+  .lighter-color {
+    opacity: 0.8;
+  }
   .top {
     color: #374750;
     font-size: 0.7rem;

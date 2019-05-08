@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 function ThreadMiddleComponent(props) {
   const { heading, info } = props;
+  const shorterInfo = info.substr(0, 175);
   return (
     <StyledMiddleContainer>
       <div className="thread-heading">{heading}</div>
-      <div className="info">{info}</div>
+      {info.length < 170 ? <div className="info">{info}</div> : <div className="info">{shorterInfo}...</div>}
     </StyledMiddleContainer>
   );
 }
@@ -22,6 +23,7 @@ const StyledMiddleContainer = styled.div`
   }
   .info {
     font-size: 1rem;
+    line-height: 2;
   }
 `;
 

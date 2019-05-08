@@ -30,6 +30,7 @@ const StyledThreadContainer = styled.div`
   justify-content: space-between;
   height: 150px;
   margin: 20px 0;
+  cursor: pointer;
 `;
 
 export default ThreadCard;
