@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon, Message } from 'semantic-ui-react';
+import { Icon, Message } from 'semantic-ui-react';
 
-import { StyledButton } from './styled-components/StyledButton';
+import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn
+  StyledLowerSignInPasswordless
 } from './styled-components/StyledLogin';
 import {
   StyledH1,
@@ -22,7 +22,7 @@ import {
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 
-class Register extends Component {
+class PasswordlessSubmit extends Component {
   static propTypes = {
     auth: PropTypes.object,
     firebase: PropTypes.shape({
@@ -32,17 +32,12 @@ class Register extends Component {
   };
 
   state = {
-    email: '',
-    password: '',
-    fullName: '',
+    loginEmail: '',
     error: null
   };
 
   componentWillUpdate() {
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-    if (isLoaded(this.props.auth) && !isEmpty(this.props.auth)) {
+    if (!isEmpty(this.props.auth)) {
       this.props.history.push('/homescreen');
     }
   }
@@ -51,19 +46,29 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  createAndLogInNewUser = e => {
-    const { email, password, fullName } = this.state;
+  passwordlessSignIn = (loginEmail, event) => {
+    event.preventDefault();
+    const actionCodeSettings = {
+      url: 'https://labseu1-db-test2.firebaseapp.com/passwordlesscheck',
+      handleCodeInApp: true
+    };
+
     const INITIAL_STATE = {
-      email: '',
-      password: '',
-      fullName: '',
+      loginEmail: '',
       error: null
     };
-    e.preventDefault();
+
     this.props.firebase
-      .createUser({ email, password }, { fullName, email })
+      .auth()
+      .sendSignInLinkToEmail(loginEmail, actionCodeSettings)
+      .then(function() {
+        window.localStorage.setItem('emailForSignIn', loginEmail);
+      })
       .then(() => {
-        this.props.firebase.login({ email, password });
+        alert(`Email sent to ${loginEmail}`);
+      })
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
@@ -71,8 +76,8 @@ class Register extends Component {
   };
 
   render() {
-    const { email, password, fullName } = this.state;
-    const isInvalid = email === '' || password === '' || fullName === '';
+    const { loginEmail } = this.state;
+    const isInvalid = loginEmail === '';
 
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -83,48 +88,32 @@ class Register extends Component {
     return (
       <StyledLogin>
         <StyledLoginCon>
-          <StyledH1>Register</StyledH1>
-          <StyledForm onSubmit={this.createAndLogInNewUser}>
+          <StyledH1>Passwordless Sign In</StyledH1>
+          <StyledForm
+            onSubmit={event => {
+              this.passwordlessSignIn(this.state.loginEmail, event);
+            }}
+          >
             <StyledLabel>
-              <StyledPLabel>Full Name</StyledPLabel>
+              <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='fullName'
-                value={this.state.fullName}
-                type='text'
-                onChange={this.handleInputChange}
-                placeholder='Tony Stark'
-              />
-            </StyledLabel>
-            <StyledLabel>
-              <StyledPLabel>Email</StyledPLabel>
-              <StyledInput
-                name='email'
-                value={this.state.email}
+                value={this.state.loginEmail}
+                name='loginEmail'
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
               />
             </StyledLabel>
-            <StyledLabel>
-              <StyledPLabel>Password</StyledPLabel>
-              <StyledInput
-                name='password'
-                value={this.state.password}
-                type='password'
-                onChange={this.handleInputChange}
-                placeholder='········'
-              />
-            </StyledLabel>
-
-            <StyledLowerSignIn>
-              <StyledLink to='/login'> Already have an account? </StyledLink>
-              <StyledButton
+            <StyledLowerSignInPasswordless>
+              <StyledSendEmailButton
                 disabled={isInvalid}
-                onClick={this.createAndLogInNewUser}
+                onClick={event => {
+                  this.passwordlessSignIn(this.state.loginEmail, event);
+                }}
               >
-                Register
-              </StyledButton>
-            </StyledLowerSignIn>
+                Send Email &#62;
+              </StyledSendEmailButton>
+            </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
             <Message warning attached='bottom'>
@@ -132,14 +121,7 @@ class Register extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <Button
-            color='google plus'
-            onClick={() =>
-              this.props.firebase.login({ provider: 'google', type: 'popup' })
-            }
-          >
-            <Icon name='google plus' /> Sign in with Google
-          </Button>
+          <StyledLink to='/login'>Back to Log In with Password</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
@@ -166,4 +148,4 @@ export default compose(
     mapDispatchToProps
   ),
   firebaseConnect()
-)(Register);
+)(PasswordlessSubmit);

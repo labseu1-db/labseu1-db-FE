@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import uuid from 'uuid';
 
-import { showModal } from '../../redux/actions/actionCreators';
+import { showModal } from '../redux/actions/actionCreators';
 
-import CreateOrganisationModal from './CreateOrganisationModal';
-import InviteYourTeamModal from './InviteYourTeamModal';
-import CreateSpacesModal from './CreateSpacesModal';
+import CreateOrganisationModal from './CreateNewOrganisationModals/CreateOrganisationModal';
+import InviteYourTeamModal from './CreateNewOrganisationModals/InviteYourTeamModal';
+import CreateSpacesModal from './CreateNewOrganisationModals/CreateSpacesModal';
 
-class CreateOrganisation extends Component {
+import Spinner from './semantic-components/Spinner';
+
+class CreateNewOrganisation extends Component {
   state = {
     orgName: null,
     teamEmailAddress: ['', '', '', ''],
@@ -35,12 +37,12 @@ class CreateOrganisation extends Component {
       { collection: 'companiesTEST', doc: this.orgId },
       {
         orgName: this.state.orgName,
-        // createdByUserId: _NEEDS_TO_BE_FILLED)WITH ID OF LOGGED IN USER,
+        createdByUserId: this.props.auth.uid,
         isPremium: false,
         arrayOfUsers: this.state.teamEmailAddress.filter(Boolean).map(e => {
           return { userEmail: e };
-        })
-        //arrayOfAdmins: _NEEDS_TO_BE_FILLED)WITH ID OF LOGGED IN USER,
+        }),
+        arrayOfAdmins: { userEmail: this.props.auth.uid, userId: this.props.auth.email }
       }
     );
   }
@@ -51,14 +53,25 @@ class CreateOrganisation extends Component {
         { collection: 'companiesTEST', doc: uuid() },
         {
           orgId: this.orgId,
-          // spaceCreatedByUserId:  _NEEDS_TO_BE_FILLED)WITH ID OF LOGGED IN USER,
+          spaceCreatedByUserId: this.props.auth.uid,
           spaceName: space
         }
       );
     });
   }
 
+  componentDidUpdate() {
+    if (isEmpty(this.props.auth)) {
+      this.props.history.push('/login');
+    }
+  }
+
   render() {
+    if (!isLoaded(this.props.auth)) {
+      return <Spinner />;
+    }
+    console.log(this.props.auth);
+
     return (
       <div>
         <button
@@ -87,6 +100,7 @@ class CreateOrganisation extends Component {
             activeModal={this.props.activeModal}
             addCreatedSpaces={this.addCreatedSpaces}
             addCompanyToDatabase={this.addCompanyToDatabase}
+            addSpacesToCompanies={this.addSpacesToCompanies}
           />
         )}
         <button
@@ -119,4 +133,4 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect()
-)(CreateOrganisation);
+)(CreateNewOrganisation);

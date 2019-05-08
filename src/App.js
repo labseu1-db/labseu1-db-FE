@@ -7,7 +7,10 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
-import CreateOrganisation from './Components/CreateOrganisation/CreateOrganisation';
+import CreateNewOrganisation from './Components/CreateNewOrganisation';
+import PasswordlessSubmit from './Components/PasswordlessSubmit';
+import PasswordlessCheck from './Components/PasswordlessCheck';
+import ForgotPassword from './Components/ForgotPassword';
 
 class App extends Component {
   render() {
@@ -15,8 +18,11 @@ class App extends Component {
       <div>
         <Route exact path="/register" render={props => <Register {...props} />} />
         <Route exact path="/login" render={props => <Login {...props} />} />
-        <Route exact path="/createorganisation" render={props => <CreateOrganisation {...props} />} />
+        <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
         <Route exact path="/homescreen" render={props => <FakeHome {...props} />} />
+        <Route exact path="/passwordlesssubmit" render={props => <PasswordlessSubmit {...props} />} />
+        <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
+        <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
       </div>
     );
   }
