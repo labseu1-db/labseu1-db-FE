@@ -32,7 +32,7 @@ export default function NavBar() {
                 <Icon name='chevron down' size='small' />
               </OrgContainer>
               <div>
-                <img src={plusIcon} alt="plus icon"/>
+                <img src={plusIcon} alt='plus icon' />
               </div>
             </OuterOrgContainer>
             <SpaceContainer>
@@ -123,6 +123,7 @@ const OrgContainer = styled.div`
   font-weight: 600;
   span {
     padding-right: 8px;
+    padding-left: 12px;
   }
   &:hover {
     cursor: pointer;
@@ -141,12 +142,12 @@ const OuterOrgContainer = styled.div`
   justify-content: space-between;
   div:nth-child(2) {
     display: flex;
+    align-items: flex-end;
   }
   img {
     width: 1.25rem;
-    padding-top: -1px;
-    margin-top: 17px;
     margin-right: 8px;
+    margin-right: 20px;
   }
 `;
 
