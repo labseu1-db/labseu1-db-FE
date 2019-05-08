@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 function ScreenButton(props) {
-  const { content, backgroundColor, color, icon } = props;
+  const { content, backgroundColor, color, icon, border } = props;
   const style = {
     backgroundColor: backgroundColor,
-    color: color
+    color: color,
+    border: border
   };
   return (
     <div>
@@ -25,7 +26,7 @@ const StyledScrenButton = styled.button`
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  padding: 7px 10px;
+  padding: 6px 15px;
   border-radius: 15px;
   border: none;
   cursor: pointer;
