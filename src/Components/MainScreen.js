@@ -25,7 +25,9 @@ function MainScreen(props) {
       <ScreenSectionHeading heading="Recent" />
       {props.threads.length &&
         props.threads.map(t => {
-          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={t.createdAt} space="Staff" heading={t.threadName} info={t.threadTopic} numberOfComments="5" checked="true" />;
+          let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
+          let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={date} space="Staff" heading={t.threadName} info={t.threadTopic} numberOfComments="5" checked="true" />;
         })}
     </StyledMainScreen>
   );
