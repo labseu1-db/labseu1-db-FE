@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
@@ -98,8 +95,6 @@ export default class CreateSpacesModal extends Component {
                   this.addSpacesFromInput(this.state.firstInputForSpace, this.state.secondInputForSpace);
                   this.props.showModal('null');
                   this.props.addCreatedSpaces(this.state.chosenSpaces);
-                  // this.props.addCompanyToDatabase();
-                  // this.props.addSpacesToCompanies();
                 }}>
                 Finish
               </style.StyledModalButton>
@@ -120,15 +115,3 @@ export default class CreateSpacesModal extends Component {
     );
   }
 }
-
-// const mapStateToProps = {};
-
-// const mapDispatchToProps = {};
-
-// export default compose(
-//   connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-//   ),
-//   firestoreConnect()
-// )(CreateSpacesModal);
