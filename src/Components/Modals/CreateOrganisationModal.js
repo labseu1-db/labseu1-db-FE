@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
+
+//Import stylesheet
 import * as style from '../styled-components/StyledModal';
 
+//Main component - Modal
 export default class CreateCompanyModal extends Component {
   state = {
     orgName: ''
@@ -11,6 +14,7 @@ export default class CreateCompanyModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  //Render component
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">
@@ -65,5 +69,3 @@ export default class CreateCompanyModal extends Component {
     );
   }
 }
-
-//Stylin

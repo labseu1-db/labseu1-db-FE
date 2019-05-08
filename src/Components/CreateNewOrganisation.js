@@ -4,14 +4,18 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import uuid from 'uuid';
 
+//Redux action
 import { showModal } from '../redux/actions/actionCreators';
 
+//Import modals
 import CreateOrganisationModal from './Modals/CreateOrganisationModal';
 import InviteYourTeamModal from './Modals/InviteYourTeamModal';
 import CreateSpacesModal from './Modals/CreateSpacesModal';
 
+//Import spinner
 import Spinner from './semantic-components/Spinner';
 
+//Main component
 class CreateNewOrganisation extends Component {
   state = {
     orgName: null,
@@ -19,6 +23,7 @@ class CreateNewOrganisation extends Component {
     createdSpaces: []
   };
 
+  //Get information from modals to this main component - these functions are passed to modals
   addOrgName = name => {
     this.setState({ orgName: name });
   };
@@ -31,6 +36,7 @@ class CreateNewOrganisation extends Component {
     this.setState({ createdSpaces: spaces });
   };
 
+  //Add information about created company that were collected in modals to firestore
   orgId = uuid();
   addCompanyToDatabase() {
     this.props.firestore.set(
@@ -47,6 +53,7 @@ class CreateNewOrganisation extends Component {
     );
   }
 
+  //Add information about created spaces that were collected in modals to firestore
   addSpacesToCompanies() {
     this.state.createdSpaces.filter(Boolean).map(space => {
       this.props.firestore.set(
@@ -60,6 +67,7 @@ class CreateNewOrganisation extends Component {
     });
   }
 
+  //If user is not logged in, push user to login page
   componentDidUpdate() {
     if (isEmpty(this.props.auth)) {
       this.props.history.push('/login');
@@ -115,6 +123,7 @@ class CreateNewOrganisation extends Component {
   }
 }
 
+//Export component wrapped in redux actions and store and firestore
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,

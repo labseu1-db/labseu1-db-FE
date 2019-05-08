@@ -3,12 +3,15 @@ import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
 export default class InviteYourTeamModal extends Component {
+  //Start with 4 inputs
   state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]] };
 
+  //Add email input when clicked on email
   appendInput = () => {
     this.setState(prevState => ({ inputs: prevState.inputs.concat(['']) }));
   };
 
+  //Add email to state
   addEmail = (email, index) => {
     this.setState(pr => ({
       inputs: pr.inputs.map((value, i) => {
@@ -20,6 +23,7 @@ export default class InviteYourTeamModal extends Component {
     }));
   };
 
+  //Render component
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">

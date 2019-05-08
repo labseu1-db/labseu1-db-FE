@@ -5,7 +5,7 @@ import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
-export class CreateSpacesModal extends Component {
+export default class CreateSpacesModal extends Component {
   spacesExamples = [
     { name: 'Product', color: 'eggplant' },
     { name: 'Engineering', color: 'darkgreen' },
@@ -49,6 +49,7 @@ export class CreateSpacesModal extends Component {
     }));
   };
 
+  //Render component
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">
@@ -97,8 +98,8 @@ export class CreateSpacesModal extends Component {
                   this.addSpacesFromInput(this.state.firstInputForSpace, this.state.secondInputForSpace);
                   this.props.showModal('null');
                   this.props.addCreatedSpaces(this.state.chosenSpaces);
-                  this.props.addCompanyToDatabase();
-                  this.props.addSpacesToCompanies();
+                  // this.props.addCompanyToDatabase();
+                  // this.props.addSpacesToCompanies();
                 }}>
                 Finish
               </style.StyledModalButton>
@@ -120,20 +121,14 @@ export class CreateSpacesModal extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
-  };
-};
+// const mapStateToProps = {};
 
-const mapDispatchToProps = {};
+// const mapDispatchToProps = {};
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect()
-)(CreateSpacesModal);
+// export default compose(
+//   connect(
+//     mapStateToProps,
+//     mapDispatchToProps
+//   ),
+//   firestoreConnect()
+// )(CreateSpacesModal);
