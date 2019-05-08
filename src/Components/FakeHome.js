@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
+import NavBar from './NavBar';
+import styled from 'styled-components';
 
 import Spinner from './semantic-components/Spinner';
+import RightSidebar from './RightSidebar';
+import MainScreen from './MainScreen';
 
 class FakeHome extends Component {
 	componentWillUpdate() {
@@ -17,18 +21,17 @@ class FakeHome extends Component {
 			return <Spinner />;
 		}
 		return (
-			<div>
-				<h1>Welcome to the restricted fake homescreen! </h1>
-				<button
-					onClick={async (e) => {
-						e.preventDefault();
-						await this.props.firebase.logout();
-						this.props.clearFirestore();
-					}}
-				>
-					Logout
-				</button>
-			</div>
+			<StyledHomeScreen>
+				<FirstDiv>
+					<NavBar />
+				</FirstDiv>
+				<SecondDiv>
+					<MainScreen />
+				</SecondDiv>
+				<ThirdDiv>
+					<RightSidebar />
+				</ThirdDiv>
+			</StyledHomeScreen>
 		);
 	}
 }
@@ -45,5 +48,23 @@ const mapDispatchToProps = (dispatch) => {
 		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
 	};
 };
+
+const StyledHomeScreen = styled.div`
+	display: flex;
+`
+const FirstDiv = styled.div`
+	width: 15vw;
+	border: 1px solid black;
+`
+
+const SecondDiv = styled.div`
+	width: 60vw;
+	border: 1px solid black;
+`
+
+const ThirdDiv = styled.div`
+	width: 25vw;
+	border: 1px solid black;
+`
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(FakeHome);
