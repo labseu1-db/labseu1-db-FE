@@ -60,8 +60,10 @@ const NavBarContainer = styled.div`
   width: 15vw;
 `;
 
+
 const StyledImage = styled.img`
   height: 50px;
   width: 50px;
   border-radius: 50%;
 `;
+
