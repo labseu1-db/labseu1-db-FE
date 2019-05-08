@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
+import plusIcon from '../images/icon-plus-lightgray.svg';
 
 export default function NavBar() {
   return (
@@ -31,7 +32,7 @@ export default function NavBar() {
                 <Icon name='chevron down' size='small' />
               </OrgContainer>
               <div>
-                <Icon name='plus' size='small' />
+                <img src={plusIcon} alt="plus icon"/>
               </div>
             </OuterOrgContainer>
             <SpaceContainer>
@@ -140,6 +141,12 @@ const OuterOrgContainer = styled.div`
   justify-content: space-between;
   div:nth-child(2) {
     display: flex;
+  }
+  img {
+    width: 1.25rem;
+    padding-top: -1px;
+    margin-top: 17px;
+    margin-right: 8px;
   }
 `;
 
