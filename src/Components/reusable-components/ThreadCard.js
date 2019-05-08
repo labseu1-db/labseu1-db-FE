@@ -25,13 +25,18 @@ function ThreadCard(props) {
 //Styling
 const StyledThreadContainer = styled.div`
   background-color: white;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  height: 150px;
-  margin: 20px 0;
-  cursor: pointer;
+  height: 160px;
+  margin: 25px 0;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
+  &:hover {
+    border: 1px solid #5c4df2b3;
+    cursor: pointer;
+  }
 `;
 
 //Default export
