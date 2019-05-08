@@ -65,7 +65,7 @@ export default function MainScreen() {
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
-  padding: 10% 2% 10% 15%;
+  padding: 10vh 5%;
 `;
 
 const StyledFirstRow = styled.div`
