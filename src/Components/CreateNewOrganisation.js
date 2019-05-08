@@ -6,9 +6,9 @@ import uuid from 'uuid';
 
 import { showModal } from '../redux/actions/actionCreators';
 
-import CreateOrganisationModal from './CreateNewOrganisationModals/CreateOrganisationModal';
-import InviteYourTeamModal from './CreateNewOrganisationModals/InviteYourTeamModal';
-import CreateSpacesModal from './CreateNewOrganisationModals/CreateSpacesModal';
+import CreateOrganisationModal from './Modals/CreateOrganisationModal';
+import InviteYourTeamModal from './Modals/InviteYourTeamModal';
+import CreateSpacesModal from './Modals/CreateSpacesModal';
 
 import Spinner from './semantic-components/Spinner';
 
