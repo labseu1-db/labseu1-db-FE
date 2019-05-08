@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { Icon, Message } from 'semantic-ui-react';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -54,7 +55,6 @@ class PasswordlessSubmit extends Component {
 
     const INITIAL_STATE = {
       loginEmail: '',
-      loginPassword: '',
       error: null
     };
 
@@ -71,7 +71,7 @@ class PasswordlessSubmit extends Component {
         this.setState({ ...INITIAL_STATE });
       })
       .catch(error => {
-        this.setState({ error: error.message }); // not working
+        this.setState({ ...INITIAL_STATE, error });
       });
   };
 
@@ -89,10 +89,15 @@ class PasswordlessSubmit extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Passwordless Sign In</StyledH1>
-          <StyledForm>
+          <StyledForm
+            onSubmit={event => {
+              this.passwordlessSignIn(this.state.loginEmail, event);
+            }}
+          >
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
+                value={this.state.loginEmail}
                 name='loginEmail'
                 type='email'
                 onChange={this.handleInputChange}
@@ -100,7 +105,6 @@ class PasswordlessSubmit extends Component {
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
-              {/* <StyledLink /> */}
               <StyledSendEmailButton
                 disabled={isInvalid}
                 onClick={event => {
@@ -111,6 +115,12 @@ class PasswordlessSubmit extends Component {
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
           </StyledForm>
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <StyledLink to='/login'>Back to Log In with Password</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />

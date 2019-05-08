@@ -3,63 +3,81 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Message } from 'semantic-ui-react';
 
-import { StyledButton, ForgotPasswordButton } from './styled-components/StyledButton';
 import {
-	StyledLogin,
-	StyledForm,
-	StyledInput,
-	StyledLabel,
-	StyledLoginCon,
-	StyledLowerSignIn,
-	StyledIcon
+  StyledButton,
+  ForgotPasswordButton
+} from './styled-components/StyledButton';
+import {
+  StyledLogin,
+  StyledForm,
+  StyledInput,
+  StyledLabel,
+  StyledLoginCon,
+  StyledLowerSignIn,
+  StyledIcon
 } from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
 import showPassword from '../images/showPassword.svg';
-import hidePassword from '../images/hidePassword.svg';
 
 class Login extends Component {
-	static propTypes = {
-		auth: PropTypes.object,
-		firebase: PropTypes.shape({
-			login: PropTypes.func.isRequired,
-			logout: PropTypes.func.isRequired
-		})
-	};
+  static propTypes = {
+    auth: PropTypes.object,
+    firebase: PropTypes.shape({
+      login: PropTypes.func.isRequired,
+      logout: PropTypes.func.isRequired
+    })
+  };
 
-	state = {
-		loginEmail: '',
-		loginPassword: '',
-		error: null
-	};
+  state = {
+    loginEmail: '',
+    loginPassword: '',
+    error: null
+  };
 
-	componentWillUpdate() {
-		if (!isEmpty(this.props.auth)) {
-			this.props.history.push('/homescreen');
-		}
-	}
+  componentWillUpdate() {
+    if (!isEmpty(this.props.auth)) {
+      this.props.history.push('/homescreen');
+    }
+  }
 
-	handleInputChange = (e) => {
-		this.setState({ [e.target.name]: e.target.value });
-	};
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-	togglePassword = () => {
-		let temp = document.getElementById('typepass');
-		let passwordIcon = document.getElementById('passwordIcon');
-		if (temp.type === 'password') {
-			temp.type = 'text';
-			passwordIcon.src = hidePassword;
-			passwordIcon.alt = 'hidePassword';
-		} else {
-			temp.type = 'password';
-			passwordIcon.src = showPassword;
-			passwordIcon.alt = 'showPassword';
-		}
-	};
+  handleLogIn = e => {
+    const INITIAL_STATE = {
+      loginEmail: '',
+      loginPassword: '',
+      error: null
+    };
+    e.preventDefault();
+    this.props.firebase
+      .login({
+        email: this.state.loginEmail,
+        password: this.state.loginPassword
+      })
+      .catch(error => {
+        this.setState({ ...INITIAL_STATE, error });
+      });
+  };
+
+  togglePassword = () => {
+    let temp = document.getElementById('typepass');
+    if (temp.type === 'password') {
+      temp.type = 'text';
+    } else {
+      temp.type = 'password';
+    }
+  };
 
   render() {
     const { loginEmail, loginPassword } = this.state;
@@ -75,11 +93,12 @@ class Login extends Component {
       <StyledLogin>
         <StyledLoginCon>
           <StyledH1>Sign in</StyledH1>
-          <StyledForm>
+          <StyledForm onSubmit={this.handleLogIn}>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
                 name='loginEmail'
+                value={this.state.loginEmail}
                 type='email'
                 onChange={this.handleInputChange}
                 placeholder='tonystark@example.com'
@@ -90,6 +109,7 @@ class Login extends Component {
               <StyledInput
                 id='typepass'
                 name='loginPassword'
+                value={this.state.loginPassword}
                 type='password'
                 onChange={this.handleInputChange}
                 placeholder='········'
@@ -100,35 +120,20 @@ class Login extends Component {
                 onClick={this.togglePassword}
               />
             </StyledLabel>
-            <ForgotPasswordButton>Forgot Password?</ForgotPasswordButton>
+            <ForgotPasswordButton onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordButton>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
-              <StyledButton
-                disabled={isInvalid}
-                onClick={e => {
-                  const INITIAL_STATE = {
-                    loginEmail: '',
-                    loginPassword: '',
-                    error: null
-                  };
-                  e.preventDefault();
-                  this.props.firebase
-                    .login({
-                      email: this.state.loginEmail,
-                      password: this.state.loginPassword
-                    })
-                    .then(() => {
-                      this.setState({ ...INITIAL_STATE });
-                    })
-                    .catch(error => {
-                      this.setState({ error });
-                    });
-                }}
-              >
+              <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
                 Sign In &#62;
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
+          {this.state.error && (
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
+              {this.state.error.message}
+            </Message>
+          )}
           <Button
             color='google plus'
             onClick={() =>
@@ -152,17 +157,23 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-	return {
-		auth: state.firebase.auth,
-		profile: state.firebase.profile
-	};
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-	};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Login);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(Login);
