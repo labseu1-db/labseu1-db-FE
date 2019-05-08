@@ -29,6 +29,7 @@ const StyledThreadContainer = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   height: 150px;
+  margin: 20px 0;
 `;
 
 export default ThreadCard;

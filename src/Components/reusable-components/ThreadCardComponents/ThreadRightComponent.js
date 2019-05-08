@@ -28,9 +28,9 @@ const StyledRightContainer = styled.div`
   .row-with-image {
     display: flex;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     img {
-      width: 30%;
+      width: 40%;
       margin-right: 5px;
     }
   }

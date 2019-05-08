@@ -13,9 +13,41 @@ import ThreadCard from './reusable-components/ThreadCard';
 export default function MainScreen() {
   return (
     <StyledMainScreen>
-      <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
-      <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
+      <StyledFirstRow>
+        <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+        <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
+      </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
+      <ThreadCard
+        createdBy="Lusten"
+        createdAt="4/2 at 7:10pm"
+        space="Staff"
+        heading="This is called threads"
+        info="It is a better place for long term discussions that is not fully integrated with Slack yet,but we are working on it so we have something that should clearly be..."
+        numberOfComments="5"
+        numberOfLikes="6"
+        checked="true"
+      />
+      <ThreadCard
+        createdBy="Justen"
+        createdAt="4/2 at 7:10pm"
+        space="Staff"
+        heading="This is called threads"
+        info="It is a better place for long term discussions that is not fully integrated with Slack yet,but we are working on it so we have something that should clearly be..."
+        numberOfComments="5"
+        numberOfLikes="6"
+        checked="false"
+      />
+      <ThreadCard
+        createdBy="Austen"
+        createdAt="4/2 at 7:10pm"
+        space="Staff"
+        heading="This is called threads"
+        info="It is a better place for long term discussions that is not fully integrated with Slack yet,but we are working on it so we have something that should clearly be..."
+        numberOfComments="5"
+        numberOfLikes="6"
+        checked="false"
+      />
       <ThreadCard
         createdBy="Kusten"
         createdAt="4/2 at 7:10pm"
@@ -24,7 +56,7 @@ export default function MainScreen() {
         info="It is a better place for long term discussions that is not fully integrated with Slack yet,but we are working on it so we have something that should clearly be..."
         numberOfComments="5"
         numberOfLikes="6"
-        checked="false"
+        checked="true"
       />
     </StyledMainScreen>
   );
@@ -34,4 +66,11 @@ const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
   padding: 10% 2% 10% 15%;
+`;
+
+const StyledFirstRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5vh;
 `;
