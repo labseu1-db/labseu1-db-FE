@@ -17,38 +17,6 @@ export default class CreateSpacesModal extends Component {
     { name: 'Research', color: 'green' }
   ];
 
-  state = {
-    chosenSpaces: [],
-    firstInputForSpace: '',
-    secondInputForSpace: ''
-  };
-
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  addSpace = space => {
-    const indexOfSpace = this.state.chosenSpaces.indexOf(space);
-    console.log(indexOfSpace);
-    if (indexOfSpace > -1) {
-      const arrayWithoutSpace = this.state.chosenSpaces.filter(s => {
-        return s !== space;
-      });
-      this.setState({ chosenSpaces: arrayWithoutSpace });
-    } else {
-      this.setState(pr => ({
-        chosenSpaces: [...pr.chosenSpaces, space]
-      }));
-    }
-  };
-
-  addSpacesFromInput = (space1, space2) => {
-    const arrayWithPushedSpace = this.state.chosenSpaces.push(space1, space2);
-    this.setState(pr => ({
-      chosenSpaces: arrayWithPushedSpace
-    }));
-  };
-
   //Render component
   render() {
     return (
@@ -63,17 +31,17 @@ export default class CreateSpacesModal extends Component {
               <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
               <StyledModalTextInForm>Spaces are your team's virtual meeting rooms. Use them to have discussions about specific projects and broader team topics.</StyledModalTextInForm>
               <StyledModalLabel>
-                Choose a few spaces <span>{`${this.state.chosenSpaces.length} selected`}</span>
+                Choose a few spaces <span>{`${this.props.createdSpaces.length} selected`}</span>
               </StyledModalLabel>
               <StyledModalSpacesContainer>
                 {this.spacesExamples.map(s => {
                   return (
                     <StyledSpacesModalCard
-                      className={`${this.state.chosenSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
+                      className={`${this.props.createdSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
                       key={s.name}
                       onClick={() => {
-                        console.log(this.state.chosenSpaces.indexOf(s.name));
-                        this.addSpace(s.name);
+                        console.log(this.props.createdSpaces.indexOf(s.name));
+                        this.props.addSpace(s.name);
                       }}>
                       {s.name}
                     </StyledSpacesModalCard>
@@ -82,8 +50,8 @@ export default class CreateSpacesModal extends Component {
               </StyledModalSpacesContainer>
               <StyledModalLabel>Create a few spaces</StyledModalLabel>
               <StyledModalTextInForm>Start with current projects, ongoning discussion topics, or anything else you would have a meeting about.</StyledModalTextInForm>
-              <StyledModalInput placeholder="ie. Products Proposals" name="firstInputForSpace" onChange={this.handleInputChange} value={this.state.firstInputForSpace} />
-              <StyledModalInput placeholder="ie. Design Review" name="secondInputForSpace" onChange={this.handleInputChange} value={this.state.secondInputForSpace} />
+              <StyledModalInput placeholder="ie. Products Proposals" name="addedSpace1" onChange={this.props.handleInputChange} value={this.props.addedSpace1} />
+              <StyledModalInput placeholder="ie. Design Review" name="addedSpace2" onChange={this.props.handleInputChange} value={this.props.addedSpace2} />
             </StyledModalForm>
           </Modal.Content>
           <Modal.Actions>
@@ -91,9 +59,12 @@ export default class CreateSpacesModal extends Component {
               <StyledModalButton
                 onClick={e => {
                   e.preventDefault();
-                  this.addSpacesFromInput(this.state.firstInputForSpace, this.state.secondInputForSpace);
                   this.props.showModal('null');
-                  this.props.addCreatedSpaces(this.state.chosenSpaces);
+                  this.props.addCompanyToDatabase();
+                  this.props.addSpacesToCompanies();
+                  this.props.addSpaceFromInput1ToCompanies();
+                  this.props.addSpaceFromInput2ToCompanies();
+                  this.props.clearState();
                 }}>
                 Finish
               </StyledModalButton>

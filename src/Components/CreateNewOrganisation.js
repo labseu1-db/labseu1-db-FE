@@ -20,7 +20,9 @@ class CreateNewOrganisation extends Component {
   state = {
     orgName: null,
     teamEmailAddress: ['', '', '', ''],
-    createdSpaces: []
+    createdSpaces: [],
+    addedSpace1: '',
+    addedSpace2: ''
   };
 
   //Get information from modals to this main component - these functions are passed to modals
@@ -32,8 +34,23 @@ class CreateNewOrganisation extends Component {
     this.setState({ teamEmailAddress: emails });
   };
 
-  addCreatedSpaces = spaces => {
-    this.setState({ createdSpaces: spaces });
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  addSpace = space => {
+    const indexOfSpace = this.state.createdSpaces.indexOf(space);
+    console.log(indexOfSpace);
+    if (indexOfSpace > -1) {
+      const arrayWithoutSpace = this.state.createdSpaces.filter(s => {
+        return s !== space;
+      });
+      this.setState({ createdSpaces: arrayWithoutSpace });
+    } else {
+      this.setState(pr => ({
+        createdSpaces: [...pr.createdSpaces, space]
+      }));
+    }
   };
 
   //Add information about created company that were collected in modals to firestore
@@ -64,6 +81,40 @@ class CreateNewOrganisation extends Component {
           spaceName: space
         }
       );
+    });
+  };
+
+  addSpaceFromInput1ToCompanies = () => {
+    this.state.addedSpace1 !== '' &&
+      this.props.firestore.set(
+        { collection: 'companiesTEST', doc: uuid() },
+        {
+          orgId: this.orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          spaceName: this.state.addedSpace1
+        }
+      );
+  };
+
+  addSpaceFromInput2ToCompanies = () => {
+    this.state.addedSpace2 !== '' &&
+      this.props.firestore.set(
+        { collection: 'companiesTEST', doc: uuid() },
+        {
+          orgId: this.orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          spaceName: this.state.addedSpace2
+        }
+      );
+  };
+
+  clearState = () => {
+    this.setState({
+      orgName: null,
+      teamEmailAddress: ['', '', '', ''],
+      createdSpaces: [],
+      addedSpace1: '',
+      addedSpace2: ''
     });
   };
 
@@ -99,10 +150,14 @@ class CreateNewOrganisation extends Component {
             shoudlBeOpen={true}
             showModal={this.props.showModal}
             activeModal={this.props.activeModal}
-            addCreatedSpaces={this.addCreatedSpaces}
             createdSpaces={this.state.createdSpaces}
+            addSpace={this.addSpace}
             addCompanyToDatabase={this.addCompanyToDatabase}
             addSpacesToCompanies={this.addSpacesToCompanies}
+            addSpaceFromInput1ToCompanies={this.addSpaceFromInput1ToCompanies}
+            addSpaceFromInput2ToCompanies={this.addSpaceFromInput2ToCompanies}
+            handleInputChange={this.handleInputChange}
+            clearState={this.clearState}
           />
         )}
         <button
