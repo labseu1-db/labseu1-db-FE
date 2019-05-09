@@ -8,9 +8,9 @@ import uuid from 'uuid';
 import { showModal } from '../redux/actions/actionCreators';
 
 //Import modals
-import CreateOrganisationModal from './Modals/CreateOrganisationModal';
-import InviteYourTeamModal from './Modals/InviteYourTeamModal';
-import CreateSpacesModal from './Modals/CreateSpacesModal';
+import CreateOrganisationModal from './modals/CreateOrganisationModal';
+import InviteYourTeamModal from './modals/InviteYourTeamModal';
+import CreateSpacesModal from './modals/CreateSpacesModal';
 
 //Import spinner
 import Spinner from './semantic-components/Spinner';
@@ -38,7 +38,7 @@ class CreateNewOrganisation extends Component {
 
   //Add information about created company that were collected in modals to firestore
   orgId = uuid();
-  addCompanyToDatabase() {
+  addCompanyToDatabase = () => {
     this.props.firestore.set(
       { collection: 'companiesTEST', doc: this.orgId },
       {
@@ -51,10 +51,10 @@ class CreateNewOrganisation extends Component {
         arrayOfAdmins: { userEmail: this.props.auth.uid, userId: this.props.auth.email }
       }
     );
-  }
+  };
 
   //Add information about created spaces that were collected in modals to firestore
-  addSpacesToCompanies() {
+  addSpacesToCompanies = () => {
     this.state.createdSpaces.filter(Boolean).map(space => {
       this.props.firestore.set(
         { collection: 'companiesTEST', doc: uuid() },
@@ -65,7 +65,7 @@ class CreateNewOrganisation extends Component {
         }
       );
     });
-  }
+  };
 
   //If user is not logged in, push user to login page
   componentDidUpdate() {
