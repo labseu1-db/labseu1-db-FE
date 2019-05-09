@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
 
 import plusIcon from '../images/icon-plus-lightgray.svg';
+import homeIcon from '../images/icon-home-lightgray.svg';
 
 // This userdoc will come from local storage (set on login)
 const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
@@ -39,7 +40,7 @@ export class NavBar extends Component {
 
         <InnerContainer>
           <HomeContainer>
-            <Icon name='home' size='large' />
+            <img src={homeIcon} alt='home icon' />
             <span>Home</span>
           </HomeContainer>
 
@@ -132,7 +133,6 @@ const InnerContainerHorizontal = styled.div`
     .chevron {
       color: #f64e49;
     }
-    /* box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); */
   }
   div {
     color: rgb(55, 71, 80);
@@ -147,10 +147,22 @@ const InnerContainer = styled.div`
 
 const HomeContainer = styled.div`
   padding-left: 4px;
+  position: relative;
   display: flex;
   align-items: baseline;
+  img {
+    width: 1.25rem;
+    /* margin-right: 7px;
+    margin-left: 4px; */
+    position: absolute;
+    right: 249px;
+    bottom: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
   span {
-    padding-left: 12px;
+    padding-left: 41px;
   }
   span:hover {
     color: #f64e49;
