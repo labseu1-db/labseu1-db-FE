@@ -6,14 +6,14 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
-import placeholder from '../images/placeholder-homescreen.svg';
+// import placeholder from '../images/placeholder-homescreen.svg';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
-import Placeholder from './reusable-components/Placeholder';
+// import Placeholder from './reusable-components/Placeholder';
 
 //Main component
 function MainScreen(props) {
@@ -25,15 +25,15 @@ function MainScreen(props) {
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
-      {/*If not threads, show placeholder*/}
-      {/*If you click on dismiss, it is going to hide the placeholder*/}
-      {props.threads.length === 0 && (
+      {/*If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS*/}
+      {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
+      {/* {props.threads.length === 0 && (
         <Placeholder
           heading="Learn about Home"
           info="Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!"
           image={placeholder}
         />
-      )}
+      )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
