@@ -62,17 +62,18 @@ class CreateNewOrganisation extends Component {
         orgName: this.state.orgName,
         createdByUserId: this.props.auth.uid,
         isPremium: false,
-        arrayOfUsers: this.state.teamEmailAddress.filter(Boolean).map(e => {
-          return { userEmail: e };
+        arrayOfUsersEmails: this.state.teamEmailAddress.filter(Boolean).map(e => {
+          return e;
         }),
-        arrayOfAdmins: { userEmail: this.props.auth.uid, userId: this.props.auth.email }
+        arrayOfAdminsEmails: this.props.auth.email,
+        arrayOfAdminsIds: this.props.auth.uid
       }
     );
   };
 
   //Add information about created spaces that were collected in modals to firestore
   addSpacesToCompanies = () => {
-    this.state.createdSpaces.filter(Boolean).map(space => {
+    this.state.createdSpaces.filter(Boolean).forEach(space => {
       this.props.firestore.set(
         { collection: 'companiesTEST', doc: uuid() },
         {
@@ -165,7 +166,7 @@ class CreateNewOrganisation extends Component {
             e.preventDefault();
             this.props.showModal('CreateOrganisationModal');
           }}>
-          Click
+          Create new organisation
         </button>
       </div>
     );

@@ -136,14 +136,6 @@ const StyledModalInput = styled.input`
   }
 `;
 
-const CharacterLeft = styled.div`
-  width: 2%;
-  padding-left: 3px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #bdc3c9;
-`;
-
 const StyledModalButton = styled.button`
   width: 100px;
   padding: 5px 15px;

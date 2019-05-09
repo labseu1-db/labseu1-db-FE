@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+//Import semantic components
+import { Message } from 'semantic-ui-react';
+
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
 export default class InviteYourTeamModal extends Component {
   //Start with 4 inputs
-  state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]] };
+  state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]], alert: false };
 
   //Add email input when clicked on email
   appendInput = () => {
@@ -26,6 +29,11 @@ export default class InviteYourTeamModal extends Component {
     }));
   };
 
+  checkIfEmail = email => {
+    let re = /(^$|^.*@.*\..*$)/;
+    return re.test(email);
+  };
+
   //Render component
   render() {
     return (
@@ -42,6 +50,7 @@ export default class InviteYourTeamModal extends Component {
                 {this.state.inputs.map((input, i) => (
                   <StyledModalInput
                     placeholder="Email address"
+                    type="email"
                     value={this.state.inputs[i]}
                     onChange={e => {
                       this.addEmail(e.target.value, i);
@@ -58,8 +67,14 @@ export default class InviteYourTeamModal extends Component {
               <StyledModalButton
                 onClick={e => {
                   e.preventDefault();
-                  this.props.addTeamEmailAddress(this.state.inputs);
-                  this.props.showModal('CreateSpacesModal');
+                  this.setState({ alert: false });
+                  console.log(this.state.inputs.every(this.checkIfEmail));
+                  if (this.state.inputs.every(this.checkIfEmail)) {
+                    this.props.addTeamEmailAddress(this.state.inputs);
+                    this.props.showModal('CreateSpacesModal');
+                  } else {
+                    this.setState({ alert: true });
+                  }
                 }}>
                 Next
               </StyledModalButton>
@@ -76,6 +91,12 @@ export default class InviteYourTeamModal extends Component {
             </StyledActionButtonsContainer>
           </Modal.Actions>
         </StyledModalCard>
+
+        {this.state.alert && (
+          <StyledAlertMessage>
+            <Message color="red">Please make sure that you are using valid email address.</Message>
+          </StyledAlertMessage>
+        )}
       </Modal>
     );
   }
@@ -96,6 +117,12 @@ const StyledModalCard = styled.div`
   textarea:focus {
     outline: none;
   }
+`;
+
+const StyledAlertMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
 `;
 
 const StyledModalForm = styled.form`
