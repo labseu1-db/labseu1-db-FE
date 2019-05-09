@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Dropdown } from 'semantic-ui-react';
 
+import UserMenu from './UserMenu';
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
@@ -20,11 +21,21 @@ export class NavBar extends Component {
       orgsFromArrayOfUsersIds,
       orgsFromArrayOfAdminsIds
     } = this.props;
+    const isOrgsLoaded =
+      orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
     const allOrgsForUser = [
       ...orgsFromArrayOfUsersIds,
-      ...orgsFromArrayOfAdminsIds
+      ...orgsFromArrayOfAdminsIds,
+      { orgName: 'Second org' },
+      { orgName: 'Third org' }
     ];
-    // console.log(allOrgsForUser);
+    const orgOptions = allOrgsForUser.map(org => ({
+      key: org.orgName,
+      text: org.orgName,
+      value: `${org.orgName}`
+    }));
+
+    console.log(orgOptions);
     return (
       <NavBarContainer>
         <HeaderContainer>
@@ -48,7 +59,7 @@ export class NavBar extends Component {
             <Icon name='cog' />
           </div>
         </HeaderContainer>
-
+        {/* <UserMenu /> */}
         <InnerContainer>
           <HomeContainer>
             <img src={homeIcon} alt='home icon' />
@@ -60,10 +71,17 @@ export class NavBar extends Component {
               <OuterOrgContainer>
                 <OrgContainer>
                   <Icon name='building outline' size='large' />
-                  {activeUser.arrayOfOrgs && (
-                    <span>{activeUser.arrayOfOrgs[0].orgName}</span>
+                  {isOrgsLoaded && (
+                    <span>
+                      {' '}
+                      <Dropdown
+                        inline
+                        options={orgOptions}
+                        defaultValue={orgOptions[0].value}
+                      />
+                    </span>
                   )}
-                  <Icon name='chevron down' size='small' />
+                  {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
                 <div>
                   <img src={plusIcon} alt='plus icon' />
@@ -281,3 +299,18 @@ const StyledImage = styled.img`
   border-radius: 50%;
   margin-right: 8px;
 `;
+
+{
+  /* <OuterOrgContainer>
+<OrgContainer>
+  <Icon name='building outline' size='large' />
+  {activeUser.arrayOfOrgs && (
+    <span>{activeUser.arrayOfOrgs[0].orgName}</span>
+  )}
+  <Icon name='chevron down' size='small' />
+</OrgContainer>
+<div>
+  <img src={plusIcon} alt='plus icon' />
+</div>
+</OuterOrgContainer> */
+}
