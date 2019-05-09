@@ -10,7 +10,7 @@ import 'firebase/firestore';
 import firebaseConfig from '../firebase/firebaseConfig.js';
 
 //Import reducers
-import { initialState, rootReducer } from './reducer';
+import { initialState, rootReducer } from './reducers/reducer';
 
 //Initialize database
 firebase.initializeApp(firebaseConfig);
@@ -18,12 +18,12 @@ firebase.firestore();
 
 //Connecting firestore to redux
 const enhancers = [
-  reduxFirestore(firebase),
-  //This will be used for authenticaton - users are going to be stored in the firestore database
-  reactReduxFirebase(firebase, {
-    userProfile: 'authedUsers',
-    useFirestoreForProfile: true
-  })
+	reduxFirestore(firebase),
+	//This will be used for authenticaton - users are going to be stored in the firestore database
+	reactReduxFirebase(firebase, {
+		userProfile: 'authedUsers',
+		useFirestoreForProfile: true
+	})
 ];
 
 const composedEnhancers = compose(...enhancers);
