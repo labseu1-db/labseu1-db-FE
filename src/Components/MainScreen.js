@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,6 +16,8 @@ import ThreadCard from './reusable-components/ThreadCard';
 
 //Main component
 function MainScreen(props) {
+  const [activePlaceholder, setPlaceholder] = useState(true);
+
   return (
     <StyledMainScreen>
       <StyledFirstRow>
@@ -24,16 +26,22 @@ function MainScreen(props) {
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
-      {/*If not threads, show placeholder */}
-      {/* {props.threads.length === 0 && (
+      {/*If not threads, show placeholder*/}
+      {/*If you click on dismiss, it is going to hide the placeholder*/}
+      {props.threads.length === 0 && activePlaceholder === true && (
         <StyledPlaceholderContainer>
-          <StyledPlaceholderHeading>Learn about Home</StyledPlaceholderHeading>
-          <StyledPlaceholderInfo>Home is a great place where you fins all information about threads.</StyledPlaceholderInfo>
+          <StyledPlaceholderHeading>
+            <div>Learn about Home</div>
+            <div className="dismiss" onClick={() => setPlaceholder(false)}>
+              Dismiss
+            </div>
+          </StyledPlaceholderHeading>
+          <StyledPlaceholderInfo>Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!</StyledPlaceholderInfo>
           <StyledPlaceholderImage>
             <img src={placeholder} alt="placeholder" />
           </StyledPlaceholderImage>
         </StyledPlaceholderContainer>
-      )} */}
+      )}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
@@ -87,6 +95,15 @@ const StyledPlaceholderHeading = styled.div`
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  .dismiss {
+    font-weight: 400;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const StyledPlaceholderInfo = styled.div`
@@ -118,7 +135,7 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
+        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32a']]
       }
     ];
   })
