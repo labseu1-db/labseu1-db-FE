@@ -135,7 +135,7 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32a']]
+        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
       }
     ];
   })
