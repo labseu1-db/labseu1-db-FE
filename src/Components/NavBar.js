@@ -1,60 +1,96 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
+
 import plusIcon from '../images/icon-plus-lightgray.svg';
 
-export default function NavBar() {
-  return (
-    <NavBarContainer>
-      <HeaderContainer className='nav-bar-user-information'>
-        <InnerContainerHorizontal>
-          <StyledImage src='http://lorempixel.com/640/480' alt='user' />
-          <div>Samar Vir</div>
-          <Icon name='chevron down' size='small' />
-        </InnerContainerHorizontal>
-        <div>
-          <Icon name='cog' />
-        </div>
-      </HeaderContainer>
+// This userdoc will come from local storage (set on login)
+const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 
-      <InnerContainer className='nav-bar-main-section'>
-        <HomeContainer className='home-screen-link'>
-          <Icon name='home' size='large' />
-          <span>Home</span>
-        </HomeContainer>
-
-        <div className='org-menu'>
-          <div className='organisation-component'>
-            <OuterOrgContainer>
-              <OrgContainer className='organisation-name'>
-                <Icon name='building outline' size='large' />
-                <span>Organisation name</span>
-                <Icon name='chevron down' size='small' />
-              </OrgContainer>
-              <div>
-                <img src={plusIcon} alt='plus icon' />
-              </div>
-            </OuterOrgContainer>
-            <SpaceContainer>
-              <div>
-                <span>Space 1</span>
-              </div>
-              <div>
-                <span>Space 2</span>
-              </div>
-              <div>
-                <span>Space 3</span>
-              </div>
-              <div>
-                <span>Space 4</span>
-              </div>
-            </SpaceContainer>
+export class NavBar extends Component {
+  render() {
+    const activeUser = this.props.user;
+    return (
+      <NavBarContainer>
+        <HeaderContainer>
+          <InnerContainerHorizontal>
+            {activeUser.profileUrl && (
+              <StyledImage src={activeUser.profileUrl} alt='user' />
+            )}
+            {activeUser.fullName && <div>{activeUser.fullName}</div>}
+            <Icon name='chevron down' size='small' />
+          </InnerContainerHorizontal>
+          <div>
+            <Icon name='cog' />
           </div>
-        </div>
-      </InnerContainer>
-    </NavBarContainer>
-  );
+        </HeaderContainer>
+
+        <InnerContainer className='nav-bar-main-section'>
+          <HomeContainer className='home-screen-link'>
+            <Icon name='home' size='large' />
+            <span>Home</span>
+          </HomeContainer>
+
+          <div className='org-menu'>
+            <div className='organisation-component'>
+              <OuterOrgContainer>
+                <OrgContainer className='organisation-name'>
+                  <Icon name='building outline' size='large' />
+                  <span>Organisation name</span>
+                  <Icon name='chevron down' size='small' />
+                </OrgContainer>
+                <div>
+                  <img src={plusIcon} alt='plus icon' />
+                </div>
+              </OuterOrgContainer>
+              <SpaceContainer>
+                <div>
+                  <span>Space 1</span>
+                </div>
+                <div>
+                  <span>Space 2</span>
+                </div>
+                <div>
+                  <span>Space 3</span>
+                </div>
+                <div>
+                  <span>Space 4</span>
+                </div>
+              </SpaceContainer>
+            </div>
+          </div>
+        </InnerContainer>
+      </NavBarContainer>
+    );
+  }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+//Connect to Firestore
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'users',
+        doc: `${userDoc}`
+      }
+    ];
+  })
+)(NavBar);
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
