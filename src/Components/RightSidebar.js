@@ -9,33 +9,37 @@ import mobileImg from '../images/img-modal-mobile.svg';
 import voiceImg from '../images/img-modal-voice.svg';
 
 export default class RightSidebar extends React.Component {
-	toggleCheck = () => {
-		let check = document.getElementById('check');
-		if (check.src === checkMarkOn) {
-			check.src = checkMarkOn;
-		} else {
-			check.src = checkMarkOn;
-		}
+	toggleCheckFirst = () => {
+		let check = document.getElementById('check01');
+		check.src === checkMarkOn ? (check.src = checkMarkOn) : (check.src = checkMarkOn);
+	};
+	toggleCheckSecond = () => {
+		let check = document.getElementById('check02');
+		check.src === checkMarkOn ? (check.src = checkMarkOn) : (check.src = checkMarkOn);
+	};
+	toggleCheckThird = () => {
+		let check = document.getElementById('check03');
+		check.src === checkMarkOn ? (check.src = checkMarkOn) : (check.src = checkMarkOn);
 	};
 	render() {
 		return (
 			<StyledContainer>
 				<SearchSpace />
 				<GetStarted>
-					<GetStartedTop className='top'>
+					<GetStartedTop>
 						<PlantImg src={plantImg} alt='plant' />
 						<p>Let's Get Started!</p>
 					</GetStartedTop>
 					<GetStartedCheckboxes>
-						<GetStartedCheck className='checkbox'>
+						<GetStartedCheck>
 							<CheckImg src={checkMarkOn} alt='checkMarkOn' />
 							<Paragraph>Create an organization</Paragraph>
 						</GetStartedCheck>
-						<GetStartedCheck className='checkbox'>
+						<GetStartedCheck>
 							<CheckImg src={checkMarkOff} alt='checkMarkOff' />
 							<Paragraph>Connect Slack</Paragraph>
 						</GetStartedCheck>
-						<GetStartedCheck className='checkbox'>
+						<GetStartedCheck>
 							<CheckImg src={checkMarkOn} alt='checkMarkOn' />
 							<Paragraph>Invite Team Members</Paragraph>
 						</GetStartedCheck>
@@ -44,8 +48,8 @@ export default class RightSidebar extends React.Component {
 
 				<LearnMore>
 					<p>Learn about Threads</p>
-					<LearnTopic onClick={this.toggleCheck}>
-						<CheckImg src={checkMarkOff} alt='checkMarkOff' id='check' />
+					<LearnTopic onClick={this.toggleCheckFirst}>
+						<CheckImg src={checkMarkOff} alt='checkMarkOff' id='check01' />
 						<Modal size='tiny' trigger={<Paragraph>What is Threads?</Paragraph>}>
 							<ModalImg>
 								<Image src={discussionImg} size='medium' centered />
@@ -63,8 +67,8 @@ export default class RightSidebar extends React.Component {
 							</Modal.Content>
 						</Modal>
 					</LearnTopic>
-					<LearnTopic>
-						<CheckImg src={checkMarkOff} alt='checkMarkOff' />
+					<LearnTopic onClick={this.toggleCheckSecond}>
+						<CheckImg src={checkMarkOff} alt='checkMarkOff' id='check02' />
 						<Modal size='tiny' trigger={<Paragraph>What are spaces and how do I use them? </Paragraph>}>
 							<ModalImg>
 								<Image src={mobileImg} size='medium' centered />
@@ -82,8 +86,8 @@ export default class RightSidebar extends React.Component {
 							</Modal.Content>
 						</Modal>
 					</LearnTopic>
-					<LearnTopic>
-						<CheckImg src={checkMarkOff} alt='checkMarkOff' />
+					<LearnTopic onClick={this.toggleCheckThird}>
+						<CheckImg src={checkMarkOff} alt='checkMarkOff' id='check03' />
 						<Modal size='tiny' trigger={<Paragraph>What threads should I write?</Paragraph>}>
 							<ModalImg>
 								<Image src={voiceImg} size='medium' centered />
