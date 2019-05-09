@@ -82,13 +82,6 @@ class CreateNewOrganisation extends Component {
 
     return (
       <div>
-        <button
-          onClick={() => {
-            this.addCompanyToDatabase();
-            this.addSpacesToCompanies();
-          }}>
-          Submit
-        </button>
         {this.props.activeModal === 'CreateOrganisationModal' && (
           <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addOrgName={this.addOrgName} />
         )}
@@ -107,6 +100,7 @@ class CreateNewOrganisation extends Component {
             showModal={this.props.showModal}
             activeModal={this.props.activeModal}
             addCreatedSpaces={this.addCreatedSpaces}
+            createdSpaces={this.state.createdSpaces}
             addCompanyToDatabase={this.addCompanyToDatabase}
             addSpacesToCompanies={this.addSpacesToCompanies}
           />
