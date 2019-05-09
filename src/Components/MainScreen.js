@@ -23,6 +23,7 @@ function MainScreen(props) {
         <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
+
       {/*If not threads, show placeholder */}
       {props.threads.length === 0 && (
         <StyledPlaceholderContainer>
@@ -33,6 +34,7 @@ function MainScreen(props) {
           </StyledPlaceholderImage>
         </StyledPlaceholderContainer>
       )}
+
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
       {props.threads.length > 0 &&
