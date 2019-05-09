@@ -12,31 +12,31 @@ import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
 
 class App extends Component {
-	render() {
-		return (
-			<div>
-				<Route exact path='/register' render={(props) => <Register {...props} />} />
-				<Route exact path='/login' render={(props) => <Login {...props} />} />
-				<Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
-				<Route exact path='/passwordlesssubmit' render={(props) => <PasswordlessSubmit {...props} />} />
-				<Route exact path='/passwordlesscheck' render={(props) => <PasswordlessCheck {...props} />} />
-				<Route exact path='/forgotPassword' render={(props) => <ForgotPassword {...props} />} />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <Route exact path='/register' render={(props) => <Register {...props} />} />
+        <Route exact path='/login' render={(props) => <Login {...props} />} />
+        <Route exact path='/homescreen' render={(props) => <FakeHome {...props} />} />
+        <Route exact path='/passwordlesssubmit' render={(props) => <PasswordlessSubmit {...props} />} />
+        <Route exact path='/passwordlesscheck' render={(props) => <PasswordlessCheck {...props} />} />
+        <Route exact path='/forgotPassword' render={(props) => <ForgotPassword {...props} />} />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-	return {
-		auth: state.firebase.auth,
-		profile: state.firebase.profile
-	};
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-	};
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
