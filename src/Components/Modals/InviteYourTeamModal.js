@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
+//Import components
+import ProgressBar from '../reusable-components/ProgressBar';
+
 export default class InviteYourTeamModal extends Component {
   //Start with 4 inputs
   state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]] };
@@ -27,11 +30,7 @@ export default class InviteYourTeamModal extends Component {
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">
-        <style.StyledProgressContainer>
-          <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot />
-        </style.StyledProgressContainer>
+        <ProgressBar activeDots={2} bulletpoints={3} />
         <style.StyledModalH1>
           <Modal.Header content="Invite your team" />
         </style.StyledModalH1>

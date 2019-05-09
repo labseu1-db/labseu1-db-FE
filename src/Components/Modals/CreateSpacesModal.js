@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import * as style from '../styled-components/StyledModal';
 
+//Import components
+import ProgressBar from '../reusable-components/ProgressBar';
+
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
     { name: 'Product', color: 'eggplant' },
@@ -50,11 +53,7 @@ export default class CreateSpacesModal extends Component {
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">
-        <style.StyledProgressContainer>
-          <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot className="active" />
-        </style.StyledProgressContainer>
+        <ProgressBar activeDots={3} bulletpoints={3} />
         <style.StyledModalH1>
           <Modal.Header content="Create few spaces" />
         </style.StyledModalH1>

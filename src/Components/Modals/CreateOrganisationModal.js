@@ -4,6 +4,9 @@ import { Modal } from 'semantic-ui-react';
 //Import stylesheet
 import * as style from '../styled-components/StyledModal';
 
+//Import components
+import ProgressBar from '../reusable-components/ProgressBar';
+
 //Main component - Modal
 export default class CreateCompanyModal extends Component {
   state = {
@@ -18,11 +21,7 @@ export default class CreateCompanyModal extends Component {
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} basic size="tiny">
-        <style.StyledProgressContainer>
-          <style.StyledProgressDot className="active" />
-          <style.StyledProgressDot />
-          <style.StyledProgressDot />
-        </style.StyledProgressContainer>
+        <ProgressBar activeDots={1} bulletpoints={3} />
         <style.StyledModalH1>
           <Modal.Header content="Create an organisation" />
         </style.StyledModalH1>
