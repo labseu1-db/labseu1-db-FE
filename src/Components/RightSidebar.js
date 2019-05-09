@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Modal, Image } from 'semantic-ui-react';
-import checkMarkOff from '../images/checkMarkOff.svg';
-import checkMarkOn from '../images/checkMarkOn.svg';
-import plantImg from '../images/plant.png';
-import discussionImg from '../images/discussion.svg';
-import mobileImg from '../images/mobile.svg';
-import voiceImg from '../images/voice.svg';
+import checkMarkOff from '../images/icon-check-darkgray.svg';
+import checkMarkOn from '../images/icon-check-purple.svg';
+import plantImg from '../images/img-bg-plant.png';
+import discussionImg from '../images/img-modal-discussion.svg';
+import mobileImg from '../images/img-modal-mobile.svg';
+import voiceImg from '../images/img-modal-voice.svg';
 
 export default class RightSidebar extends React.Component {
 	toggleCheck = () => {
@@ -116,7 +116,7 @@ const StyledContainer = styled.div`
 	background-color: #faf9f7;
 	color: #3d4856;
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	padding: 10%;
 `;
 const GetStarted = styled.div`

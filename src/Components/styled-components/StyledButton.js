@@ -14,9 +14,9 @@ export const StyledButton = styled.button`
   }
 `;
 
-export const ForgotPasswordButton = styled.button`
+export const ForgotPasswordDiv = styled.div`
   font-family: 'Open Sans', sans-serif;
-  padding-right: 75px;
+  padding-left: 124px;
   color: black;
   font-size: 0.8rem;
   font-weight: 300;

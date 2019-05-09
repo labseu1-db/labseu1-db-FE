@@ -10,6 +10,7 @@ import FakeHome from './Components/FakeHome';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
+
 class App extends Component {
 	render() {
 		return (
