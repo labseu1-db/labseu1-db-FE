@@ -63,7 +63,7 @@ export default class InviteYourTeamModal extends Component {
                 }}>
                 Next
               </style.StyledModalButton>
-              <style.SDModalMainButtonContainer>
+              <style.StyledModalMainButtonContainer>
                 <style.StyledModalButton
                   className="cancel-button"
                   onClick={e => {
@@ -72,7 +72,7 @@ export default class InviteYourTeamModal extends Component {
                   }}>
                   Skip
                 </style.StyledModalButton>
-              </style.SDModalMainButtonContainer>
+              </style.StyledModalMainButtonContainer>
             </style.StyledActionButtonsContainer>
           </Modal.Actions>
         </style.StyledModalCard>

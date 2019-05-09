@@ -115,7 +115,7 @@ export const StyledModalButton = styled.button`
   background-color: #5c4df2;
 `;
 
-export const SDModalMainButtonContainer = styled.div`
+export const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
