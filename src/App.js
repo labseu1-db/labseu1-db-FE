@@ -10,7 +10,7 @@ import FakeHome from './Components/FakeHome';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
-import SidebarEndpoint from './Endpoints/SidebarEndpoint';
+
 class App extends Component {
   render() {
     return (
@@ -40,11 +40,6 @@ class App extends Component {
           exact
           path='/forgotPassword'
           render={props => <ForgotPassword {...props} />}
-        />
-        <Route
-          exact
-          path='/sidebarendpoint'
-          render={props => <SidebarEndpoint {...props} />}
         />
       </div>
     );

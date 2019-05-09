@@ -24,20 +24,29 @@ export class NavBar extends Component {
             <Icon name='chevron down' size='small' />
           </InnerContainerHorizontal>
           <div>
+            <button
+              onClick={async e => {
+                e.preventDefault();
+                await this.props.firebase.logout();
+                this.props.clearFirestore();
+              }}
+            >
+              Logout
+            </button>
             <Icon name='cog' />
           </div>
         </HeaderContainer>
 
-        <InnerContainer className='nav-bar-main-section'>
-          <HomeContainer className='home-screen-link'>
+        <InnerContainer>
+          <HomeContainer>
             <Icon name='home' size='large' />
             <span>Home</span>
           </HomeContainer>
 
-          <div className='org-menu'>
-            <div className='organisation-component'>
+          <div>
+            <div>
               <OuterOrgContainer>
-                <OrgContainer className='organisation-name'>
+                <OrgContainer>
                   <Icon name='building outline' size='large' />
                   <span>Organisation name</span>
                   <Icon name='chevron down' size='small' />
@@ -74,7 +83,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
+};
 
 //Connect to Firestore
 export default compose(
