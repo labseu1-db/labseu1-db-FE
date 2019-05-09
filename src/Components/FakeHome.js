@@ -10,61 +10,75 @@ import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 
 class FakeHome extends Component {
-	componentWillUpdate() {
-		if (isEmpty(this.props.auth)) {
-			this.props.history.push('/login');
-		}
-	}
+  componentWillUpdate() {
+    if (isEmpty(this.props.auth)) {
+      this.props.history.push('/login');
+    }
+  }
 
-	render() {
-		if (!isLoaded(this.props.auth)) {
-			return <Spinner />;
-		}
-		return (
-			<StyledHomeScreen>
-				<FirstDiv>
-					<NavBar />
-				</FirstDiv>
-				<SecondDiv>
-					<MainScreen />
-				</SecondDiv>
-				<ThirdDiv>
-					<RightSidebar />
-				</ThirdDiv>
-			</StyledHomeScreen>
-		);
-	}
+  render() {
+    if (!isLoaded(this.props.auth)) {
+      return <Spinner />;
+    }
+    return (
+      <StyledHomeScreen>
+        <FirstDiv>
+          <NavBar />
+        </FirstDiv>
+        <MidRightContainer>
+          <SecondDiv>
+            <MainScreen />
+          </SecondDiv>
+          <ThirdDiv>
+            <RightSidebar />
+          </ThirdDiv>
+        </MidRightContainer>
+      </StyledHomeScreen>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-	return {
-		auth: state.firebase.auth,
-		profile: state.firebase.profile
-	};
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-	};
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
 };
 
 const StyledHomeScreen = styled.div`
-	display: flex;
-`
+  display: flex;
+`;
 const FirstDiv = styled.div`
-	width: 15vw;
-	border: 1px solid black;
-`
+  width: 309px;
+  border: 1px solid black;
+`;
 
 const SecondDiv = styled.div`
-	width: 60vw;
-	border: 1px solid black;
-`
+  width: 70%;
+  border: 1px solid black;
+`;
 
 const ThirdDiv = styled.div`
-	width: 25vw;
-	border: 1px solid black;
-`
+  width: 30%;
+  border: 1px solid black;
+`;
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(FakeHome);
+const MidRightContainer = styled.div`
+  border: 1px solid red;
+  width: 100vw;
+  display: flex;
+`;
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(FakeHome);

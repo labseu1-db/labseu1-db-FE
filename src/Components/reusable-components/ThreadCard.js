@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
@@ -9,14 +12,14 @@ import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, space, heading, info, numberOfComments, numberOfLikes, checked } = props;
+  const { createdBy, createdAt, heading, info, checked } = props;
   return (
     <div>
       <StyledThreadContainer>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
-        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={space} checked={checked} />
+        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={props.activeSpace.spaceName} checked={checked} />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightComponent numberOfComments={numberOfComments} numberOfLikes={numberOfLikes} />
+        <ThreadRightComponent numberOfComments={props.activeComments.length} />
       </StyledThreadContainer>
     </div>
   );
@@ -39,5 +42,33 @@ const StyledThreadContainer = styled.div`
   }
 `;
 
-//Default export
-export default ThreadCard;
+//Export component wrapped in store + firestore
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    activeSpace: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
+    activeComments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'spaces',
+        doc: `${props.spaceId}`
+      },
+      {
+        collection: 'comments',
+        where: [['threaId', '==', `${props.threadId}`]]
+      }
+    ];
+  })
+)(ThreadCard);
