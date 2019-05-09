@@ -25,7 +25,7 @@ function MainScreen(props) {
       <ScreenSectionHeading heading="Recent" />
 
       {/*If not threads, show placeholder */}
-      {props.threads.length === 0 && (
+      {/* {props.threads.length === 0 && (
         <StyledPlaceholderContainer>
           <StyledPlaceholderHeading>Learn about Home</StyledPlaceholderHeading>
           <StyledPlaceholderInfo>Home is a great place where you fins all information about threads.</StyledPlaceholderInfo>
@@ -33,7 +33,7 @@ function MainScreen(props) {
             <img src={placeholder} alt="placeholder" />
           </StyledPlaceholderImage>
         </StyledPlaceholderContainer>
-      )}
+      )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
