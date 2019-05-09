@@ -8,12 +8,23 @@ import { Icon } from 'semantic-ui-react';
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
-// This userdoc will come from local storage (set on login)
+// This userDoc + activeOrg will come from local storage (set on login or org selection)
 const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
+const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
   render() {
     const activeUser = this.props.user;
+    const {
+      spacesForActiveOrg,
+      orgsFromArrayOfUsersIds,
+      orgsFromArrayOfAdminsIds
+    } = this.props;
+    const allOrgsForUser = [
+      ...orgsFromArrayOfUsersIds,
+      ...orgsFromArrayOfAdminsIds
+    ];
+    // console.log(allOrgsForUser);
     return (
       <NavBarContainer>
         <HeaderContainer>
@@ -59,11 +70,11 @@ export class NavBar extends Component {
                 </div>
               </OuterOrgContainer>
               <SpaceContainer>
-                {activeUser.arrayOfSpaceNames && (
+                {spacesForActiveOrg && (
                   <div>
-                    {activeUser.arrayOfSpaceNames.map((space, index) => (
+                    {spacesForActiveOrg.map((space, index) => (
                       <div key={index}>
-                        <span>{space}</span>
+                        <span>{space.spaceName}</span>
                       </div>
                     ))}
                   </div>
@@ -79,7 +90,16 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
+      ? state.firestore.ordered.orgsInWhichUser
+      : [],
+    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin
+      ? state.firestore.ordered.orgsInWhichAdmin
+      : [],
+    spacesForActiveOrg: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces
+      : []
   };
 };
 
@@ -96,10 +116,28 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect(props => {
+    // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
         collection: 'users',
         doc: `${userDoc}`
+      },
+      {
+        collection: 'spaces',
+        where: [
+          ['arrayOfUserIdsInSpace', 'array-contains', userDoc],
+          ['orgId', '==', activeOrg]
+        ]
+      },
+      {
+        collection: 'organisations',
+        where: ['arrayOfUsersIds', 'array-contains', userDoc],
+        storeAs: 'orgsInWhichUser'
+      },
+      {
+        collection: 'organisations',
+        where: ['arrayOfAdminsIds', 'array-contains', userDoc],
+        storeAs: 'orgsInWhichAdmin'
       }
     ];
   })
