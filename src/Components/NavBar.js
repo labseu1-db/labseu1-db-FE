@@ -48,7 +48,9 @@ export class NavBar extends Component {
               <OuterOrgContainer>
                 <OrgContainer>
                   <Icon name='building outline' size='large' />
-                  <span>Organisation name</span>
+                  {activeUser.arrayOfOrgs && (
+                    <span>{activeUser.arrayOfOrgs[0].orgName}</span>
+                  )}
                   <Icon name='chevron down' size='small' />
                 </OrgContainer>
                 <div>
@@ -56,18 +58,15 @@ export class NavBar extends Component {
                 </div>
               </OuterOrgContainer>
               <SpaceContainer>
-                <div>
-                  <span>Space 1</span>
-                </div>
-                <div>
-                  <span>Space 2</span>
-                </div>
-                <div>
-                  <span>Space 3</span>
-                </div>
-                <div>
-                  <span>Space 4</span>
-                </div>
+                {activeUser.arrayOfSpaceNames && (
+                  <div>
+                    {activeUser.arrayOfSpaceNames.map((space, index) => (
+                      <div key={index}>
+                        <span>{space}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </SpaceContainer>
             </div>
           </div>
