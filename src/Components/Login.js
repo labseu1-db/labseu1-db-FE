@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 import { Button, Icon, Message } from 'semantic-ui-react';
 
 import {
@@ -65,10 +65,30 @@ class Login extends Component {
         email: this.state.loginEmail,
         password: this.state.loginPassword
       })
+      .then((res) => {
+        this.setUserIdInLocalStorage(res.user.user.email)
+      })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       });
   };
+
+  setUserIdInLocalStorage = (email) => {
+    var ref = this.props.firestore.collection("users").where("userEmail", "==", email);
+
+    ref.get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            localStorage.setItem("uuid", doc.id);
+            localStorage.setItem("userData", JSON.stringify(doc.data()));
+            // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
+        });
+      })
+      .catch(error => {
+        this.setState({  error });
+      });
+  }
 
   togglePassword = () => {
     let temp = document.getElementById('typepass');
@@ -171,6 +191,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
+  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
