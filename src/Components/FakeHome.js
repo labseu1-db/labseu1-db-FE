@@ -12,7 +12,7 @@ import MainScreen from './MainScreen';
 import { showModal } from '../redux/actions/actionCreators';
 
 //Import modals
-import CreateOrganisationModal from './Modals/CreateOrganisationModal';
+import CreateNewOrganisation from './CreateNewOrganisation';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -22,29 +22,17 @@ class FakeHome extends Component {
   }
 
   componentDidMount() {
-    if (JSON.parse(localStorage.getItem('arrayOfOrgs')) === null) {
+    if (JSON.parse(localStorage.getItem('hasOrg')) === null) {
       this.props.showModal('CreateOrganisationModal');
-      console.log('bla');
+      console.log(JSON.parse(localStorage.getItem('hasOrg')) === null);
     }
   }
 
   render() {
-    // return (
-    //   <div>
-    //     {this.props.activeModal === 'CreateOrganisationModal' && (
-    //       <CreateOrganisationModal
-    //         shoudlBeOpen={true}
-    //         showModal={this.props.showModal}
-    //         activeModal={this.props.activeModal}
-    //         addOrgName={this.addOrgName}
-    //       />
-    //     )}
-    //   </div>
-    // );
-    console.log(this.props.showModal());
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
+    console.log(this.props.auth);
     return (
       <StyledHomeScreen>
         <FirstDiv>
@@ -58,6 +46,7 @@ class FakeHome extends Component {
             <RightSidebar />
           </ThirdDiv>
         </MidRightContainer>
+        {this.props.activeModal && <CreateNewOrganisation />}
       </StyledHomeScreen>
     );
   }

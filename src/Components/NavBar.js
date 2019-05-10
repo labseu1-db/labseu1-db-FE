@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
+
+//Import actions
+import { showModal } from '../redux/actions/actionCreators';
+
+//Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
 
+//Import compoentns
+import CreateNewOrganisation from './CreateNewOrganisation';
+
+//Import icons
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
@@ -26,13 +35,8 @@ export class NavBar extends Component {
 
   render() {
     const activeUser = this.props.user;
-    const {
-      spacesForActiveOrg,
-      orgsFromArrayOfUsersIds,
-      orgsFromArrayOfAdminsIds
-    } = this.props;
-    const isOrgsLoaded =
-      orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
+    const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
+    const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
     const allOrgsForUser = [
       ...orgsFromArrayOfUsersIds,
       ...orgsFromArrayOfAdminsIds,
@@ -60,9 +64,7 @@ export class NavBar extends Component {
       <NavBarContainer>
         <HeaderContainer>
           <InnerContainerHorizontal>
-            {activeUser.profileUrl && (
-              <StyledImage src={activeUser.profileUrl} alt='user' />
-            )}
+            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
             {activeUser.fullName && (
               <div>
                 {' '}
@@ -77,12 +79,12 @@ export class NavBar extends Component {
             )}
           </InnerContainerHorizontal>
           <div>
-            <Icon name='cog' />
+            <Icon name="cog" />
           </div>
         </HeaderContainer>
         <InnerContainer>
           <HomeContainer>
-            <img src={homeIcon} alt='home icon' />
+            <img src={homeIcon} alt="home icon" />
             <span>Home</span>
           </HomeContainer>
 
@@ -90,7 +92,7 @@ export class NavBar extends Component {
             <div>
               <OuterOrgContainer>
                 <OrgContainer>
-                  <Icon name='building outline' size='large' />
+                  <Icon name="building outline" size="large" />
                   {isOrgsLoaded && (
                     <span>
                       {' '}
@@ -106,7 +108,7 @@ export class NavBar extends Component {
                   {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
                 <div>
-                  <img src={plusIcon} alt='plus icon' />
+                  <img src={plusIcon} alt="plus icon" />
                 </div>
               </OuterOrgContainer>
               <SpaceContainer>
@@ -123,6 +125,12 @@ export class NavBar extends Component {
             </div>
           </div>
         </InnerContainer>
+        <CreateNewOrganisation
+          onClick={e => {
+            e.preventDefault();
+            this.props.showModal('CreateOrganisationModal');
+          }}
+        />
       </NavBarContainer>
     );
   }
@@ -131,22 +139,21 @@ export class NavBar extends Component {
 const mapStateToProps = state => {
   return {
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
-    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin
-      ? state.firestore.ordered.orgsInWhichAdmin
-      : [],
-    spacesForActiveOrg: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces
-      : []
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
+    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
+    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    activeModal: state.modal.activeModal
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+  return bindActionCreators(
+    {
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
+      showModal
+    },
+    dispatch
+  );
 };
 
 //Connect to Firestore
@@ -164,10 +171,7 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', userDoc],
-          ['orgId', '==', activeOrg]
-        ]
+        where: [['arrayOfUserIdsInSpace', 'array-contains', userDoc], ['orgId', '==', activeOrg]]
       },
       {
         collection: 'organisations',
@@ -309,7 +313,7 @@ const NavBarContainer = styled.div`
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
 `;

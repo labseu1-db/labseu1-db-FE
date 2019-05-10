@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import uuid from 'uuid';
 
 //Redux action
@@ -11,9 +11,6 @@ import { showModal } from '../redux/actions/actionCreators';
 import CreateOrganisationModal from './Modals/CreateOrganisationModal';
 import InviteYourTeamModal from './Modals/InviteYourTeamModal';
 import CreateSpacesModal from './Modals/CreateSpacesModal';
-
-//Import spinner
-import Spinner from './semantic-components/Spinner';
 
 //Main component
 class CreateNewOrganisation extends Component {
@@ -117,21 +114,10 @@ class CreateNewOrganisation extends Component {
       addedSpace1: '',
       addedSpace2: ''
     });
+    localStorage.setItem('hasOrg', true);
   };
 
-  //If user is not logged in, push user to login page
-  componentDidUpdate() {
-    if (isEmpty(this.props.auth)) {
-      this.props.history.push('/login');
-    }
-  }
-
   render() {
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-    console.log(this.props.auth);
-
     return (
       <div>
         {this.props.activeModal === 'CreateOrganisationModal' && (
