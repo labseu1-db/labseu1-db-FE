@@ -1,7 +1,7 @@
 module.exports = {
-  extends: ['prettier'],
+  extends: [ 'prettier' ],
   rules: {
-    quotes: [2, 'single', { avoidEscape: true }]
+    quotes: [ 2, 'single', { avoidEscape: true } ]
   },
   parser: 'babel-eslint'
 };
