@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Header, Checkbox, Form, Modal, Dropdown, Popup } from 'semantic-ui-react'
 import plusIcon from '../images/icon-plus-lightgray.svg';
-import { StyledContainer, StyledButtonCancel, StyledButtonCreateSpace, StyledInput } from './styled-components/StyledCreateSpace';
+import { StyledContainer, StyledButtonCancel, StyledButtonCreateSpace, StyledInput, StyledMainHeader, StyledOptional } from './styled-components/StyledCreateSpace';
 
 export default class CreateNewSpace extends Component {
     state = {}
@@ -15,16 +15,17 @@ export default class CreateNewSpace extends Component {
                 <StyledContainer>
                     <Modal.Header>
                         <div>
-                            <Header size='large'>Create a new space</Header>
+                            <StyledMainHeader>
+                                Create a new space
+                          </StyledMainHeader>
                         </div>
-                        <p></p>
                         <div>
                             <Header as='h5'>Space name</Header>
                             <StyledInput
                                 name='spaceName'
                                 placeholder='Product Design'
                             />
-                            <Header as='h5'>What types of discussions happen here? (Optional)</Header>
+                            <Header as='h5'>What types of discussions happen here?<StyledOptional>(Optional)</StyledOptional></Header>
                             <StyledInput
                                 name='spaceType'
                                 placeholder='Questions and thoughts about proposals'
@@ -40,7 +41,7 @@ export default class CreateNewSpace extends Component {
                                     onChange={this.handleInputChange}
                                 />
                             </Form.Field>
-                            <p></p>
+                            <br />
                             <Form.Field>
                             </Form.Field>
                             <Popup trigger={<Checkbox
