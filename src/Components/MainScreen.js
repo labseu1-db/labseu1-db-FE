@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -6,18 +6,17 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
-import placeholder from '../images/placeholder-homescreen.svg';
+// import placeholder from '../images/placeholder-homescreen.svg';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
+// import Placeholder from './reusable-components/Placeholder';
 
 //Main component
 function MainScreen(props) {
-  const [activePlaceholder, setPlaceholder] = useState(true);
-
   return (
     <StyledMainScreen>
       <StyledFirstRow>
@@ -26,22 +25,15 @@ function MainScreen(props) {
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
-      {/*If not threads, show placeholder*/}
-      {/*If you click on dismiss, it is going to hide the placeholder*/}
-      {props.threads.length === 0 && activePlaceholder === true && (
-        <StyledPlaceholderContainer>
-          <StyledPlaceholderHeading>
-            <div>Learn about Home</div>
-            <div className="dismiss" onClick={() => setPlaceholder(false)}>
-              Dismiss
-            </div>
-          </StyledPlaceholderHeading>
-          <StyledPlaceholderInfo>Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!</StyledPlaceholderInfo>
-          <StyledPlaceholderImage>
-            <img src={placeholder} alt="placeholder" />
-          </StyledPlaceholderImage>
-        </StyledPlaceholderContainer>
-      )}
+      {/*If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS*/}
+      {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
+      {/* {props.threads.length === 0 && (
+        <Placeholder
+          heading="Learn about Home"
+          info="Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!"
+          image={placeholder}
+        />
+      )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
@@ -67,52 +59,6 @@ const StyledFirstRow = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 5vh;
-`;
-
-const StyledPlaceholderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  justify-content: center;
-  align-items: center;
-`;
-const StyledPlaceholderImage = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  margin-top: 50px;
-  img {
-    width: 40%;
-  }
-`;
-const StyledPlaceholderHeading = styled.div`
-  width: 100%;
-  color: white;
-  line-height: 2.5;
-  padding: 0 20px;
-  background-color: #5c4df2;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 10px 10px 0 0;
-  display: flex;
-  justify-content: space-between;
-  .dismiss {
-    font-weight: 400;
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-const StyledPlaceholderInfo = styled.div`
-  width: 100%;
-  color: black;
-  background-color: #e6e5fe;
-  height: 100px;
-  padding: 20px;
-  border-radius: 0 0 10px 10px;
 `;
 
 //Export component wrapped in store + firestore
