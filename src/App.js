@@ -7,7 +7,6 @@ import { Route } from 'react-router-dom';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import FakeHome from './Components/FakeHome';
-import CreateNewOrganisation from './Components/CreateNewOrganisation';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';

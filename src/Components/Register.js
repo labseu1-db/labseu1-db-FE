@@ -52,10 +52,8 @@ class Register extends Component {
     let userId = uuid();
     localStorage.setItem('uuid', userId);
     localStorage.setItem('userEmail', res.profile.email);
-    localStorage.setItem('hasOrg', null);
-    localStorage.setItem('avatar', res.profile.avatarUrl);
     this.props.firestore
-      .collection('companiesTEST')
+      .collection('users')
       .doc(userId)
       .set({
         fullName: res.profile.displayName,
@@ -71,9 +69,8 @@ class Register extends Component {
     let userId = uuid();
     localStorage.setItem('uuid', userId);
     localStorage.setItem('userEmail', this.state.email);
-    localStorage.setItem('hasOrg', null);
     this.props.firestore
-      .collection('companiesTEST')
+      .collection('users')
       .doc(userId)
       .set({
         fullName: this.state.fullName,

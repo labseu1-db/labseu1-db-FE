@@ -125,12 +125,14 @@ export class NavBar extends Component {
             </div>
           </div>
         </InnerContainer>
-        <CreateNewOrganisation
+        <button
           onClick={e => {
             e.preventDefault();
             this.props.showModal('CreateOrganisationModal');
-          }}
-        />
+          }}>
+          Create new organisation
+          <CreateNewOrganisation />
+        </button>
       </NavBarContainer>
     );
   }

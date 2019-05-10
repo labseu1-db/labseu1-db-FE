@@ -154,13 +154,6 @@ class CreateNewOrganisation extends Component {
             clearState={this.clearState}
           />
         )}
-        <button
-          onClick={e => {
-            e.preventDefault();
-            this.props.showModal('CreateOrganisationModal');
-          }}>
-          Create new organisation
-        </button>
       </div>
     );
   }
