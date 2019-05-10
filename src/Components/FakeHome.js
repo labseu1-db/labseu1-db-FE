@@ -21,12 +21,12 @@ class FakeHome extends Component {
     }
   }
 
-  componentDidMount() {
-    if (JSON.parse(localStorage.getItem('hasOrg')) === null) {
-      this.props.showModal('CreateOrganisationModal');
-      console.log(JSON.parse(localStorage.getItem('hasOrg')) === null);
-    }
-  }
+  // componentDidMount() {
+  //   if (JSON.parse(localStorage.getItem('hasOrg')) === null) {
+  //     this.props.showModal('CreateOrganisationModal');
+  //     console.log(JSON.parse(localStorage.getItem('hasOrg')) === null);
+  //   }
+  // }
 
   render() {
     if (!isLoaded(this.props.auth)) {
@@ -46,7 +46,6 @@ class FakeHome extends Component {
             <RightSidebar />
           </ThirdDiv>
         </MidRightContainer>
-        {this.props.activeModal && <CreateNewOrganisation />}
       </StyledHomeScreen>
     );
   }

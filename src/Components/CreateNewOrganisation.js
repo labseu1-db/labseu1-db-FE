@@ -53,15 +53,17 @@ class CreateNewOrganisation extends Component {
   //Add information about created company that were collected in modals to firestore
   orgId = uuid();
   addCompanyToDatabase = () => {
+    let usersEmails = this.state.teamEmailAddress.filter(Boolean).map(e => {
+      return e;
+    });
+    let usersAndAdminsEmails = usersEmails.concat(this.props.auth.email);
     this.props.firestore.set(
       { collection: 'companiesTEST', doc: this.orgId },
       {
         orgName: this.state.orgName,
         createdByUserId: this.props.auth.uid,
         isPremium: false,
-        arrayOfUsersEmails: this.state.teamEmailAddress.filter(Boolean).map(e => {
-          return e;
-        }),
+        arrayOfUsersEmails: usersAndAdminsEmails,
         arrayOfAdminsEmails: this.props.auth.email,
         arrayOfAdminsIds: this.props.auth.uid
       }
