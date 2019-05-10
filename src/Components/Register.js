@@ -2,23 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 import { Button, Icon, Message } from 'semantic-ui-react';
+import uuid from 'uuid';
 
 import { StyledButton } from './styled-components/StyledButton';
-import {
-  StyledLogin,
-  StyledForm,
-  StyledInput,
-  StyledLabel,
-  StyledLoginCon,
-  StyledLowerSignIn
-} from './styled-components/StyledLogin';
-import {
-  StyledH1,
-  StyledLink,
-  StyledPLabel
-} from './styled-components/StyledText';
+import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon, StyledLowerSignIn } from './styled-components/StyledLogin';
+import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 
@@ -59,15 +49,36 @@ class Register extends Component {
       fullName: '',
       error: null
     };
+
+    this.saveUserToDatabaseAndToLocalStorage = res => {
+      let userId = uuid();
+      localStorage.setItem('uuid', userId);
+      localStorage.setItem('userEmail', this.state.email);
+      localStorage.setItem('arrayOfOrgs', null);
+      this.props.firestore
+        .collection('companiesTEST')
+        .doc(userId)
+        .set({
+          fullName: this.state.fullName,
+          userEmail: res.user.user.email,
+          arrayOfOrgs: []
+        })
+        .catch(function(error) {
+          console.log('Error getting documents: ', error);
+        });
+    };
+
     e.preventDefault();
-    this.props.firebase
-      .createUser({ email, password }, { fullName, email })
-      .then(() => {
-        this.props.firebase.login({ email, password });
-      })
-      .catch(error => {
-        this.setState({ ...INITIAL_STATE, error });
-      });
+    this.props.firebase.createUser({ email, password }, { fullName, email }).then(() => {
+      this.props.firebase
+        .login({ email, password })
+        .then(res => {
+          this.saveUserToDatabaseAndToLocalStorage(res);
+        })
+        .catch(error => {
+          this.setState({ ...INITIAL_STATE, error });
+        });
+    });
   };
 
   render() {
@@ -87,58 +98,32 @@ class Register extends Component {
           <StyledForm onSubmit={this.createAndLogInNewUser}>
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
-              <StyledInput
-                name='fullName'
-                value={this.state.fullName}
-                type='text'
-                onChange={this.handleInputChange}
-                placeholder='Tony Stark'
-              />
+              <StyledInput name="fullName" value={this.state.fullName} type="text" onChange={this.handleInputChange} placeholder="Tony Stark" />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
-              <StyledInput
-                name='email'
-                value={this.state.email}
-                type='email'
-                onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
-              />
+              <StyledInput name="email" value={this.state.email} type="email" onChange={this.handleInputChange} placeholder="tonystark@example.com" />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
-              <StyledInput
-                name='password'
-                value={this.state.password}
-                type='password'
-                onChange={this.handleInputChange}
-                placeholder='········'
-              />
+              <StyledInput name="password" value={this.state.password} type="password" onChange={this.handleInputChange} placeholder="········" />
             </StyledLabel>
 
             <StyledLowerSignIn>
-              <StyledLink to='/login'> Already have an account? </StyledLink>
-              <StyledButton
-                disabled={isInvalid}
-                onClick={this.createAndLogInNewUser}
-              >
+              <StyledLink to="/login"> Already have an account? </StyledLink>
+              <StyledButton disabled={isInvalid} onClick={this.createAndLogInNewUser}>
                 Register
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
-          <Button
-            color='google plus'
-            onClick={() =>
-              this.props.firebase.login({ provider: 'google', type: 'popup' })
-            }
-          >
-            <Icon name='google plus' /> Sign in with Google
+          <Button color="google plus" onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+            <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
         <LoginAnimation />
@@ -161,6 +146,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
+  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
