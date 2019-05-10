@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import NavBar from './NavBar';
 import styled from 'styled-components';
@@ -9,6 +9,11 @@ import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 
+import { showModal } from '../redux/actions/actionCreators';
+
+//Import modals
+import CreateOrganisationModal from './Modals/CreateOrganisationModal';
+
 class FakeHome extends Component {
   componentWillUpdate() {
     if (isEmpty(this.props.auth)) {
@@ -16,7 +21,27 @@ class FakeHome extends Component {
     }
   }
 
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('arrayOfOrgs')) === null) {
+      this.props.showModal('CreateOrganisationModal');
+      console.log('bla');
+    }
+  }
+
   render() {
+    // return (
+    //   <div>
+    //     {this.props.activeModal === 'CreateOrganisationModal' && (
+    //       <CreateOrganisationModal
+    //         shoudlBeOpen={true}
+    //         showModal={this.props.showModal}
+    //         activeModal={this.props.activeModal}
+    //         addOrgName={this.addOrgName}
+    //       />
+    //     )}
+    //   </div>
+    // );
+    console.log(this.props.showModal());
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
@@ -41,14 +66,19 @@ class FakeHome extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    activeModal: state.modal.activeModal
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+  return bindActionCreators(
+    {
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
+      showModal
+    },
+    dispatch
+  );
 };
 
 const StyledHomeScreen = styled.div`

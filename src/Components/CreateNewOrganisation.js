@@ -135,7 +135,12 @@ class CreateNewOrganisation extends Component {
     return (
       <div>
         {this.props.activeModal === 'CreateOrganisationModal' && (
-          <CreateOrganisationModal shoudlBeOpen={true} showModal={this.props.showModal} activeModal={this.props.activeModal} addOrgName={this.addOrgName} />
+          <CreateOrganisationModal
+            shoudlBeOpen={true}
+            showModal={this.props.showModal}
+            activeModal={this.props.activeModal}
+            addOrgName={this.addOrgName}
+          />
         )}
         {this.props.activeModal === 'InviteYourTeamModal' && (
           <InviteYourTeamModal
