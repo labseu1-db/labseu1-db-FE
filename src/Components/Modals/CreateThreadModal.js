@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'semantic-ui-react';
+import { Modal, Dropdown } from 'semantic-ui-react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
@@ -59,7 +59,7 @@ export default class CreateThreadModal extends Component {
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
-        <StyledMiniModal id='miniModal'>
+        <MiniModalLeft id='miniModal'>
           <StyledContainerTitles>Text Styling</StyledContainerTitles>
           <TextStylingContainer>
             <TextStylingButtons onClick={this.onBoldClick}>
@@ -79,8 +79,17 @@ export default class CreateThreadModal extends Component {
               <p>Code</p>
             </TextStylingButtons>
           </TextStylingContainer>
-        </StyledMiniModal>
-
+        </MiniModalLeft>
+        <MiniModalRight>
+          <Dropdown
+            placeholder='Add a Space'
+            fluid
+            multiple
+            search
+            selection
+            options={[ { key: 'One', text: 'One', value: 'One' }, { key: 'Two', text: 'Two', value: 'Two' } ]}
+          />
+        </MiniModalRight>
         <Modal.Content>
           <StyledInputsContainer>
             <StyledTitleInput
@@ -128,13 +137,12 @@ export default class CreateThreadModal extends Component {
   }
 }
 
-const StyledMiniModal = styled.div`
+const MiniModalLeft = styled.div`
   display: none;
   position: absolute;
   left: -250px;
   width: 220px;
   padding: 15px 10px;
-
   flex-direction: column;
   background-color: #3f3b50;
   border-radius: 15px;
@@ -166,6 +174,19 @@ const TextStylingButtons = styled.button`
   font-size: 10px;
   outline: none;
 `;
+const MiniModalRight = styled.div`
+  position: absolute;
+  right: -250px;
+  width: 200px;
+  padding: 15px 10px;
+  background-color: #3f3b50;
+  border-radius: 15px;
+  .ui.selection.dropdown {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+`;
 
 const StyledInputsContainer = styled.div`
   padding: 10px 30px;
@@ -191,7 +212,10 @@ const StyledActions = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const CursonImg = styled.img`height: 16px;`;
+const CursonImg = styled.img`
+  cursor: pointer;
+  height: 16px;
+`;
 const StyledIconButton = styled.button`
   color: #5c4df2;
   background-color: white;

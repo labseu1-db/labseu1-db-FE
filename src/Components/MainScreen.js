@@ -39,8 +39,6 @@ class MainScreen extends React.Component {
             color='white'
             border='none'
             onClick={(e) => {
-              console.log('clic');
-              console.log(this.props);
               this.props.showModal('CreateThreadModal');
             }}
           />
