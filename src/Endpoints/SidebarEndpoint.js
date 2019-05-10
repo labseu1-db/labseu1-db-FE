@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
-const userDoc = '035f8964-b26c-4637-9b65-11774027e9f9';
+const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 export class SidebarEndpoint extends Component {
   render() {
     const activeUser = this.props.user;

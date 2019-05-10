@@ -28,17 +28,23 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(App);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(App);
