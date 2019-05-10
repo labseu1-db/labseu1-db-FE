@@ -27,7 +27,7 @@ export class AddCompany extends Component {
       { collection: 'companiesTEST' },
       //add state.company info to field companyName in collection
       {
-        companyName: this.state.company
+        companyName: 'this.state.company'
       }
     );
     this.clearInput();

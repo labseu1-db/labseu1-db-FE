@@ -6,7 +6,7 @@ export const initialState = {};
 
 //When we have local reducers, we nbeed to add them here
 export const rootReducer = combineReducers({
-	firebase: firebaseReducer,
-	firestore: firestoreReducer,
-	modal: reducers.modal
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
+  modal: reducers.modal
 });
