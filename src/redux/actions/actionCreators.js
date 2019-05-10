@@ -6,3 +6,10 @@ export const showModal = modal => {
     payload: modal
   };
 };
+
+export const addActiveUserEmail = userId => {
+  return {
+    type: types.ACTIVE_USER,
+    payload: userId
+  };
+};

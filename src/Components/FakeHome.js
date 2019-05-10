@@ -76,10 +76,12 @@ const FirstDiv = styled.div`
 const SecondDiv = styled.div`
   width: 70%;
   margin-left: 309px;
+  background-color: #faf9f7;
 `;
 
 const ThirdDiv = styled.div`
   width: 30%;
+  background-color: #faf9f7;
 `;
 
 const MidRightContainer = styled.div`

@@ -8,3 +8,12 @@ export function modal(state = { activeModal: null }, action) {
       return state;
   }
 }
+
+export function user(state = { activeUser: null }, action) {
+  switch (action.type) {
+    case types.ACTIVE_USER:
+      return { ...state, activeUser: action.payload };
+    default:
+      return state;
+  }
+}

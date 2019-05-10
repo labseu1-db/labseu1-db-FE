@@ -145,7 +145,6 @@ class CreateNewOrganisation extends Component {
   };
 
   render() {
-    console.log(this.props.uid.uid.uid);
     return (
       <div>
         {this.props.activeModal === 'CreateOrganisationModal' && (
@@ -203,12 +202,13 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'users',
-        doc: this.props.uid
-      }
-    ];
-  })
+  firestoreConnect()
+  // props => {
+  //   return [
+  //     {
+  //       collection: 'users',
+  //       doc: this.props.uid
+  //     }
+  //   ];
+  // })
 )(CreateNewOrganisation);
