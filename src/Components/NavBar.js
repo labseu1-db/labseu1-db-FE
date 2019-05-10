@@ -306,11 +306,10 @@ const SpaceContainer = styled.div`
 `;
 
 const NavBarContainer = styled.div`
-  border: 1px solid pink;
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
   color: #9c9c9c;
   font-size: 13px;
 `;

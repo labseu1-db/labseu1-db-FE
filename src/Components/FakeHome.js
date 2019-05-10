@@ -56,21 +56,21 @@ const StyledHomeScreen = styled.div`
 `;
 const FirstDiv = styled.div`
   width: 309px;
-  border: 1px solid black;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;
 
 const SecondDiv = styled.div`
   width: 70%;
-  border: 1px solid black;
+  margin-left: 309px;
 `;
 
 const ThirdDiv = styled.div`
   width: 30%;
-  border: 1px solid black;
 `;
 
 const MidRightContainer = styled.div`
-  border: 1px solid red;
   width: 100vw;
   display: flex;
 `;
