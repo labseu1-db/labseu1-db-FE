@@ -21,7 +21,13 @@ function MainScreen(props) {
     <StyledMainScreen>
       <StyledFirstRow>
         <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
-        <ScreenButton content="Start a thread" icon={penIconWhite} backgroundColor="#5C4DF2" color="white" border="none" />
+        <ScreenButton
+          content="Start a thread"
+          icon={penIconWhite}
+          backgroundColor="#5C4DF2"
+          color="white"
+          border="none"
+        />
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
@@ -41,7 +47,18 @@ function MainScreen(props) {
         props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
           let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
-          return <ThreadCard key={t.id} createdBy={t.threadCreatedByUserName} createdAt={date} spaceId={t.spaceId} threadId={t.id} heading={t.threadName} info={t.threadTopic} checked="true" />;
+          return (
+            <ThreadCard
+              key={t.id}
+              createdBy={t.threadCreatedByUserName}
+              createdAt={date}
+              spaceId={t.spaceId}
+              threadId={t.id}
+              heading={t.threadName}
+              info={t.threadTopic}
+              checked="true"
+            />
+          );
         })}
     </StyledMainScreen>
   );
@@ -66,7 +83,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    activeOrg: state.activeOrg.activeOrg
   };
 };
 
@@ -81,7 +99,7 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
+        where: [['orgId', '==', props.activeOrg]]
       }
     ];
   })

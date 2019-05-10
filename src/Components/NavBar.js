@@ -1,38 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Icon, Dropdown } from 'semantic-ui-react';
+import { setActiveOrg } from '../redux/actions/actionCreators';
 
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
-// This userDoc + activeOrg will come from local storage (set on login or org selection)
-const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
-const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
+const userDoc = localStorage.getItem('uuid');
+// let activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
+  componentDidMount() {
+    if (!isEmpty(this.props.orgsFromArrayOfUsersIds || this.props.orgsFromArrayOfAdminsIds)) {
+      this.props.setActiveOrg(this.props.activeOrg);
+      console.log(this.props.orgsFromArrayOfAdminsIds);
+
+      //!isEmpty(this.props.orgsFromArrayOfUsersIds || this.props.orgsFromArrayOfAdminsIds
+    }
+  }
+
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
   };
 
-  setSelectedOrgToLocalStorage = (e, data) => {
+  setSelectedOrgToRedux = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    localStorage.setItem('activeOrg', value);
+    this.props.setActiveOrg(value);
   };
 
   render() {
     const activeUser = this.props.user;
-    const {
-      spacesForActiveOrg,
-      orgsFromArrayOfUsersIds,
-      orgsFromArrayOfAdminsIds
-    } = this.props;
-    const isOrgsLoaded =
-      orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
+    const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
     const allOrgsForUser = [
       ...orgsFromArrayOfUsersIds,
       ...orgsFromArrayOfAdminsIds,
@@ -42,8 +45,9 @@ export class NavBar extends Component {
     const orgOptions = allOrgsForUser.map(org => ({
       key: org.orgName,
       text: org.orgName,
-      value: `${org.orgName}`
+      value: `${org.id}`
     }));
+    const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
     const userOptions = [
       {
         key: activeUser.fullName,
@@ -56,13 +60,13 @@ export class NavBar extends Component {
         value: 'Log out'
       }
     ];
+    console.log(this.props.activeOrg);
+
     return (
       <NavBarContainer>
         <HeaderContainer>
           <InnerContainerHorizontal>
-            {activeUser.profileUrl && (
-              <StyledImage src={activeUser.profileUrl} alt='user' />
-            )}
+            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
             {activeUser.fullName && (
               <div>
                 {' '}
@@ -77,12 +81,12 @@ export class NavBar extends Component {
             )}
           </InnerContainerHorizontal>
           <div>
-            <Icon name='cog' />
+            <Icon name="cog" />
           </div>
         </HeaderContainer>
         <InnerContainer>
           <HomeContainer>
-            <img src={homeIcon} alt='home icon' />
+            <img src={homeIcon} alt="home icon" />
             <span>Home</span>
           </HomeContainer>
 
@@ -90,7 +94,7 @@ export class NavBar extends Component {
             <div>
               <OuterOrgContainer>
                 <OrgContainer>
-                  <Icon name='building outline' size='large' />
+                  <Icon name="building outline" size="large" />
                   {isOrgsLoaded && (
                     <span>
                       {' '}
@@ -99,14 +103,13 @@ export class NavBar extends Component {
                         options={orgOptions}
                         defaultValue={orgOptions[0].value}
                         basic={true}
-                        onChange={this.setSelectedOrgToLocalStorage}
+                        onChange={this.setSelectedOrgToRedux}
                       />
                     </span>
                   )}
-                  {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
                 <div>
-                  <img src={plusIcon} alt='plus icon' />
+                  <img src={plusIcon} alt="plus icon" />
                 </div>
               </OuterOrgContainer>
               <SpaceContainer>
@@ -131,22 +134,21 @@ export class NavBar extends Component {
 const mapStateToProps = state => {
   return {
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
-    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin
-      ? state.firestore.ordered.orgsInWhichAdmin
-      : [],
-    spacesForActiveOrg: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces
-      : []
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
+    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
+    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    activeOrg: state.activeOrg.activeOrg
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+  return bindActionCreators(
+    {
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
+      setActiveOrg
+    },
+    dispatch
+  );
 };
 
 //Connect to Firestore
@@ -164,10 +166,7 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', userDoc],
-          ['orgId', '==', activeOrg]
-        ]
+        where: [['arrayOfUserIdsInSpace', 'array-contains', userDoc], ['orgId', '==', props.activeOrg]]
       },
       {
         collection: 'organisations',
@@ -309,7 +308,7 @@ const NavBarContainer = styled.div`
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
 `;

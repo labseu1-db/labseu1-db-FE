@@ -6,3 +6,10 @@ export const showModal = modal => {
     payload: modal
   };
 };
+
+export const setActiveOrg = orgId => {
+  return {
+    type: types.SET_ACTIVE_ORG,
+    payload: orgId
+  };
+};
