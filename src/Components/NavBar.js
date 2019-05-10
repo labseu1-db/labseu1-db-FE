@@ -84,7 +84,6 @@ const InnerContainerHorizontal = styled.div`
     .chevron {
       color: #f64e49;
     }
-    /* box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); */
   }
   div {
     color: rgb(55, 71, 80);
@@ -168,11 +167,10 @@ const SpaceContainer = styled.div`
 `;
 
 const NavBarContainer = styled.div`
-  border: 1px solid pink;
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
   color: #9c9c9c;
   font-size: 13px;
 `;
