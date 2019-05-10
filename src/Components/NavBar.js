@@ -18,6 +18,12 @@ export class NavBar extends Component {
     this.props.clearFirestore();
   };
 
+  setSelectedOrgToLocalStorage = (e, data) => {
+    e.preventDefault();
+    const { value } = data;
+    localStorage.setItem('activeOrg', value);
+  };
+
   render() {
     const activeUser = this.props.user;
     const {
@@ -62,6 +68,7 @@ export class NavBar extends Component {
                 {' '}
                 <Dropdown
                   inline
+                  basic={true}
                   options={userOptions}
                   defaultValue={activeUser.fullName}
                   onChange={this.handleLogOut}
@@ -91,7 +98,8 @@ export class NavBar extends Component {
                         inline
                         options={orgOptions}
                         defaultValue={orgOptions[0].value}
-                        // onChange={this.setCurrentOrgToLocalStorage}
+                        basic={true}
+                        onChange={this.setSelectedOrgToLocalStorage}
                       />
                     </span>
                   )}
