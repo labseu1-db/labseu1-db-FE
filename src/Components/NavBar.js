@@ -5,7 +5,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Icon, Dropdown } from 'semantic-ui-react';
 
-import UserMenu from './UserMenu';
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
