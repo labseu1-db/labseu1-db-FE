@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
-import plusIcon from '../images/icon-plus-lightgray.svg';
+import CreateNewSpace from './CreateNewSpace';
 
 export default function NavBar() {
   return (
@@ -31,9 +31,9 @@ export default function NavBar() {
                 <span>Organisation name</span>
                 <Icon name='chevron down' size='small' />
               </OrgContainer>
-              <div>
-                <img src={plusIcon} alt='plus icon' />
-              </div>
+              <CreateNewSpace>
+
+              </CreateNewSpace>
             </OuterOrgContainer>
             <SpaceContainer>
               <div>
