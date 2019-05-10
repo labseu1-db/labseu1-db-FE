@@ -1,60 +1,185 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Dropdown } from 'semantic-ui-react';
+
+import homeIcon from '../images/icon-home-lightgray.svg';
 import CreateNewSpace from './CreateNewSpace';
 
-export default function NavBar() {
-  return (
-    <NavBarContainer>
-      <HeaderContainer className='nav-bar-user-information'>
-        <InnerContainerHorizontal>
-          <StyledImage src='http://lorempixel.com/640/480' alt='user' />
-          <div>Samar Vir</div>
-          <Icon name='chevron down' size='small' />
-        </InnerContainerHorizontal>
-        <div>
-          <Icon name='cog' />
-        </div>
-      </HeaderContainer>
+// This userDoc + activeOrg will come from local storage (set on login or org selection)
+const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
+const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
-      <InnerContainer className='nav-bar-main-section'>
-        <HomeContainer className='home-screen-link'>
-          <Icon name='home' size='large' />
-          <span>Home</span>
-        </HomeContainer>
+export class NavBar extends Component {
+  handleLogOut = async () => {
+    await this.props.firebase.logout();
+    this.props.clearFirestore();
+  };
 
-        <div className='org-menu'>
-          <div className='organisation-component'>
-            <OuterOrgContainer>
-              <OrgContainer className='organisation-name'>
-                <Icon name='building outline' size='large' />
-                <span>Organisation name</span>
-                <Icon name='chevron down' size='small' />
-              </OrgContainer>
-              <CreateNewSpace>
+  setSelectedOrgToLocalStorage = (e, data) => {
+    e.preventDefault();
+    const { value } = data;
+    localStorage.setItem('activeOrg', value);
+  };
 
-              </CreateNewSpace>
-            </OuterOrgContainer>
-            <SpaceContainer>
+  render() {
+    const activeUser = this.props.user;
+    const {
+      spacesForActiveOrg,
+      orgsFromArrayOfUsersIds,
+      orgsFromArrayOfAdminsIds
+    } = this.props;
+    const isOrgsLoaded =
+      orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
+    const allOrgsForUser = [
+      ...orgsFromArrayOfUsersIds,
+      ...orgsFromArrayOfAdminsIds,
+      { orgName: 'Second org' },
+      { orgName: 'Third org' }
+    ];
+    const orgOptions = allOrgsForUser.map(org => ({
+      key: org.orgName,
+      text: org.orgName,
+      value: `${org.orgName}`
+    }));
+    const userOptions = [
+      {
+        key: activeUser.fullName,
+        text: activeUser.fullName,
+        value: activeUser.fullName
+      },
+      {
+        key: 'Log out',
+        text: 'Log out',
+        value: 'Log out'
+      }
+    ];
+    return (
+      <NavBarContainer>
+        <HeaderContainer>
+          <InnerContainerHorizontal>
+            {activeUser.profileUrl && (
+              <StyledImage src={activeUser.profileUrl} alt='user' />
+            )}
+            {activeUser.fullName && (
               <div>
-                <span>Space 1</span>
+                {' '}
+                <Dropdown
+                  inline
+                  basic={true}
+                  options={userOptions}
+                  defaultValue={activeUser.fullName}
+                  onChange={this.handleLogOut}
+                />
               </div>
-              <div>
-                <span>Space 2</span>
-              </div>
-              <div>
-                <span>Space 3</span>
-              </div>
-              <div>
-                <span>Space 4</span>
-              </div>
-            </SpaceContainer>
+            )}
+          </InnerContainerHorizontal>
+          <div>
+            <Icon name='cog' />
           </div>
-        </div>
-      </InnerContainer>
-    </NavBarContainer>
-  );
+        </HeaderContainer>
+        <InnerContainer>
+          <HomeContainer>
+            <img src={homeIcon} alt='home icon' />
+            <span>Home</span>
+          </HomeContainer>
+
+          <div>
+            <div>
+              <OuterOrgContainer>
+                <OrgContainer>
+                  <Icon name='building outline' size='large' />
+                  {isOrgsLoaded && (
+                    <span>
+                      {' '}
+                      <Dropdown
+                        inline
+                        options={orgOptions}
+                        defaultValue={orgOptions[0].value}
+                        basic={true}
+                        onChange={this.setSelectedOrgToLocalStorage}
+                      />
+                    </span>
+                  )}
+                  {/* <Icon name='chevron down' size='small' /> */}
+                </OrgContainer>
+                <CreateNewSpace/>
+              </OuterOrgContainer>
+              <SpaceContainer>
+                {spacesForActiveOrg && (
+                  <div>
+                    {spacesForActiveOrg.map((space, index) => (
+                      <div key={index}>
+                        <span>{space.spaceName}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </SpaceContainer>
+            </div>
+          </div>
+        </InnerContainer>
+      </NavBarContainer>
+    );
+  }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
+      ? state.firestore.ordered.orgsInWhichUser
+      : [],
+    orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin
+      ? state.firestore.ordered.orgsInWhichAdmin
+      : [],
+    spacesForActiveOrg: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces
+      : []
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
+};
+
+//Connect to Firestore
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    // if (!userDoc) return []; <-- empty array if no userDoc in local storage
+    return [
+      {
+        collection: 'users',
+        doc: `${userDoc}`
+      },
+      {
+        collection: 'spaces',
+        where: [
+          ['arrayOfUserIdsInSpace', 'array-contains', userDoc],
+          ['orgId', '==', activeOrg]
+        ]
+      },
+      {
+        collection: 'organisations',
+        where: ['arrayOfUsersIds', 'array-contains', userDoc],
+        storeAs: 'orgsInWhichUser'
+      },
+      {
+        collection: 'organisations',
+        where: ['arrayOfAdminsIds', 'array-contains', userDoc],
+        storeAs: 'orgsInWhichAdmin'
+      }
+    ];
+  })
+)(NavBar);
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
@@ -84,7 +209,6 @@ const InnerContainerHorizontal = styled.div`
     .chevron {
       color: #f64e49;
     }
-    /* box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1); */
   }
   div {
     color: rgb(55, 71, 80);
@@ -99,10 +223,22 @@ const InnerContainer = styled.div`
 
 const HomeContainer = styled.div`
   padding-left: 4px;
+  position: relative;
   display: flex;
   align-items: baseline;
+  img {
+    width: 1.25rem;
+    /* margin-right: 7px;
+    margin-left: 4px; */
+    position: absolute;
+    right: 249px;
+    bottom: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
   span {
-    padding-left: 12px;
+    padding-left: 41px;
   }
   span:hover {
     color: #f64e49;
@@ -168,11 +304,10 @@ const SpaceContainer = styled.div`
 `;
 
 const NavBarContainer = styled.div`
-  border: 1px solid pink;
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
   color: #9c9c9c;
   font-size: 13px;
 `;
