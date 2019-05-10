@@ -14,6 +14,11 @@ const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
+  handleLogOut = async () => {
+    await this.props.firebase.logout();
+    this.props.clearFirestore();
+  };
+
   render() {
     const activeUser = this.props.user;
     const {
@@ -34,8 +39,18 @@ export class NavBar extends Component {
       text: org.orgName,
       value: `${org.orgName}`
     }));
-
-    console.log(orgOptions);
+    const userOptions = [
+      {
+        key: activeUser.fullName,
+        text: activeUser.fullName,
+        value: activeUser.fullName
+      },
+      {
+        key: 'Log out',
+        text: 'Log out',
+        value: 'Log out'
+      }
+    ];
     return (
       <NavBarContainer>
         <HeaderContainer>
@@ -43,23 +58,22 @@ export class NavBar extends Component {
             {activeUser.profileUrl && (
               <StyledImage src={activeUser.profileUrl} alt='user' />
             )}
-            {activeUser.fullName && <div>{activeUser.fullName}</div>}
-            <Icon name='chevron down' size='small' />
+            {activeUser.fullName && (
+              <div>
+                {' '}
+                <Dropdown
+                  inline
+                  options={userOptions}
+                  defaultValue={activeUser.fullName}
+                  onChange={this.handleLogOut}
+                />
+              </div>
+            )}
           </InnerContainerHorizontal>
           <div>
-            <button
-              onClick={async e => {
-                e.preventDefault();
-                await this.props.firebase.logout();
-                this.props.clearFirestore();
-              }}
-            >
-              Logout
-            </button>
             <Icon name='cog' />
           </div>
         </HeaderContainer>
-        {/* <UserMenu /> */}
         <InnerContainer>
           <HomeContainer>
             <img src={homeIcon} alt='home icon' />
@@ -78,6 +92,7 @@ export class NavBar extends Component {
                         inline
                         options={orgOptions}
                         defaultValue={orgOptions[0].value}
+                        // onChange={this.setCurrentOrgToLocalStorage}
                       />
                     </span>
                   )}
@@ -299,18 +314,3 @@ const StyledImage = styled.img`
   border-radius: 50%;
   margin-right: 8px;
 `;
-
-{
-  /* <OuterOrgContainer>
-<OrgContainer>
-  <Icon name='building outline' size='large' />
-  {activeUser.arrayOfOrgs && (
-    <span>{activeUser.arrayOfOrgs[0].orgName}</span>
-  )}
-  <Icon name='chevron down' size='small' />
-</OrgContainer>
-<div>
-  <img src={plusIcon} alt='plus icon' />
-</div>
-</OuterOrgContainer> */
-}
