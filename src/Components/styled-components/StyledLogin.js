@@ -47,19 +47,6 @@ export const StyledLabel = styled.div`
   align-items: center;
 `;
 
-export const StyledCheckbox = styled.div`
-display: inline-block;
-width: 16px;
-height: 16px;
-background: ${props => props.checked ? 'salmon' : 'papayawhip'}
-border-radius: 3px;
-transition: all 150ms;
-&:focus {
-  border-bottom: 2px solid #6c48f2;
-  outline: none;
-}
-`;
-
 export const StyledLowerSignIn = styled.div`
   margin-top: 20px;
   display: flex;
