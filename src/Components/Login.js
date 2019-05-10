@@ -7,7 +7,7 @@ import { Button, Icon, Message } from 'semantic-ui-react';
 
 import {
   StyledButton,
-  ForgotPasswordButton
+  ForgotPasswordDiv
 } from './styled-components/StyledButton';
 import {
   StyledLogin,
@@ -120,7 +120,7 @@ class Login extends Component {
                 onClick={this.togglePassword}
               />
             </StyledLabel>
-            <ForgotPasswordButton onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordButton>
+            <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordDiv>
             <StyledLowerSignIn>
               <StyledLink to='/register'> Don't have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
