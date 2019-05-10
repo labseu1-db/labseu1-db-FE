@@ -5,6 +5,10 @@ import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
 
 import textCursor from '../../images/icon-cursor-purple.svg';
+import boldIcon from '../../images/icon-bold-white.svg';
+import codeIcon from '../../images/icon-code-white.svg';
+import italicIcon from '../../images/icon-italic-white.svg';
+import underlineIcon from '../../images/icon-underline-white.svg';
 
 export default class CreateThreadModal extends Component {
   constructor(props) {
@@ -16,6 +20,15 @@ export default class CreateThreadModal extends Component {
 
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  toggleMiniMondal = () => {
+    let miniModal = document.getElementById('miniModal');
+    if (miniModal.style.display === 'none') {
+      miniModal.style.display = 'flex';
+    } else {
+      miniModal.style.display = 'none';
+    }
   };
 
   handleKeyCommand = (command) => {
@@ -39,48 +52,62 @@ export default class CreateThreadModal extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
   };
 
+  onCodeClick = () => {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CODE'));
+  };
+
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
-        <div className='editor'>
-          <button onClick={this.onUnderlineClick}>U</button>
-          <button onClick={this.onBoldClick}>
-            <b>B</b>
-          </button>
-          <button onClick={this.onItalicClick}>
-            <em>I</em>
-          </button>
+        <StyledMiniModal id='miniModal'>
+          <StyledContainerTitles>Text Styling</StyledContainerTitles>
+          <TextStylingContainer>
+            <TextStylingButtons onClick={this.onBoldClick}>
+              <TextStylingIcon src={boldIcon} alt='bold' />
+              <p>Bold</p>
+            </TextStylingButtons>
+            <TextStylingButtons onClick={this.onItalicClick}>
+              <TextStylingIcon src={italicIcon} alt='italic' />
+              <p>Italic</p>
+            </TextStylingButtons>
+            <TextStylingButtons onClick={this.onUnderlineClick}>
+              <TextStylingIcon src={underlineIcon} alt='underline' />
+              <p>Underline</p>
+            </TextStylingButtons>
+            <TextStylingButtons onClick={this.onCodeClick}>
+              <TextStylingIcon src={codeIcon} alt='code' />
+              <p>Code</p>
+            </TextStylingButtons>
+          </TextStylingContainer>
+        </StyledMiniModal>
 
-          {/* <Editor editorState={this.state.editorState} onChange={this.onChange} handleKeyCommand={this.handleKeyCommand} /> */}
-        </div>
         <Modal.Content>
           <StyledInputsContainer>
-            <StyledTitleInput onClick={this.focus}>
+            <StyledTitleInput
+              name='threadTitle'
+              type='text'
+              placeholder='Create a title'
+              required
+              onChange={this.handleInputChange}
+            />
+            <StyledThreadInput onClick={this.focus}>
               <Editor
                 name='threadTitle'
                 type='text'
-                placeholder='Create a title'
+                placeholder='What would you like to discuss with your teammates?'
                 required
                 onChange={this.onChange}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
                 ref='editor'
               />
-            </StyledTitleInput>
-
-            <StyledThreadInput
-              name='threadTitle'
-              type='text'
-              placeholder='What would you like to discuss with your teammates?'
-              required
-              onChange={this.handleInputChange}
-            />
+            </StyledThreadInput>
           </StyledInputsContainer>
         </Modal.Content>
 
         <Modal.Actions>
           <StyledActions>
-            <StyledIconButton>
+            <StyledIconButton onClick={this.toggleMiniMondal}>
               <CursonImg src={textCursor} alt='cursor' />
             </StyledIconButton>
             <div>
@@ -101,11 +128,50 @@ export default class CreateThreadModal extends Component {
   }
 }
 
+const StyledMiniModal = styled.div`
+  display: none;
+  position: absolute;
+  left: -250px;
+  width: 220px;
+  padding: 15px 10px;
+
+  flex-direction: column;
+  background-color: #3f3b50;
+  border-radius: 15px;
+`;
+const StyledContainerTitles = styled.p`
+  color: white;
+  font-size: 10px;
+`;
+const TextStylingContainer = styled.div`
+  border-radius: 15px;
+  background-color: #322f40;
+  width: 100%;
+`;
+const TextStylingIcon = styled.img`
+  height: 10px;
+  padding-right: 10px;
+`;
+const TextStylingButtons = styled.button`
+  cursor: pointer;
+  width: 100%;
+  color: white;
+  background-color: #322f40;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+  font-size: 10px;
+  outline: none;
+`;
+
 const StyledInputsContainer = styled.div`
   padding: 10px 30px;
   height: 500px;
 `;
-const StyledTitleInput = styled.div`
+const StyledTitleInput = styled.input`
   border: none;
   outline: none;
   width: 100%;
@@ -116,7 +182,7 @@ const StyledTitleInput = styled.div`
   line-height: 1.11;
   margin-bottom: 20px;
 `;
-const StyledThreadInput = styled.input`
+const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
