@@ -22,7 +22,6 @@ class App extends Component {
         <Route exact path="/passwordlesssubmit" render={props => <PasswordlessSubmit {...props} />} />
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
         <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
-        <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
       </div>
     );
   }
