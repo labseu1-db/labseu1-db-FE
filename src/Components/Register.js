@@ -7,7 +7,14 @@ import { Button, Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
 
 import { StyledButton } from './styled-components/StyledButton';
-import { StyledLogin, StyledForm, StyledInput, StyledLabel, StyledLoginCon, StyledLowerSignIn } from './styled-components/StyledLogin';
+import {
+  StyledLogin,
+  StyledForm,
+  StyledInput,
+  StyledLabel,
+  StyledLoginCon,
+  StyledLowerSignIn
+} from './styled-components/StyledLogin';
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
@@ -41,6 +48,43 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = res => {
+    let userId = uuid();
+    localStorage.setItem('uuid', userId);
+    localStorage.setItem('userEmail', res.profile.email);
+    localStorage.setItem('arrayOfOrgs', null);
+    localStorage.setItem('avatar', res.profile.avatarUrl);
+    this.props.firestore
+      .collection('companiesTEST')
+      .doc(userId)
+      .set({
+        fullName: res.profile.displayName,
+        userEmail: res.profile.email,
+        arrayOfOrgs: []
+      })
+      .catch(function(error) {
+        console.log('Error getting documents: ', error);
+      });
+  };
+
+  saveUserToDatabaseAndToLocalStorage = res => {
+    let userId = uuid();
+    localStorage.setItem('uuid', userId);
+    localStorage.setItem('userEmail', this.state.email);
+    localStorage.setItem('arrayOfOrgs', null);
+    this.props.firestore
+      .collection('companiesTEST')
+      .doc(userId)
+      .set({
+        fullName: this.state.fullName,
+        userEmail: res.user.user.email,
+        arrayOfOrgs: []
+      })
+      .catch(function(error) {
+        console.log('Error getting documents: ', error);
+      });
+  };
+
   createAndLogInNewUser = e => {
     const { email, password, fullName } = this.state;
     const INITIAL_STATE = {
@@ -48,24 +92,6 @@ class Register extends Component {
       password: '',
       fullName: '',
       error: null
-    };
-
-    this.saveUserToDatabaseAndToLocalStorage = res => {
-      let userId = uuid();
-      localStorage.setItem('uuid', userId);
-      localStorage.setItem('userEmail', this.state.email);
-      localStorage.setItem('arrayOfOrgs', null);
-      this.props.firestore
-        .collection('companiesTEST')
-        .doc(userId)
-        .set({
-          fullName: this.state.fullName,
-          userEmail: res.user.user.email,
-          arrayOfOrgs: []
-        })
-        .catch(function(error) {
-          console.log('Error getting documents: ', error);
-        });
     };
 
     e.preventDefault();
@@ -98,15 +124,33 @@ class Register extends Component {
           <StyledForm onSubmit={this.createAndLogInNewUser}>
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
-              <StyledInput name="fullName" value={this.state.fullName} type="text" onChange={this.handleInputChange} placeholder="Tony Stark" />
+              <StyledInput
+                name="fullName"
+                value={this.state.fullName}
+                type="text"
+                onChange={this.handleInputChange}
+                placeholder="Tony Stark"
+              />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
-              <StyledInput name="email" value={this.state.email} type="email" onChange={this.handleInputChange} placeholder="tonystark@example.com" />
+              <StyledInput
+                name="email"
+                value={this.state.email}
+                type="email"
+                onChange={this.handleInputChange}
+                placeholder="tonystark@example.com"
+              />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
-              <StyledInput name="password" value={this.state.password} type="password" onChange={this.handleInputChange} placeholder="········" />
+              <StyledInput
+                name="password"
+                value={this.state.password}
+                type="password"
+                onChange={this.handleInputChange}
+                placeholder="········"
+              />
             </StyledLabel>
 
             <StyledLowerSignIn>
@@ -122,7 +166,19 @@ class Register extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <Button color="google plus" onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}>
+          <Button
+            color="google plus"
+            onClick={() => {
+              this.props.firebase
+                .login({ provider: 'google', type: 'popup' })
+                .then(res => {
+                  console.log(res);
+                  this.saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn(res);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }}>
             <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
