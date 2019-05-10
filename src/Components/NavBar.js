@@ -131,7 +131,6 @@ export class NavBar extends Component {
             this.props.showModal('CreateOrganisationModal');
           }}>
           Create new organisation
-          <CreateNewOrganisation />
         </button>
       </NavBarContainer>
     );

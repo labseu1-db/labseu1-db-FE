@@ -21,10 +21,6 @@ class FakeHome extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.showModal('InviteYourTeamModal');
-  }
-
   render() {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -43,7 +39,7 @@ class FakeHome extends Component {
             <RightSidebar />
           </ThirdDiv>
         </MidRightContainer>
-        <CreateNewOrganisation />
+        <CreateNewOrganisation uid={this.props.auth.id} />
       </StyledHomeScreen>
     );
   }

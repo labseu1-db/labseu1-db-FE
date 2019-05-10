@@ -14,13 +14,17 @@ import CreateSpacesModal from './Modals/CreateSpacesModal';
 
 //Main component
 class CreateNewOrganisation extends Component {
-  state = {
-    orgName: null,
-    teamEmailAddress: ['', '', '', ''],
-    createdSpaces: [],
-    addedSpace1: '',
-    addedSpace2: ''
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      orgName: null,
+      teamEmailAddress: ['', '', '', ''],
+      createdSpaces: [],
+      addedSpace1: '',
+      addedSpace2: ''
+    };
+  }
 
   //Get information from modals to this main component - these functions are passed to modals
   addOrgName = name => {
@@ -63,9 +67,19 @@ class CreateNewOrganisation extends Component {
         orgName: this.state.orgName,
         createdByUserId: this.props.auth.uid,
         isPremium: false,
-        arrayOfUsersEmails: usersAndAdminsEmails,
-        arrayOfAdminsEmails: this.props.auth.email,
-        arrayOfAdminsIds: this.props.auth.uid
+        arrayOfUsersEmails: [usersAndAdminsEmails],
+        arrayOfAdminsEmails: [this.props.auth.email],
+        arrayOfAdminsIds: [this.props.auth.uid]
+      }
+    );
+  };
+
+  addCompanyToUser = () => {
+    this.props.firestore.set(
+      { collection: 'companiesTEST', doc: 'h' },
+      {
+        arrayOfOrgsIds: [this.orgId],
+        arrayOfOrgsNames: [this.state.orgName]
       }
     );
   };
@@ -108,6 +122,18 @@ class CreateNewOrganisation extends Component {
       );
   };
 
+  addSpaceFromInput2ToCompanies = () => {
+    this.state.addedSpace2 !== '' &&
+      this.props.firestore.set(
+        { collection: 'companiesTEST', doc: uuid() },
+        {
+          orgId: this.orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          spaceName: this.state.addedSpace2
+        }
+      );
+  };
+
   clearState = () => {
     this.setState({
       orgName: null,
@@ -116,10 +142,10 @@ class CreateNewOrganisation extends Component {
       addedSpace1: '',
       addedSpace2: ''
     });
-    localStorage.setItem('hasOrg', true);
   };
 
   render() {
+    console.log(this.props.uid.uid.uid);
     return (
       <div>
         {this.props.activeModal === 'CreateOrganisationModal' && (
@@ -177,5 +203,12 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect()
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'users',
+        doc: this.props.uid
+      }
+    ];
+  })
 )(CreateNewOrganisation);
