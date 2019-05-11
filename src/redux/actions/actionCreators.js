@@ -1,6 +1,6 @@
 import * as types from './actionTypes.js';
 
-export const showModal = modal => {
+export const showModal = (modal) => {
   return {
     type: types.RENDER_MODAL,
     payload: modal
