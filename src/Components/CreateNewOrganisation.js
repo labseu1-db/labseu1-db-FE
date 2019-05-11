@@ -187,6 +187,7 @@ class CreateNewOrganisation extends Component {
             showModal={this.props.showModal}
             activeModal={this.props.activeModal}
             addOrgName={this.addOrgName}
+            props={this.props}
           />
         )}
         {this.props.activeModal === 'InviteYourTeamModal' && (
