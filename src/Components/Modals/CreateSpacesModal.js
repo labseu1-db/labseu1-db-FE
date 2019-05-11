@@ -79,9 +79,10 @@ export default class CreateSpacesModal extends Component {
                   e.preventDefault();
                   this.props.showModal('null');
                   this.props.addOrganisationToDatabase(orgId);
-                  this.props.addSpacesToOrganisationsAndUsers(orgId);
-                  this.props.addSpaceFromInput1ToCompaniesAndUsers(orgId);
-                  this.props.addSpaceFromInput2ToCompaniesAndUsers(orgId);
+                  this.props.addOrganisationToUsers(orgId);
+                  this.props.addSpacesToSpacesAndUsers(orgId);
+                  this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId);
+                  this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId);
                   this.props.clearState();
                 }}>
                 Finish

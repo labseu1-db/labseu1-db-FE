@@ -26,8 +26,12 @@ class CreateNewOrganisation extends Component {
     };
   }
 
-  //Get information from modals to this main component - these functions are passed to modals
-  //No passing information to database, only modals
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  //========= FUNCTIONS TO GET DATA FROM MODALS TO THIS COMPONENT =========//
+  //no passing information to database, only getting information from modals
   addOrgName = name => {
     this.setState({ orgName: name });
   };
@@ -36,10 +40,9 @@ class CreateNewOrganisation extends Component {
     this.setState({ teamEmailAddress: emails });
   };
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
+  //add space plus following functionality:
+  // - make sure, that each space is there only once
+  // - toggle adding/removing of space
   addSpace = space => {
     const indexOfSpace = this.state.createdSpaces.indexOf(space);
     console.log(indexOfSpace);
@@ -55,110 +58,7 @@ class CreateNewOrganisation extends Component {
     }
   };
 
-  //Add information about created company that were collected in modals to firestore
-  addOrganisationToDatabase = orgId => {
-    //ORGANISATIONS COLLECTION
-    //Map trough all emails in the state and if email address is not an empty string, return it to new array
-    let usersEmails = this.state.teamEmailAddress.filter(Boolean).map(e => {
-      return e;
-    });
-    let usersAndAdminsEmails = usersEmails.concat(this.props.auth.email);
-
-    //Save all information about org in firestore
-    this.props.firestore.set(
-      { collection: 'organisations', doc: orgId },
-      {
-        orgName: this.state.orgName,
-        createdByUserId: this.props.auth.uid,
-        isPremium: false,
-        arrayOfUsersEmails: usersAndAdminsEmails,
-        arrayOfUsersIds: this.props.auth.uid,
-        arrayOfAdminsEmails: this.props.auth.email,
-        arrayOfAdminsIds: this.props.auth.uid
-      }
-    );
-  };
-
-  //Add information about created spaces that were collected in modals to firestore
-  addSpacesToOrganisationsAndUsers = orgId => {
-    //map trough populates spaces and each add to database = space collection
-    this.state.createdSpaces.filter(Boolean).forEach(space => {
-      //ADD SPACES TO SPACES COLLECTION
-      //create unique id for each space
-      let spaceId = uuid();
-      this.props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
-          orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          spaceName: space,
-          arrayOfUserIdsInSpace: this.props.auth.uid
-        }
-      );
-
-      //ADD SPACES TO USERS COLLECTION
-      //add each space to users collection
-      let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-      userRef.update({
-        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
-      });
-    });
-
-    //ADD ORGANISATION TO USERS COLLECTION
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-    userRef.update({
-      ArrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
-      ArrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
-    });
-  };
-
-  addSpaceFromInput1ToCompaniesAndUsers = orgId => {
-    //ADD SPACES TO SPACES COLLECTION
-    let spaceId = uuid();
-    this.state.addedSpace1 !== '' &&
-      this.props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
-          orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          spaceName: this.state.addedSpace1,
-          arrayOfUserIdsInSpace: this.props.auth.uid
-        }
-      );
-
-    //ADD SPACES TO USERS COLLECTION
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-    this.state.addedSpace1 !== '' &&
-      userRef.update({
-        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace1)
-      });
-  };
-
-  addSpaceFromInput2ToCompaniesAndUsers = orgId => {
-    //ADD SPACES TO SPACES COLLECTION
-    let spaceId = uuid();
-    this.state.addedSpace2 !== '' &&
-      this.props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
-          orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          spaceName: this.state.addedSpace2,
-          arrayOfUserIdsInSpace: this.props.auth.uid
-        }
-      );
-
-    //ADD SPACES TO USERS COLLECTION
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-    this.state.addedSpace2 !== '' &&
-      userRef.update({
-        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace2)
-      });
-  };
-
+  //after sending data to firestore, clear state
   clearState = () => {
     this.setState({
       orgName: null,
@@ -168,6 +68,112 @@ class CreateNewOrganisation extends Component {
       addedSpace2: ''
     });
   };
+  //========= FUNCTIONS TO GET DATA FROM MODALS TO THIS COMPONENT =========//
+
+  //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
+  //1. ADD DATA ABOUT ORGANISATION AND USERS TO ORGANISATIONS COLLECTION
+  addOrganisationToDatabase = orgId => {
+    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
+      return e;
+    });
+    //add creators/admins email to the array of users
+    let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(this.props.auth.email);
+
+    //aave all collected data about organisation in firestore
+    this.props.firestore.set(
+      { collection: 'organisations', doc: orgId },
+      {
+        orgName: this.state.orgName,
+        isPremium: false,
+        createdByUserId: this.props.auth.uid,
+        arrayOfUsersEmails: usersAndAdminsEmails,
+        arrayOfUsersIds: this.props.auth.uid,
+        arrayOfAdminsEmails: this.props.auth.email,
+        arrayOfAdminsIds: this.props.auth.uid
+      }
+    );
+  };
+
+  //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
+  addOrganisationToUsers = orgId => {
+    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+    userRef.update({
+      ArrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
+      ArrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
+    });
+  };
+
+  //3. ADD DATA ABOUT CREATED SPACED TO SPACES COLLECTION AND USER COLLECTION
+  addSpacesToSpacesAndUsers = orgId => {
+    //map trough populated spaces (we will save each space separately)
+    this.state.createdSpaces.filter(Boolean).forEach(space => {
+      let spaceId = uuid();
+      //save each space in spaces collection
+      this.props.firestore.set(
+        { collection: 'spaces', doc: spaceId },
+        {
+          spaceName: space,
+          orgId: orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          arrayOfUserIdsInSpace: this.props.auth.uid
+        }
+      );
+
+      //add each space in users collection in array (therefore we need to use update instead of add/set)
+      let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+      userRef.update({
+        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
+      });
+    });
+  };
+
+  addSpaceFromInput1ToOrganisationsAndUsers = orgId => {
+    let spaceId = uuid();
+    //save each space in spaces collection
+    this.state.addedSpace1 !== '' &&
+      this.props.firestore.set(
+        { collection: 'spaces', doc: spaceId },
+        {
+          spaceName: this.state.addedSpace1,
+          orgId: orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          arrayOfUserIdsInSpace: this.props.auth.uid
+        }
+      );
+
+    //save each space in users collection
+    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+    this.state.addedSpace1 !== '' &&
+      userRef.update({
+        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace1)
+      });
+  };
+
+  addSpaceFromInput2ToOrganisationsAndUsers = orgId => {
+    //save each space in spaces collection
+    let spaceId = uuid();
+    this.state.addedSpace2 !== '' &&
+      this.props.firestore.set(
+        { collection: 'spaces', doc: spaceId },
+        {
+          spaceName: this.state.addedSpace2,
+          orgId: orgId,
+          spaceCreatedByUserId: this.props.auth.uid,
+          arrayOfUserIdsInSpace: this.props.auth.uid
+        }
+      );
+
+    //save each space in users collection
+    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+    this.state.addedSpace2 !== '' &&
+      userRef.update({
+        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace2)
+      });
+  };
+  //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
 
   render() {
     return (
@@ -197,9 +203,10 @@ class CreateNewOrganisation extends Component {
             createdSpaces={this.state.createdSpaces}
             addSpace={this.addSpace}
             addOrganisationToDatabase={this.addOrganisationToDatabase}
-            addSpacesToOrganisationsAndUsers={this.addSpacesToOrganisationsAndUsers}
-            addSpaceFromInput1ToCompaniesAndUsers={this.addSpaceFromInput1ToCompaniesAndUsers}
-            addSpaceFromInput2ToCompaniesAndUsers={this.addSpaceFromInput2ToCompaniesAndUsers}
+            addOrganisationToUsers={this.addOrganisationToUsers}
+            addSpacesToSpacesAndUsers={this.addSpacesToSpacesAndUsers}
+            addSpaceFromInput1ToOrganisationsAndUsers={this.addSpaceFromInput1ToOrganisationsAndUsers}
+            addSpaceFromInput2ToOrganisationsAndUsers={this.addSpaceFromInput2ToOrganisationsAndUsers}
             handleInputChange={this.handleInputChange}
             clearState={this.clearState}
           />
