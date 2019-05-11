@@ -45,7 +45,9 @@ class CreateThreadModal extends Component {
 
   saveSpaceToThread = (e, data) => {
     e.preventDefault();
-    this.setState({ spaceId: data.doc });
+    const { value } = data;
+    this.setState({ spaceId: value });
+    console.log('saveSpaceToThread');
   };
 
   handleInputChange = (e) => {
@@ -105,9 +107,9 @@ class CreateThreadModal extends Component {
   render() {
     const { spacesForActiveOrg } = this.props;
     const spaceOptions = spacesForActiveOrg.map((space, index) => ({
-      key: index,
+      key: space.spaceName,
       text: space.spaceName,
-      value: `${space.spaceName}`
+      value: `${space.id}`
     }));
 
     return (
@@ -137,9 +139,9 @@ class CreateThreadModal extends Component {
           <Dropdown
             placeholder='Add a Space'
             fluid
-            multiple
             search
             selection
+            multiple
             options={spaceOptions}
             basic={true}
             onChange={this.saveSpaceToThread}
@@ -179,6 +181,7 @@ class CreateThreadModal extends Component {
                 onClick={(e) => {
                   e.preventDefault();
                   this.props.showModal(null);
+                  console.log('spaces for active org ->', spacesForActiveOrg, spacesForActiveOrg[0].id);
                 }}
               >
                 Back
