@@ -62,21 +62,21 @@ class CreateNewOrganisation extends Component {
     });
     let usersAndAdminsEmails = usersEmails.concat(this.props.auth.email);
     this.props.firestore.set(
-      { collection: 'companiesTEST', doc: this.orgId },
+      { collection: 'organisations', doc: this.orgId },
       {
         orgName: this.state.orgName,
         createdByUserId: this.props.auth.uid,
         isPremium: false,
-        arrayOfUsersEmails: [usersAndAdminsEmails],
-        arrayOfAdminsEmails: [this.props.auth.email],
-        arrayOfAdminsIds: [this.props.auth.uid]
+        arrayOfUsersEmails: usersAndAdminsEmails,
+        arrayOfAdminsEmails: this.props.auth.email,
+        arrayOfAdminsIds: this.props.auth.uid
       }
     );
   };
 
   addCompanyToUser = () => {
-    this.props.firestore.set(
-      { collection: 'companiesTEST', doc: 'h' },
+    this.props.firestore.add(
+      { collection: 'UserTEST', doc: localStorage.getItem('uuid') },
       {
         arrayOfOrgsIds: [this.orgId],
         arrayOfOrgsNames: [this.state.orgName]
@@ -87,12 +87,20 @@ class CreateNewOrganisation extends Component {
   //Add information about created spaces that were collected in modals to firestore
   addSpacesToCompanies = () => {
     this.state.createdSpaces.filter(Boolean).forEach(space => {
+      let spaceId = uuid();
       this.props.firestore.set(
-        { collection: 'companiesTEST', doc: uuid() },
+        { collection: 'spaces', doc: spaceId },
         {
           orgId: this.orgId,
           spaceCreatedByUserId: this.props.auth.uid,
           spaceName: space
+        }
+      );
+      this.props.firestore.update(
+        { collection: 'userTEST', doc: '8b59a0db-a670-4a49-8b66-d9dc1708dc6c' },
+        {
+          arrayOfSpaceIds: spaceId,
+          arrayOfSpaceNames: space
         }
       );
     });
@@ -101,7 +109,7 @@ class CreateNewOrganisation extends Component {
   addSpaceFromInput1ToCompanies = () => {
     this.state.addedSpace1 !== '' &&
       this.props.firestore.set(
-        { collection: 'companiesTEST', doc: uuid() },
+        { collection: 'spaces', doc: uuid() },
         {
           orgId: this.orgId,
           spaceCreatedByUserId: this.props.auth.uid,
@@ -113,19 +121,7 @@ class CreateNewOrganisation extends Component {
   addSpaceFromInput2ToCompanies = () => {
     this.state.addedSpace2 !== '' &&
       this.props.firestore.set(
-        { collection: 'companiesTEST', doc: uuid() },
-        {
-          orgId: this.orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          spaceName: this.state.addedSpace2
-        }
-      );
-  };
-
-  addSpaceFromInput2ToCompanies = () => {
-    this.state.addedSpace2 !== '' &&
-      this.props.firestore.set(
-        { collection: 'companiesTEST', doc: uuid() },
+        { collection: 'spaces', doc: uuid() },
         {
           orgId: this.orgId,
           spaceCreatedByUserId: this.props.auth.uid,

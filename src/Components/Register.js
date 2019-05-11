@@ -58,7 +58,8 @@ class Register extends Component {
       .set({
         fullName: res.profile.displayName,
         userEmail: res.profile.email,
-        arrayOfOrgs: []
+        arrayOfOrgs: [],
+        profileUrl: 'http://lorempixel.com/640/480'
       })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
@@ -75,7 +76,8 @@ class Register extends Component {
       .set({
         fullName: this.state.fullName,
         userEmail: res.user.user.email,
-        arrayOfOrgs: []
+        arrayOfOrgs: [],
+        profileUrl: 'http://lorempixel.com/640/480'
       })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
