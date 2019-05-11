@@ -174,7 +174,7 @@ class CreateNewOrganisation extends Component {
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   componentDidMount() {
-    if (isEmpty(this.props.auth)) {
+    if (localStorage.getItem('uuid') === null) {
       this.props.history.push('/login');
     }
     this.props.showModal('CreateOrganisationModal');
