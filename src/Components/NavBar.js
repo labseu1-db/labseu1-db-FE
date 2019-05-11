@@ -1,30 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Icon, Dropdown } from 'semantic-ui-react';
 import { setActiveOrg } from '../redux/actions/actionCreators';
 
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
+import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 const userDoc = localStorage.getItem('uuid');
+// const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 // let activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
-  componentDidMount() {
-    if (!isEmpty(this.props.orgsFromArrayOfUsersIds || this.props.orgsFromArrayOfAdminsIds)) {
-      this.props.setActiveOrg(this.props.activeOrg);
-      console.log(this.props.orgsFromArrayOfAdminsIds);
-
-      //!isEmpty(this.props.orgsFromArrayOfUsersIds || this.props.orgsFromArrayOfAdminsIds
-    }
-  }
-
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
+    localStorage.clear();
   };
 
   setSelectedOrgToRedux = (e, data) => {
@@ -39,8 +33,8 @@ export class NavBar extends Component {
     const allOrgsForUser = [
       ...orgsFromArrayOfUsersIds,
       ...orgsFromArrayOfAdminsIds,
-      { orgName: 'Second org' },
-      { orgName: 'Third org' }
+      { orgName: 'Second org', id: 'SecondfakeID' },
+      { orgName: 'Third org', id: 'thirdfakeID' }
     ];
     const orgOptions = allOrgsForUser.map(org => ({
       key: org.orgName,
@@ -60,8 +54,6 @@ export class NavBar extends Component {
         value: 'Log out'
       }
     ];
-    console.log(this.props.activeOrg);
-
     return (
       <NavBarContainer>
         <HeaderContainer>
@@ -96,16 +88,12 @@ export class NavBar extends Component {
                 <OrgContainer>
                   <Icon name="building outline" size="large" />
                   {isOrgsLoaded && (
-                    <span>
-                      {' '}
-                      <Dropdown
-                        inline
-                        options={orgOptions}
-                        defaultValue={orgOptions[0].value}
-                        basic={true}
-                        onChange={this.setSelectedOrgToRedux}
-                      />
-                    </span>
+                    <NavBarOrgDropdown
+                      setActiveOrg={this.props.setActiveOrg}
+                      orgOptions={orgOptions}
+                      setSelectedOrgToRedux={this.setSelectedOrgToRedux}
+                    />
+                    //********************************************** */
                   )}
                 </OrgContainer>
                 <div>

@@ -26,9 +26,7 @@ class FakeHome extends Component {
           <NavBar />
         </FirstDiv>
         <MidRightContainer>
-          <SecondDiv>
-            <MainScreen />
-          </SecondDiv>
+          <SecondDiv>{this.props.activeOrg && <MainScreen />}</SecondDiv>
           <ThirdDiv>
             <RightSidebar />
           </ThirdDiv>
@@ -41,7 +39,8 @@ class FakeHome extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    activeOrg: state.activeOrg.activeOrg
   };
 };
 
