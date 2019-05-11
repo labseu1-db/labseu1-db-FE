@@ -212,6 +212,7 @@ class CreateNewOrganisation extends Component {
             addSpaceFromInput2ToOrganisationsAndUsers={this.addSpaceFromInput2ToOrganisationsAndUsers}
             handleInputChange={this.handleInputChange}
             clearState={this.clearState}
+            props={this.props}
           />
         )}
       </div>

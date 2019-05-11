@@ -10,7 +10,16 @@ import ProgressBar from '../reusable-components/ProgressBar';
 
 export default class InviteYourTeamModal extends Component {
   //Start with 4 inputs
-  state = { open: false, inputs: [this.props.teamEmailAddress[0], this.props.teamEmailAddress[1], this.props.teamEmailAddress[2], this.props.teamEmailAddress[3]], alert: false };
+  state = {
+    open: false,
+    inputs: [
+      this.props.teamEmailAddress[0],
+      this.props.teamEmailAddress[1],
+      this.props.teamEmailAddress[2],
+      this.props.teamEmailAddress[3]
+    ],
+    alert: false
+  };
 
   //Add email input when clicked on email
   appendInput = () => {

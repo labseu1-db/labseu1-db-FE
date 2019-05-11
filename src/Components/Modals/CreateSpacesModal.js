@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 import uuid from 'uuid';
+import { Redirect } from 'react-router-dom';
 
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
@@ -84,6 +85,7 @@ export default class CreateSpacesModal extends Component {
                   this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId);
                   this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId);
                   this.props.clearState();
+                  this.props.props.history.push('/homescreen');
                 }}>
                 Finish
               </StyledModalButton>
