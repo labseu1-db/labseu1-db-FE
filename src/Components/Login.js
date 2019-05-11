@@ -30,6 +30,7 @@ import { PasswordlessButton } from './styled-components/StyledButton';
 
 //Redux action
 import { addActiveUserEmail } from '../redux/actions/actionCreators';
+import { resolve } from 'uri-js';
 
 class Login extends Component {
   static propTypes = {
@@ -159,10 +160,12 @@ class Login extends Component {
           <Button
             color="google plus"
             onClick={() =>
-              this.props.firebase.login({
-                provider: 'google',
-                type: 'popup'
-              })
+              this.props.firebase
+                .login({
+                  provider: 'google',
+                  type: 'popup'
+                })
+                .then(res => console.log(res))
             }>
             <Icon name="google plus" /> Sign in with Google
           </Button>

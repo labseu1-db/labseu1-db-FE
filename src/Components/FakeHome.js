@@ -25,7 +25,6 @@ class FakeHome extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    console.log(this.props.auth);
     return (
       <StyledHomeScreen>
         <FirstDiv>

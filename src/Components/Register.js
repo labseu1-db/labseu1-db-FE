@@ -58,8 +58,11 @@ class Register extends Component {
       .set({
         fullName: res.profile.displayName,
         userEmail: res.profile.email,
-        arrayOfOrgs: [],
-        profileUrl: 'http://lorempixel.com/640/480'
+        profileUrl: res.profile.avatarUrl,
+        arrayOfOrgsNames: [],
+        arrayOfOrgsIds: [],
+        arrayOfSpaceIds: [],
+        arrayOfSpaceNames: []
       })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
@@ -76,8 +79,11 @@ class Register extends Component {
       .set({
         fullName: this.state.fullName,
         userEmail: res.user.user.email,
-        arrayOfOrgs: [],
-        profileUrl: 'http://lorempixel.com/640/480'
+        profileUrl: 'http://lorempixel.com/640/480',
+        arrayOfOrgsNames: [],
+        arrayOfOrgsIds: [],
+        arrayOfSpaceIds: [],
+        arrayOfSpaceNames: []
       })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
@@ -171,7 +177,6 @@ class Register extends Component {
               this.props.firebase
                 .login({ provider: 'google', type: 'popup' })
                 .then(res => {
-                  console.log(res);
                   this.saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn(res);
                 })
                 .catch(error => {

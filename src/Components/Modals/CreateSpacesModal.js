@@ -78,8 +78,8 @@ export default class CreateSpacesModal extends Component {
                   let orgId = uuid();
                   e.preventDefault();
                   this.props.showModal('null');
-                  this.props.addCompanyToDatabase(orgId);
-                  this.props.addSpacesToCompaniesAndUsers(orgId);
+                  this.props.addOrganisationToDatabase(orgId);
+                  this.props.addSpacesToOrganisationsAndUsers(orgId);
                   this.props.addSpaceFromInput1ToCompaniesAndUsers(orgId);
                   this.props.addSpaceFromInput2ToCompaniesAndUsers(orgId);
                   this.props.clearState();
