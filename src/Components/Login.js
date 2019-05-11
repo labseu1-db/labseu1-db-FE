@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, firestoreConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
 import { Button, Icon, Message } from 'semantic-ui-react';
@@ -29,7 +29,6 @@ import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
 
 //Redux action
-import { addActiveUserEmail } from '../redux/actions/actionCreators';
 import { resolve } from 'uri-js';
 
 class Login extends Component {
@@ -70,7 +69,7 @@ class Login extends Component {
         password: this.state.loginPassword
       })
       .then(res => {
-        this.props.addActiveUserEmail(res.user.user.email);
+        this.setUserIdInLocalStorage(res.user.user.email);
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
@@ -79,13 +78,13 @@ class Login extends Component {
 
   setUserIdInLocalStorage = email => {
     var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
-
     ref
       .get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           // doc.data() is never undefined for query doc snapshots
           localStorage.setItem('uuid', doc.id);
+          localStorage.setItem('userEmail', doc.data().userEmail);
           localStorage.setItem('userData', JSON.stringify(doc.data()));
           // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
@@ -202,6 +201,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firebaseConnect(),
-  firestoreConnect()
+  firebaseConnect()
 )(Login);
