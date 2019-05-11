@@ -22,7 +22,13 @@ const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty(), threadName: '', threadTopic: '', spaceId: '' };
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      threadName: '',
+      threadTopic: '',
+      spaceId: '',
+      threadCreatedByUserName: ''
+    };
     this.onChange = (editorState) => {
       this.setState({ editorState });
     };
@@ -36,14 +42,11 @@ class CreateThreadModal extends Component {
     this.setState({ threadTopic: JSON.stringify(contentState) });
     console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState);
   };
+
   saveSpaceToThread = (e, data) => {
     e.preventDefault();
-    const { value } = data;
-    this.setState({ spaceId: value });
+    this.setState({ spaceId: data.doc });
   };
-  // saveUserNameToThread = (activeUser) => {
-  //   this.setState({ threadCreatedByUserName: activeUser.fullName });
-  // };
 
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -84,14 +87,14 @@ class CreateThreadModal extends Component {
   };
 
   threadId = uuid();
-  addNewThread = (activeUser) => {
+  addNewThread = () => {
     this.props.firestore.set(
       { collection: 'threadsTest', doc: this.threadId },
       {
         threadName: this.state.threadName,
         threadTopic: this.state.threadTopic,
         threadCreatedByUserId: this.props.auth.uid,
-        threadCreatedByUserName: this.state.activeUser.fullName,
+        threadCreatedByUserName: this.props.user.fullName,
         threadCreatedAt: Date.now(),
         spaceId: this.state.spaceId,
         orgId: activeOrg
@@ -106,7 +109,6 @@ class CreateThreadModal extends Component {
       text: space.spaceName,
       value: `${space.spaceName}`
     }));
-    const activeUser = this.props.user;
 
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
@@ -185,10 +187,9 @@ class CreateThreadModal extends Component {
                 disabled={!this.state.threadName.length > 0}
                 onClick={(e) => {
                   this.saveEditorText();
-                  // this.saveUserNameToThread(activeUser);
-                  this.addNewThread(activeUser);
+                  this.addNewThread();
                   this.props.showModal(null);
-                  console.log(this.props);
+                  console.log('this.props->', this.props);
                 }}
               >
                 Post
