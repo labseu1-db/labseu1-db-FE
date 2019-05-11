@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { Modal } from 'semantic-ui-react';
+
+//Import dependencies
 import styled from 'styled-components';
 import uuid from 'uuid';
-import { Redirect } from 'react-router-dom';
+
+//Import semantic components
+import { Modal } from 'semantic-ui-react';
 
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
+//Default export
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
     { name: 'Product', color: 'eggplant' },
@@ -45,7 +49,6 @@ export default class CreateSpacesModal extends Component {
                       className={`${this.props.createdSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
                       key={s.name}
                       onClick={() => {
-                        console.log(this.props.createdSpaces.indexOf(s.name));
                         this.props.addSpace(s.name);
                       }}>
                       {s.name}

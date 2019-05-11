@@ -77,7 +77,6 @@ export default class InviteYourTeamModal extends Component {
                 onClick={e => {
                   e.preventDefault();
                   this.setState({ alert: false });
-                  console.log(this.state.inputs.every(this.checkIfEmail));
                   if (this.state.inputs.every(this.checkIfEmail)) {
                     this.props.addTeamEmailAddress(this.state.inputs);
                     this.props.showModal('CreateSpacesModal');

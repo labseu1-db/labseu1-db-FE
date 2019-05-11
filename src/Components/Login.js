@@ -28,9 +28,6 @@ import showPassword from '../images/showPassword.svg';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
 
-//Redux action
-import { resolve } from 'uri-js';
-
 class Login extends Component {
   static propTypes = {
     auth: PropTypes.object,
@@ -165,7 +162,9 @@ class Login extends Component {
                   provider: 'google',
                   type: 'popup'
                 })
-                .then(res => console.log(res))
+                .then(res => {
+                  this.setUserIdInLocalStorage(res.profile.email);
+                })
             }>
             <Icon name="google plus" /> Sign in with Google
           </Button>

@@ -45,7 +45,6 @@ class CreateNewOrganisation extends Component {
   // - toggle adding/removing of space
   addSpace = space => {
     const indexOfSpace = this.state.createdSpaces.indexOf(space);
-    console.log(indexOfSpace);
     if (indexOfSpace > -1) {
       const arrayWithoutSpace = this.state.createdSpaces.filter(s => {
         return s !== space;
@@ -98,8 +97,8 @@ class CreateNewOrganisation extends Component {
   addOrganisationToUsers = orgId => {
     let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
     userRef.update({
-      ArrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
-      ArrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
+      arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
+      arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
     });
   };
 
