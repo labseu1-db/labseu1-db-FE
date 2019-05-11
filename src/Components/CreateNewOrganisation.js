@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import { firestoreConnect, withFirestore, isEmpty } from 'react-redux-firebase';
 import uuid from 'uuid';
 
 //Redux action
@@ -174,6 +174,9 @@ class CreateNewOrganisation extends Component {
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   componentDidMount() {
+    if (isEmpty(this.props.auth)) {
+      this.props.history.push('/login');
+    }
     this.props.showModal('CreateOrganisationModal');
   }
 
