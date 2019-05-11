@@ -11,9 +11,6 @@ import { showModal } from '../redux/actions/actionCreators';
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
 
-//Import compoentns
-import CreateNewOrganisation from './CreateNewOrganisation';
-
 //Import icons
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
@@ -26,6 +23,7 @@ export class NavBar extends Component {
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
+    localStorage.clear();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -126,13 +124,6 @@ export class NavBar extends Component {
             </div>
           </div>
         </InnerContainer>
-        {/* <button
-          onClick={e => {
-            e.preventDefault();
-            this.props.showModal('CreateOrganisationModal');
-          }}>
-          Create new organisation
-        </button> */}
         <Link to="/createneworganisation">
           <button>Click</button>
         </Link>
