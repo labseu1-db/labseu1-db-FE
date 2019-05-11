@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+
 import { Modal, Dropdown } from 'semantic-ui-react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
+import uuid from 'uuid';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
 
@@ -10,10 +15,10 @@ import codeIcon from '../../images/icon-code-white.svg';
 import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
-export default class CreateThreadModal extends Component {
+class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty(), threadTitle: '' };
+    this.state = { editorState: EditorState.createEmpty(), threadName: '', threadTopic: '', spaceId: '' };
     this.onChange = (editorState) => this.setState({ editorState });
     this.focus = () => this.refs.editor.focus();
   }
@@ -56,6 +61,22 @@ export default class CreateThreadModal extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CODE'));
   };
 
+  threadId = uuid();
+  addNewThread = () => {
+    this.props.firestore.set(
+      { collection: 'threadsTest', doc: this.threadId },
+      {
+        threadName: this.state.threadName,
+        threadTopic: this.state.threadTopic,
+        threadCreatedByUserId: this.props.auth.uid,
+        threadCreatedByUserName: this.props.auth.displayName,
+        threadCreatedAt: Date.now(),
+        spaceId: this.state.spaceId,
+        orgId: ''
+      }
+    );
+  };
+
   render() {
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
@@ -93,7 +114,7 @@ export default class CreateThreadModal extends Component {
         <Modal.Content>
           <StyledInputsContainer>
             <StyledTitleInput
-              name='threadTitle'
+              name='threadName'
               type='text'
               placeholder='Create a title'
               required
@@ -101,7 +122,7 @@ export default class CreateThreadModal extends Component {
             />
             <StyledThreadInput onClick={this.focus}>
               <Editor
-                name='threadTitle'
+                name='threadTopic'
                 type='text'
                 placeholder='What would you like to discuss with your teammates?'
                 required
@@ -123,12 +144,15 @@ export default class CreateThreadModal extends Component {
               <StyledBackButton
                 onClick={(e) => {
                   e.preventDefault();
+                  console.log(this.props);
                   this.props.showModal(null);
                 }}
               >
                 Back
               </StyledBackButton>
-              <StyledButton disabled={!this.state.threadTitle.length > 0}>Post</StyledButton>
+              <StyledButton disabled={!this.state.threadName.length > 0} onClick={this.addNewThread}>
+                Post
+              </StyledButton>
             </div>
           </StyledActions>
         </Modal.Actions>
@@ -136,6 +160,17 @@ export default class CreateThreadModal extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    activeModal: state.modal.activeModal
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(CreateThreadModal);
 
 const MiniModalLeft = styled.div`
   display: none;
