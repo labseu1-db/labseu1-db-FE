@@ -86,6 +86,7 @@ class Login extends Component {
         querySnapshot.forEach(function(doc) {
           // doc.data() is never undefined for query doc snapshots
           localStorage.setItem('uuid', doc.id);
+          localStorage.setItem('userEmail', doc.data.userEmail);
           localStorage.setItem('userData', JSON.stringify(doc.data()));
         });
       })
