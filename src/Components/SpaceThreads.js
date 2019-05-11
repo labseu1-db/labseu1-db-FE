@@ -4,23 +4,18 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-//Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
-// import placeholder from '../images/placeholder-homescreen.svg';
 
-//Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
-// import Placeholder from './reusable-components/Placeholder';
 
-//Main component
-function MainScreen(props) {
+function SpaceThreads(props) {
   return (
     <StyledMainScreen>
       <StyledFirstRow>
-        <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+        <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <ScreenButton
           content="Start a thread"
           icon={penIconWhite}
@@ -31,7 +26,7 @@ function MainScreen(props) {
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
-      {/*If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS*/}
+      {/* If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS
       {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
       {/* {props.threads.length === 0 && (
         <Placeholder
@@ -64,7 +59,6 @@ function MainScreen(props) {
   );
 }
 
-//Styling
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
@@ -78,12 +72,13 @@ const StyledFirstRow = styled.div`
   margin-bottom: 5vh;
 `;
 
-//Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
+    spaceId: state.spaceId
   };
 };
 
@@ -98,8 +93,12 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
+        where: ['spaceId', '==', props.spaceId]
+      },
+      {
+        collection: 'spaces',
+        doc: props.spaceId
       }
     ];
   })
-)(MainScreen);
+)(SpaceThreads);
