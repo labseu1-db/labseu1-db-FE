@@ -9,5 +9,5 @@ export const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   modal: reducers.modal,
-  user: reducers.user
+  spaceId: reducers.spaceId
 });

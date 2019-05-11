@@ -1,4 +1,4 @@
-import * as types from './actionTypes';
+import * as types from './actionTypes.js';
 
 export const showModal = modal => {
   return {
@@ -7,9 +7,10 @@ export const showModal = modal => {
   };
 };
 
-export const addActiveUserEmail = userId => {
-  return {
-    type: types.ACTIVE_USER,
-    payload: userId
-  };
+export const switchSpaces = spaceId => {
+  return { type: types.SHOW_SPACES_THREADS, payload: spaceId };
+};
+
+export const resetSpace = () => {
+  return { type: types.RESET_SPACE };
 };

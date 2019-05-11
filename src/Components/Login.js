@@ -86,8 +86,8 @@ class Login extends Component {
         querySnapshot.forEach(function(doc) {
           // doc.data() is never undefined for query doc snapshots
           localStorage.setItem('uuid', doc.id);
-          localStorage.setItem('userEmail', doc.data.userEmail);
           localStorage.setItem('userData', JSON.stringify(doc.data()));
+          // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
 
@@ -183,16 +183,14 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeUser: state.user.activeUser
+    profile: state.firebase.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
-      addActiveUserEmail
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
     },
     dispatch
   );

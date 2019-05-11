@@ -8,11 +8,9 @@ import styled from 'styled-components';
 import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
+import SpaceThreads from './SpaceThreads';
 
 import { showModal } from '../redux/actions/actionCreators';
-
-//Import modals
-import CreateNewOrganisation from './CreateNewOrganisation';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -32,7 +30,8 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            <MainScreen />
+            {this.props.spaceId && <SpaceThreads />}
+            {!this.props.spaceId && <MainScreen />}
           </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
@@ -47,7 +46,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    spaceId: state.spaceId
   };
 };
 

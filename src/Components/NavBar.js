@@ -82,6 +82,9 @@ export class NavBar extends Component {
           </div>
         </HeaderContainer>
         <InnerContainer>
+          <Link to="/createneworganisation">
+            <button>Create new organisation</button>
+          </Link>
           <HomeContainer>
             <img src={homeIcon} alt="home icon" />
             <span>Home</span>
@@ -124,9 +127,6 @@ export class NavBar extends Component {
             </div>
           </div>
         </InnerContainer>
-        <Link to="/createneworganisation">
-          <button>Click</button>
-        </Link>
       </NavBarContainer>
     );
   }
