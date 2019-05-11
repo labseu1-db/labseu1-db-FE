@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
+import uuid from 'uuid';
 
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
@@ -74,12 +75,13 @@ export default class CreateSpacesModal extends Component {
             <StyledActionButtonsContainer>
               <StyledModalButton
                 onClick={e => {
+                  let orgId = uuid();
                   e.preventDefault();
                   this.props.showModal('null');
-                  this.props.addCompanyToDatabase();
-                  this.props.addSpacesToCompanies();
-                  this.props.addSpaceFromInput1ToCompanies();
-                  this.props.addSpaceFromInput2ToCompanies();
+                  this.props.addCompanyToDatabase(orgId);
+                  this.props.addSpacesToCompaniesAndUsers(orgId);
+                  this.props.addSpaceFromInput1ToCompanies(orgId);
+                  this.props.addSpaceFromInput2ToCompanies(orgId);
                   this.props.clearState();
                 }}>
                 Finish

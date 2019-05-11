@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, withFirestore, withFirebase } from 'react-redux-firebase';
 import uuid from 'uuid';
 
 //Redux action
@@ -55,14 +55,14 @@ class CreateNewOrganisation extends Component {
   };
 
   //Add information about created company that were collected in modals to firestore
-  orgId = uuid();
-  addCompanyToDatabase = () => {
+
+  addCompanyToDatabase = orgId => {
     let usersEmails = this.state.teamEmailAddress.filter(Boolean).map(e => {
       return e;
     });
     let usersAndAdminsEmails = usersEmails.concat(this.props.auth.email);
     this.props.firestore.set(
-      { collection: 'organisations', doc: this.orgId },
+      { collection: 'organisations', doc: orgId },
       {
         orgName: this.state.orgName,
         createdByUserId: this.props.auth.uid,
@@ -74,56 +74,52 @@ class CreateNewOrganisation extends Component {
     );
   };
 
-  addCompanyToUser = () => {
-    this.props.firestore.add(
-      { collection: 'UserTEST', doc: localStorage.getItem('uuid') },
-      {
-        arrayOfOrgsIds: [this.orgId],
-        arrayOfOrgsNames: [this.state.orgName]
-      }
-    );
-  };
-
   //Add information about created spaces that were collected in modals to firestore
-  addSpacesToCompanies = () => {
+  addSpacesToCompaniesAndUsers = orgId => {
+    //map trough populates spaces and each add to database = space collection
     this.state.createdSpaces.filter(Boolean).forEach(space => {
       let spaceId = uuid();
       this.props.firestore.set(
         { collection: 'spaces', doc: spaceId },
         {
-          orgId: this.orgId,
+          orgId: orgId,
           spaceCreatedByUserId: this.props.auth.uid,
           spaceName: space
         }
       );
-      this.props.firestore.update(
-        { collection: 'userTEST', doc: '8b59a0db-a670-4a49-8b66-d9dc1708dc6c' },
-        {
-          arrayOfSpaceIds: spaceId,
-          arrayOfSpaceNames: space
-        }
-      );
+      //then add each space to users collection
+      let userRef = this.props.firestore.collection('userTEST').doc('1234');
+      userRef.update({
+        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
+      });
+    });
+    //then add each org to users collection
+    let userRef = this.props.firestore.collection('userTEST').doc('1234');
+    userRef.update({
+      ArrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
+      ArrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
     });
   };
 
-  addSpaceFromInput1ToCompanies = () => {
+  addSpaceFromInput1ToCompanies = orgId => {
     this.state.addedSpace1 !== '' &&
       this.props.firestore.set(
         { collection: 'spaces', doc: uuid() },
         {
-          orgId: this.orgId,
+          orgId: orgId,
           spaceCreatedByUserId: this.props.auth.uid,
           spaceName: this.state.addedSpace1
         }
       );
   };
 
-  addSpaceFromInput2ToCompanies = () => {
+  addSpaceFromInput2ToCompanies = orgId => {
     this.state.addedSpace2 !== '' &&
       this.props.firestore.set(
         { collection: 'spaces', doc: uuid() },
         {
-          orgId: this.orgId,
+          orgId: orgId,
           spaceCreatedByUserId: this.props.auth.uid,
           spaceName: this.state.addedSpace2
         }
@@ -168,7 +164,7 @@ class CreateNewOrganisation extends Component {
             createdSpaces={this.state.createdSpaces}
             addSpace={this.addSpace}
             addCompanyToDatabase={this.addCompanyToDatabase}
-            addSpacesToCompanies={this.addSpacesToCompanies}
+            addSpacesToCompaniesAndUsers={this.addSpacesToCompaniesAndUsers}
             addSpaceFromInput1ToCompanies={this.addSpaceFromInput1ToCompanies}
             addSpaceFromInput2ToCompanies={this.addSpaceFromInput2ToCompanies}
             handleInputChange={this.handleInputChange}
@@ -194,17 +190,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
+  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   firestoreConnect()
-  // props => {
-  //   return [
-  //     {
-  //       collection: 'users',
-  //       doc: this.props.uid
-  //     }
-  //   ];
-  // })
 )(CreateNewOrganisation);
