@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 import { Modal, Dropdown } from 'semantic-ui-react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 import uuid from 'uuid';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
@@ -15,13 +15,25 @@ import codeIcon from '../../images/icon-code-white.svg';
 import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
+// To be changed once activeOrg can be taken from props
+const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
+
 class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty(), threadName: '', threadTopic: '', spaceId: '' };
-    this.onChange = (editorState) => this.setState({ editorState });
+    this.onChange = (editorState) => {
+      this.setState({ editorState });
+    };
     this.focus = () => this.refs.editor.focus();
   }
+
+  saveEditorText = () => {
+    const rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
+    const contentState = convertFromRaw(rawDraftContentState);
+    this.setState({ threadTopic: JSON.stringify(contentState) });
+    console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState);
+  };
 
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -72,7 +84,7 @@ class CreateThreadModal extends Component {
         threadCreatedByUserName: this.props.auth.displayName,
         threadCreatedAt: Date.now(),
         spaceId: this.state.spaceId,
-        orgId: ''
+        orgId: activeOrg
       }
     );
   };
@@ -144,13 +156,20 @@ class CreateThreadModal extends Component {
               <StyledBackButton
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log(this.props);
                   this.props.showModal(null);
                 }}
               >
                 Back
               </StyledBackButton>
-              <StyledButton disabled={!this.state.threadName.length > 0} onClick={this.addNewThread}>
+              <StyledButton
+                disabled={!this.state.threadName.length > 0}
+                onClick={(e) => {
+                  this.saveEditorText();
+                  this.addNewThread();
+                  this.props.showModal(null);
+                  console.log(this.props);
+                }}
+              >
                 Post
               </StyledButton>
             </div>
