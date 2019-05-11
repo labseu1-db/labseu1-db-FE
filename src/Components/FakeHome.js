@@ -38,7 +38,6 @@ class FakeHome extends Component {
             <RightSidebar />
           </ThirdDiv>
         </MidRightContainer>
-        <CreateNewOrganisation uid={this.props.auth.id} />
       </StyledHomeScreen>
     );
   }

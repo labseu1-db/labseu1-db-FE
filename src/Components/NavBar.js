@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 //Import actions
 import { showModal } from '../redux/actions/actionCreators';
@@ -125,13 +126,16 @@ export class NavBar extends Component {
             </div>
           </div>
         </InnerContainer>
-        <button
+        {/* <button
           onClick={e => {
             e.preventDefault();
             this.props.showModal('CreateOrganisationModal');
           }}>
           Create new organisation
-        </button>
+        </button> */}
+        <Link to="/createneworganisation">
+          <button>Click</button>
+        </Link>
       </NavBarContainer>
     );
   }

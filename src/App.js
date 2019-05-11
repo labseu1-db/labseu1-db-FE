@@ -10,6 +10,7 @@ import FakeHome from './Components/FakeHome';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
+import CreateNewOrganisation from './Components/CreateNewOrganisation';
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
         <Route exact path="/passwordlesssubmit" render={props => <PasswordlessSubmit {...props} />} />
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
         <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
+        <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
       </div>
     );
   }

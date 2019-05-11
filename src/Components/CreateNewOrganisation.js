@@ -77,7 +77,7 @@ class CreateNewOrganisation extends Component {
       return e;
     });
     //add creators/admins email to the array of users
-    let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(this.props.auth.email);
+    let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
 
     //aave all collected data about organisation in firestore
     this.props.firestore.set(
@@ -85,11 +85,11 @@ class CreateNewOrganisation extends Component {
       {
         orgName: this.state.orgName,
         isPremium: false,
-        createdByUserId: this.props.auth.uid,
+        createdByUserId: localStorage.getItem('uuid'),
         arrayOfUsersEmails: usersAndAdminsEmails,
-        arrayOfUsersIds: this.props.auth.uid,
-        arrayOfAdminsEmails: this.props.auth.email,
-        arrayOfAdminsIds: this.props.auth.uid
+        arrayOfUsersIds: localStorage.getItem('uuid'),
+        arrayOfAdminsEmails: localStorage.getItem('userEmail'),
+        arrayOfAdminsIds: localStorage.getItem('uuid')
       }
     );
   };
@@ -114,8 +114,8 @@ class CreateNewOrganisation extends Component {
         {
           spaceName: space,
           orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          arrayOfUserIdsInSpace: this.props.auth.uid
+          spaceCreatedByUserId: localStorage.getItem('uuid'),
+          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
         }
       );
 
@@ -137,8 +137,8 @@ class CreateNewOrganisation extends Component {
         {
           spaceName: this.state.addedSpace1,
           orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          arrayOfUserIdsInSpace: this.props.auth.uid
+          spaceCreatedByUserId: localStorage.getItem('uuid'),
+          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
         }
       );
 
@@ -160,8 +160,8 @@ class CreateNewOrganisation extends Component {
         {
           spaceName: this.state.addedSpace2,
           orgId: orgId,
-          spaceCreatedByUserId: this.props.auth.uid,
-          arrayOfUserIdsInSpace: this.props.auth.uid
+          spaceCreatedByUserId: localStorage.getItem('uuid'),
+          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
         }
       );
 
@@ -174,6 +174,9 @@ class CreateNewOrganisation extends Component {
       });
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
+  componentDidMount() {
+    this.props.showModal('CreateOrganisationModal');
+  }
 
   render() {
     return (
