@@ -17,6 +17,7 @@ import underlineIcon from '../../images/icon-underline-white.svg';
 
 // To be changed once activeOrg can be taken from props
 const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
+const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
 
 class CreateThreadModal extends Component {
   constructor(props) {
@@ -29,10 +30,16 @@ class CreateThreadModal extends Component {
   }
 
   saveEditorText = () => {
-    const rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
-    const contentState = convertFromRaw(rawDraftContentState);
+    let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
+    let contentState = convertFromRaw(rawDraftContentState);
+
     this.setState({ threadTopic: JSON.stringify(contentState) });
     console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState);
+  };
+  saveSpaceToThread = (e, data) => {
+    e.preventDefault();
+    const { value } = data;
+    this.setState({ spaceId: value });
   };
 
   handleInputChange = (e) => {
@@ -90,6 +97,13 @@ class CreateThreadModal extends Component {
   };
 
   render() {
+    const { spacesForActiveOrg } = this.props;
+    const spaceOptions = spacesForActiveOrg.map((space, index) => ({
+      key: index,
+      text: space.spaceName,
+      value: `${space.spaceName}`
+    }));
+
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
         <MiniModalLeft id='miniModal'>
@@ -120,7 +134,9 @@ class CreateThreadModal extends Component {
             multiple
             search
             selection
-            options={[ { key: 'One', text: 'One', value: 'One' }, { key: 'Two', text: 'Two', value: 'Two' } ]}
+            options={spaceOptions}
+            basic={true}
+            onChange={this.saveSpaceToThread}
           />
         </MiniModalRight>
         <Modal.Content>
@@ -183,13 +199,28 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : []
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
+};
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(CreateThreadModal);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
+    return [
+      {
+        collection: 'spaces',
+        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', userDoc ], [ 'orgId', '==', activeOrg ] ]
+      }
+    ];
+  })
+)(CreateThreadModal);
 
 const MiniModalLeft = styled.div`
   display: none;
