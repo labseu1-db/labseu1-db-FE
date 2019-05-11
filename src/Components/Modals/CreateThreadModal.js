@@ -41,6 +41,9 @@ class CreateThreadModal extends Component {
     const { value } = data;
     this.setState({ spaceId: value });
   };
+  // saveUserNameToThread = (activeUser) => {
+  //   this.setState({ threadCreatedByUserName: activeUser.fullName });
+  // };
 
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -81,14 +84,14 @@ class CreateThreadModal extends Component {
   };
 
   threadId = uuid();
-  addNewThread = () => {
+  addNewThread = (activeUser) => {
     this.props.firestore.set(
       { collection: 'threadsTest', doc: this.threadId },
       {
         threadName: this.state.threadName,
         threadTopic: this.state.threadTopic,
         threadCreatedByUserId: this.props.auth.uid,
-        threadCreatedByUserName: this.props.auth.displayName,
+        threadCreatedByUserName: this.state.activeUser.fullName,
         threadCreatedAt: Date.now(),
         spaceId: this.state.spaceId,
         orgId: activeOrg
@@ -103,6 +106,7 @@ class CreateThreadModal extends Component {
       text: space.spaceName,
       value: `${space.spaceName}`
     }));
+    const activeUser = this.props.user;
 
     return (
       <Modal open={this.props.shoudlBeOpen} size='small'>
@@ -181,7 +185,8 @@ class CreateThreadModal extends Component {
                 disabled={!this.state.threadName.length > 0}
                 onClick={(e) => {
                   this.saveEditorText();
-                  this.addNewThread();
+                  // this.saveUserNameToThread(activeUser);
+                  this.addNewThread(activeUser);
                   this.props.showModal(null);
                   console.log(this.props);
                 }}
@@ -200,7 +205,8 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : []
+    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
   };
 };
 
@@ -217,6 +223,10 @@ export default compose(
       {
         collection: 'spaces',
         where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', userDoc ], [ 'orgId', '==', activeOrg ] ]
+      },
+      {
+        collection: 'users',
+        doc: `${userDoc}`
       }
     ];
   })
