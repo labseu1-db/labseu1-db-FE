@@ -36,7 +36,7 @@ export class AddCompany extends Component {
   render() {
     return (
       <div>
-        <input type="text" value={this.state.company} onChange={e => this.setState({ company: e.target.value })} />
+        <input type='text' value={this.state.company} onChange={e => this.setState({ company: e.target.value })} />
         <button
           onClick={e => {
             e.preventDefault();

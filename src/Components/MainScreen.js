@@ -31,26 +31,26 @@ class MainScreen extends React.Component {
           />
         )}
         <StyledFirstRow>
-          <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+          <ScreenHeading heading='Home' info='Catch up on the most recent threads.' />
           <ScreenButton
-            content="Start a thread"
+            content='Start a thread'
             icon={penIconWhite}
-            backgroundColor="#5C4DF2"
-            color="white"
-            border="none"
+            backgroundColor='#5C4DF2'
+            color='white'
+            border='none'
             onClick={e => {
               this.props.showModal('CreateThreadModal');
             }}
           />
         </StyledFirstRow>
-        <ScreenSectionHeading heading="Recent" />
+        <ScreenSectionHeading heading='Recent' />
 
         {/*If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS*/}
         {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
         {/* {props.threads.length === 0 && (
         <Placeholder
-          heading="Learn about Home"
-          info="Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!"
+          heading='Learn about Home'
+          info='Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!'
           image={placeholder}
         />
       )} */}
@@ -70,7 +70,7 @@ class MainScreen extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
-                checked="true"
+                checked='true'
               />
             );
           })}

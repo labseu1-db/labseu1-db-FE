@@ -74,14 +74,14 @@ class Login extends Component {
   };
 
   setUserIdInLocalStorage = (email) => {
-    var ref = this.props.firestore.collection("users").where("userEmail", "==", email);
+    var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
 
     ref.get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
-            localStorage.setItem("uuid", doc.id);
-            localStorage.setItem("userData", JSON.stringify(doc.data()));
+            localStorage.setItem('uuid', doc.id);
+            localStorage.setItem('userData', JSON.stringify(doc.data()));
             // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })

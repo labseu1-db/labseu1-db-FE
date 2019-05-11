@@ -30,8 +30,8 @@ function SpaceThreads(props) {
       {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
       {/* {props.threads.length === 0 && (
         <Placeholder
-          heading="Learn about Home"
-          info="Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!"
+          heading='Learn about Home'
+          info='Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!'
           image={placeholder}
         />
       )} */}
