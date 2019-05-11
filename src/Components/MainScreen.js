@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 //Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
@@ -14,6 +14,9 @@ import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 import Placeholder from './reusable-components/Placeholder';
+
+import { showModal } from '../redux/actions/actionCreators';
+import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
 class MainScreen extends React.Component {
@@ -90,11 +93,14 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: state.activeOrg.activeOrg
+    activeOrg: state.activeOrg.activeOrg,
+    activeModal: state.modal.activeModal
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ showModal }, dispatch);
+};
 
 export default compose(
   connect(

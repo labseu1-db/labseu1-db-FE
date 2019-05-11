@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
+import SpaceThreads from './SpaceThreads';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -26,7 +27,10 @@ class FakeHome extends Component {
           <NavBar />
         </FirstDiv>
         <MidRightContainer>
-          <SecondDiv>{this.props.activeOrg && <MainScreen />}</SecondDiv>
+          <SecondDiv>
+            {this.props.spaceId && <SpaceThreads />}
+            {!this.props.spaceId && <MainScreen />}
+          </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
           </ThirdDiv>
@@ -40,7 +44,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeOrg: state.activeOrg.activeOrg
+    activeOrg: state.activeOrg.activeOrg,
+    spaceId: state.spaceId
   };
 };
 
@@ -63,10 +68,12 @@ const FirstDiv = styled.div`
 const SecondDiv = styled.div`
   width: 70%;
   margin-left: 309px;
+  background-color: #faf9f7;
 `;
 
 const ThirdDiv = styled.div`
   width: 30%;
+  background-color: #faf9f7;
 `;
 
 const MidRightContainer = styled.div`
