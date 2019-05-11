@@ -8,17 +8,17 @@ const sidebar = {
     {
       isAdmin: true,
       orgId: 1,
-      orgName: "Google"
+      orgName: 'Google'
     }],
   arrayOfSpaceIds:
     [
-      "dd185a19-3f6b-4907-8ed8-9f6a47cdaed1",
-      "c8749d67-d821-483a-b19a-df1f2c5dd549"
+      'dd185a19-3f6b-4907-8ed8-9f6a47cdaed1',
+      'c8749d67-d821-483a-b19a-df1f2c5dd549'
     ],
   arraOfSpacesNames: [
-    "BudgetForInterns",
-    "HireUXDesiners",
-    , "GetTogetherForBob"
+    'BudgetForInterns',
+    'HireUXDesiners',
+    , 'GetTogetherForBob'
   ]
 }
 afterEach(rtl.cleanup);

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
+import SpaceThreads from './SpaceThreads';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -27,7 +28,8 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            <MainScreen />
+            {this.props.spaceId && <SpaceThreads />}
+            {!this.props.spaceId && <MainScreen />}
           </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
@@ -41,7 +43,8 @@ class FakeHome extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    spaceId: state.spaceId
   };
 };
 
