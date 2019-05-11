@@ -5,10 +5,7 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 import { Button, Icon, Message } from 'semantic-ui-react';
 
-import {
-  StyledButton,
-  ForgotPasswordDiv
-} from './styled-components/StyledButton';
+import { StyledButton, ForgotPasswordDiv } from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
@@ -18,11 +15,7 @@ import {
   StyledLowerSignIn,
   StyledIcon
 } from './styled-components/StyledLogin';
-import {
-  StyledH1,
-  StyledLink,
-  StyledPLabel
-} from './styled-components/StyledText';
+import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
@@ -65,30 +58,31 @@ class Login extends Component {
         email: this.state.loginEmail,
         password: this.state.loginPassword
       })
-      .then((res) => {
-        this.setUserIdInLocalStorage(res.user.user.email)
+      .then(res => {
+        this.setUserIdInLocalStorage(res.user.user.email);
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       });
   };
 
-  setUserIdInLocalStorage = (email) => {
-    var ref = this.props.firestore.collection("users").where("userEmail", "==", email);
+  setUserIdInLocalStorage = email => {
+    var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
 
-    ref.get()
+    ref
+      .get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            localStorage.setItem("uuid", doc.id);
-            localStorage.setItem("userData", JSON.stringify(doc.data()));
-            // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
+          // doc.data() is never undefined for query doc snapshots
+          localStorage.setItem('uuid', doc.id);
+          localStorage.setItem('userData', JSON.stringify(doc.data()));
+          // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
       .catch(error => {
-        this.setState({  error });
+        this.setState({ error });
       });
-  }
+  };
 
   togglePassword = () => {
     let temp = document.getElementById('typepass');
@@ -117,45 +111,43 @@ class Login extends Component {
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                id='typepass'
-                name='loginPassword'
+                id="typepass"
+                name="loginPassword"
                 value={this.state.loginPassword}
-                type='password'
+                type="password"
                 onChange={this.handleInputChange}
-                placeholder='········'
+                placeholder="········"
               />
-              <StyledIcon
-                src={showPassword}
-                alt='showPassword'
-                onClick={this.togglePassword}
-              />
+              <StyledIcon src={showPassword} alt="showPassword" onClick={this.togglePassword} />
             </StyledLabel>
-            <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>Forgot Password?</ForgotPasswordDiv>
+            <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>
+              Forgot Password?
+            </ForgotPasswordDiv>
             <StyledLowerSignIn>
-              <StyledLink to='/register'> Don't have an account? </StyledLink>
+              <StyledLink to="/register"> Don't have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
                 Sign In &#62;
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
           <Button
-            color='google plus'
+            color="google plus"
             onClick={() =>
               this.props.firebase.login({
                 provider: 'google',
@@ -163,11 +155,9 @@ class Login extends Component {
               })
             }
           >
-            <Icon name='google plus' /> Sign in with Google
+            <Icon name="google plus" /> Sign in with Google
           </Button>
-          <PasswordlessButton
-            onClick={() => this.props.history.push('/passwordlesssubmit')}
-          >
+          <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
             Email Me a Link to Sign In
           </PasswordlessButton>
         </StyledLoginCon>
