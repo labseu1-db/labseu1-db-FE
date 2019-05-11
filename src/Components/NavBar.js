@@ -11,8 +11,6 @@ import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 const userDoc = localStorage.getItem('uuid');
-// const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
-// let activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
   handleLogOut = async () => {
@@ -30,12 +28,7 @@ export class NavBar extends Component {
   render() {
     const activeUser = this.props.user;
     const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
-    const allOrgsForUser = [
-      ...orgsFromArrayOfUsersIds,
-      ...orgsFromArrayOfAdminsIds,
-      { orgName: 'Second org', id: 'SecondfakeID' },
-      { orgName: 'Third org', id: 'thirdfakeID' }
-    ];
+    const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
     const orgOptions = allOrgsForUser.map(org => ({
       key: org.orgName,
       text: org.orgName,

@@ -15,9 +15,15 @@ function ThreadCard(props) {
   const { createdBy, createdAt, heading, info, checked } = props;
   return (
     <div>
+      {/* {console.log(props.activeSpace)} */}
       <StyledThreadContainer>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
-        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={props.activeSpace.spaceName} checked={checked} />
+        <ThreadLeftComponentText
+          createdBy={createdBy}
+          createdAt={createdAt}
+          space={'props.activeSpace.spaceName'}
+          checked={checked}
+        />
         <ThreadMiddleComponent heading={heading} info={info} />
         <ThreadRightComponent numberOfComments={props.activeComments.length} />
       </StyledThreadContainer>

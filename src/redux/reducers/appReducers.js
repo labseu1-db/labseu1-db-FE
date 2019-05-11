@@ -13,6 +13,8 @@ export function activeOrg(state = { activeOrg: null }, action) {
   switch (action.type) {
     case types.SET_ACTIVE_ORG:
       return { ...state, activeOrg: action.payload };
+    default:
+      return state;
   }
 }
 

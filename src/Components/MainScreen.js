@@ -22,7 +22,7 @@ import CreateThreadModal from './Modals/CreateThreadModal';
 class MainScreen extends React.Component {
   componentDidUpdate() {
     console.log(this.props.activeOrg);
-    console.log(this.props.threads);
+    // console.log(this.props.threads);
   }
   render() {
     return (
