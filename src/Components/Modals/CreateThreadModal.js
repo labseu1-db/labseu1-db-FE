@@ -38,9 +38,10 @@ class CreateThreadModal extends Component {
   saveEditorText = () => {
     let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
     let contentState = convertFromRaw(rawDraftContentState);
+    let rawToJson = JSON.stringify(rawDraftContentState.blocks[0].text);
 
-    this.setState({ threadTopic: JSON.stringify(contentState) });
-    console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState);
+    this.setState({ threadTopic: rawToJson });
+    console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState, 'rawtoJson', rawToJson);
   };
 
   saveSpaceToThread = (e, data) => {
@@ -107,7 +108,7 @@ class CreateThreadModal extends Component {
   render() {
     const { spacesForActiveOrg } = this.props;
     const spaceOptions = spacesForActiveOrg.map((space, index) => ({
-      key: space.spaceName,
+      key: index,
       text: space.spaceName,
       value: `${space.id}`
     }));
@@ -192,7 +193,6 @@ class CreateThreadModal extends Component {
                   this.saveEditorText();
                   this.addNewThread();
                   this.props.showModal(null);
-                  console.log('this.props->', this.props);
                 }}
               >
                 Post
