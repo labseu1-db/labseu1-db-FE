@@ -38,8 +38,9 @@ class MainScreen extends React.Component {
             backgroundColor='#5C4DF2'
             color='white'
             border='none'
-            onClick={e => {
+            onClick={(e) => {
               this.props.showModal('CreateThreadModal');
+              console.log('click to make thread');
             }}
           />
         </StyledFirstRow>
@@ -58,7 +59,7 @@ class MainScreen extends React.Component {
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
-          this.props.threads.map(t => {
+          this.props.threads.map((t) => {
             let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
@@ -94,7 +95,7 @@ const StyledFirstRow = styled.div`
 `;
 
 //Export component wrapped in store + firestore
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -103,20 +104,17 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect(props => {
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
+        where: [ [ 'orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac' ] ]
       }
     ];
   })

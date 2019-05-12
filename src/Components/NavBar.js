@@ -42,7 +42,7 @@ export class NavBar extends Component {
       { orgName: 'Second org' },
       { orgName: 'Third org' }
     ];
-    const orgOptions = allOrgsForUser.map(org => ({
+    const orgOptions = allOrgsForUser.map((org) => ({
       key: org.orgName,
       text: org.orgName,
       value: `${org.orgName}`
@@ -63,7 +63,7 @@ export class NavBar extends Component {
       <NavBarContainer>
         <HeaderContainer>
           <InnerContainerHorizontal>
-            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
+            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt='user' />}
             {activeUser.fullName && (
               <div>
                 {' '}
@@ -78,15 +78,15 @@ export class NavBar extends Component {
             )}
           </InnerContainerHorizontal>
           <div>
-            <Icon name="cog" />
+            <Icon name='cog' />
           </div>
         </HeaderContainer>
         <InnerContainer>
-          <Link to="/createneworganisation">
+          <Link to='/createneworganisation'>
             <button>Create new organisation</button>
           </Link>
           <HomeContainer>
-            <img src={homeIcon} alt="home icon" />
+            <img src={homeIcon} alt='home icon' />
             <span>Home</span>
           </HomeContainer>
 
@@ -94,7 +94,7 @@ export class NavBar extends Component {
             <div>
               <OuterOrgContainer>
                 <OrgContainer>
-                  <Icon name="building outline" size="large" />
+                  <Icon name='building outline' size='large' />
                   {isOrgsLoaded && (
                     <span>
                       {' '}
@@ -110,7 +110,7 @@ export class NavBar extends Component {
                   {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
                 <div>
-                  <img src={plusIcon} alt="plus icon" />
+                  <img src={plusIcon} alt='plus icon' />
                 </div>
               </OuterOrgContainer>
               <SpaceContainer>
@@ -132,7 +132,7 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
@@ -142,7 +142,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -154,11 +154,8 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect(props => {
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -167,16 +164,16 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', userDoc], ['orgId', '==', activeOrg]]
+        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', userDoc ], [ 'orgId', '==', activeOrg ] ]
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', userDoc],
+        where: [ 'arrayOfUsersIds', 'array-contains', userDoc ],
         storeAs: 'orgsInWhichUser'
       },
       {
         collection: 'organisations',
-        where: ['arrayOfAdminsIds', 'array-contains', userDoc],
+        where: [ 'arrayOfAdminsIds', 'array-contains', userDoc ],
         storeAs: 'orgsInWhichAdmin'
       }
     ];

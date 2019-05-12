@@ -186,7 +186,7 @@ class CreateThreadModal extends Component {
                 Back
               </StyledBackButton>
               <StyledButton
-                disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
+                disabled={!this.state.threadName.length > 0 && this.state.spaceId.length > 0}
                 onClick={() => {
                   this.saveEditorText();
                 }}
