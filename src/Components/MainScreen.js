@@ -57,7 +57,7 @@ class MainScreen extends React.Component {
 
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
-        {/* {this.props.threads.length > 0 &&
+        {this.props.threads.length > 0 &&
           this.props.threads.map((t) => {
             let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
@@ -73,7 +73,7 @@ class MainScreen extends React.Component {
                 checked='true'
               />
             );
-          })} */}
+          })}
       </StyledMainScreen>
     );
   }
