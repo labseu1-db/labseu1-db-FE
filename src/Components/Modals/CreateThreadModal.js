@@ -35,20 +35,24 @@ class CreateThreadModal extends Component {
     this.focus = () => this.refs.editor.focus();
   }
 
+  // componentDidUpdate() {
+  //   this.addNewThread();
+  // }
+
   saveEditorText = () => {
     let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
     let contentState = convertFromRaw(rawDraftContentState);
     let rawToJson = JSON.stringify(rawDraftContentState.blocks[0].text);
 
-    this.setState({ threadTopic: rawToJson });
+    this.setState({ threadTopic: 'string' }, () => console.log('line 47'));
     console.log('contentState', contentState, 'rawDraftContentState', rawDraftContentState, 'rawtoJson', rawToJson);
+    console.log('1');
   };
 
   saveSpaceToThread = (e, data) => {
     e.preventDefault();
     const { value } = data;
     this.setState({ spaceId: value });
-    console.log('saveSpaceToThread');
   };
 
   handleInputChange = (e) => {
@@ -91,6 +95,7 @@ class CreateThreadModal extends Component {
 
   threadId = uuid();
   addNewThread = () => {
+    console.log('2');
     this.props.firestore.set(
       { collection: 'threadsTest', doc: this.threadId },
       {
@@ -191,7 +196,7 @@ class CreateThreadModal extends Component {
                 disabled={!this.state.threadName.length > 0}
                 onClick={(e) => {
                   this.saveEditorText();
-                  this.addNewThread();
+                  // this.addNewThread();
                   this.props.showModal(null);
                 }}
               >
