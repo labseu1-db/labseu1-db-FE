@@ -38,7 +38,7 @@ class MainScreen extends React.Component {
             backgroundColor='#5C4DF2'
             color='white'
             border='none'
-            onClick={(e) => {
+            onClick={e => {
               this.props.showModal('CreateThreadModal');
             }}
           />
@@ -49,8 +49,8 @@ class MainScreen extends React.Component {
         {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
         {/* {props.threads.length === 0 && (
         <Placeholder
-          heading="Learn about Home"
-          info="Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!"
+          heading='Learn about Home'
+          info='Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!'
           image={placeholder}
         />
       )} */}
@@ -58,7 +58,7 @@ class MainScreen extends React.Component {
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
-          this.props.threads.map((t) => {
+          this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
@@ -94,7 +94,7 @@ const StyledFirstRow = styled.div`
 `;
 
 //Export component wrapped in store + firestore
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -103,17 +103,20 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'threads',
-        where: [ [ 'orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac' ] ]
+        where: [['orgId', '==', '0a9694de-a83a-425d-b07e-94eca87b32ac']]
       }
     ];
   })
