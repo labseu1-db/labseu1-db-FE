@@ -17,7 +17,7 @@ import underlineIcon from '../../images/icon-underline-white.svg';
 
 // To be changed once activeOrg can be taken from props
 const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
-const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
+const userDoc = window.localStorage.getItem('uuid');
 
 class CreateThreadModal extends Component {
   constructor(props) {
