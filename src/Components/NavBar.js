@@ -4,15 +4,20 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Icon, Dropdown } from 'semantic-ui-react';
-import { setActiveOrg } from '../redux/actions/actionCreators';
+import { setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
-const userDoc = localStorage.getItem('uuid');
-
 export class NavBar extends Component {
+  state = {
+    uuid: ''
+  };
+  componentWillMount() {
+    this.setState({ uuid: localStorage.getItem('uuid') });
+  }
+
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
@@ -23,6 +28,7 @@ export class NavBar extends Component {
     e.preventDefault();
     const { value } = data;
     this.props.setActiveOrg(value);
+    this.props.resetSpace();
   };
 
   render() {
@@ -72,7 +78,7 @@ export class NavBar extends Component {
         <InnerContainer>
           <HomeContainer>
             <img src={homeIcon} alt="home icon" />
-            <span>Home</span>
+            <span onClick={this.props.resetSpace}>Home</span>
           </HomeContainer>
 
           <div>
@@ -98,7 +104,7 @@ export class NavBar extends Component {
                   <div>
                     {spacesForActiveOrg.map((space, index) => (
                       <div key={index}>
-                        <span>{space.spaceName}</span>
+                        <span onClick={() => this.props.switchSpaces(space.id)}>{space.spaceName}</span>
                       </div>
                     ))}
                   </div>
@@ -118,7 +124,8 @@ const mapStateToProps = state => {
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
     spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
-    activeOrg: state.activeOrg.activeOrg
+    activeOrg: state.activeOrg.activeOrg,
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -126,7 +133,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
-      setActiveOrg
+      setActiveOrg,
+      switchSpaces,
+      resetSpace
     },
     dispatch
   );
@@ -139,24 +148,24 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect(props => {
-    // if (!userDoc) return []; <-- empty array if no userDoc in local storage
+    // if (!this.state.uuid) return []; <-- empty array if no this.state.uuid in local storage
     return [
       {
         collection: 'users',
-        doc: `${userDoc}`
+        doc: `${props.uuid}`
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', userDoc], ['orgId', '==', props.activeOrg]]
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]]
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', userDoc],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichUser'
       },
       {
         collection: 'organisations',
-        where: ['arrayOfAdminsIds', 'array-contains', userDoc],
+        where: ['arrayOfAdminsIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichAdmin'
       }
     ];
