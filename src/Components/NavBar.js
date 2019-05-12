@@ -3,9 +3,16 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+//Import actions
+import { showModal } from '../redux/actions/actionCreators';
+
+//Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
 import { setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
+//Import icons
 import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
@@ -76,6 +83,9 @@ export class NavBar extends Component {
           </div>
         </HeaderContainer>
         <InnerContainer>
+          <Link to="/createneworganisation">
+            <button>Create new organisation</button>
+          </Link>
           <HomeContainer>
             <img src={homeIcon} alt="home icon" />
             <span onClick={this.props.resetSpace}>Home</span>
@@ -125,7 +135,8 @@ const mapStateToProps = state => {
     orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
     spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
     activeOrg: state.activeOrg.activeOrg,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
+    activeModal: state.modal.activeModal
   };
 };
 
@@ -135,7 +146,8 @@ const mapDispatchToProps = dispatch => {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
       setActiveOrg,
       switchSpaces,
-      resetSpace
+      resetSpace,
+      showModal
     },
     dispatch
   );

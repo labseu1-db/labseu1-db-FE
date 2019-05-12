@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
-import { Button, Icon, Message } from 'semantic-ui-react';
 
+//Import semantic components
+import { Button, Icon, Message } from 'semantic-ui-react';
+import Spinner from './semantic-components/Spinner';
+
+<<<<<<< HEAD
+=======
+//Import styling
+>>>>>>> 69e6b89c943f1e5422bb7b372b472ba32b7aa29d
 import { StyledButton, ForgotPasswordDiv } from './styled-components/StyledButton';
 import {
   StyledLogin,
@@ -16,10 +23,17 @@ import {
   StyledIcon
 } from './styled-components/StyledLogin';
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+<<<<<<< HEAD
 import Spinner from './semantic-components/Spinner';
+=======
+
+//Images/Icons
+import showPassword from '../images/showPassword.svg';
+
+//Animation
+>>>>>>> 69e6b89c943f1e5422bb7b372b472ba32b7aa29d
 import LoginAnimation from './animations/LoginAnimation';
 import { PasswordlessButton } from './styled-components/StyledButton';
-import showPassword from '../images/showPassword.svg';
 
 class Login extends Component {
   static propTypes = {
@@ -68,17 +82,25 @@ class Login extends Component {
 
   setUserIdInLocalStorage = email => {
     var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69e6b89c943f1e5422bb7b372b472ba32b7aa29d
     ref
       .get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           // doc.data() is never undefined for query doc snapshots
           localStorage.setItem('uuid', doc.id);
+<<<<<<< HEAD
+=======
+          localStorage.setItem('userEmail', doc.data().userEmail);
+>>>>>>> 69e6b89c943f1e5422bb7b372b472ba32b7aa29d
           localStorage.setItem('userData', JSON.stringify(doc.data()));
           // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
+
       .catch(error => {
         this.setState({ error });
       });
@@ -149,12 +171,24 @@ class Login extends Component {
           <Button
             color="google plus"
             onClick={() =>
+<<<<<<< HEAD
               this.props.firebase.login({
                 provider: 'google',
                 type: 'popup'
               })
             }
           >
+=======
+              this.props.firebase
+                .login({
+                  provider: 'google',
+                  type: 'popup'
+                })
+                .then(res => {
+                  this.setUserIdInLocalStorage(res.profile.email);
+                })
+            }>
+>>>>>>> 69e6b89c943f1e5422bb7b372b472ba32b7aa29d
             <Icon name="google plus" /> Sign in with Google
           </Button>
           <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
@@ -175,9 +209,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+  return bindActionCreators(
+    {
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+    },
+    dispatch
+  );
 };
 
 export default compose(

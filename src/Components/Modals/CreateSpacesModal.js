@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { Modal } from 'semantic-ui-react';
+
+//Import dependencies
 import styled from 'styled-components';
+import uuid from 'uuid';
+
+//Import semantic components
+import { Modal } from 'semantic-ui-react';
 
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
+//Default export
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
     { name: 'Product', color: 'eggplant' },
@@ -29,7 +35,10 @@ export default class CreateSpacesModal extends Component {
           <Modal.Content>
             <StyledModalForm>
               <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
-              <StyledModalTextInForm>Spaces are your team's virtual meeting rooms. Use them to have discussions about specific projects and broader team topics.</StyledModalTextInForm>
+              <StyledModalTextInForm>
+                Spaces are your team's virtual meeting rooms. Use them to have discussions about specific projects and
+                broader team topics.
+              </StyledModalTextInForm>
               <StyledModalLabel>
                 Choose a few spaces <span>{`${this.props.createdSpaces.length} selected`}</span>
               </StyledModalLabel>
@@ -40,7 +49,6 @@ export default class CreateSpacesModal extends Component {
                       className={`${this.props.createdSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
                       key={s.name}
                       onClick={() => {
-                        console.log(this.props.createdSpaces.indexOf(s.name));
                         this.props.addSpace(s.name);
                       }}>
                       {s.name}
@@ -49,22 +57,38 @@ export default class CreateSpacesModal extends Component {
                 })}
               </StyledModalSpacesContainer>
               <StyledModalLabel>Create a few spaces</StyledModalLabel>
-              <StyledModalTextInForm>Start with current projects, ongoning discussion topics, or anything else you would have a meeting about.</StyledModalTextInForm>
-              <StyledModalInput placeholder="ie. Products Proposals" name="addedSpace1" onChange={this.props.handleInputChange} value={this.props.addedSpace1} />
-              <StyledModalInput placeholder="ie. Design Review" name="addedSpace2" onChange={this.props.handleInputChange} value={this.props.addedSpace2} />
+              <StyledModalTextInForm>
+                Start with current projects, ongoning discussion topics, or anything else you would have a meeting
+                about.
+              </StyledModalTextInForm>
+              <StyledModalInput
+                placeholder="ie. Products Proposals"
+                name="addedSpace1"
+                onChange={this.props.handleInputChange}
+                value={this.props.addedSpace1}
+              />
+              <StyledModalInput
+                placeholder="ie. Design Review"
+                name="addedSpace2"
+                onChange={this.props.handleInputChange}
+                value={this.props.addedSpace2}
+              />
             </StyledModalForm>
           </Modal.Content>
           <Modal.Actions>
             <StyledActionButtonsContainer>
               <StyledModalButton
                 onClick={e => {
+                  let orgId = uuid();
                   e.preventDefault();
                   this.props.showModal('null');
-                  this.props.addCompanyToDatabase();
-                  this.props.addSpacesToCompanies();
-                  this.props.addSpaceFromInput1ToCompanies();
-                  this.props.addSpaceFromInput2ToCompanies();
+                  this.props.addOrganisationToDatabase(orgId);
+                  this.props.addOrganisationToUsers(orgId);
+                  this.props.addSpacesToSpacesAndUsers(orgId);
+                  this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId);
+                  this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId);
                   this.props.clearState();
+                  this.props.props.history.push('/homescreen');
                 }}>
                 Finish
               </StyledModalButton>
