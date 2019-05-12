@@ -18,12 +18,13 @@ firebase.firestore();
 
 //Connecting firestore to redux
 const enhancers = [
-	reduxFirestore(firebase),
-	//This will be used for authenticaton - users are going to be stored in the firestore database
-	reactReduxFirebase(firebase, {
-		userProfile: 'authedUsers',
-		useFirestoreForProfile: true
-	})
+  reduxFirestore(firebase),
+  //This will be used for authenticaton - users are going to be stored in the firestore database
+  reactReduxFirebase(firebase, {
+    userProfile: 'authedUsers',
+    useFirestoreForProfile: true
+  })
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ];
 
 const composedEnhancers = compose(...enhancers);

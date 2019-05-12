@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import NavBar from './NavBar';
 import styled from 'styled-components';
@@ -9,6 +9,8 @@ import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 import SpaceThreads from './SpaceThreads';
+
+import { showModal } from '../redux/actions/actionCreators';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -44,14 +46,19 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    activeModal: state.modal.activeModal,
     spaceId: state.spaceId
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
+  return bindActionCreators(
+    {
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
+      showModal
+    },
+    dispatch
+  );
 };
 
 const StyledHomeScreen = styled.div`
