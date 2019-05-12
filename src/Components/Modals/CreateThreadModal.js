@@ -89,7 +89,7 @@ class CreateThreadModal extends Component {
     console.log(this.state);
     this.props.firestore
       .set(
-        { collection: 'threadsTest', doc: this.threadId },
+        { collection: 'threads', doc: this.threadId },
         {
           threadName: this.state.threadName,
           threadTopic: this.state.threadTopic,
@@ -186,7 +186,7 @@ class CreateThreadModal extends Component {
                 Back
               </StyledBackButton>
               <StyledButton
-                disabled={!this.state.threadName.length > 0}
+                disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
                 onClick={() => {
                   this.saveEditorText();
                 }}
