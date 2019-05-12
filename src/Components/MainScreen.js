@@ -20,10 +20,6 @@ import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
 class MainScreen extends React.Component {
-  componentDidUpdate() {
-    console.log(this.props.activeOrg);
-    // console.log(this.props.threads);
-  }
   render() {
     return (
       <StyledMainScreen>
@@ -93,7 +89,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: state.activeOrg.activeOrg,
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     activeModal: state.modal.activeModal
   };
 };

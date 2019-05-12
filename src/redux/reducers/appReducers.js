@@ -9,7 +9,7 @@ export function modal(state = { activeModal: null }, action) {
   }
 }
 
-export function activeOrg(state = { activeOrg: null }, action) {
+export function activeOrg(state = { activeOrg: '' }, action) {
   switch (action.type) {
     case types.SET_ACTIVE_ORG:
       return { ...state, activeOrg: action.payload };

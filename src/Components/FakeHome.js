@@ -46,7 +46,6 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeOrg: state.activeOrg.activeOrg,
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId
   };

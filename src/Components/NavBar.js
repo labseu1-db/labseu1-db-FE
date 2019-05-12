@@ -18,11 +18,8 @@ import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
-  state = {
-    uuid: ''
-  };
-  componentWillMount() {
-    this.setState({ uuid: localStorage.getItem('uuid') });
+  componentDidUpdate() {
+    console.log(this.props.spacesForActiveOrg);
   }
 
   handleLogOut = async () => {
@@ -31,10 +28,11 @@ export class NavBar extends Component {
     localStorage.clear();
   };
 
-  setSelectedOrgToRedux = (e, data) => {
+  setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.props.setActiveOrg(value);
+    // this.props.setActiveOrg(value);
+    localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
   };
 
@@ -100,7 +98,7 @@ export class NavBar extends Component {
                     <NavBarOrgDropdown
                       setActiveOrg={this.props.setActiveOrg}
                       orgOptions={orgOptions}
-                      setSelectedOrgToRedux={this.setSelectedOrgToRedux}
+                      setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
                     />
                     //********************************************** */
                   )}
@@ -114,13 +112,20 @@ export class NavBar extends Component {
                   <div>
                     {spacesForActiveOrg.map((space, index) => (
                       <div key={index}>
-                        <span onClick={() => this.props.switchSpaces(space.id)}>{space.spaceName}</span>
+                        <span
+                          onClick={event => {
+                            event.preventDefault();
+                            this.props.switchSpaces(space.id);
+                          }}>
+                          {space.spaceName}
+                        </span>
                       </div>
                     ))}
                   </div>
                 )}
               </SpaceContainer>
             </div>
+            <button onClick={() => console.log(this.props.spacesForActiveOrg)}>ddd</button>
           </div>
         </InnerContainer>
       </NavBarContainer>
@@ -134,8 +139,8 @@ const mapStateToProps = state => {
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
     spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
-    activeOrg: state.activeOrg.activeOrg,
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     activeModal: state.modal.activeModal
   };
 };
