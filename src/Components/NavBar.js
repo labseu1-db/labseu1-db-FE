@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import { showModal } from '../redux/actions/actionCreators';
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
 import { setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
+
+import Spinner from './semantic-components/Spinner';
 
 //Import icons
 import plusIcon from '../images/icon-plus-lightgray.svg';
@@ -33,100 +35,104 @@ export class NavBar extends Component {
   };
 
   render() {
-    const activeUser = this.props.user;
-    const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
-    const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-    const orgOptions = allOrgsForUser.map(org => ({
-      key: org.orgName,
-      text: org.orgName,
-      value: `${org.id}`
-    }));
-    const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
-    const userOptions = [
-      {
-        key: activeUser.fullName,
-        text: activeUser.fullName,
-        value: activeUser.fullName
-      },
-      {
-        key: 'Log out',
-        text: 'Log out',
-        value: 'Log out'
-      }
-    ];
-    return (
-      <NavBarContainer>
-        <HeaderContainer>
-          <InnerContainerHorizontal>
-            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
-            {activeUser.fullName && (
-              <div>
-                {' '}
-                <Dropdown
-                  inline
-                  basic={true}
-                  options={userOptions}
-                  defaultValue={activeUser.fullName}
-                  onChange={this.handleLogOut}
-                />
-              </div>
-            )}
-          </InnerContainerHorizontal>
-          <div>
-            <Icon name="cog" />
-          </div>
-        </HeaderContainer>
-        <InnerContainer>
-          <Link to="/createneworganisation">
-            <button>Create new organisation</button>
-          </Link>
-          <HomeContainer>
-            <img src={homeIcon} alt="home icon" />
-            <span onClick={this.props.resetSpace}>Home</span>
-          </HomeContainer>
-
-          <div>
-            <div>
-              <OuterOrgContainer>
-                <OrgContainer>
-                  <Icon name="building outline" size="large" />
-                  {isOrgsLoaded && (
-                    <NavBarOrgDropdown
-                      setActiveOrg={this.props.setActiveOrg}
-                      orgOptions={orgOptions}
-                      setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
-                    />
-                    //********************************************** */
-                  )}
-                </OrgContainer>
+    if (!isEmpty(this.props.user)) {
+      const activeUser = this.props.user;
+      const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
+      const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
+      const orgOptions = allOrgsForUser.map(org => ({
+        key: org.orgName,
+        text: org.orgName,
+        value: `${org.id}`
+      }));
+      const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
+      const userOptions = [
+        {
+          key: activeUser.fullName,
+          text: activeUser.fullName,
+          value: activeUser.fullName
+        },
+        {
+          key: 'Log out',
+          text: 'Log out',
+          value: 'Log out'
+        }
+      ];
+      return (
+        <NavBarContainer>
+          <HeaderContainer>
+            <InnerContainerHorizontal>
+              {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
+              {activeUser.fullName && (
                 <div>
-                  <img src={plusIcon} alt="plus icon" />
+                  {' '}
+                  <Dropdown
+                    inline
+                    basic={true}
+                    options={userOptions}
+                    defaultValue={activeUser.fullName}
+                    onChange={this.handleLogOut}
+                  />
                 </div>
-              </OuterOrgContainer>
-              <SpaceContainer>
-                {spacesForActiveOrg && (
-                  <div>
-                    {spacesForActiveOrg.map((space, index) => (
-                      <div key={index}>
-                        <span
-                          onClick={event => {
-                            console.log(spacesForActiveOrg);
-                            event.preventDefault();
-                            this.props.switchSpaces(space.id);
-                          }}>
-                          {space.spaceName}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </SpaceContainer>
+              )}
+            </InnerContainerHorizontal>
+            <div>
+              <Icon name="cog" />
             </div>
-            <button onClick={() => console.log(this.props.spacesForActiveOrg)}>ddd</button>
-          </div>
-        </InnerContainer>
-      </NavBarContainer>
-    );
+          </HeaderContainer>
+          <InnerContainer>
+            <Link to="/createneworganisation">
+              <button>Create new organisation</button>
+            </Link>
+            <HomeContainer>
+              <img src={homeIcon} alt="home icon" />
+              <span onClick={this.props.resetSpace}>Home</span>
+            </HomeContainer>
+
+            <div>
+              <div>
+                <OuterOrgContainer>
+                  <OrgContainer>
+                    <Icon name="building outline" size="large" />
+                    {isOrgsLoaded && (
+                      <NavBarOrgDropdown
+                        setActiveOrg={this.props.setActiveOrg}
+                        orgOptions={orgOptions}
+                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
+                      />
+                      //********************************************** */
+                    )}
+                  </OrgContainer>
+                  <div>
+                    <img src={plusIcon} alt="plus icon" />
+                  </div>
+                </OuterOrgContainer>
+                <SpaceContainer>
+                  {spacesForActiveOrg && (
+                    <div>
+                      {spacesForActiveOrg.map((space, index) => (
+                        <div key={index}>
+                          <span
+                            onClick={event => {
+                              console.log(spacesForActiveOrg);
+                              event.preventDefault();
+                              this.props.switchSpaces(space.id);
+                            }}>
+                            {space.spaceName}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </SpaceContainer>
+              </div>
+              <button onClick={() => console.log(this.props.spacesForActiveOrg)}>ddd</button>
+            </div>
+          </InnerContainer>
+        </NavBarContainer>
+      );
+    } else {
+      return <Spinner />;
+    }
   }
 }
 
@@ -163,6 +169,12 @@ export default compose(
   ),
   firestoreConnect(props => {
     // if (!this.state.uuid) return []; <-- empty array if no this.state.uuid in local storage
+    if (!props.uuid) {
+      return [];
+    }
+    if (!props.activeOrg) {
+      return [];
+    }
     return [
       {
         collection: 'users',
@@ -171,7 +183,7 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [['arrayOfUserIdsInSpace', '==', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
