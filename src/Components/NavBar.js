@@ -16,7 +16,7 @@ import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 
 // This userDoc + activeOrg will come from local storage (set on login or org selection)
-const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
+const userDoc = 'fc7a8295-10c8-413d-b5ed-f0d6f91589a8';
 const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
 
 export class NavBar extends Component {
