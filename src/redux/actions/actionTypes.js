@@ -1,1 +1,3 @@
 export const RENDER_MODAL = 'RENDER_MODAL';
+export const SHOW_SPACES_THREADS = 'SHOW_SPACES_THREADS';
+export const RESET_SPACE = 'RESET_SPACE';

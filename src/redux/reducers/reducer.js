@@ -8,5 +8,6 @@ export const initialState = {};
 export const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
-  modal: reducers.modal
+  modal: reducers.modal,
+  spaceId: reducers.spaceId
 });
