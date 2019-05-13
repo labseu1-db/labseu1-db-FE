@@ -40,7 +40,6 @@ class MainScreen extends React.Component {
             border='none'
             onClick={(e) => {
               this.props.showModal('CreateThreadModal');
-              console.log('click to make thread');
             }}
           />
         </StyledFirstRow>

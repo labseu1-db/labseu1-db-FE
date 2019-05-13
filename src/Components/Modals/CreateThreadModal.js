@@ -140,7 +140,6 @@ class CreateThreadModal extends Component {
             fluid
             search
             selection
-            multiple
             options={spaceOptions}
             basic={true}
             onChange={this.saveSpaceToThread}
@@ -277,6 +276,7 @@ const MiniModalRight = styled.div`
   background-color: #3f3b50;
   border-radius: 15px;
   .ui.selection.dropdown {
+    color: white;
     background-color: transparent;
     border: none;
     outline: none;
@@ -302,6 +302,7 @@ const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
+  height: 100%;
 `;
 const StyledActions = styled.div`
   display: flex;
