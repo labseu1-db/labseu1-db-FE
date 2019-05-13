@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import { Icon, Dropdown } from 'semantic-ui-react';
 
 import homeIcon from '../images/icon-home-lightgray.svg';
-import CreateNewSpace from './CreateNewSpace';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 // This userDoc + activeOrg will come from local storage (set on login or org selection)
-const userDoc = '04d12a5c-aa73-4f14-a6ce-1ec6a85d78f5';
-const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
+const userDoc = '';
+const activeOrg = '';
 
 export class NavBar extends Component {
   handleLogOut = async () => {
@@ -105,7 +105,7 @@ export class NavBar extends Component {
                   )}
                   {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
-                <CreateNewSpace/>
+                <CreateNewSpaceModal/>
               </OuterOrgContainer>
               <SpaceContainer>
                 {spacesForActiveOrg && (
