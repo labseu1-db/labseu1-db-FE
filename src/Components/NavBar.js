@@ -18,10 +18,6 @@ import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
-  componentDidUpdate() {
-    console.log(this.props.spacesForActiveOrg);
-  }
-
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
@@ -114,6 +110,7 @@ export class NavBar extends Component {
                       <div key={index}>
                         <span
                           onClick={event => {
+                            console.log(spacesForActiveOrg);
                             event.preventDefault();
                             this.props.switchSpaces(space.id);
                           }}>
@@ -135,10 +132,10 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
+    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : [],
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     activeModal: state.modal.activeModal
@@ -169,11 +166,13 @@ export default compose(
     return [
       {
         collection: 'users',
-        doc: `${props.uuid}`
+        doc: `${props.uuid}`,
+        storeAs: 'filteredUser'
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]]
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
+        storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
