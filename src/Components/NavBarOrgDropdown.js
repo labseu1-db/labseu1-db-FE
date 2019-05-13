@@ -9,8 +9,8 @@ export class NavBarOrgDropdown extends Component {
         <Dropdown
           inline
           options={this.props.orgOptions}
-          // defaultValue={this.props.orgOptions[0].value}
-          defaultValue={localStorage.getItem('activeOrg')}
+          defaultValue={this.props.orgOptions[0].value}
+          // defaultValue={localStorage.getItem('activeOrg')}
           basic={true}
           onChange={this.props.setSelectedOrgToLocalStorage}
         />

@@ -20,6 +20,14 @@ import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
+  // componentWillMount() {
+  //   this.handleLogOut();
+  // }
+
+  componentDidUpdate() {
+    console.log('this.props.user', this.props.user);
+  }
+
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
@@ -34,9 +42,11 @@ export class NavBar extends Component {
     this.props.resetSpace();
   };
 
+  generateDropdownOptions = () => {};
+
   render() {
+    //&& this.props.fullName.length > 0
     if (!isEmpty(this.props.user)) {
-      const activeUser = this.props.user;
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
       const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
       const orgOptions = allOrgsForUser.map(org => ({
@@ -47,9 +57,9 @@ export class NavBar extends Component {
       const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0 || orgsFromArrayOfAdminsIds.length > 0;
       const userOptions = [
         {
-          key: activeUser.fullName,
-          text: activeUser.fullName,
-          value: activeUser.fullName
+          key: this.props.user.fullName,
+          text: this.props.user.fullName,
+          value: this.props.user.fullName
         },
         {
           key: 'Log out',
@@ -57,19 +67,22 @@ export class NavBar extends Component {
           value: 'Log out'
         }
       ];
+      console.log('org options:', orgOptions);
+
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
-              {activeUser.fullName && (
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
+              {this.props.user.fullName && (
                 <div>
                   {' '}
                   <Dropdown
                     inline
                     basic={true}
                     options={userOptions}
-                    defaultValue={activeUser.fullName}
+                    defaultValue={this.props.user.fullName}
+                    // defaultValue={'hello'}
                     onChange={this.handleLogOut}
                   />
                 </div>
@@ -116,7 +129,8 @@ export class NavBar extends Component {
                               console.log(spacesForActiveOrg);
                               event.preventDefault();
                               this.props.switchSpaces(space.id);
-                            }}>
+                            }}
+                          >
                             {space.spaceName}
                           </span>
                         </div>
@@ -144,6 +158,7 @@ const mapStateToProps = state => {
     spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
     activeModal: state.modal.activeModal
   };
 };
@@ -169,12 +184,12 @@ export default compose(
   ),
   firestoreConnect(props => {
     // if (!this.state.uuid) return []; <-- empty array if no this.state.uuid in local storage
-    if (!props.uuid) {
-      return [];
-    }
-    if (!props.activeOrg) {
-      return [];
-    }
+    // if (!props.uuid) {
+    //   return [];
+    // }
+    // if (!props.activeOrg) {
+    //   return [];
+    // }
     return [
       {
         collection: 'users',

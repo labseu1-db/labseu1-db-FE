@@ -59,7 +59,7 @@ export class HomeScreenEndpoint extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
+    user: state.firestore.ordered.homeScreenUser ? state.firestore.ordered.homeScreenUser[0] : []
   };
 };
 
@@ -76,7 +76,8 @@ export default compose(
     return [
       {
         collection: 'users',
-        doc: `${userDoc}`
+        doc: `${userDoc}`,
+        storeAs: 'homeScreenUser'
       }
     ];
   })

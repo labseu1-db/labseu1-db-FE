@@ -83,7 +83,7 @@ class Login extends Component {
           localStorage.setItem('uuid', doc.id);
           localStorage.setItem('userEmail', doc.data().userEmail);
           localStorage.setItem('userData', JSON.stringify(doc.data()));
-          // localStorage.setItem('activeOrg', doc.data().arrayOfOrgs[0].orgId);
+          localStorage.setItem('activeOrg', doc.data().arrayOfOrgs[0].orgId);
           // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
