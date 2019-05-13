@@ -12,7 +12,6 @@ import { showModal } from '../redux/actions/actionCreators';
 import { Icon, Dropdown } from 'semantic-ui-react';
 
 //Import icons
-import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
@@ -62,9 +61,12 @@ export class NavBar extends Component {
     ];
     return (
       <NavBarContainer>
+        
         <HeaderContainer>
           <InnerContainerHorizontal>
-            {activeUser.profileUrl && <StyledImage src={activeUser.profileUrl} alt="user" />}
+            {activeUser.profileUrl && (
+              <StyledImage src={activeUser.profileUrl} alt="user" />
+            )}
             {activeUser.fullName && (
               <div>
                 {' '}
@@ -110,9 +112,7 @@ export class NavBar extends Component {
                   )}
                   {/* <Icon name='chevron down' size='small' /> */}
                 </OrgContainer>
-                <div>
-                  <img src={plusIcon} alt="plus icon" />
-                </div>
+                <CreateNewSpaceModal/>               
               </OuterOrgContainer>
               <SpaceContainer>
                 {spacesForActiveOrg && (
@@ -146,8 +146,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
+      showModal,
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
-      showModal
+      
     },
     dispatch
   );
