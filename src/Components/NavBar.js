@@ -45,8 +45,7 @@ export class NavBar extends Component {
   generateDropdownOptions = () => {};
 
   render() {
-    //&& this.props.fullName.length > 0
-    if (!isEmpty(this.props.user)) {
+    if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds, orgsFromArrayOfAdminsIds } = this.props;
       const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
       const orgOptions = allOrgsForUser.map(org => ({
@@ -152,7 +151,7 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : [],
+    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
     spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
