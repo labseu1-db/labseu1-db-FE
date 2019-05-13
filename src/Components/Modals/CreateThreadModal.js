@@ -16,7 +16,7 @@ import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
 // To be changed once activeOrg can be taken from props
-const activeOrg = '335c0ccf-3ede-4527-a0bd-31e1ce09b998';
+const activeOrg = 'ef4f043d-f994-4e1f-91cb-ff8843a62d8a';
 const userDoc = window.localStorage.getItem('uuid');
 
 class CreateThreadModal extends Component {
@@ -86,7 +86,6 @@ class CreateThreadModal extends Component {
 
   threadId = uuid();
   addNewThread = () => {
-    console.log(this.state);
     this.props.firestore
       .set(
         { collection: 'threads', doc: this.threadId },
@@ -186,7 +185,7 @@ class CreateThreadModal extends Component {
                 Back
               </StyledBackButton>
               <StyledButton
-                disabled={!this.state.threadName.length > 0 && this.state.spaceId.length > 0}
+                disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
                 onClick={() => {
                   this.saveEditorText();
                 }}
@@ -205,7 +204,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    spacesForActiveOrg: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn ? state.firestore.ordered.spacesUserIsIn : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
   };
 };
@@ -222,7 +221,8 @@ export default compose(
     return [
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', userDoc ], [ 'orgId', '==', activeOrg ] ]
+        where: [ [ 'arrayOfUserIdsInSpace', '==', userDoc ], [ 'orgId', '==', activeOrg ] ],
+        storeAs: 'spacesUserIsIn'
       },
       {
         collection: 'users',
