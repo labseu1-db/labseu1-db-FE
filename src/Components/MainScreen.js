@@ -16,7 +16,7 @@ import ThreadCard from './reusable-components/ThreadCard';
 import Placeholder from './reusable-components/Placeholder';
 
 import { showModal } from '../redux/actions/actionCreators';
-import CreateThreadModal from './Modals/CreateThreadModal';
+// import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
 class MainScreen extends React.Component {
@@ -44,7 +44,6 @@ class MainScreen extends React.Component {
             image={placeholder}
           />
         )}
-        <button onClick={() => console.log(this.props.threads)}>ddddddddd</button>
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&

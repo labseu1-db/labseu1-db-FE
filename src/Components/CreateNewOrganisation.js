@@ -93,7 +93,7 @@ class CreateNewOrganisation extends Component {
         }
       )
       .then(data => {
-        console.log(data);
+        localStorage.setItem('activeOrg', orgId);
       });
   };
 

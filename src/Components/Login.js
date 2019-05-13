@@ -83,7 +83,7 @@ class Login extends Component {
           localStorage.setItem('uuid', doc.id);
           localStorage.setItem('userEmail', doc.data().userEmail);
           localStorage.setItem('userData', JSON.stringify(doc.data()));
-          localStorage.setItem('activeOrg', doc.data().arrayOfOrgs[0].orgId);
+          localStorage.setItem('activeOrg', doc.data().arrayOfOrgsIds[0]);
           // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
@@ -166,7 +166,8 @@ class Login extends Component {
                 .then(res => {
                   this.setUserIdInLocalStorage(res.profile.email);
                 })
-            }>
+            }
+          >
             <Icon name="google plus" /> Sign in with Google
           </Button>
           <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
