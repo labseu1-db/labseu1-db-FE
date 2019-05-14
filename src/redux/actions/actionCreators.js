@@ -7,6 +7,13 @@ export const showModal = modal => {
   };
 };
 
+export const setActiveOrg = orgId => {
+  return {
+    type: types.SET_ACTIVE_ORG,
+    payload: orgId
+  };
+};
+
 export const switchSpaces = spaceId => {
   return { type: types.SHOW_SPACES_THREADS, payload: spaceId };
 };

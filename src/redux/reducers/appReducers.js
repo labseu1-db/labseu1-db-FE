@@ -9,6 +9,15 @@ export function modal(state = { activeModal: null }, action) {
   }
 }
 
+export function activeOrg(state = { activeOrg: '' }, action) {
+  switch (action.type) {
+    case types.SET_ACTIVE_ORG:
+      return { ...state, activeOrg: action.payload };
+    default:
+      return state;
+  }
+}
+
 export function spaceId(state = '', action) {
   switch (action.type) {
     case types.SHOW_SPACES_THREADS:
