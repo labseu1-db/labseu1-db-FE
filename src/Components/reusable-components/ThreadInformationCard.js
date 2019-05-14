@@ -33,8 +33,8 @@ const StyledThreadContainer = styled.div`
   height: auto;
   padding: 30px;
   background-color: white;
-  border: 1px solid black;
   border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 24px 0px;
 `;
 
 const StyledTopContent = styled.div`
