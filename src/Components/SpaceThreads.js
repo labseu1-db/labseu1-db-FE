@@ -60,6 +60,7 @@ function SpaceThreads(props) {
               heading={t.threadName}
               info={t.threadTopic}
               checked="true"
+              currentSpace={props.space.spaceName}
             />
           );
         })}
