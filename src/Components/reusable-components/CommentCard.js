@@ -4,7 +4,6 @@ import styled from 'styled-components';
 //Import icons
 import heartIconBlack from '../../images/icon-heart-black.svg';
 import heartIconRed from '../../images/icon-heart-red.svg';
-import { render } from 'react-testing-library';
 
 //Main component
 export default class CommentCard extends React.Component {
@@ -23,7 +22,7 @@ export default class CommentCard extends React.Component {
     return (
       <StyledCommentContainer>
         <StyledImageContainer>
-          <img src={img} alt="authors photo" />{' '}
+          <img src={img} alt="author" />{' '}
         </StyledImageContainer>
         <StyledRightContainer>
           <StyledAuthorsName>{createdBy}</StyledAuthorsName>

@@ -1,8 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 //Main component
 export default function ThreadInformationCard(props) {
@@ -11,7 +8,7 @@ export default function ThreadInformationCard(props) {
     <StyledThreadContainer>
       <StyledTopContent>
         <StyledPhotoContainer>
-          <img src={img} alt="author photo" />
+          <img src={img} alt="author" />
         </StyledPhotoContainer>
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
