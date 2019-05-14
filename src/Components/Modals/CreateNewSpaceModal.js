@@ -8,8 +8,10 @@ import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import {
   firestoreConnect,
-  withFirestore
+  withFirestore,
+  isEmpty
 } from "react-redux-firebase";
+import Spinner from '../semantic-components/Spinner';
 import uuid from "uuid";
 import plusIcon from "../../images/icon-plus-lightgray.svg";
 
@@ -30,9 +32,16 @@ class CreateNewSpaceModal extends Component {
     };
   }
 
+  componentDidMount() {
+    this.getUserDataFromFirestore("034752c6-6d0e-4dcf-8712-cb277c411cfd")
+  }
+
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  handleSubmit = () => {
+  }
 
   handleOpen = () => {
     this.setState({ model_open: true })
@@ -50,107 +59,128 @@ class CreateNewSpaceModal extends Component {
         spaceName: this.state.spaceName,
         spaceCreatedByUserId: window.localStorage.getItem('uuid'),
         spaceTopic: this.state.spaceTopic,
-        orgId: activeOrg // harcoding for now, should get it from props in the future
+        orgId: activeOrg
       }
     );
   };
 
+  getUserDataFromFirestore = id => {
+    this.props.firestore.get({
+      collection: 'users',
+      doc: id
+    })
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          console.log("FullName:", doc.data().fullName);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+  }
+
+
   render() {
     const { organisation } = this.props;
-    const usersEmailsOptions = organisation.map(
-      (email, index) => ({
-        key: index,
-        text: email,
-        value: `${email.id}`
-      })
-    );
 
-    return (
-      <Modal
-        trigger={
-          <div>
-            <img src={plusIcon} alt="plus icon" />
-          </div>
-        }
-        open={this.state.model_open}
-        onClose={this.handleClose}
-        closeIcon
-        size="tiny"
-      >
-        <StyledContainer>
-          <Modal.Header>
+    if (isEmpty(organisation[0])) {
+      return <Spinner />;
+    } else {
+      const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) =>
+        ({
+          key: index,
+          text: id,
+          value: `${id}`
+        }))
+
+      /*
+      const userNamesOptions = forEach(users[0].fullName) {
+        console.log(fullName);
+      }
+      */
+
+      return (
+        <Modal
+          trigger={
             <div>
-              <StyledMainHeader>Create a new space</StyledMainHeader>
-              {console.log(organisation[0])}
+              <img
+                src={plusIcon}
+                alt="plus icon"
+                onClick={this.handleOpen}
+              />
             </div>
-            <div>
-              <Header as="h5">Space name</Header>
-              <StyledInput
-                name="spaceName"
-                placeholder="Product Design"
-                type="text"
-                required
-                value={this.state.spaceName}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">
-                What types of discussions happen here?
-                <StyledOptional>(Optional)</StyledOptional>
-              </Header>
-              <StyledInput
-                name="spaceTopic"
-                placeholder="Questions and thoughts about proposals"
-                type="text"
-                value={this.state.spaceTopic}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">Members</Header>
-              <Dropdown
-                placeholder="Choose people to add"
-                fluid
-                multiple
-                search
-                selection
-                options={usersEmailsOptions}
-              />
+          }
+          open={this.state.model_open}
+          size="tiny"
+        >
+          <StyledContainer>
+            <Modal.Header>
+              <div>
+                <StyledMainHeader>Create a new space</StyledMainHeader>
+                {}
+              </div>
+              <div>
+                <Header as="h5">Space name</Header>
+                <StyledInput
+                  name="spaceName"
+                  placeholder="Product Design"
+                  type="text"
+                  required
+                  value={this.state.spaceName}
+                  onChange={this.handleInputChange}
+                />
+                <Header as="h5">
+                  What types of discussions happen here?
+                  <StyledOptional>(Optional)</StyledOptional>
+                </Header>
+                <StyledInput
+                  name="spaceTopic"
+                  placeholder="Questions and thoughts about proposals"
+                  type="text"
+                  value={this.state.spaceTopic}
+                  onChange={this.handleInputChange}
+                />
+                <Header as="h5">Members</Header>
 
-              <Modal.Actions>
-                {/*  <StyledButtonCancel
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.history.push('/');
-                  }}
-                >
-                  Cancel
-                </StyledButtonCancel> */}
+                <Dropdown
+                  placeholder="Choose people to add"
+                  fluid
+                  multiple
+                  search
+                  selection
+                  options={userIdsOptions}
+                />
 
-                <StyledButtonCancel
-                  onClick={this.handleClose}
-                >
-                  Cancel
-                </StyledButtonCancel>
+                <Modal.Actions>
+                  <StyledButtonCancel onClick={this.handleClose}>
+                    Cancel
+                  </StyledButtonCancel>
 
-                <StyledButtonCreateSpace
-                  type="submit"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.addSpaceToDatabase();
-                    this.handleSubmit();
+                  <StyledButtonCreateSpace
+                    type="submit"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.addSpaceToDatabase();
+                      this.handleSubmit();
 
-                    console.log(
-                      'This space has been created:',
-                      this.state.spaceName
-                    );
-                  }}
-                >
-                  Create Space
-                </StyledButtonCreateSpace>
-              </Modal.Actions>
-            </div>
-          </Modal.Header>
-        </StyledContainer>
-      </Modal>
-    );
+                      console.log(
+                        'This space has been created:',
+                        this.state.spaceName
+                      );
+                    }}
+                  >
+                    Create Space
+                  </StyledButtonCreateSpace>
+                </Modal.Actions>
+              </div>
+            </Modal.Header>
+          </StyledContainer>
+        </Modal>
+      );
+    }
   }
 }
 
@@ -160,7 +190,8 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : []
+    organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
+    user: state.firestore.ordered.users ? state.firestore.ordered.users : []
   };
 };
 
@@ -181,6 +212,10 @@ export default compose(
         collection: 'organisations',
         doc: activeOrg,
         storeAs: 'activeOrgFromDatabase'
+      },
+      {
+        collection: 'users',
+        //   doc: `${userDoc}`
       }
     ];
   }),
