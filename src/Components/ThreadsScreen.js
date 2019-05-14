@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 //Import components
 import BackToButton from './reusable-components/BackToButton';
@@ -11,54 +9,72 @@ import CommentCard from './reusable-components/CommentCard';
 import NewCommentCard from './reusable-components/NewCommentCard';
 
 //Main component
-class ThreadsScreen extends React.Component {
+export default class ThreadsScreen extends React.Component {
   render() {
     return (
-      <div>
-        <BackToButton />
-        <ScreenHeading heading="Thread" />
-        <ThreadInformationCard
-          img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-          createdBy="Ivana Huckova"
-          createdAt="5/8 at 2:57 pm"
-          space="Product"
-          info="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
-        />
-        <CommentCard
-          img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-          createdBy="Ivana Huckova"
-          createdAt="5/8 at 2:57 pm"
-          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
-          likes={20}
-        />
-        <NewCommentCard
-          img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-          createdBy="Ivana Huckova"
-        />
-      </div>
+      <StyledEnvironmentContainer>
+        <StyledThreadScreen>
+          <StyledThreadContent>
+            <BackToButton />
+            <StyledHeadingContainer>
+              <ScreenHeading heading="Thread" />
+            </StyledHeadingContainer>
+            <ThreadInformationCard
+              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
+              createdBy="Ivana Huckova"
+              createdAt="5/8 at 2:57 pm"
+              space="Product"
+              info="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+            />
+            <CommentCard
+              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
+              createdBy="Ivana Huckova"
+              createdAt="5/8 at 2:57 pm"
+              content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+              likes={20}
+            />
+            <NewCommentCard
+              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
+              createdBy="Ivana Huckova"
+            />
+          </StyledThreadContent>
+        </StyledThreadScreen>
+      </StyledEnvironmentContainer>
     );
   }
 }
 
 //Styling
+const StyledEnvironmentContainer = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 
-//Export component wrapped in store + firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
-    activeModal: state.modal.activeModal
-  };
-};
+  margin: 0;
+`;
 
-const mapDispatchToProps = {};
+const StyledThreadScreen = styled.div`
+  width: 70%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  border: 1px solid violet;
+  background-color: #faf9f7;
+  padding: 30px 10px 10px 0;
+`;
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect()
-)(ThreadsScreen);
+const StyledThreadContent = styled.div`
+  border: 1px solid blue;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+`;
+
+const StyledHeadingContainer = styled.div`
+  margin: 40px 0 30px 0;
+`;

@@ -26,7 +26,7 @@ export default function ThreadInformationCard(props) {
 const StyledThreadContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   height: auto;
   padding: 30px;
   background-color: white;

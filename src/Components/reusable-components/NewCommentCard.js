@@ -49,8 +49,9 @@ const StyledCommentContainer = styled.div`
   justify-content: flex-start;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
+  background-color: white;
   padding: 20px;
-  width: 50%;
+  width: 100%;
   margin-top: 30px;
 `;
 
