@@ -6,22 +6,17 @@ import styled from 'styled-components';
 
 //Import components
 import BackToButton from './reusable-components/BackToButton';
-
-//Import icons
-import arrowIcon from '../images/icon-arrow-left-white.svg';
+import ScreenHeading from './reusable-components/ScreenHeading';
+import ThreadInformationCard from './reusable-components/ThreadInformationCard';
 
 //Main component
 class ThreadsScreen extends React.Component {
   render() {
     return (
       <div>
-        <BackToButton
-          backgroundColor="white"
-          border="1px solid #BDC3C9"
-          content="Back to space"
-          icon={arrowIcon}
-          color="#3D4856"
-        />
+        <BackToButton />
+        <ScreenHeading heading="Thread" />
+        <ThreadInformationCard />
       </div>
     );
   }
