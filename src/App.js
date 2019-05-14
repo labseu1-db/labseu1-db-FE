@@ -11,6 +11,7 @@ import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
 import CreateNewOrganisation from './Components/CreateNewOrganisation';
+import ThreadsScreen from './Components/ThreadsScreen';
 
 class App extends Component {
   render() {
@@ -23,6 +24,7 @@ class App extends Component {
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
         <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
         <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
+        <Route exact path="/threads" render={props => <ThreadsScreen {...props} />} />
       </div>
     );
   }
