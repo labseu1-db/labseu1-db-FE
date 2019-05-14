@@ -1,30 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 import penIconWhite from '../images/icon-pen-white.svg';
+
+import { showModal } from '../redux/actions/actionCreators';
 
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
+import CreateThreadModal from './Modals/CreateThreadModal';
 
 function SpaceThreads(props) {
   return (
     <StyledMainScreen>
+      {props.activeModal === 'CreateThreadModal' && (
+        <CreateThreadModal shoudlBeOpen={true} showModal={props.showModal} activeModal={props.activeModal} />
+      )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <ScreenButton
-          content='Start a thread'
+          content="Start a thread"
           icon={penIconWhite}
-          backgroundColor='#5C4DF2'
-          color='white'
-          border='none'
+          backgroundColor="#5C4DF2"
+          color="white"
+          border="none"
+          onClick={e => {
+            props.showModal('CreateThreadModal');
+          }}
         />
       </StyledFirstRow>
-      <ScreenSectionHeading heading='Recent' />
+      <ScreenSectionHeading heading="Recent" />
 
       {/* If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS
       {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
@@ -39,7 +48,7 @@ function SpaceThreads(props) {
       {/*Loop trough all the threads that are associated with the orgId*/}
       {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
       {props.threads.length > 0 &&
-        props.threads.map((t) => {
+        props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
           let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
@@ -51,7 +60,7 @@ function SpaceThreads(props) {
               threadId={t.id}
               heading={t.threadName}
               info={t.threadTopic}
-              checked='true'
+              checked="true"
             />
           );
         })}
@@ -72,25 +81,31 @@ const StyledFirstRow = styled.div`
   margin-bottom: 5vh;
 `;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
     space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
-    spaceId: state.spaceId
+    spaceId: state.spaceId,
+    activeModal: state.modal.activeModal
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ showModal }, dispatch);
+};
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'threads',
-        where: [ 'spaceId', '==', props.spaceId ]
+        where: ['spaceId', '==', props.spaceId]
       },
       {
         collection: 'spaces',

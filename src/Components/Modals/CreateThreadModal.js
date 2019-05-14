@@ -15,10 +15,6 @@ import codeIcon from '../../images/icon-code-white.svg';
 import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
-// To be changed once activeOrg can be taken from props
-const activeOrg = 'ef4f043d-f994-4e1f-91cb-ff8843a62d8a';
-const userDoc = window.localStorage.getItem('uuid');
-
 class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
@@ -29,11 +25,13 @@ class CreateThreadModal extends Component {
       spaceId: '',
       threadCreatedByUserName: ''
     };
-    this.onChange = (editorState) => {
+    this.onChange = editorState => {
       this.setState({ editorState });
     };
     this.focus = () => this.refs.editor.focus();
   }
+
+  componentWillMount() {}
 
   saveEditorText = () => {
     let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
@@ -46,7 +44,7 @@ class CreateThreadModal extends Component {
     this.setState({ spaceId: value });
   };
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -59,7 +57,7 @@ class CreateThreadModal extends Component {
     }
   };
 
-  handleKeyCommand = (command) => {
+  handleKeyCommand = command => {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -96,11 +94,11 @@ class CreateThreadModal extends Component {
           threadCreatedByUserName: this.props.user.fullName,
           threadCreatedAt: Date.now(),
           spaceId: this.state.spaceId,
-          orgId: activeOrg
+          orgId: this.props.activeOrg
         }
       )
       .then(() => this.props.showModal(null))
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
   close = () => this.setState({ open: false });
 
@@ -113,31 +111,31 @@ class CreateThreadModal extends Component {
     }));
 
     return (
-      <Modal open={this.props.shoudlBeOpen} size='small'>
-        <MiniModalLeft id='miniModal'>
+      <Modal open={this.props.shoudlBeOpen} size="small">
+        <MiniModalLeft id="miniModal">
           <StyledContainerTitles>Text Styling</StyledContainerTitles>
           <TextStylingContainer>
             <TextStylingButtons onClick={this.onBoldClick}>
-              <TextStylingIcon src={boldIcon} alt='bold' />
+              <TextStylingIcon src={boldIcon} alt="bold" />
               <p>Bold</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onItalicClick}>
-              <TextStylingIcon src={italicIcon} alt='italic' />
+              <TextStylingIcon src={italicIcon} alt="italic" />
               <p>Italic</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onUnderlineClick}>
-              <TextStylingIcon src={underlineIcon} alt='underline' />
+              <TextStylingIcon src={underlineIcon} alt="underline" />
               <p>Underline</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onCodeClick}>
-              <TextStylingIcon src={codeIcon} alt='code' />
+              <TextStylingIcon src={codeIcon} alt="code" />
               <p>Code</p>
             </TextStylingButtons>
           </TextStylingContainer>
         </MiniModalLeft>
         <MiniModalRight>
           <Dropdown
-            placeholder='Add a Space'
+            placeholder="Add a Space"
             fluid
             search
             selection
@@ -149,22 +147,22 @@ class CreateThreadModal extends Component {
         <Modal.Content>
           <StyledInputsContainer>
             <StyledTitleInput
-              name='threadName'
-              type='text'
-              placeholder='Create a title'
+              name="threadName"
+              type="text"
+              placeholder="Create a title"
               required
               onChange={this.handleInputChange}
             />
             <StyledThreadInput onClick={this.focus}>
               <Editor
-                name='threadTopic'
-                type='text'
-                placeholder='What would you like to discuss with your teammates?'
+                name="threadTopic"
+                type="text"
+                placeholder="What would you like to discuss with your teammates?"
                 required
                 onChange={this.onChange}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
-                ref='editor'
+                ref="editor"
               />
             </StyledThreadInput>
           </StyledInputsContainer>
@@ -173,11 +171,11 @@ class CreateThreadModal extends Component {
         <Modal.Actions>
           <StyledActions>
             <StyledIconButton onClick={this.toggleMiniMondal}>
-              <CursonImg src={textCursor} alt='cursor' />
+              <CursonImg src={textCursor} alt="cursor" />
             </StyledIconButton>
             <div>
               <StyledBackButton
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   this.props.showModal(null);
                 }}
@@ -199,34 +197,39 @@ class CreateThreadModal extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
     spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn ? state.firestore.ordered.spacesUserIsIn : [],
-    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : []
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', '==', userDoc ], [ 'orgId', '==', activeOrg ] ],
+        where: [['arrayOfUserIdsInSpace', '==', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'spacesUserIsIn'
       },
       {
         collection: 'users',
-        doc: `${userDoc}`
+        doc: `${props.uuid}`
       }
     ];
   })

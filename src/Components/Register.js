@@ -182,7 +182,8 @@ class Register extends Component {
                 .catch(error => {
                   console.log(error);
                 });
-            }}>
+            }}
+          >
             <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
