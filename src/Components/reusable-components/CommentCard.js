@@ -4,27 +4,44 @@ import styled from 'styled-components';
 //Import icons
 import heartIconBlack from '../../images/icon-heart-black.svg';
 import heartIconRed from '../../images/icon-heart-red.svg';
+import { render } from 'react-testing-library';
 
 //Main component
-export default function CommentCard(props) {
-  const { img, createdBy, likes, content, didUserLikeComment } = props;
-  return (
-    <StyledCommentContainer>
-      <StyledImageContainer>
-        <img src={img} alt="authors photo" />{' '}
-      </StyledImageContainer>
-      <StyledRightContainer>
-        <StyledAuthorsName>{createdBy}</StyledAuthorsName>
-        <StyledContent>{content}</StyledContent>
-        <StyledLikesContainer>
-          {!didUserLikeComment && <img src={heartIconBlack} alt="heart icon" />}
-          {!didUserLikeComment && <div className="black-likes">{likes}</div>}
-          {didUserLikeComment && <img src={heartIconRed} alt="heart icon" />}
-          {didUserLikeComment && <div className="red-likes">{likes}</div>}
-        </StyledLikesContainer>
-      </StyledRightContainer>
-    </StyledCommentContainer>
-  );
+export default class CommentCard extends React.Component {
+  state = {
+    didUserLikeComment: false
+  };
+
+  toggleLikePhoto = () => {
+    this.setState(prevState => ({
+      didUserLikeComment: !prevState.didUserLikeComment
+    }));
+  };
+
+  render() {
+    const { img, createdBy, likes, content } = this.props;
+    return (
+      <StyledCommentContainer>
+        <StyledImageContainer>
+          <img src={img} alt="authors photo" />{' '}
+        </StyledImageContainer>
+        <StyledRightContainer>
+          <StyledAuthorsName>{createdBy}</StyledAuthorsName>
+          <StyledContent>{content}</StyledContent>
+          <StyledLikesContainer>
+            {!this.state.didUserLikeComment && (
+              <img src={heartIconBlack} alt="heart icon" onClick={() => this.toggleLikePhoto()} />
+            )}
+            {!this.state.didUserLikeComment && <div className="black-likes">{likes}</div>}
+            {this.state.didUserLikeComment && (
+              <img src={heartIconRed} alt="heart icon" onClick={() => this.toggleLikePhoto()} />
+            )}
+            {this.state.didUserLikeComment && <div className="red-likes">{likes + 1}</div>}
+          </StyledLikesContainer>
+        </StyledRightContainer>
+      </StyledCommentContainer>
+    );
+  }
 }
 
 //Styling
