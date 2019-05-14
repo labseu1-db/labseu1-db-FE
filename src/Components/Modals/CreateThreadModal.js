@@ -102,6 +102,7 @@ class CreateThreadModal extends Component {
       .then(() => this.props.showModal(null))
       .catch((err) => console.log(err));
   };
+  close = () => this.setState({ open: false });
 
   render() {
     const { spacesForActiveOrg } = this.props;
@@ -302,7 +303,7 @@ const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
-  height: 100%;
+  height: 440px;
 `;
 const StyledActions = styled.div`
   display: flex;
