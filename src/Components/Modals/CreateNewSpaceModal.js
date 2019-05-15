@@ -13,8 +13,6 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-const activeOrg = '0016571a-0b11-40f3-9c5c-cb7117f00f71';
-
 class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +43,7 @@ class CreateNewSpaceModal extends Component {
         spaceName: this.state.spaceName,
         spaceCreatedByUserId: window.localStorage.getItem('uuid'),
         spaceTopic: this.state.spaceTopic,
-        orgId: activeOrg,
+        orgId: this.props.activeOrg,
         arrayOfUserIdsInSpace: this.state.idsInSpace
       }
     );
@@ -60,7 +58,7 @@ class CreateNewSpaceModal extends Component {
   render() {
     const { organisation } = this.props;
 
-    if (isEmpty(organisation[0])) {
+    if (isEmpty(organisation)) {
       return <Spinner />;
     } else {
       const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) => ({
@@ -124,8 +122,6 @@ class CreateNewSpaceModal extends Component {
                       onClick={(e) => {
                         e.preventDefault();
                         this.addSpaceToDatabase();
-
-                        console.log('This space has been created:', this.state.spaceName);
                       }}
                     >
                       Create Space
@@ -147,6 +143,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : []
   };
@@ -163,7 +160,7 @@ export default compose(
     return [
       {
         collection: 'organisations',
-        doc: activeOrg,
+        doc: `${props.activeOrg}`,
         storeAs: 'activeOrgFromDatabase'
       }
     ];

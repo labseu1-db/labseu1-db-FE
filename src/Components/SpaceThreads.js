@@ -1,19 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 import penIconWhite from '../images/icon-pen-white.svg';
+
+import { showModal } from '../redux/actions/actionCreators';
 
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
+import CreateThreadModal from './Modals/CreateThreadModal';
 
 function SpaceThreads(props) {
   return (
     <StyledMainScreen>
+      {props.activeModal === 'CreateThreadModal' && (
+        <CreateThreadModal shoudlBeOpen={true} showModal={props.showModal} activeModal={props.activeModal} />
+      )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <ScreenButton
@@ -22,6 +28,9 @@ function SpaceThreads(props) {
           backgroundColor="#5C4DF2"
           color="white"
           border="none"
+          onClick={e => {
+            props.showModal('CreateThreadModal');
+          }}
         />
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
@@ -37,11 +46,10 @@ function SpaceThreads(props) {
       )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
-      {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
       {props.threads.length > 0 &&
         props.threads.map(t => {
-          let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
-          let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          let dateInfo = new Date(t.threadCreatedAt);
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
             <ThreadCard
               key={t.id}
@@ -52,6 +60,7 @@ function SpaceThreads(props) {
               heading={t.threadName}
               info={t.threadTopic}
               checked="true"
+              currentSpace={props.space.spaceName}
             />
           );
         })}
@@ -78,11 +87,14 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
     space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
-    spaceId: state.spaceId
+    spaceId: state.spaceId,
+    activeModal: state.modal.activeModal
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ showModal }, dispatch);
+};
 
 export default compose(
   connect(

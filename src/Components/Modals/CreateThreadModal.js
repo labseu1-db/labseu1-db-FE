@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+
 import { Modal, Dropdown } from 'semantic-ui-react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import uuid from 'uuid';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
 
@@ -10,15 +15,36 @@ import codeIcon from '../../images/icon-code-white.svg';
 import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
-export default class CreateThreadModal extends Component {
+class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty(), threadTitle: '' };
-    this.onChange = (editorState) => this.setState({ editorState });
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      threadName: '',
+      threadTopic: '',
+      spaceId: '',
+      threadCreatedByUserName: ''
+    };
+    this.onChange = editorState => {
+      this.setState({ editorState });
+    };
     this.focus = () => this.refs.editor.focus();
   }
 
-  handleInputChange = (e) => {
+  componentWillMount() {}
+
+  saveEditorText = () => {
+    let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
+    this.setState({ threadTopic: rawDraftContentState.blocks[0].text }, () => this.addNewThread());
+  };
+
+  saveSpaceToThread = (e, data) => {
+    e.preventDefault();
+    const { value } = data;
+    this.setState({ spaceId: value });
+  };
+
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -31,7 +57,7 @@ export default class CreateThreadModal extends Component {
     }
   };
 
-  handleKeyCommand = (command) => {
+  handleKeyCommand = command => {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
       this.onChange(newState);
@@ -56,59 +82,87 @@ export default class CreateThreadModal extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CODE'));
   };
 
+  threadId = uuid();
+  addNewThread = () => {
+    this.props.firestore
+      .set(
+        { collection: 'threads', doc: this.threadId },
+        {
+          threadName: this.state.threadName,
+          threadTopic: this.state.threadTopic,
+          threadCreatedByUserId: window.localStorage.getItem('uuid'),
+          threadCreatedByUserName: this.props.user.fullName,
+          threadCreatedAt: Date.now(),
+          spaceId: this.state.spaceId,
+          orgId: this.props.activeOrg
+        }
+      )
+      .then(() => this.props.showModal(null))
+      .catch(err => console.log(err));
+  };
+  close = () => this.setState({ open: false });
+
   render() {
+    const { spacesForActiveOrg } = this.props;
+    const spaceOptions = spacesForActiveOrg.map((space, index) => ({
+      key: index,
+      text: space.spaceName,
+      value: `${space.id}`
+    }));
+
     return (
-      <Modal open={this.props.shoudlBeOpen} size='small'>
-        <MiniModalLeft id='miniModal'>
+      <Modal open={this.props.shoudlBeOpen} size="small">
+        <MiniModalLeft id="miniModal">
           <StyledContainerTitles>Text Styling</StyledContainerTitles>
           <TextStylingContainer>
             <TextStylingButtons onClick={this.onBoldClick}>
-              <TextStylingIcon src={boldIcon} alt='bold' />
+              <TextStylingIcon src={boldIcon} alt="bold" />
               <p>Bold</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onItalicClick}>
-              <TextStylingIcon src={italicIcon} alt='italic' />
+              <TextStylingIcon src={italicIcon} alt="italic" />
               <p>Italic</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onUnderlineClick}>
-              <TextStylingIcon src={underlineIcon} alt='underline' />
+              <TextStylingIcon src={underlineIcon} alt="underline" />
               <p>Underline</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onCodeClick}>
-              <TextStylingIcon src={codeIcon} alt='code' />
+              <TextStylingIcon src={codeIcon} alt="code" />
               <p>Code</p>
             </TextStylingButtons>
           </TextStylingContainer>
         </MiniModalLeft>
         <MiniModalRight>
           <Dropdown
-            placeholder='Add a Space'
+            placeholder="Add a Space"
             fluid
-            multiple
             search
             selection
-            options={[ { key: 'One', text: 'One', value: 'One' }, { key: 'Two', text: 'Two', value: 'Two' } ]}
+            options={spaceOptions}
+            basic={true}
+            onChange={this.saveSpaceToThread}
           />
         </MiniModalRight>
         <Modal.Content>
           <StyledInputsContainer>
             <StyledTitleInput
-              name='threadTitle'
-              type='text'
-              placeholder='Create a title'
+              name="threadName"
+              type="text"
+              placeholder="Create a title"
               required
               onChange={this.handleInputChange}
             />
             <StyledThreadInput onClick={this.focus}>
               <Editor
-                name='threadTitle'
-                type='text'
-                placeholder='What would you like to discuss with your teammates?'
+                name="threadTopic"
+                type="text"
+                placeholder="What would you like to discuss with your teammates?"
                 required
                 onChange={this.onChange}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
-                ref='editor'
+                ref="editor"
               />
             </StyledThreadInput>
           </StyledInputsContainer>
@@ -117,18 +171,25 @@ export default class CreateThreadModal extends Component {
         <Modal.Actions>
           <StyledActions>
             <StyledIconButton onClick={this.toggleMiniMondal}>
-              <CursonImg src={textCursor} alt='cursor' />
+              <CursonImg src={textCursor} alt="cursor" />
             </StyledIconButton>
             <div>
               <StyledBackButton
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   this.props.showModal(null);
                 }}
               >
                 Back
               </StyledBackButton>
-              <StyledButton disabled={!this.state.threadTitle.length > 0}>Post</StyledButton>
+              <StyledButton
+                disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
+                onClick={() => {
+                  this.saveEditorText();
+                }}
+              >
+                Post
+              </StyledButton>
             </div>
           </StyledActions>
         </Modal.Actions>
@@ -136,6 +197,43 @@ export default class CreateThreadModal extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    activeModal: state.modal.activeModal,
+    spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn ? state.firestore.ordered.spacesUserIsIn : [],
+    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+  };
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'spaces',
+        where: [['arrayOfUserIdsInSpace', '==', props.uuid], ['orgId', '==', props.activeOrg]],
+        storeAs: 'spacesUserIsIn'
+      },
+      {
+        collection: 'users',
+        doc: `${props.uuid}`
+      }
+    ];
+  })
+)(CreateThreadModal);
 
 const MiniModalLeft = styled.div`
   display: none;
@@ -182,6 +280,7 @@ const MiniModalRight = styled.div`
   background-color: #3f3b50;
   border-radius: 15px;
   .ui.selection.dropdown {
+    color: white;
     background-color: transparent;
     border: none;
     outline: none;
@@ -207,6 +306,7 @@ const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
+  height: 440px;
 `;
 const StyledActions = styled.div`
   display: flex;

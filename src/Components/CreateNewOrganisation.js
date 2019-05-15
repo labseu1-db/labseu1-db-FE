@@ -79,18 +79,22 @@ class CreateNewOrganisation extends Component {
     let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
 
     //aave all collected data about organisation in firestore
-    this.props.firestore.set(
-      { collection: 'organisations', doc: orgId },
-      {
-        orgName: this.state.orgName,
-        isPremium: false,
-        createdByUserId: localStorage.getItem('uuid'),
-        arrayOfUsersEmails: usersAndAdminsEmails,
-        arrayOfUsersIds: localStorage.getItem('uuid'),
-        arrayOfAdminsEmails: localStorage.getItem('userEmail'),
-        arrayOfAdminsIds: localStorage.getItem('uuid')
-      }
-    );
+    this.props.firestore
+      .set(
+        { collection: 'organisations', doc: orgId },
+        {
+          orgName: this.state.orgName,
+          isPremium: false,
+          createdByUserId: localStorage.getItem('uuid'),
+          arrayOfUsersEmails: usersAndAdminsEmails,
+          arrayOfUsersIds: localStorage.getItem('uuid'),
+          arrayOfAdminsEmails: localStorage.getItem('userEmail'),
+          arrayOfAdminsIds: localStorage.getItem('uuid')
+        }
+      )
+      .then(data => {
+        localStorage.setItem('activeOrg', orgId);
+      });
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
