@@ -1,27 +1,19 @@
-import React, { Component } from "react";
-import {
-  Header,
-  Modal,
-  Dropdown
-} from "semantic-ui-react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import {
-  firestoreConnect,
-  withFirestore,
-  isEmpty
-} from "react-redux-firebase";
+import React, { Component } from 'react';
+import { Header, Modal, Dropdown } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, withFirestore, isEmpty } from 'react-redux-firebase';
 import Spinner from '../semantic-components/Spinner';
-import uuid from "uuid";
-import plusIcon from "../../images/icon-plus-lightgray.svg";
+import uuid from 'uuid';
+import plusIcon from '../../images/icon-plus-lightgray.svg';
 
 //Redux action
-import { showModal } from "../../redux/actions/actionCreators";
+import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const activeOrg = '995fc6d6-eeaa-4880-9606-f33e98ad720e'
+const activeOrg = '0016571a-0b11-40f3-9c5c-cb7117f00f71';
 
 class CreateNewSpaceModal extends Component {
   constructor(props) {
@@ -29,27 +21,21 @@ class CreateNewSpaceModal extends Component {
     this.state = {
       spaceName: '',
       spaceTopic: '',
+      fullNameWithId: []
     };
   }
 
-  componentDidMount() {
-    this.getUserDataFromFirestore("034752c6-6d0e-4dcf-8712-cb277c411cfd")
-  }
-
-  handleInputChange = e => {
+  handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleSubmit = () => {
-  }
-
   handleOpen = () => {
-    this.setState({ model_open: true })
-  }
+    this.setState({ model_open: true });
+  };
 
   handleClose = () => {
-    this.setState({ model_open: false })
-  }
+    this.setState({ model_open: false });
+  };
 
   spaceId = uuid();
   addSpaceToDatabase = () => {
@@ -64,58 +50,81 @@ class CreateNewSpaceModal extends Component {
     );
   };
 
-  getUserDataFromFirestore = id => {
-    this.props.firestore.get({
-      collection: 'users',
-      doc: id
-    })
-      .then(function (doc) {
+  getUserDataFromFirestore = (id) => {
+    return this.props.firestore
+      .get({
+        collection: 'users',
+        doc: id
+      })
+      .then(function(doc) {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
-          console.log("FullName:", doc.data().fullName);
+          //console.log('Document data:', doc.data());
+          const fullNameFromDb = doc.data().fullName;
+          console.log('FullName:', fullNameFromDb);
+          return fullNameFromDb;
         } else {
           // doc.data() will be undefined in this case
-          console.log("No such document!");
+          console.log('No such document!');
+          return 'No such document';
         }
-      }).catch(function (error) {
-        console.log("Error getting document:", error);
+      })
+      .catch(function(error) {
+        console.log('Error getting document:', error);
       });
-  }
+  };
 
+  loopOverTheIdsToGetNames = (ids) => {
+    let emptyArray = [];
+    for (let i = 0; i < ids.length; i++) {
+      let fullName = '';
+      this.getUserDataFromFirestore(ids[i]).then((res) => {
+        console.log('fullname', res);
+        const nameAndId = {
+          fullName: fullName,
+          id: ids[i]
+        };
+        emptyArray.push(nameAndId);
+
+        console.log('ids[]', ids[i]);
+        console.log(ids.length);
+      });
+    }
+    this.setState({ fullNameWithId: [ ...emptyArray ] });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps, prevState);
+    console.log(prevProps.organisation.length, prevState.fullNameWithId.length);
+    if (prevProps.organisation.length !== 0 && prevState.fullNameWithId.length === 0) {
+      const userIdOnOrg = prevProps.organisation[0].arrayOfUsersIds;
+      this.loopOverTheIdsToGetNames(userIdOnOrg);
+      console.log('componentdidupdate');
+    }
+  }
 
   render() {
     const { organisation } = this.props;
 
-    if (isEmpty(organisation[0])) {
+    if (isEmpty(organisation[0]) || this.state.fullNameWithId === []) {
       return <Spinner />;
     } else {
-      const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) =>
-        ({
-          key: index,
-          text: id,
-          value: `${id}`
-        }))
-
-      /*
-      const userNamesOptions = forEach(users[0].fullName) {
-        console.log(fullName);
-      }
-      */
+      const userIdsOptions = this.state.fullNameWithId.map((user, index) => ({
+        key: index,
+        text: user.fullName,
+        value: `${user.fullName}`
+      }));
 
       return (
         <Modal
           trigger={
             <div>
-              <img
-                src={plusIcon}
-                alt="plus icon"
-                onClick={this.handleOpen}
-              />
+              <img src={plusIcon} alt='plus icon' onClick={this.handleOpen} />
             </div>
           }
           open={this.state.model_open}
-          size="tiny"
+          size='tiny'
         >
+          {console.log(userIdsOptions, this.state)}
           <StyledContainer>
             <Modal.Header>
               <div>
@@ -123,53 +132,41 @@ class CreateNewSpaceModal extends Component {
                 {}
               </div>
               <div>
-                <Header as="h5">Space name</Header>
+                <Header as='h5'>Space name</Header>
                 <StyledInput
-                  name="spaceName"
-                  placeholder="Product Design"
-                  type="text"
+                  name='spaceName'
+                  placeholder='Product Design'
+                  type='text'
                   required
                   value={this.state.spaceName}
                   onChange={this.handleInputChange}
                 />
-                <Header as="h5">
+                <Header as='h5'>
                   What types of discussions happen here?
                   <StyledOptional>(Optional)</StyledOptional>
                 </Header>
                 <StyledInput
-                  name="spaceTopic"
-                  placeholder="Questions and thoughts about proposals"
-                  type="text"
+                  name='spaceTopic'
+                  placeholder='Questions and thoughts about proposals'
+                  type='text'
                   value={this.state.spaceTopic}
                   onChange={this.handleInputChange}
                 />
-                <Header as="h5">Members</Header>
+                <Header as='h5'>Members</Header>
 
-                <Dropdown
-                  placeholder="Choose people to add"
-                  fluid
-                  multiple
-                  search
-                  selection
-                  options={userIdsOptions}
-                />
+                <Dropdown placeholder='Choose people to add' fluid multiple search selection options={userIdsOptions} />
 
                 <Modal.Actions>
-                  <StyledButtonCancel onClick={this.handleClose}>
-                    Cancel
-                  </StyledButtonCancel>
+                  <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
 
                   <StyledButtonCreateSpace
-                    type="submit"
-                    onClick={e => {
+                    type='submit'
+                    onClick={(e) => {
                       e.preventDefault();
                       this.addSpaceToDatabase();
                       this.handleSubmit();
 
-                      console.log(
-                        'This space has been created:',
-                        this.state.spaceName
-                      );
+                      console.log('This space has been created:', this.state.spaceName);
                     }}
                   >
                     Create Space
@@ -185,7 +182,7 @@ class CreateNewSpaceModal extends Component {
 }
 
 //Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -195,17 +192,13 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
-
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect((props) => {
     return [
       {
@@ -214,7 +207,7 @@ export default compose(
         storeAs: 'activeOrgFromDatabase'
       },
       {
-        collection: 'users',
+        collection: 'users'
         //   doc: `${userDoc}`
       }
     ];
