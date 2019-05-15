@@ -63,9 +63,9 @@ export class NavBar extends Component {
           value: this.props.user.fullName
         },
         {
-          key: 'Create new Org',
-          text: 'Create new Org',
-          value: 'Create new Org'
+          key: 'Create Organisation',
+          text: 'Create Organisation',
+          value: 'Create Organisation'
         },
         {
           key: 'Log out',
@@ -73,7 +73,7 @@ export class NavBar extends Component {
           value: 'Log out'
         }
       ];
-      if (this.state.profileDropdown === 'Create new Org') {
+      if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
       }
       return (
