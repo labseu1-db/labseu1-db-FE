@@ -8,6 +8,9 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import heartIconBlack from '../../images/icon-heart-black.svg';
 import heartIconRed from '../../images/icon-heart-red.svg';
 
+//Semantic components
+import { Dropdown } from 'semantic-ui-react';
+
 //Main component
 export class CommentCard extends React.Component {
   state = {
@@ -24,6 +27,21 @@ export class CommentCard extends React.Component {
     const { img, createdBy, content, commentId, likes } = this.props;
     return (
       <StyledCommentContainer>
+        <Dropdown text="🔧" className="settings">
+          <Dropdown.Menu>
+            <Dropdown.Item text="New" />
+            <Dropdown.Item text="Open..." description="ctrl + o" />
+            <Dropdown.Item text="Save as..." description="ctrl + s" />
+            <Dropdown.Item text="Rename" description="ctrl + r" />
+            <Dropdown.Item text="Make a copy" />
+            <Dropdown.Item icon="folder" text="Move to folder" />
+            <Dropdown.Item icon="trash" text="Move to trash" />
+            <Dropdown.Divider />
+            <Dropdown.Item text="Download As..." />
+            <Dropdown.Item text="Publish To Web" />
+            <Dropdown.Item text="E-mail Collaborators" />
+          </Dropdown.Menu>
+        </Dropdown>
         <StyledImageContainer>
           <img src={img} alt="author" />
           {/* <div className="initials">{createdBy[0]}</div> */}
@@ -70,6 +88,7 @@ export class CommentCard extends React.Component {
 //Styling
 const StyledCommentContainer = styled.div`
   display: flex;
+  position: relative;
   justify-content: flex-start;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
@@ -77,6 +96,14 @@ const StyledCommentContainer = styled.div`
   padding: 20px;
   width: 100%;
   margin-top: 30px;
+  .settings .ui .dropdown {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
 `;
 const StyledImageContainer = styled.div`
   width: 35px;

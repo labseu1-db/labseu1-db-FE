@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons
 import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
@@ -7,11 +10,12 @@ import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
 //Main component
 function ThreadRightComponent(props) {
   const { numberOfComments } = props;
+  console.log(props.comments);
   return (
     <StyledRightContainer>
       <div className="row-with-image">
         <img src={messageIconDarkgray} alt="message icon" />
-        <div>{numberOfComments}</div>
+        <div>{props.comments.length}</div>
       </div>
     </StyledRightContainer>
   );
@@ -35,4 +39,27 @@ const StyledRightContainer = styled.div`
 `;
 
 //Default export
-export default ThreadRightComponent;
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'comments',
+        where: [['threadId', '==', props.threadId]]
+      }
+    ];
+  })
+)(ThreadRightComponent);

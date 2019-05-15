@@ -12,15 +12,14 @@ import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, heading, info, checked, onClick, currentSpace } = props;
+  const { createdBy, createdAt, heading, info, checked, threadId, onClick, currentSpace } = props;
   return (
     <div>
-      {/* {console.log(props.activeSpace)} */}
       <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={currentSpace} checked={checked} />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightComponent numberOfComments={props.activeComments.length} />
+        <ThreadRightComponent threadId={threadId} />
       </StyledThreadContainer>
     </div>
   );
@@ -68,7 +67,7 @@ export default compose(
       },
       {
         collection: 'comments',
-        where: [['threaId', '==', `${props.threadId}`]]
+        where: [['threadId', '==', props.threadId]]
       }
     ];
   })
