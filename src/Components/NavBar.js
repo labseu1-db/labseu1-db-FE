@@ -112,7 +112,13 @@ export class NavBar extends Component {
           <InnerContainer>
             <HomeContainer>
               <img src={homeIcon} alt="home icon" />
-              <span onClick={this.props.resetSpace}>Home</span>
+              <span
+                onClick={() => {
+                  this.props.resetSpace();
+                  this.props.showModal(null);
+                }}>
+                Home
+              </span>
             </HomeContainer>
 
             <div>

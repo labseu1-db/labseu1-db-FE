@@ -17,10 +17,14 @@ import Placeholder from './reusable-components/Placeholder';
 
 import { showModal } from '../redux/actions/actionCreators';
 import CreateThreadModal from './Modals/CreateThreadModal';
+import UserProfile from './UserProfile';
 
 //Main component
 class MainScreen extends React.Component {
   render() {
+    if (this.props.activeModal === 'Profile') {
+      return <UserProfile />;
+    }
     return (
       <StyledMainScreen>
         {this.props.activeModal === 'CreateThreadModal' && (

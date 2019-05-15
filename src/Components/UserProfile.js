@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { setActiveOrg, switchSpaces, resetSpace, showModal } from '../redux/actions/actionCreators';
+import { showModal } from '../redux/actions/actionCreators';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import styled from 'styled-components';
+import ProfileCard from './reusable-components/ProfileCard';
 
 class UserProfile extends Component {
   render() {
     return (
-      <div>
-        <p>Hello</p>
-      </div>
+      <StyledMainScreen>
+        <ProfileCard />
+      </StyledMainScreen>
     );
   }
 }
@@ -47,4 +49,10 @@ export default compose(
       }
     ];
   })
-)(SpaceThreads);
+)(UserProfile);
+
+const StyledMainScreen = styled.div`
+  background-color: #faf9f7;
+  min-height: 100vh;
+  padding: 10vh 5%;
+`;
