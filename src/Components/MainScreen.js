@@ -119,7 +119,7 @@ export default compose(
       {
         collection: 'threads',
         where: [['orgId', '==', props.activeOrg]],
-        orderBy: ['threadCreatedAt', 'asc']
+        orderBy: ['threadCreatedAt', 'desc']
       }
     ];
   })
