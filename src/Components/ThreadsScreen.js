@@ -14,8 +14,6 @@ import NewCommentCard from './reusable-components/NewCommentCard';
 //Main component
 export class ThreadsScreen extends React.Component {
   render() {
-    console.log(this.props.match.params.id);
-    console.log(this.props.activeThread);
     return (
       <StyledEnvironmentContainer>
         <StyledThreadScreen>
@@ -28,24 +26,30 @@ export class ThreadsScreen extends React.Component {
             )}
             {this.props.activeThread.threadName && (
               <ThreadInformationCard
-                img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
+                img="http://lorempixel.com/480/480"
                 createdBy={this.props.activeThread.threadCreatedByUserName}
                 createdAt={this.props.activeThread.threadCreatedAt}
                 spaceId={this.props.activeThread.spaceId}
                 info={this.props.activeThread.threadTopic}
               />
             )}
-            <CommentCard
-              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-              createdBy="Ivana Huckova"
-              createdAt="5/8 at 2:57 pm"
-              content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
-              likes={20}
-            />
-            <NewCommentCard
-              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-              createdBy="Ivana Huckova"
-            />
+            {this.props.comments.length > 0 &&
+              this.props.comments.map(c => {
+                return (
+                  <CommentCard
+                    key={c.id}
+                    img="http://lorempixel.com/480/480"
+                    commentId={c.id}
+                    createdBy={c.commentCreatedByUserName}
+                    content={c.commentBody}
+                    likes={c.arrayOfUserIdsWhoLiked.length}
+                    arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
+                    isCommentDecided={c.isCommentDecided}
+                  />
+                );
+              })}
+
+            <NewCommentCard img="http://lorempixel.com/480/480" createdByUserId={localStorage.getItem('uuid')} />
           </StyledThreadContent>
         </StyledThreadScreen>
       </StyledEnvironmentContainer>
@@ -90,7 +94,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeThread: state.firestore.ordered.threads ? state.firestore.ordered.threads[0] : []
+    activeThread: state.firestore.ordered.threads ? state.firestore.ordered.threads[0] : [],
+    comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
   };
 };
 
@@ -106,6 +111,11 @@ export default compose(
       {
         collection: 'threads',
         doc: props.match.params.id
+      },
+      {
+        collection: 'comments',
+        where: [['threadId', '==', props.match.params.id]],
+        orderBy: ['commentCreatedAt', 'desc']
       }
     ];
   })
