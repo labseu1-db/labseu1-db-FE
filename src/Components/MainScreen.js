@@ -58,8 +58,8 @@ class MainScreen extends React.Component {
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
-            let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
-            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+            let dateInfo = new Date(t.threadCreatedAt);
+            let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
               <ThreadCard
                 key={t.id}

@@ -9,7 +9,7 @@ function ThreadLeftComponentText(props) {
       <div className="top">
         <div className="bold">{createdBy} started a thread</div>
         <div className="lighter-color">
-          {createdAt} in {space}
+          {createdAt} {space}
         </div>
       </div>
       <div className="middle"> </div>
