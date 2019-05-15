@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import BackToButton from './reusable-components/BackToButton';
@@ -9,9 +12,10 @@ import CommentCard from './reusable-components/CommentCard';
 import NewCommentCard from './reusable-components/NewCommentCard';
 
 //Main component
-export default class ThreadsScreen extends React.Component {
+export class ThreadsScreen extends React.Component {
   render() {
-    console.log(this.props);
+    console.log(this.props.match.params.id);
+    console.log(this.props.activeThread);
     return (
       <StyledEnvironmentContainer>
         <StyledThreadScreen>
@@ -77,3 +81,28 @@ const StyledThreadContent = styled.div`
 const StyledHeadingContainer = styled.div`
   margin: 40px 0 30px 0;
 `;
+
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    activeThread: state.firestore.ordered.threads ? state.firestore.ordered.threads[0] : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'threads',
+        doc: props.match.params.id
+      }
+    ];
+  })
+)(ThreadsScreen);
