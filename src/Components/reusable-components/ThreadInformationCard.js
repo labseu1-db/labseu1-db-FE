@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Main component
-export default function ThreadInformationCard(props) {
+export function ThreadInformationCard(props) {
   const { createdBy, createdAt, info, img, space } = props;
   return (
     <StyledThreadContainer>
@@ -13,7 +16,7 @@ export default function ThreadInformationCard(props) {
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
-            started this thread in <span className="space">{space}</span> · <span>{createdAt}</span>
+            started this thread in <span className="space">{space.spaceName}</span> · <span>{createdAt}</span>
           </StyledThreadInformation>
         </StyledRightSideOfContainer>
       </StyledTopContent>
@@ -72,3 +75,28 @@ const StyledBottomContent = styled.div`
   margin-top: 40px;
   line-height: 1.75;
 `;
+
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    return [
+      {
+        collection: 'spaces',
+        doc: props.spaceId
+      }
+    ];
+  })
+)(ThreadInformationCard);

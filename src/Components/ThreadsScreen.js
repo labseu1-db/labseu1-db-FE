@@ -21,16 +21,20 @@ export class ThreadsScreen extends React.Component {
         <StyledThreadScreen>
           <StyledThreadContent>
             <BackToButton onClick={() => this.props.history.push('/homescreen')} />
-            <StyledHeadingContainer>
-              <ScreenHeading heading="Thread" />
-            </StyledHeadingContainer>
-            <ThreadInformationCard
-              img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
-              createdBy="Ivana Huckova"
-              createdAt="5/8 at 2:57 pm"
-              space="Product"
-              info="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
-            />
+            {this.props.activeThread.threadName && (
+              <StyledHeadingContainer>
+                <ScreenHeading heading={this.props.activeThread.threadName} />
+              </StyledHeadingContainer>
+            )}
+            {this.props.activeThread.threadName && (
+              <ThreadInformationCard
+                img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
+                createdBy={this.props.activeThread.threadCreatedByUserName}
+                createdAt={this.props.activeThread.threadCreatedAt}
+                spaceId={this.props.activeThread.spaceId}
+                info={this.props.activeThread.threadTopic}
+              />
+            )}
             <CommentCard
               img="https://pbs.twimg.com/profile_images/961263385202561024/H6hygos5.jpg"
               createdBy="Ivana Huckova"
