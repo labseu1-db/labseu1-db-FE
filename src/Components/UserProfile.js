@@ -54,5 +54,5 @@ export default compose(
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
-  padding: 10vh 5%;
+  padding: 8vh 0% 8vh 21%;
 `;

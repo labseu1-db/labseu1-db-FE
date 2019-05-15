@@ -4,17 +4,18 @@ import ProfileOrgField from './ProfileOrgField';
 
 function ProfileCardOrgsField(props) {
   return (
-    <div>
+    <StyledProfileCardOrgsField>
       {props.orgs &&
         props.orgs.map(org => {
           return <ProfileOrgField org={org} user={props.user} />;
         })}
-    </div>
+    </StyledProfileCardOrgsField>
   );
 }
 
 const StyledProfileCardOrgsField = styled.div`
   padding-top: 8px;
+  flex-direction: column;
   flex: 1 1 0%;
   display: flex;
   padding: 16px 12px 16px 16px;

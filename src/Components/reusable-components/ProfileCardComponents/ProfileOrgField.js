@@ -14,12 +14,12 @@ function ProfileOrgField(props) {
 }
 
 const StyledProfileOrgField = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   align-items: center;
   height: 70px;
   padding: 16px 12px 16px 16px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin-top: 8px;
   border-radius: 12px;
   border: 1px solid rgb(250, 249, 247);
@@ -30,9 +30,9 @@ const StyledProfileOrgField = styled.div`
 `;
 
 const StyledOrgName = styled.p`
-  margin-right: 120px;
   margin-left: 8px;
-  font-size: 12px;
+  font-size: 13px;
+  width: 130px;
   color: rgb(125, 135, 141);
 }
 `;

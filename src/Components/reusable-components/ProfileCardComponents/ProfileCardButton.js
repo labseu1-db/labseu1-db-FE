@@ -2,25 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 function ProfileCardButton(props) {
-  const { content, backgroundColor, color, border, onClick, top, right } = props;
+  const { content, border, onClick, top, right } = props;
   const style = {
-    backgroundColor: backgroundColor,
-    color: color,
     border: border,
     top: top,
     right: right
   };
   return (
-    <div>
-      <ProfileCardButtonStyled style={style} onClick={onClick}>
-        <div>{content}</div>
-      </ProfileCardButtonStyled>
-    </div>
+    <ProfileCardButtonStyled style={style} onClick={onClick}>
+      <div>{content}</div>
+    </ProfileCardButtonStyled>
   );
 }
 
 //Stylin
-const ProfileCardButtonStyled = styled.button`
+const ProfileCardButtonStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,6 +24,8 @@ const ProfileCardButtonStyled = styled.button`
   font-weight: 600;
   letter-spacing: 0.5px;
   padding: 0px 24px;
+  color: #374750;
+  background: white;
   border-radius: 15px;
   border: none;
   display: flex;
@@ -35,12 +33,18 @@ const ProfileCardButtonStyled = styled.button`
   height: 31px;
   cursor: pointer;
   color: blue;
-  &:focus {
-    outline: none;
-  }
   &:hover {
     background: #5c4df2;
     color: white;
+  }
+  div {
+    &:hover {
+      color: white;
+      background: #5c4df2;
+    }
+  }
+  &:focus {
+    outline: none;
   }
 `;
 

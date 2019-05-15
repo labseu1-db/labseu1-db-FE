@@ -16,16 +16,13 @@ function ProfileCard(props) {
 }
 
 const StyledProfileContainer = styled.div`
-  background-color: white;
-  padding: 20px;
-  height: 100%;
-  max-width: 855px;
-  min-width: 625px;
-  margin: 25px 0;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
+  padding: 28px 20px 20px;
+  margin-bottom: 40px;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 3px 10px 0px;
 `;
 
 const mapStateToProps = state => {
