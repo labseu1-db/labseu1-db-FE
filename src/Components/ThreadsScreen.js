@@ -11,11 +11,12 @@ import NewCommentCard from './reusable-components/NewCommentCard';
 //Main component
 export default class ThreadsScreen extends React.Component {
   render() {
+    console.log(this.props);
     return (
       <StyledEnvironmentContainer>
         <StyledThreadScreen>
           <StyledThreadContent>
-            <BackToButton />
+            <BackToButton onClick={() => this.props.history.push('/homescreen')} />
             <StyledHeadingContainer>
               <ScreenHeading heading="Thread" />
             </StyledHeadingContainer>
