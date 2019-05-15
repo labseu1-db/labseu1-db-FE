@@ -11,7 +11,7 @@ import heartIconRed from '../../images/icon-heart-red.svg';
 //Main component
 export class CommentCard extends React.Component {
   state = {
-    didUserLikeComment: false
+    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid'))
   };
 
   toggleLikePhoto = () => {
@@ -38,6 +38,7 @@ export class CommentCard extends React.Component {
                 alt="heart icon"
                 onClick={() => {
                   this.toggleLikePhoto();
+                  console.log();
                   let commentRef = this.props.firestore.collection('comments').doc(commentId);
                   commentRef.update({
                     arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
@@ -45,7 +46,7 @@ export class CommentCard extends React.Component {
                 }}
               />
             )}
-            {!this.state.didUserLikeComment && <div className="black-likes">{likes}</div>}
+            {!this.state.didUserLikeComment && likes != 0 && <div className="black-likes">{likes}</div>}
             {this.state.didUserLikeComment && (
               <img
                 src={heartIconRed}
