@@ -47,8 +47,7 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeSpace: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
-    activeComments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
+    activeSpace: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
   };
 };
 
@@ -64,10 +63,6 @@ export default compose(
       {
         collection: 'spaces',
         doc: `${props.spaceId}`
-      },
-      {
-        collection: 'comments',
-        where: [['threadId', '==', props.threadId]]
       }
     ];
   })

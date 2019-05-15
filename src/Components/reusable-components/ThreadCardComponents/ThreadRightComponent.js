@@ -9,13 +9,11 @@ import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
 
 //Main component
 function ThreadRightComponent(props) {
-  const { numberOfComments } = props;
-  console.log(props.comments);
   return (
     <StyledRightContainer>
       <div className="row-with-image">
         <img src={messageIconDarkgray} alt="message icon" />
-        <div>{props.comments.length}</div>
+        {/* <div>{props.comments.length}</div> */}
       </div>
     </StyledRightContainer>
   );
@@ -42,8 +40,8 @@ const StyledRightContainer = styled.div`
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
+    profile: state.firebase.profile
+    // comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
   };
 };
 
@@ -54,12 +52,13 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'comments',
-        where: [['threadId', '==', props.threadId]]
-      }
-    ];
-  })
+  firestoreConnect()
+  //   props => {
+  //   return [
+  //     {
+  //       collection: 'comments',
+  //       where: [['threadId', '==', props.threadId]]
+  //     }
+  //   ];
+  // }
 )(ThreadRightComponent);

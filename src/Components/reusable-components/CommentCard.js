@@ -23,23 +23,26 @@ export class CommentCard extends React.Component {
     }));
   };
 
+  deleteComment = id => {
+    this.props.firestore
+      .collection('comments')
+      .doc(id)
+      .delete();
+  };
+
   render() {
-    const { img, createdBy, content, commentId, likes } = this.props;
+    const { img, createdBy, content, commentId, likes, createdByUserId } = this.props;
     return (
       <StyledCommentContainer>
-        <Dropdown text="🔧" className="settings">
+        <Dropdown>
           <Dropdown.Menu>
-            <Dropdown.Item text="New" />
-            <Dropdown.Item text="Open..." description="ctrl + o" />
-            <Dropdown.Item text="Save as..." description="ctrl + s" />
-            <Dropdown.Item text="Rename" description="ctrl + r" />
-            <Dropdown.Item text="Make a copy" />
-            <Dropdown.Item icon="folder" text="Move to folder" />
-            <Dropdown.Item icon="trash" text="Move to trash" />
-            <Dropdown.Divider />
-            <Dropdown.Item text="Download As..." />
-            <Dropdown.Item text="Publish To Web" />
-            <Dropdown.Item text="E-mail Collaborators" />
+            <Dropdown.Item text="Mark as Decision" />
+            {localStorage.getItem('uuid') === createdByUserId && (
+              <Dropdown.Item text="Edit Comment" onClick={() => this.editComment(commentId)} />
+            )}
+            {localStorage.getItem('uuid') === createdByUserId && (
+              <Dropdown.Item text="Delete Comment" onClick={() => this.deleteComment(commentId)} />
+            )}
           </Dropdown.Menu>
         </Dropdown>
         <StyledImageContainer>
@@ -96,7 +99,7 @@ const StyledCommentContainer = styled.div`
   padding: 20px;
   width: 100%;
   margin-top: 30px;
-  .settings .ui .dropdown {
+  .ui.dropdown {
     position: absolute;
     top: 10px;
     right: 10px;

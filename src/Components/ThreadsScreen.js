@@ -42,6 +42,7 @@ export class ThreadsScreen extends React.Component {
                 img="http://lorempixel.com/480/480"
                 commentId={c.id}
                 createdBy={c.commentCreatedByUserName}
+                createdByUserId={c.commentCreatedByUserId}
                 content={c.commentBody}
                 likes={c.arrayOfUserIdsWhoLiked.length}
                 arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
