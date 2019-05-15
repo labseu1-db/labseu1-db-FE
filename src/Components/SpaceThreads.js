@@ -37,10 +37,22 @@ function SpaceThreads(props) {
         />
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
+
+      {/* If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS
+      {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
+      {/* {props.threads.length === 0 && (
+        <Placeholder
+          heading='Learn about Home'
+          info='Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!'
+          image={placeholder}
+        />
+      )} */}
+
+      {/*Loop trough all the threads that are associated with the orgId*/}
       {props.threads.length > 0 &&
         props.threads.map(t => {
-          let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
-          let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          let dateInfo = new Date(t.threadCreatedAt);
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
             <ThreadCard
               key={t.id}
@@ -55,6 +67,7 @@ function SpaceThreads(props) {
                 props.setActiveThread(t.id);
                 console.log(t.id);
               }}
+              currentSpace={props.space.spaceName}
             />
           );
         })}
