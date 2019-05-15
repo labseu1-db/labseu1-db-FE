@@ -27,6 +27,7 @@ class MainScreen extends React.Component {
           <CreateThreadModal
             shoudlBeOpen={true}
             showModal={this.props.showModal}
+            setActiveThread={this.props.setActiveThread}
             activeModal={this.props.activeModal}
           />
         )}
@@ -58,7 +59,7 @@ class MainScreen extends React.Component {
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
-            let dateInfo = new Date(t.threadCreatedAt.seconds);
+            let dateInfo = new Date(t.threadCreatedAt);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
               <ThreadCard
@@ -117,7 +118,8 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', props.activeOrg]]
+        where: [['orgId', '==', props.activeOrg]],
+        orderBy: ['threadCreatedAt', 'asc']
       }
     ];
   })

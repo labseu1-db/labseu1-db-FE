@@ -21,7 +21,12 @@ function SpaceThreads(props) {
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
-        <CreateThreadModal shoudlBeOpen={true} showModal={props.showModal} activeModal={props.activeModal} />
+        <CreateThreadModal
+          shoudlBeOpen={true}
+          showModal={props.showModal}
+          activeModal={props.activeModal}
+          setActiveThread={props.setActiveThread}
+        />
       )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />

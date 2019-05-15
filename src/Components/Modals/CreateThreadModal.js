@@ -98,6 +98,7 @@ class CreateThreadModal extends Component {
         }
       )
       .then(() => this.props.showModal(null))
+      .then(() => this.props.setActiveThread(this.threadId))
       .catch(err => console.log(err));
   };
   close = () => this.setState({ open: false });
@@ -178,16 +179,14 @@ class CreateThreadModal extends Component {
                 onClick={e => {
                   e.preventDefault();
                   this.props.showModal(null);
-                }}
-              >
+                }}>
                 Back
               </StyledBackButton>
               <StyledButton
                 disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
                 onClick={() => {
                   this.saveEditorText();
-                }}
-              >
+                }}>
                 Post
               </StyledButton>
             </div>
