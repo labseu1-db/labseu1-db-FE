@@ -51,7 +51,6 @@ const StyledEnvironmentContainer = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-
   margin: 0;
 `;
 
@@ -59,16 +58,15 @@ const StyledThreadScreen = styled.div`
   width: 70%;
   min-height: 100vh;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: flex-start;
-  border: 1px solid violet;
   background-color: #faf9f7;
   padding: 30px 10px 10px 0;
+  padding: 10vh 5%;
 `;
 
 const StyledThreadContent = styled.div`
-  border: 1px solid blue;
-  width: 70%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

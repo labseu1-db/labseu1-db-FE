@@ -131,8 +131,7 @@ export class NavBar extends Component {
                             onClick={event => {
                               event.preventDefault();
                               this.props.switchSpaces(space.id);
-                            }}
-                          >
+                            }}>
                             {space.spaceName}
                           </span>
                         </div>

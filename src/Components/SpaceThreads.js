@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
 
+//Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
 
+//Import actions
 import { showModal } from '../redux/actions/actionCreators';
 
+//Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
@@ -52,16 +56,18 @@ function SpaceThreads(props) {
           let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
           let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
-            <ThreadCard
-              key={t.id}
-              createdBy={t.threadCreatedByUserName}
-              createdAt={date}
-              spaceId={t.spaceId}
-              threadId={t.id}
-              heading={t.threadName}
-              info={t.threadTopic}
-              checked="true"
-            />
+            <Link to={`/thread/${t.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+              <ThreadCard
+                key={t.id}
+                createdBy={t.threadCreatedByUserName}
+                createdAt={date}
+                spaceId={t.spaceId}
+                threadId={t.id}
+                heading={t.threadName}
+                info={t.threadTopic}
+                checked="true"
+              />
+            </Link>
           );
         })}
     </StyledMainScreen>
