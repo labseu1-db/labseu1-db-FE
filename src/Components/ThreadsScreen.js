@@ -100,7 +100,7 @@ export default compose(
       {
         collection: 'comments',
         where: [['threadId', '==', props.threadId]],
-        orderBy: ['commentCreatedAt', 'desc']
+        orderBy: ['commentCreatedAt', 'asc']
       }
     ];
   })

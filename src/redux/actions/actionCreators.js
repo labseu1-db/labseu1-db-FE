@@ -15,7 +15,6 @@ export const setActiveOrg = orgId => {
 };
 
 export const setActiveThread = threadId => {
-  console.log('Creator is working');
   return {
     type: types.SET_ACTIVE_THREAD,
     payload: threadId

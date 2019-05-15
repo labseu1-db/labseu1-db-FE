@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import ScreenButton from '../reusable-components/ScreenButton';
@@ -9,7 +12,7 @@ import ScreenButton from '../reusable-components/ScreenButton';
 import IconPenWhite from '../../images/icon-pen-white.svg';
 
 //Main component
-export default class NewCommentCard extends React.Component {
+export class NewCommentCard extends React.Component {
   state = {
     text: ''
   };
@@ -18,32 +21,36 @@ export default class NewCommentCard extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  clearInput = () => {
+    this.setState({ text: '' });
+  };
   createNewComment = e => {
     e.preventDefault();
     let commentId = uuid();
-    this.state.text !== '' &&
-      this.props.firestore.set(
-        { collection: 'comments', doc: commentId },
-        {
-          arrayOfUserIdsWhoLiked: [],
-          commentBody: this.state.text,
-          commentCreatedAt: Date.now(),
-          commentCreatedByUserId: localStorage.getItem('uuid'),
-          commentCreateByUserName: this.state.firebase.auth.name,
-          isCommentDecided: false,
-          orgId: this.props.thread.orgId,
-          threadId: this.props.thread.threadId,
-          threadName: this.props.thread.threadName
-        }
-      );
+    this.props.firestore.set(
+      { collection: 'comments', doc: commentId },
+      {
+        arrayOfUserIdsWhoLiked: [],
+        commentBody: this.state.text,
+        commentCreatedAt: Date.now(),
+        commentCreatedByUserId: localStorage.getItem('uuid'),
+        commentCreatedByUserName: this.props.profile.fullName,
+        isCommentDecided: false,
+        orgId: this.props.thread.orgId,
+        threadId: this.props.thread.id,
+        threadName: this.props.thread.threadName
+      }
+    );
   };
 
   render() {
+    console.log(this.props.profile);
     const { img } = this.props;
     return (
       <StyledCommentContainer
         onSubmit={e => {
           this.createNewComment(e);
+          this.clearInput();
         }}>
         <StyledTopContainer>
           <StyledImageContainer>
@@ -66,6 +73,7 @@ export default class NewCommentCard extends React.Component {
               icon={IconPenWhite}
               onClick={e => {
                 this.createNewComment(e);
+                this.clearInput();
               }}
             />
           )}
@@ -123,3 +131,20 @@ const StyledButtonContainer = styled.div`
   border: none;
   margin-top: 30px;
 `;
+
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
+)(NewCommentCard);

@@ -21,7 +21,6 @@ class FakeHome extends Component {
   }
 
   render() {
-    console.log(this.props.threadId);
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }

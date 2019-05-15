@@ -43,6 +43,7 @@ function SpaceThreads(props) {
           let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
             <ThreadCard
+              key={t.id}
               createdBy={t.threadCreatedByUserName}
               createdAt={date}
               spaceId={t.spaceId}

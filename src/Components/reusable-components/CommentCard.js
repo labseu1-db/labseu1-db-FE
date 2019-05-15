@@ -21,13 +21,13 @@ export class CommentCard extends React.Component {
   };
 
   render() {
-    const { img, createdBy, content, commentId, arrayOfUsersWhoLiked, likes } = this.props;
+    const { img, createdBy, content, commentId, likes } = this.props;
     console.log(this.props);
     return (
       <StyledCommentContainer>
         <StyledImageContainer>
-          {/* <img src={img} alt="author" /> */}
-          <div className="initials">{createdBy[0]}</div>
+          <img src={img} alt="author" />
+          {/* <div className="initials">{createdBy[0]}</div> */}
         </StyledImageContainer>
         <StyledRightContainer>
           <StyledAuthorsName>{createdBy}</StyledAuthorsName>
@@ -47,7 +47,7 @@ export class CommentCard extends React.Component {
                 }}
               />
             )}
-            {!this.state.didUserLikeComment && likes != 0 && <div className="black-likes">{likes}</div>}
+            {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
             {this.state.didUserLikeComment && (
               <img
                 src={heartIconRed}
