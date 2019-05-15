@@ -22,7 +22,6 @@ export class CommentCard extends React.Component {
 
   render() {
     const { img, createdBy, content, commentId, likes } = this.props;
-    console.log(this.props);
     return (
       <StyledCommentContainer>
         <StyledImageContainer>
@@ -39,7 +38,6 @@ export class CommentCard extends React.Component {
                 alt="heart icon"
                 onClick={() => {
                   this.toggleLikePhoto();
-                  console.log();
                   let commentRef = this.props.firestore.collection('comments').doc(commentId);
                   commentRef.update({
                     arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))

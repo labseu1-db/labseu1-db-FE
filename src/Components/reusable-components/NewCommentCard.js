@@ -44,7 +44,6 @@ export class NewCommentCard extends React.Component {
   };
 
   render() {
-    console.log(this.props.profile);
     const { img } = this.props;
     return (
       <StyledCommentContainer
