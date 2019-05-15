@@ -14,10 +14,22 @@ export const setActiveOrg = orgId => {
   };
 };
 
+export const setActiveThread = threadId => {
+  console.log('Creator is working');
+  return {
+    type: types.SET_ACTIVE_THREAD,
+    payload: threadId
+  };
+};
+
 export const switchSpaces = spaceId => {
   return { type: types.SHOW_SPACES_THREADS, payload: spaceId };
 };
 
 export const resetSpace = () => {
   return { type: types.RESET_SPACE };
+};
+
+export const resetThread = () => {
+  return { type: types.RESET_THREAD };
 };

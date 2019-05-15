@@ -12,11 +12,11 @@ import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, heading, info, checked } = props;
+  const { createdBy, createdAt, heading, info, checked, onClick } = props;
   return (
     <div>
       {/* {console.log(props.activeSpace)} */}
-      <StyledThreadContainer>
+      <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText
           createdBy={createdBy}

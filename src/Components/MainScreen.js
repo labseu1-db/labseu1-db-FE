@@ -15,7 +15,7 @@ import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 import Placeholder from './reusable-components/Placeholder';
 
-import { showModal } from '../redux/actions/actionCreators';
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
@@ -70,6 +70,7 @@ class MainScreen extends React.Component {
                 heading={t.threadName}
                 info={t.threadTopic}
                 checked="true"
+                onClick={() => this.props.setActiveThread(t.id)}
               />
             );
           })}
@@ -104,7 +105,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ showModal, setActiveThread }, dispatch);
 };
 
 export default compose(

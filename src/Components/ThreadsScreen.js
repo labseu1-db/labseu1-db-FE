@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
@@ -11,75 +11,58 @@ import ThreadInformationCard from './reusable-components/ThreadInformationCard';
 import CommentCard from './reusable-components/CommentCard';
 import NewCommentCard from './reusable-components/NewCommentCard';
 
+//Import actions
+import { resetThread } from '../redux/actions/actionCreators';
+
 //Main component
 export class ThreadsScreen extends React.Component {
   render() {
     return (
-      <StyledEnvironmentContainer>
-        <StyledThreadScreen>
-          <StyledThreadContent>
-            <BackToButton onClick={() => this.props.history.push('/homescreen')} />
-            {this.props.activeThread.threadName && (
-              <StyledHeadingContainer>
-                <ScreenHeading heading={this.props.activeThread.threadName} />
-              </StyledHeadingContainer>
-            )}
-            {this.props.activeThread.threadName && (
-              <ThreadInformationCard
+      <StyledThreadContent>
+        <BackToButton onClick={this.props.resetThread} />
+        {this.props.activeThread.threadName && (
+          <StyledHeadingContainer>
+            <ScreenHeading heading={this.props.activeThread.threadName} />
+          </StyledHeadingContainer>
+        )}
+        {this.props.activeThread.threadName && (
+          <ThreadInformationCard
+            img="http://lorempixel.com/480/480"
+            createdBy={this.props.activeThread.threadCreatedByUserName}
+            createdAt={this.props.activeThread.threadCreatedAt}
+            spaceId={this.props.activeThread.spaceId}
+            info={this.props.activeThread.threadTopic}
+          />
+        )}
+        {this.props.comments.length > 0 &&
+          this.props.comments.map(c => {
+            return (
+              <CommentCard
+                key={c.id}
                 img="http://lorempixel.com/480/480"
-                createdBy={this.props.activeThread.threadCreatedByUserName}
-                createdAt={this.props.activeThread.threadCreatedAt}
-                spaceId={this.props.activeThread.spaceId}
-                info={this.props.activeThread.threadTopic}
+                commentId={c.id}
+                createdBy={c.commentCreatedByUserName}
+                content={c.commentBody}
+                likes={c.arrayOfUserIdsWhoLiked.length}
+                arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
+                isCommentDecided={c.isCommentDecided}
               />
-            )}
-            {this.props.comments.length > 0 &&
-              this.props.comments.map(c => {
-                return (
-                  <CommentCard
-                    key={c.id}
-                    img="http://lorempixel.com/480/480"
-                    commentId={c.id}
-                    createdBy={c.commentCreatedByUserName}
-                    content={c.commentBody}
-                    likes={c.arrayOfUserIdsWhoLiked.length}
-                    arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
-                    isCommentDecided={c.isCommentDecided}
-                  />
-                );
-              })}
+            );
+          })}
 
-            <NewCommentCard img="http://lorempixel.com/480/480" createdByUserId={localStorage.getItem('uuid')} />
-          </StyledThreadContent>
-        </StyledThreadScreen>
-      </StyledEnvironmentContainer>
+        <NewCommentCard
+          img="http://lorempixel.com/480/480"
+          createdByUserId={localStorage.getItem('uuid')}
+          thread={this.props.activeThread}
+        />
+      </StyledThreadContent>
     );
   }
 }
 
-//Styling
-const StyledEnvironmentContainer = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 0;
-`;
-
-const StyledThreadScreen = styled.div`
-  width: 70%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: #faf9f7;
-  padding: 30px 10px 10px 0;
-  padding: 10vh 5%;
-`;
-
 const StyledThreadContent = styled.div`
   width: 100%;
+  padding: 10vh 5%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -99,7 +82,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ resetThread }, dispatch);
+};
 
 export default compose(
   connect(
@@ -110,11 +95,11 @@ export default compose(
     return [
       {
         collection: 'threads',
-        doc: props.match.params.id
+        doc: props.threadId
       },
       {
         collection: 'comments',
-        where: [['threadId', '==', props.match.params.id]],
+        where: [['threadId', '==', props.threadId]],
         orderBy: ['commentCreatedAt', 'desc']
       }
     ];

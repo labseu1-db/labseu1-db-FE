@@ -26,7 +26,8 @@ export class CommentCard extends React.Component {
     return (
       <StyledCommentContainer>
         <StyledImageContainer>
-          <img src={img} alt="author" />{' '}
+          {/* <img src={img} alt="author" /> */}
+          <div className="initials">{createdBy[0]}</div>
         </StyledImageContainer>
         <StyledRightContainer>
           <StyledAuthorsName>{createdBy}</StyledAuthorsName>
@@ -85,6 +86,17 @@ const StyledImageContainer = styled.div`
   img {
     border-radius: 50%;
     max-height: 100%;
+  }
+  .initials {
+    border-radius: 50%;
+    background-color: #5c4df2;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
   }
 `;
 const StyledRightContainer = styled.div`

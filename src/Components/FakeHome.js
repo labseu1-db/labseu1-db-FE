@@ -9,6 +9,7 @@ import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 import SpaceThreads from './SpaceThreads';
+import ThreadsScreen from './ThreadsScreen';
 
 import { showModal } from '../redux/actions/actionCreators';
 
@@ -20,6 +21,7 @@ class FakeHome extends Component {
   }
 
   render() {
+    console.log(this.props.threadId);
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
@@ -30,8 +32,9 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            {this.props.spaceId && <SpaceThreads />}
-            {!this.props.spaceId && <MainScreen />}
+            {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
+            {!this.props.spaceId && !this.props.threadId && <MainScreen />}
+            {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
           </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
@@ -47,7 +50,8 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    spaceId: state.spaceId
+    spaceId: state.spaceId,
+    threadId: state.threadId
   };
 };
 
