@@ -13,7 +13,7 @@ function ProfileCardUserRow(props) {
         color="#374750"
         border="solid 0.5px #37475026"
         top="0px"
-        right="170px"
+        right="125px"
       />
       <ProfileCardButton
         content="Edit Profile"
