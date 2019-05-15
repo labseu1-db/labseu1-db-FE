@@ -7,6 +7,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 //Main component
 export function ThreadInformationCard(props) {
   const { createdBy, createdAt, info, img, space } = props;
+  let dateInfo = new Date(createdAt);
+  let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
   return (
     <StyledThreadContainer>
       <StyledTopContent>
@@ -16,7 +18,7 @@ export function ThreadInformationCard(props) {
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
-            started this thread in <span className="space">{space.spaceName}</span> · <span>{createdAt}</span>
+            started this thread in <span className="space">{space.spaceName}</span> · <span>{date}</span>
           </StyledThreadInformation>
         </StyledRightSideOfContainer>
       </StyledTopContent>
