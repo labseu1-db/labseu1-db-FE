@@ -35,6 +35,9 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
       }
+      if (this.state.profileDropdown === 'Profile') {
+        this.props.showModal('Profile');
+      }
     });
   };
 
@@ -61,6 +64,11 @@ export class NavBar extends Component {
           key: this.props.user.fullName,
           text: this.props.user.fullName,
           value: this.props.user.fullName
+        },
+        {
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
         },
         {
           key: 'Create Organisation',
