@@ -11,10 +11,15 @@ import heartIconRed from '../../images/icon-heart-red.svg';
 //Semantic components
 import { Dropdown } from 'semantic-ui-react';
 
+//Import components
+import UpdateComment from '../reusable-components/UpdateComment';
+
 //Main component
 export class CommentCard extends React.Component {
   state = {
-    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid'))
+    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid')),
+    isUpdating: false,
+    text: this.props.content
   };
 
   toggleLikePhoto = () => {
@@ -30,7 +35,14 @@ export class CommentCard extends React.Component {
       .delete();
   };
 
+  setIsUpdating = boolean => {
+    this.setState({
+      isUpdating: boolean
+    });
+  };
+
   render() {
+    console.log(this.state.isUpdating);
     const { img, createdBy, content, commentId, likes, createdByUserId } = this.props;
     return (
       <StyledCommentContainer>
@@ -38,51 +50,58 @@ export class CommentCard extends React.Component {
           <Dropdown.Menu>
             <Dropdown.Item text="Mark as Decision" />
             {localStorage.getItem('uuid') === createdByUserId && (
-              <Dropdown.Item text="Edit Comment" onClick={() => this.editComment(commentId)} />
+              <Dropdown.Item text="Edit Comment" onClick={() => this.setIsUpdating(true)} />
             )}
             {localStorage.getItem('uuid') === createdByUserId && (
               <Dropdown.Item text="Delete Comment" onClick={() => this.deleteComment(commentId)} />
             )}
           </Dropdown.Menu>
         </Dropdown>
-        <StyledImageContainer>
-          <img src={img} alt="author" />
-          {/* <div className="initials">{createdBy[0]}</div> */}
-        </StyledImageContainer>
-        <StyledRightContainer>
-          <StyledAuthorsName>{createdBy}</StyledAuthorsName>
-          <StyledContent>{content}</StyledContent>
-          <StyledLikesContainer>
-            {!this.state.didUserLikeComment && (
-              <img
-                src={heartIconBlack}
-                alt="heart icon"
-                onClick={() => {
-                  this.toggleLikePhoto();
-                  let commentRef = this.props.firestore.collection('comments').doc(commentId);
-                  commentRef.update({
-                    arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
-                  });
-                }}
-              />
-            )}
-            {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
-            {this.state.didUserLikeComment && (
-              <img
-                src={heartIconRed}
-                alt="heart icon"
-                onClick={() => {
-                  this.toggleLikePhoto();
-                  let commentRef = this.props.firestore.collection('comments').doc(commentId);
-                  commentRef.update({
-                    arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
-                  });
-                }}
-              />
-            )}
-            {this.state.didUserLikeComment && <div className="red-likes">{likes}</div>}
-          </StyledLikesContainer>
-        </StyledRightContainer>
+        {this.state.isUpdating && (
+          <UpdateComment commentId={commentId} content={content} setIsUpdating={this.setIsUpdating} />
+        )}
+        {!this.state.isUpdating && (
+          <StyledImageContainer>
+            <img src={img} alt="author" />
+            {/* <div className="initials">{createdBy[0]}</div> */}
+          </StyledImageContainer>
+        )}
+        {!this.state.isUpdating && (
+          <StyledRightContainer>
+            <StyledAuthorsName>{createdBy}</StyledAuthorsName>
+            <StyledContent>{content}</StyledContent>
+            <StyledLikesContainer>
+              {!this.state.didUserLikeComment && (
+                <img
+                  src={heartIconBlack}
+                  alt="heart icon"
+                  onClick={() => {
+                    this.toggleLikePhoto();
+                    let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                    commentRef.update({
+                      arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
+                    });
+                  }}
+                />
+              )}
+              {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
+              {this.state.didUserLikeComment && (
+                <img
+                  src={heartIconRed}
+                  alt="heart icon"
+                  onClick={() => {
+                    this.toggleLikePhoto();
+                    let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                    commentRef.update({
+                      arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
+                    });
+                  }}
+                />
+              )}
+              {this.state.didUserLikeComment && <div className="red-likes">{likes}</div>}
+            </StyledLikesContainer>
+          </StyledRightContainer>
+        )}
       </StyledCommentContainer>
     );
   }
