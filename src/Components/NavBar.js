@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 //Import actions
 import { showModal } from '../redux/actions/actionCreators';
@@ -63,12 +63,19 @@ export class NavBar extends Component {
           value: this.props.user.fullName
         },
         {
+          key: 'Create new Org',
+          text: 'Create new Org',
+          value: 'Create new Org'
+        },
+        {
           key: 'Log out',
           text: 'Log out',
           value: 'Log out'
         }
       ];
-
+      if (this.state.profileDropdown === 'Create new Org') {
+        return <Redirect to="/createneworganisation" />;
+      }
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -95,9 +102,6 @@ export class NavBar extends Component {
             </div>
           </HeaderContainer>
           <InnerContainer>
-            <Link to="/createneworganisation">
-              <button>Create new organisation</button>
-            </Link>
             <HomeContainer>
               <img src={homeIcon} alt="home icon" />
               <span onClick={this.props.resetSpace}>Home</span>
@@ -131,8 +135,7 @@ export class NavBar extends Component {
                             onClick={event => {
                               event.preventDefault();
                               this.props.switchSpaces(space.id);
-                            }}
-                          >
+                            }}>
                             {space.spaceName}
                           </span>
                         </div>
