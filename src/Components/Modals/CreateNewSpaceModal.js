@@ -21,7 +21,7 @@ class CreateNewSpaceModal extends Component {
     this.state = {
       spaceName: '',
       spaceTopic: '',
-      fullNameWithId: []
+      idsInSpace: []
     };
   }
 
@@ -45,75 +45,29 @@ class CreateNewSpaceModal extends Component {
         spaceName: this.state.spaceName,
         spaceCreatedByUserId: window.localStorage.getItem('uuid'),
         spaceTopic: this.state.spaceTopic,
-        orgId: activeOrg
+        orgId: activeOrg,
+        arrayOfUserIdsInSpace: this.state.idsInSpace
       }
     );
   };
 
-  getUserDataFromFirestore = (id) => {
-    return this.props.firestore
-      .get({
-        collection: 'users',
-        doc: id
-      })
-      .then(function(doc) {
-        if (doc.exists) {
-          //console.log('Document data:', doc.data());
-          const fullNameFromDb = doc.data().fullName;
-          console.log('FullName:', fullNameFromDb);
-          return fullNameFromDb;
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
-          return 'No such document';
-        }
-      })
-      .catch(function(error) {
-        console.log('Error getting document:', error);
-      });
+  setIdsToState = (e, data) => {
+    e.preventDefault();
+    const { value } = data;
+    this.setState({ idsInSpace: value });
   };
-
-  loopOverTheIdsToGetNames = (ids) => {
-    let emptyArray = [];
-    for (let i = 0; i < ids.length; i++) {
-      let fullName = '';
-      this.getUserDataFromFirestore(ids[i]).then((res) => {
-        console.log('fullname', res);
-        const nameAndId = {
-          fullName: fullName,
-          id: ids[i]
-        };
-        emptyArray.push(nameAndId);
-
-        console.log('ids[]', ids[i]);
-        console.log(ids.length);
-      });
-    }
-    this.setState({ fullNameWithId: [ ...emptyArray ] });
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState);
-    console.log(prevProps.organisation.length, prevState.fullNameWithId.length);
-    if (prevProps.organisation.length !== 0 && prevState.fullNameWithId.length === 0) {
-      const userIdOnOrg = prevProps.organisation[0].arrayOfUsersIds;
-      this.loopOverTheIdsToGetNames(userIdOnOrg);
-      console.log('componentdidupdate');
-    }
-  }
 
   render() {
     const { organisation } = this.props;
 
-    if (isEmpty(organisation[0]) || this.state.fullNameWithId === []) {
+    if (isEmpty(organisation[0])) {
       return <Spinner />;
     } else {
-      const userIdsOptions = this.state.fullNameWithId.map((user, index) => ({
+      const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) => ({
         key: index,
-        text: user.fullName,
-        value: `${user.fullName}`
+        text: organisation[0].arrayOfUsersEmails[index],
+        value: `${id}`
       }));
-
       return (
         <Modal
           trigger={
@@ -124,12 +78,10 @@ class CreateNewSpaceModal extends Component {
           open={this.state.model_open}
           size='tiny'
         >
-          {console.log(userIdsOptions, this.state)}
           <StyledContainer>
             <Modal.Header>
               <div>
                 <StyledMainHeader>Create a new space</StyledMainHeader>
-                {}
               </div>
               <div>
                 <Header as='h5'>Space name</Header>
@@ -153,24 +105,32 @@ class CreateNewSpaceModal extends Component {
                   onChange={this.handleInputChange}
                 />
                 <Header as='h5'>Members</Header>
-
-                <Dropdown placeholder='Choose people to add' fluid multiple search selection options={userIdsOptions} />
-
+                <Dropdown
+                  placeholder='Choose people to add'
+                  fluid
+                  multiple
+                  search
+                  selection
+                  options={userIdsOptions}
+                  onChange={this.setIdsToState}
+                />
                 <Modal.Actions>
-                  <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
+                  <StyledActions>
+                    <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
 
-                  <StyledButtonCreateSpace
-                    type='submit'
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.addSpaceToDatabase();
-                      this.handleSubmit();
+                    <StyledButtonCreateSpace
+                      type='submit'
+                      disabled={!this.state.spaceName.length > 0}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.addSpaceToDatabase();
 
-                      console.log('This space has been created:', this.state.spaceName);
-                    }}
-                  >
-                    Create Space
-                  </StyledButtonCreateSpace>
+                        console.log('This space has been created:', this.state.spaceName);
+                      }}
+                    >
+                      Create Space
+                    </StyledButtonCreateSpace>
+                  </StyledActions>
                 </Modal.Actions>
               </div>
             </Modal.Header>
@@ -205,10 +165,6 @@ export default compose(
         collection: 'organisations',
         doc: activeOrg,
         storeAs: 'activeOrgFromDatabase'
-      },
-      {
-        collection: 'users'
-        //   doc: `${userDoc}`
       }
     ];
   }),
@@ -220,30 +176,29 @@ const StyledContainer = styled.div`
   border-radius: 6px;
   position: relative;
 `;
-
 const StyledButtonCancel = styled.button`
-  margin-top: 50px;
-  margin-left: 253px;
-  margin-right: 12px;
-  padding: 5px 15px;
+  padding: 5px 25px;
   color: #5c4df2;
   border-radius: 15px;
   background-color: white;
-  border-color: #5c4df2;
+  border: 1px solid #5c4df2;
+  margin-right: 10px;
 `;
-
 const StyledButtonCreateSpace = styled.button`
-  padding: 5px 15px;
+  cursor: pointer;
+  padding: 5px 25px;
   color: white;
+  border: 1px solid #5c4df2;
   border-radius: 15px;
-  background-color: lightgray;
-  &:focus {
-    background-color: #5c4df2;
+  outline: none;
+  background-color: #5c4df2;
+  &:disabled {
+    background-color: #cfd5f2;
+    border: 1px solid #cfd5f2;
   }
 `;
-
 const StyledInput = styled.input`
-  width: 470px;
+  width: 100%;
   font-size: 19px;
   border: none;
   border-bottom: 2px solid lightgray;
@@ -254,19 +209,22 @@ const StyledInput = styled.input`
     outline: none;
   }
 `;
-
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
-  font-family: "Open Sans";
+  font-family: 'Open Sans', sans-serif;
   padding-bottom: 30px;
 `;
-
 const StyledOptional = styled.div`
   font-size: 14px;
-  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   line-height: 1.82;
   color: rgba(38, 46, 51, 0.5);
   margin-left: 257px;
   margin-top: -24px;
+`;
+const StyledActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 30px;
 `;
