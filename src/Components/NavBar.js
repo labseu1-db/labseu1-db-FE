@@ -24,6 +24,15 @@ export class NavBar extends Component {
     profileDropdown: ''
   };
 
+  // componentWillMount() {
+  //   this.tempLogOut();
+  // }
+
+  tempLogOut = async () => {
+    await this.props.firebase.auth().signOut();
+    this.handleLogOut();
+  };
+
   handleLogOut = async () => {
     await this.props.firebase.logout();
     this.props.clearFirestore();
