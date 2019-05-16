@@ -48,6 +48,7 @@ export class NewCommentCard extends React.Component {
         lastCommentCreatedAt: Date.now()
       }
     );
+
   };
 
   render() {
