@@ -192,12 +192,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', '==', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
+        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: [ 'arrayOfUsersIds', '==', props.uuid ],
+        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
         storeAs: 'orgsInWhichUser'
       }
       // {

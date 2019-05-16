@@ -13,8 +13,6 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-const activeOrg = 'a158056f-5565-45ff-9c1d-98abe8fb2034';
-
 class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +43,7 @@ class CreateNewSpaceModal extends Component {
         spaceName: this.state.spaceName,
         spaceCreatedByUserId: window.localStorage.getItem('uuid'),
         spaceTopic: this.state.spaceTopic,
-        orgId: activeOrg,
+        orgId: this.props.activeOrg,
         arrayOfUserIdsInSpace: this.state.idsInSpace
       }
     );
@@ -72,7 +70,12 @@ class CreateNewSpaceModal extends Component {
         <Modal
           trigger={
             <div>
-              <img src={plusIcon} alt='plus icon' onClick={this.handleOpen} disabled={isEmpty(activeOrg)} />
+              <img
+                src={plusIcon}
+                alt='plus icon'
+                onClick={this.handleOpen}
+                disabled={isEmpty(localStorage.getItem('activeOrg'))}
+              />
             </div>
           }
           open={this.state.model_open}
@@ -120,7 +123,11 @@ class CreateNewSpaceModal extends Component {
 
                     <StyledButtonCreateSpace
                       type='submit'
-                      disabled={!this.state.spaceName.length > 0}
+                      disabled={
+                        !this.state.spaceName.length > 0 ||
+                        !this.state.spaceTopic.length > 0 ||
+                        !this.state.idsInSpace.length > 0
+                      }
                       onClick={(e) => {
                         this.addSpaceToDatabase();
                         this.handleClose();
@@ -145,7 +152,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    // activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
@@ -163,7 +170,7 @@ export default compose(
     return [
       {
         collection: 'organisations',
-        doc: `${activeOrg}`,
+        doc: `${props.activeOrg}`,
         storeAs: 'activeOrgFromDatabase'
       },
       {
@@ -203,11 +210,12 @@ const StyledButtonCreateSpace = styled.button`
   }
 `;
 const StyledInput = styled.input`
+  width: 100%;
+  height: 32px;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #374750;
-  width: 100%;
   border: none;
   border-bottom: 2px solid lightgray;
   padding: 5px 0;
