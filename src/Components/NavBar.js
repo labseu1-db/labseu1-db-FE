@@ -26,6 +26,8 @@ export class NavBar extends Component {
 
   handleLogOut = async () => {
     await this.props.firebase.logout();
+    this.props.resetThread();
+    this.props.resetSpace();
     this.props.clearFirestore();
     localStorage.clear();
   };
