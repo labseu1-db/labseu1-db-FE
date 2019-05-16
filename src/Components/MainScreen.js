@@ -23,7 +23,6 @@ class MainScreen extends React.Component {
   render() {
     return (
       <StyledMainScreen>
-         
         {this.props.activeModal === 'CreateThreadModal' && (
           <CreateThreadModal
             shoudlBeOpen={true}
@@ -71,7 +70,10 @@ class MainScreen extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
-                checked="true"
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                }
                 onClick={() => this.props.setActiveThread(t.id)}
               />
             );
