@@ -7,12 +7,12 @@ import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal } from '../redux/actions/actionCreators';
+import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
-import { setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
+//Import components
 import Spinner from './semantic-components/Spinner';
 
 //Import icons
@@ -104,7 +104,14 @@ export class NavBar extends Component {
           <InnerContainer>
             <HomeContainer>
               <img src={homeIcon} alt='home icon' />
-              <span onClick={this.props.resetSpace}>Home</span>
+              <span
+                onClick={() => {
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                }}
+              >
+                Home
+              </span>
             </HomeContainer>
 
             <div>
@@ -132,6 +139,7 @@ export class NavBar extends Component {
                           <span
                             onClick={(event) => {
                               event.preventDefault();
+                              this.props.resetThread();
                               this.props.switchSpaces(space.id);
                             }}
                           >
@@ -173,6 +181,7 @@ const mapDispatchToProps = (dispatch) => {
       setActiveOrg,
       switchSpaces,
       resetSpace,
+      resetThread,
       showModal
     },
     dispatch

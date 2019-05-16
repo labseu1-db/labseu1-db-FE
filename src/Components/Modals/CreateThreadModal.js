@@ -98,6 +98,7 @@ class CreateThreadModal extends Component {
         }
       )
       .then(() => this.props.showModal(null))
+      .then(() => this.props.setActiveThread(this.threadId))
       .catch((err) => console.log(err));
   };
   close = () => this.setState({ open: false });

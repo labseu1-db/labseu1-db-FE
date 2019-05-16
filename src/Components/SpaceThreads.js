@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+//Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
 
-import { showModal } from '../redux/actions/actionCreators';
+//Import actions
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
+//Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
@@ -18,7 +21,12 @@ function SpaceThreads(props) {
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
-        <CreateThreadModal shoudlBeOpen={true} showModal={props.showModal} activeModal={props.activeModal} />
+        <CreateThreadModal
+          shoudlBeOpen={true}
+          showModal={props.showModal}
+          activeModal={props.activeModal}
+          setActiveThread={props.setActiveThread}
+        />
       )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
@@ -60,6 +68,10 @@ function SpaceThreads(props) {
               heading={t.threadName}
               info={t.threadTopic}
               checked="true"
+              onClick={() => {
+                props.setActiveThread(t.id);
+                console.log(t.id);
+              }}
               currentSpace={props.space.spaceName}
             />
           );
@@ -93,7 +105,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ showModal, setActiveThread }, dispatch);
 };
 
 export default compose(
