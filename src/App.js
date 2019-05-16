@@ -12,6 +12,7 @@ import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
 import CreateNewOrganisation from './Components/CreateNewOrganisation';
 import ThreadsScreen from './Components/ThreadsScreen';
+import FollowUp from './Components/FollowUp';
 
 class App extends Component {
   render() {

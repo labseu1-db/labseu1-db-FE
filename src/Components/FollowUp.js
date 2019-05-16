@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ScreenHeading from './reusable-components/ScreenHeading';
 
 //Main component
-class FollowUp extends React.Component {
+export default class FollowUp extends React.Component {
   render() {
     return (
       <StyledFollowUp>

@@ -27,7 +27,8 @@ import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: ''
+    profileDropdown: '',
+    isFollowUpSelected: 0
   };
 
   handleLogOut = async () => {
@@ -49,6 +50,13 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+  };
+
+  handleFollowUpClick = () => {
+    this.setState({
+      value: (this.state.isFollowUpSelected = 1)
+    });
+    console.log(this.state.isFollowUpSelected);
   };
 
   generateDropdownOptions = () => {};
@@ -81,6 +89,8 @@ export class NavBar extends Component {
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
+      } else if (this.state.isFollowUpSelected === 1) {
+        return <Redirect to="/followUps" />;
       }
       return (
         <NavBarContainer>
