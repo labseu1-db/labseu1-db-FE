@@ -44,6 +44,7 @@ export class NavBar extends Component {
       }
       if (this.state.profileDropdown === 'Profile') {
         this.props.showModal('Profile');
+        this.props.editingProfileDone();
       }
       if (this.state.profileDropdown !== 'Profile') {
         this.props.showModal(null);
@@ -161,6 +162,7 @@ export class NavBar extends Component {
                               this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
+                              this.props.showModal(null);
                             }}>
                             {space.spaceName}
                           </span>
