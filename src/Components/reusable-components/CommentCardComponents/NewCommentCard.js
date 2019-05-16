@@ -42,6 +42,12 @@ export class NewCommentCard extends React.Component {
         threadName: this.props.thread.threadName
       }
     );
+    this.props.firestore.update(
+      { collection: 'threads', doc: this.props.thread.id },
+      {
+        lastCommentCreatedAt: Date.now()
+      }
+    );
   };
 
   render() {
