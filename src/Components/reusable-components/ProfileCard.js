@@ -5,12 +5,23 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import ProfileCardUserRow from './ProfileCardComponents/ProfileCardUserRow';
 import ProfileCardOrgsField from './ProfileCardComponents/ProfileCardOrgsField';
-import { resetPassword, resetPasswordDone } from '../../redux/actions/actionCreators';
+import {
+  resetPassword,
+  resetPasswordDone,
+  editingProfile,
+  editingProfileDone
+} from '../../redux/actions/actionCreators';
 
 function ProfileCard(props) {
   return (
     <StyledProfileContainer>
-      <ProfileCardUserRow user={props.user} onClick={props.resetPassword} />
+      <ProfileCardUserRow
+        user={props.user}
+        onClick={props.resetPassword}
+        secondOnClick={props.editingProfile}
+        editingProfileStatus={props.editingProfileStatus}
+        editingProfileDone={props.editingProfileDone}
+      />
       <ProfileCardOrgsField orgs={props.orgs} user={props.user} />
     </StyledProfileContainer>
   );
@@ -32,7 +43,8 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
-    orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : ''
+    orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : '',
+    editingProfileStatus: state.editingProfileStatus
   };
 };
 
@@ -40,7 +52,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       resetPassword,
-      resetPasswordDone
+      resetPasswordDone,
+      editingProfile,
+      editingProfileDone
     },
     dispatch
   );

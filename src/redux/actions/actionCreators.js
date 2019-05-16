@@ -29,3 +29,11 @@ export const resetPassword = () => {
 export const resetPasswordDone = () => {
   return { type: types.RESET_PASSWORD_DONE };
 };
+
+export const editingProfile = () => {
+  return { type: types.EDITING_PROFILE };
+};
+
+export const editingProfileDone = () => {
+  return { type: types.EDITING_PROFILE_DONE };
+};

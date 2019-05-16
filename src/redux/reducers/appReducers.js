@@ -39,3 +39,14 @@ export function resetPassword(state = false, action) {
       return state;
   }
 }
+
+export function editingProfileStatus(state = false, action) {
+  switch (action.type) {
+    case types.EDITING_PROFILE:
+      return true;
+    case types.EDITING_PROFILE_DONE:
+      return false;
+    default:
+      return state;
+  }
+}

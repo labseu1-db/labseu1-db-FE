@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 class UserProfile extends Component {
   render() {
     if (this.props.resetPasswordStatus) {
-      return <Redirect to="/forgotPassword" />;
+      return <Redirect to="/changePassword" />;
     }
     return (
       <StyledMainScreen>
