@@ -53,7 +53,16 @@ export class CommentCard extends React.Component {
   };
 
   render() {
-    const { img, createdBy, content, commentId, likes, createdByUserId, isCommentUpdated } = this.props;
+    const {
+      img,
+      createdBy,
+      content,
+      commentId,
+      likes,
+      createdByUserId,
+      isCommentUpdated,
+      isCommentDecided
+    } = this.props;
     const dateInfo = new Date(this.props.commentUpdatedAt);
     const date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
       '0' + dateInfo.getMinutes()
@@ -68,6 +77,7 @@ export class CommentCard extends React.Component {
             deleteComment={this.deleteComment}
             commentId={commentId}
             createdByUserId={createdByUserId}
+            isCommentDecided={isCommentDecided}
           />
         )}
         {this.state.isUpdating && (
