@@ -4,6 +4,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
 import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
@@ -15,7 +16,6 @@ import { Icon, Dropdown } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 
 //Import icons
-import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
@@ -50,7 +50,7 @@ export class NavBar extends Component {
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
+      const orgOptions = orgsFromArrayOfUsersIds.map((org) => ({
         key: org.orgName,
         text: org.orgName,
         value: `${org.id}`
@@ -74,13 +74,13 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
+        return <Redirect to='/createneworganisation' />;
       }
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt='user' />}
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
@@ -98,17 +98,18 @@ export class NavBar extends Component {
               )}
             </InnerContainerHorizontal>
             <div>
-              <Icon name="cog" />
+              <Icon name='cog' />
             </div>
           </HeaderContainer>
           <InnerContainer>
             <HomeContainer>
-              <img src={homeIcon} alt="home icon" />
+              <img src={homeIcon} alt='home icon' />
               <span
                 onClick={() => {
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}>
+                }}
+              >
                 Home
               </span>
             </HomeContainer>
@@ -117,7 +118,7 @@ export class NavBar extends Component {
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <Icon name="building outline" size="large" />
+                    <Icon name='building outline' size='large' />
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
@@ -128,9 +129,7 @@ export class NavBar extends Component {
                       //********************************************** */
                     )}
                   </OrgContainer>
-                  <div>
-                    <img src={plusIcon} alt="plus icon" />
-                  </div>
+                  <CreateNewSpaceModal {...this.props} />
                 </OuterOrgContainer>
                 <SpaceContainer>
                   {spacesForActiveOrg && (
@@ -138,11 +137,12 @@ export class NavBar extends Component {
                       {spacesForActiveOrg.map((space, index) => (
                         <div key={index}>
                           <span
-                            onClick={event => {
+                            onClick={(event) => {
                               event.preventDefault();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
-                            }}>
+                            }}
+                          >
                             {space.spaceName}
                           </span>
                         </div>
@@ -161,7 +161,7 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
@@ -174,7 +174,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -190,11 +190,8 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect(props => {
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -204,12 +201,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', '==', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', '==', props.uuid],
+        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
         storeAs: 'orgsInWhichUser'
       }
       // {

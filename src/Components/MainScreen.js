@@ -23,6 +23,7 @@ class MainScreen extends React.Component {
   render() {
     return (
       <StyledMainScreen>
+         
         {this.props.activeModal === 'CreateThreadModal' && (
           <CreateThreadModal
             shoudlBeOpen={true}
