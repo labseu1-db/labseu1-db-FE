@@ -8,11 +8,9 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import heartIconBlack from '../../images/icon-heart-black.svg';
 import heartIconRed from '../../images/icon-heart-red.svg';
 
-//Semantic components
-import { Dropdown } from 'semantic-ui-react';
-
 //Import components
 import UpdateComment from '../reusable-components/UpdateComment';
+import CommentDropdown from './CommentDropdown';
 
 //Main component
 export class CommentCard extends React.Component {
@@ -65,17 +63,12 @@ export class CommentCard extends React.Component {
         onMouseEnter={() => this.setIsHovering(true)}
         onMouseLeave={() => this.setIsHovering(false)}>
         {this.state.isHovering && (
-          <Dropdown>
-            <Dropdown.Menu>
-              <Dropdown.Item text="Mark as Decision" />
-              {localStorage.getItem('uuid') === createdByUserId && (
-                <Dropdown.Item text="Edit Comment" onClick={() => this.setIsUpdating(true)} />
-              )}
-              {localStorage.getItem('uuid') === createdByUserId && (
-                <Dropdown.Item text="Delete Comment" onClick={() => this.deleteComment(commentId)} />
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
+          <CommentDropdown
+            setIsUpdating={this.setIsUpdating}
+            deleteComment={this.deleteComment}
+            commentId={commentId}
+            createdByUserId={createdByUserId}
+          />
         )}
         {this.state.isUpdating && (
           <UpdateComment
