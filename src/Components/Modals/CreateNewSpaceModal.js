@@ -13,6 +13,8 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
+const activeOrg = 'a158056f-5565-45ff-9c1d-98abe8fb2034';
+
 class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +45,7 @@ class CreateNewSpaceModal extends Component {
         spaceName: this.state.spaceName,
         spaceCreatedByUserId: window.localStorage.getItem('uuid'),
         spaceTopic: this.state.spaceTopic,
-        orgId: this.props.activeOrg,
+        orgId: activeOrg,
         arrayOfUserIdsInSpace: this.state.idsInSpace
       }
     );
@@ -59,6 +61,7 @@ class CreateNewSpaceModal extends Component {
     const { organisation } = this.props;
 
     if (isEmpty(organisation)) {
+      console.log(organisation);
       return <Spinner />;
     } else {
       const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) => ({
@@ -70,7 +73,7 @@ class CreateNewSpaceModal extends Component {
         <Modal
           trigger={
             <div>
-              <img src={plusIcon} alt='plus icon' onClick={this.handleOpen} />
+              <img src={plusIcon} alt='plus icon' onClick={this.handleOpen} disabled={isEmpty(activeOrg)} />
             </div>
           }
           open={this.state.model_open}
@@ -120,8 +123,9 @@ class CreateNewSpaceModal extends Component {
                       type='submit'
                       disabled={!this.state.spaceName.length > 0}
                       onClick={(e) => {
-                        e.preventDefault();
                         this.addSpaceToDatabase();
+                        console.log('clic');
+                        this.handleClose();
                       }}
                     >
                       Create Space
@@ -143,9 +147,10 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    // activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
-    user: state.firestore.ordered.users ? state.firestore.ordered.users : []
+    user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -160,8 +165,12 @@ export default compose(
     return [
       {
         collection: 'organisations',
-        doc: `${props.activeOrg}`,
+        doc: `${activeOrg}`,
         storeAs: 'activeOrgFromDatabase'
+      },
+      {
+        collection: 'users',
+        doc: `${props.uuid}`
       }
     ];
   }),
@@ -174,6 +183,7 @@ const StyledContainer = styled.div`
   position: relative;
 `;
 const StyledButtonCancel = styled.button`
+  cursor: pointer;
   padding: 5px 25px;
   color: #5c4df2;
   border-radius: 15px;
