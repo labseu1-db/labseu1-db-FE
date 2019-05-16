@@ -10,5 +10,6 @@ export const rootReducer = combineReducers({
   firestore: firestoreReducer,
   modal: reducers.modal,
   activeOrg: reducers.activeOrg,
-  spaceId: reducers.spaceId
+  spaceId: reducers.spaceId,
+  threadId: reducers.threadId
 });

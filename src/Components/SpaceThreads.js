@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+//Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
 
-import { showModal } from '../redux/actions/actionCreators';
+//Import actions
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
+//Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
@@ -18,7 +21,12 @@ function SpaceThreads(props) {
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
-        <CreateThreadModal shoudlBeOpen={true} showModal={props.showModal} activeModal={props.activeModal} />
+        <CreateThreadModal
+          shoudlBeOpen={true}
+          showModal={props.showModal}
+          activeModal={props.activeModal}
+          setActiveThread={props.setActiveThread}
+        />
       )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
@@ -46,11 +54,10 @@ function SpaceThreads(props) {
       )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
-      {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
       {props.threads.length > 0 &&
         props.threads.map(t => {
-          let dateInfo = new Date(t.threadCreatedAt.seconds * 1000);
-          let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          let dateInfo = new Date(t.threadCreatedAt);
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
           return (
             <ThreadCard
               key={t.id}
@@ -61,6 +68,11 @@ function SpaceThreads(props) {
               heading={t.threadName}
               info={t.threadTopic}
               checked="true"
+              onClick={() => {
+                props.setActiveThread(t.id);
+                console.log(t.id);
+              }}
+              currentSpace={props.space.spaceName}
             />
           );
         })}
@@ -93,7 +105,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ showModal, setActiveThread }, dispatch);
 };
 
 export default compose(

@@ -87,9 +87,9 @@ class CreateNewOrganisation extends Component {
           isPremium: false,
           createdByUserId: localStorage.getItem('uuid'),
           arrayOfUsersEmails: usersAndAdminsEmails,
-          arrayOfUsersIds: localStorage.getItem('uuid'),
-          arrayOfAdminsEmails: localStorage.getItem('userEmail'),
-          arrayOfAdminsIds: localStorage.getItem('uuid')
+          arrayOfUsersIds: [localStorage.getItem('uuid')],
+          arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
+          arrayOfAdminsIds: [localStorage.getItem('uuid')]
         }
       )
       .then(data => {
@@ -118,7 +118,7 @@ class CreateNewOrganisation extends Component {
           spaceName: space,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 
@@ -141,7 +141,7 @@ class CreateNewOrganisation extends Component {
           spaceName: this.state.addedSpace1,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 
@@ -164,7 +164,7 @@ class CreateNewOrganisation extends Component {
           spaceName: this.state.addedSpace2,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: localStorage.getItem('uuid')
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 

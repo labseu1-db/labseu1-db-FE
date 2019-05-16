@@ -70,3 +70,5 @@ export const StyledIcon = styled.img`
   z-index: 2;
   cursor: pointer;
 `;
+
+
