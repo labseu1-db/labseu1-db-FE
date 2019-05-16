@@ -69,75 +69,87 @@ export class CommentCard extends React.Component {
       '0' + dateInfo.getMinutes()
     ).slice(-2)}`;
     return (
-      <StyledCommentContainer
-        onMouseEnter={() => this.setIsHovering(true)}
-        onMouseLeave={() => this.setIsHovering(false)}>
-        {this.state.isHovering && (
-          <CommentDropdown
-            setIsUpdating={this.setIsUpdating}
-            deleteComment={this.deleteComment}
-            commentId={commentId}
-            createdByUserId={createdByUserId}
-            isCommentDecided={isCommentDecided}
-          />
-        )}
-        {this.state.isUpdating && (
-          <UpdateComment
-            commentId={commentId}
-            content={content}
-            setIsUpdating={this.setIsUpdating}
-            setIsCommentUpdated={this.setIsCommentUpdated}
-          />
-        )}
-        {!this.state.isUpdating && (
-          <StyledImageContainer>
-            <img src={img} alt="author" />
-            {/* <div className="initials">{createdBy[0]}</div> */}
-          </StyledImageContainer>
-        )}
-        {!this.state.isUpdating && (
-          <StyledRightContainer>
-            <StyledAuthorsName>{createdBy}</StyledAuthorsName>
-            <StyledContent>{content}</StyledContent>
-            {isCommentUpdated && <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>}
-            <StyledLikesContainer>
-              {!this.state.didUserLikeComment && (
-                <img
-                  src={heartIconBlack}
-                  alt="heart icon"
-                  onClick={() => {
-                    this.toggleLikePhoto();
-                    let commentRef = this.props.firestore.collection('comments').doc(commentId);
-                    commentRef.update({
-                      arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
-                    });
-                  }}
-                />
-              )}
-              {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
-              {this.state.didUserLikeComment && (
-                <img
-                  src={heartIconRed}
-                  alt="heart icon"
-                  onClick={() => {
-                    this.toggleLikePhoto();
-                    let commentRef = this.props.firestore.collection('comments').doc(commentId);
-                    commentRef.update({
-                      arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
-                    });
-                  }}
-                />
-              )}
-              {this.state.didUserLikeComment && <div className="red-likes">{likes}</div>}
-            </StyledLikesContainer>
-          </StyledRightContainer>
-        )}
-      </StyledCommentContainer>
+      <StyledContainer>
+        <StyledCommentContainer
+          className={`${isCommentDecided && 'paddingTop'}`}
+          onMouseEnter={() => this.setIsHovering(true)}
+          onMouseLeave={() => this.setIsHovering(false)}>
+          {isCommentDecided && <StyledDecision>Marked as Decision</StyledDecision>}
+          {this.state.isHovering && (
+            <CommentDropdown
+              setIsUpdating={this.setIsUpdating}
+              deleteComment={this.deleteComment}
+              commentId={commentId}
+              createdByUserId={createdByUserId}
+              isCommentDecided={isCommentDecided}
+            />
+          )}
+          {this.state.isUpdating && (
+            <UpdateComment
+              commentId={commentId}
+              content={content}
+              setIsUpdating={this.setIsUpdating}
+              setIsCommentUpdated={this.setIsCommentUpdated}
+            />
+          )}
+          {!this.state.isUpdating && (
+            <StyledImageContainer>
+              <img src={img} alt="author" />
+              {/* <div className="initials">{createdBy[0]}</div> */}
+            </StyledImageContainer>
+          )}
+          {!this.state.isUpdating && (
+            <StyledRightContainer>
+              <StyledAuthorsName>{createdBy}</StyledAuthorsName>
+              <StyledContent>{content}</StyledContent>
+              {isCommentUpdated && <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>}
+              <StyledLikesContainer>
+                {!this.state.didUserLikeComment && (
+                  <img
+                    src={heartIconBlack}
+                    alt="heart icon"
+                    onClick={() => {
+                      this.toggleLikePhoto();
+                      let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                      commentRef.update({
+                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
+                      });
+                    }}
+                  />
+                )}
+                {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
+                {this.state.didUserLikeComment && (
+                  <img
+                    src={heartIconRed}
+                    alt="heart icon"
+                    onClick={() => {
+                      this.toggleLikePhoto();
+                      let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                      commentRef.update({
+                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(
+                          localStorage.getItem('uuid')
+                        )
+                      });
+                    }}
+                  />
+                )}
+                {this.state.didUserLikeComment && <div className="red-likes">{likes}</div>}
+              </StyledLikesContainer>
+            </StyledRightContainer>
+          )}
+        </StyledCommentContainer>
+      </StyledContainer>
     );
   }
 }
 
 //Styling
+const StyledContainer = styled.div`
+  .paddingTop {
+    padding-top: 50px;
+  }
+  width: 100%;
+`;
 const StyledCommentContainer = styled.div`
   display: flex;
   position: relative;
@@ -215,6 +227,21 @@ const StyledUpdatedMessage = styled.div`
   right: 10px;
   color: #bdc3c9;
   font-size: 0.8rem;
+`;
+
+const StyledDecision = styled.div`
+  height: 30px;
+  position: absolute;
+  background-color: #fff6dd;
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
 `;
 
 const mapStateToProps = state => {
