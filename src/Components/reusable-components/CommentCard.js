@@ -54,20 +54,12 @@ export class CommentCard extends React.Component {
     });
   };
 
-  dateInfo = new Date(this.props.commentUpdatedAt);
-  date = `${this.dateInfo.getMonth()}/${this.dateInfo.getDate()} ${this.dateInfo.getHours()}:${this.dateInfo.getMinutes()}`;
-
   render() {
-    const {
-      img,
-      createdBy,
-      content,
-      commentId,
-      likes,
-      createdByUserId,
-      commentUpdatedAt,
-      isCommentUpdated
-    } = this.props;
+    const { img, createdBy, content, commentId, likes, createdByUserId, isCommentUpdated } = this.props;
+    const dateInfo = new Date(this.props.commentUpdatedAt);
+    const date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+      '0' + dateInfo.getMinutes()
+    ).slice(-2)}`;
     return (
       <StyledCommentContainer
         onMouseEnter={() => this.setIsHovering(true)}
@@ -103,9 +95,7 @@ export class CommentCard extends React.Component {
           <StyledRightContainer>
             <StyledAuthorsName>{createdBy}</StyledAuthorsName>
             <StyledContent>{content}</StyledContent>
-            {isCommentUpdated && this.state.isHovering && (
-              <StyledUpdatedMessage>Updated at {this.date}</StyledUpdatedMessage>
-            )}
+            {isCommentUpdated && <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>}
             <StyledLikesContainer>
               {!this.state.didUserLikeComment && (
                 <img
