@@ -205,8 +205,11 @@ const StyledButtonCreateSpace = styled.button`
   }
 `;
 const StyledInput = styled.input`
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #374750;
   width: 100%;
-  font-size: 19px;
   border: none;
   border-bottom: 2px solid lightgray;
   padding: 5px 0;
@@ -223,12 +226,11 @@ const StyledMainHeader = styled.div`
   padding-bottom: 30px;
 `;
 const StyledOptional = styled.div`
-  font-size: 14px;
+  font-size: 11px;
   font-family: 'Open Sans', sans-serif;
-  line-height: 1.82;
-  color: rgba(38, 46, 51, 0.5);
+  color: #374750;
   margin-left: 257px;
-  margin-top: -24px;
+  margin-top: -19px;
 `;
 const StyledActions = styled.div`
   display: flex;
