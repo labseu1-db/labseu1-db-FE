@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import UserProfile from './UserProfile';
 
 //Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
@@ -18,6 +19,9 @@ import ThreadCard from './reusable-components/ThreadCard';
 import CreateThreadModal from './Modals/CreateThreadModal';
 
 function SpaceThreads(props) {
+  if (props.activeModal === 'Profile') {
+    return <UserProfile {...props} />;
+  }
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
