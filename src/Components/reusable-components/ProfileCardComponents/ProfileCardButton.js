@@ -32,16 +32,10 @@ const ProfileCardButtonStyled = styled.div`
   position: absolute;
   height: 31px;
   cursor: pointer;
-  color: blue;
+  transition: 0.5s;
   &:hover {
     background: #5c4df2;
     color: white;
-  }
-  div {
-    &:hover {
-      color: white;
-      background: #5c4df2;
-    }
   }
   &:focus {
     outline: none;

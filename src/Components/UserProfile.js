@@ -5,9 +5,13 @@ import { connect } from 'react-redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import styled from 'styled-components';
 import ProfileCard from './reusable-components/ProfileCard';
+import { Redirect } from 'react-router-dom';
 
 class UserProfile extends Component {
   render() {
+    if (this.props.resetPasswordStatus) {
+      return <Redirect to="/forgotPassword" />;
+    }
     return (
       <StyledMainScreen>
         <ProfileCard />
@@ -23,7 +27,8 @@ const mapStateToProps = state => {
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
     space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
     spaceId: state.spaceId,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    resetPasswordStatus: state.resetPassword
   };
 };
 
@@ -54,5 +59,6 @@ export default compose(
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
-  padding: 8vh 0% 8vh 21%;
+  padding: 10vh 12%;
+  margin: 0 auto;
 `;

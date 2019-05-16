@@ -18,7 +18,7 @@ const StyledProfileCardOrgsField = styled.div`
   flex-direction: column;
   flex: 1 1 0%;
   display: flex;
-  padding: 16px 12px 16px 16px;
+  padding: 16px 0px 16px 16px;
 `;
 
 export default ProfileCardOrgsField;

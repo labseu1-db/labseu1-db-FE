@@ -28,3 +28,14 @@ export function spaceId(state = '', action) {
       return state;
   }
 }
+
+export function resetPassword(state = false, action) {
+  switch (action.type) {
+    case types.RESET_PASSWORD:
+      return true;
+    case types.RESET_PASSWORD_DONE:
+      return false;
+    default:
+      return state;
+  }
+}

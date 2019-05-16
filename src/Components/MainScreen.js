@@ -23,7 +23,7 @@ import UserProfile from './UserProfile';
 class MainScreen extends React.Component {
   render() {
     if (this.props.activeModal === 'Profile') {
-      return <UserProfile />;
+      return <UserProfile {...this.props} />;
     }
     return (
       <StyledMainScreen>

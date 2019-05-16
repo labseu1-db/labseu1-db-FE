@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import { resetPasswordDone } from '../redux/actions/actionCreators';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -39,12 +40,17 @@ class ForgotPassword extends Component {
     this.props.firebase
       .resetPassword(email)
       .then(() => {
-        this.props.history.push('/login');
+        if (this.props.resetPasswordStatus) {
+          this.props.resetPasswordDone();
+          this.props.history.push('/homescreen');
+        } else {
+          this.props.history.push('/login');
+        }
       })
       .then(() => {
         alert('Email has been sent!');
       })
-      .catch((error) => {
+      .catch(error => {
         const INITIAL_STATE = {
           loginEmail: '',
           error: null
@@ -54,12 +60,12 @@ class ForgotPassword extends Component {
   };
 
   componentWillUpdate() {
-    if (!isEmpty(this.props.auth)) {
+    if (!isEmpty(this.props.auth) && !this.props.resetPasswordStatus) {
       this.props.history.push('/homescreen');
     }
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -71,38 +77,36 @@ class ForgotPassword extends Component {
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
           <StyledForm
-            onSubmit={(event) => {
+            onSubmit={event => {
               this.submitHandler(this.state.loginEmail, event);
-            }}
-          >
+            }}>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
               <StyledSendEmailButton
                 disabled={isInvalid}
-                onClick={(event) => {
+                onClick={event => {
                   this.submitHandler(this.state.loginEmail, event);
-                }}
-              >
+                }}>
                 Send Email &#62;
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
-          <StyledLink to='/login'>Back to Log In</StyledLink>
+          <StyledLink to="/login">Back to Log In</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
@@ -110,12 +114,27 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {};
+const mapStateToProps = state => {
+  return {
+    resetPasswordStatus: state.resetPassword
+  };
 };
 
 //As we are not dispatching anything - this is empty
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      resetPasswordDone
+    },
+    dispatch
+  );
+};
 
 //Connect to Firestore
-export default compose(connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(ForgotPassword);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
+)(ForgotPassword);

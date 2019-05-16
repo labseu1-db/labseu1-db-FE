@@ -3,11 +3,18 @@ import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
 
 function ProfileCardUserRow(props) {
+  const { onClick } = props;
   return (
     <StyledFirstRow>
       <img src={props.user.profileUrl} />
       <span>{props.user.fullName}</span>
-      <ProfileCardButton content="Change Password" border="solid 0.5px #37475026" top="0px" right="125px" />
+      <ProfileCardButton
+        content="Change Password"
+        border="solid 0.5px #37475026"
+        top="0px"
+        right="125px"
+        onClick={onClick}
+      />
       <ProfileCardButton content="Edit Profile" border="solid 0.5px #37475026" top="0px" right="0px" />
     </StyledFirstRow>
   );
@@ -20,8 +27,8 @@ const StyledFirstRow = styled.div`
   position: relative;
   width: 100%;
   img {
-    width: 100px;
-    height: 100px;
+    width: 95px;
+    height: 95px;
     border-radius: 300px;
     margin-top: 14px;
     margin-left: 20px;

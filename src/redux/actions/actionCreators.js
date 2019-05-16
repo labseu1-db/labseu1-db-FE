@@ -21,3 +21,11 @@ export const switchSpaces = spaceId => {
 export const resetSpace = () => {
   return { type: types.RESET_SPACE };
 };
+
+export const resetPassword = () => {
+  return { type: types.RESET_PASSWORD };
+};
+
+export const resetPasswordDone = () => {
+  return { type: types.RESET_PASSWORD_DONE };
+};
