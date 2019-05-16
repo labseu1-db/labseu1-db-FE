@@ -106,7 +106,16 @@ class ForgotPassword extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <StyledLink to="/login">Back to Log In</StyledLink>
+          {!this.props.resetPasswordStatus && <StyledLink to="/login">Back to Log In</StyledLink>}
+          {this.props.resetPasswordStatus && (
+            <StyledSendEmailButton
+              onClick={() => {
+                this.props.history.push('/homescreen');
+                this.props.resetPasswordDone();
+              }}>
+              Cancel
+            </StyledSendEmailButton>
+          )}
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
