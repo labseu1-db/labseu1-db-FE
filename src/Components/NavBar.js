@@ -44,10 +44,10 @@ export class NavBar extends Component {
       }
       if (this.state.profileDropdown === 'Profile') {
         this.props.showModal('Profile');
-        this.props.editingProfileDone();
       }
       if (this.state.profileDropdown !== 'Profile') {
         this.props.showModal(null);
+        this.props.editingProfileDone();
       }
     });
   };
