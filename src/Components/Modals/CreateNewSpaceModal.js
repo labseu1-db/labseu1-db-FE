@@ -61,7 +61,6 @@ class CreateNewSpaceModal extends Component {
     const { organisation } = this.props;
 
     if (isEmpty(organisation)) {
-      console.log(organisation);
       return <Spinner />;
     } else {
       const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) => ({
@@ -124,7 +123,6 @@ class CreateNewSpaceModal extends Component {
                       disabled={!this.state.spaceName.length > 0}
                       onClick={(e) => {
                         this.addSpaceToDatabase();
-                        console.log('clic');
                         this.handleClose();
                       }}
                     >
