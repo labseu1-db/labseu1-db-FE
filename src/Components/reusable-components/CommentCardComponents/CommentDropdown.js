@@ -16,7 +16,7 @@ export class CommentDropdown extends React.Component {
     });
   };
 
-  unMarkAsDecision = e => {
+  removeDecision = e => {
     e.preventDefault();
     let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
     commentRef.update({
@@ -32,7 +32,7 @@ export class CommentDropdown extends React.Component {
             <Dropdown.Item text="Mark as Decision" onClick={e => this.markAsDecision(e)} />
           )}
           {this.props.isCommentDecided && (
-            <Dropdown.Item text="Remove decision" onClick={e => this.unMarkAsDecision(e)} />
+            <Dropdown.Item text="Remove decision" onClick={e => this.removeDecision(e)} />
           )}
           {localStorage.getItem('uuid') === this.props.createdByUserId && (
             <Dropdown.Item text="Edit Comment" onClick={() => this.props.setIsUpdating(true)} />

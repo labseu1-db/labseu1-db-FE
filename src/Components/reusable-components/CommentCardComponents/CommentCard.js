@@ -5,11 +5,11 @@ import { compose } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import icons
-import heartIconBlack from '../../images/icon-heart-black.svg';
-import heartIconRed from '../../images/icon-heart-red.svg';
+import heartIconBlack from '../../../images/icon-heart-black.svg';
+import heartIconRed from '../../../images/icon-heart-red.svg';
 
 //Import components
-import UpdateComment from '../reusable-components/UpdateComment';
+import UpdateComment from './UpdateComment';
 import CommentDropdown from './CommentDropdown';
 
 //Main component
@@ -63,6 +63,7 @@ export class CommentCard extends React.Component {
       isCommentUpdated,
       isCommentDecided
     } = this.props;
+
     const dateInfo = new Date(this.props.commentUpdatedAt);
     const date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
       '0' + dateInfo.getMinutes()

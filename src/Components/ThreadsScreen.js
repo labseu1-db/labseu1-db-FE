@@ -8,8 +8,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 import BackToButton from './reusable-components/BackToButton';
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ThreadInformationCard from './reusable-components/ThreadInformationCard';
-import CommentCard from './reusable-components/CommentCard';
-import NewCommentCard from './reusable-components/NewCommentCard';
+import CommentCard from './reusable-components/CommentCardComponents/CommentCard';
+import NewCommentCard from './reusable-components/CommentCardComponents/NewCommentCard';
 
 //Import actions
 import { resetThread } from '../redux/actions/actionCreators';

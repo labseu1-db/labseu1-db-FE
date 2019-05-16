@@ -6,10 +6,10 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
-import ScreenButton from '../reusable-components/ScreenButton';
+import ScreenButton from '../ScreenButton';
 
 //Import icons
-import IconPenWhite from '../../images/icon-pen-white.svg';
+import IconPenWhite from '../../../images/icon-pen-white.svg';
 
 //Main component
 export class NewCommentCard extends React.Component {
