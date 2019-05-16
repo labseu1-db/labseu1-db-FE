@@ -7,7 +7,13 @@ import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
+import {
+  showModal,
+  resetThread,
+  setActiveOrg,
+  switchSpaces,
+  resetSpace
+} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
@@ -50,7 +56,7 @@ export class NavBar extends Component {
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map((org) => ({
+      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
         key: org.orgName,
         text: org.orgName,
         value: `${org.id}`
@@ -74,13 +80,15 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to='/createneworganisation' />;
+        return <Redirect to="/createneworganisation" />;
       }
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt='user' />}
+              {this.props.user.profileUrl && (
+                <StyledImage src={this.props.user.profileUrl} alt="user" />
+              )}
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
@@ -98,12 +106,12 @@ export class NavBar extends Component {
               )}
             </InnerContainerHorizontal>
             <div>
-              <Icon name='cog' />
+              <Icon name="cog" />
             </div>
           </HeaderContainer>
           <InnerContainer>
             <HomeContainer>
-              <img src={homeIcon} alt='home icon' />
+              <img src={homeIcon} alt="home icon" />
               <span
                 onClick={() => {
                   this.props.resetSpace();
@@ -113,18 +121,27 @@ export class NavBar extends Component {
                 Home
               </span>
             </HomeContainer>
-
+            <FollowUpContainer>
+              <Icon.Group className="clipboard" size="large">
+                <Icon name="clipboard outline" />
+              </Icon.Group>
+              <div className="text" onClick={this.handleFollowUpClick}>
+                Follow up
+              </div>
+            </FollowUpContainer>
             <div>
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <Icon name='building outline' size='large' />
+                    <Icon name="building outline" size="large" />
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
                         activeOrg={this.props.activeOrg}
                         orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
+                        setSelectedOrgToLocalStorage={
+                          this.setSelectedOrgToLocalStorage
+                        }
                       />
                       //********************************************** */
                     )}
@@ -137,7 +154,7 @@ export class NavBar extends Component {
                       {spacesForActiveOrg.map((space, index) => (
                         <div key={index}>
                           <span
-                            onClick={(event) => {
+                            onClick={event => {
                               event.preventDefault();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
@@ -161,20 +178,28 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
+    user: state.firestore.ordered.filteredUser
+      ? state.firestore.ordered.filteredUser[0]
+      : '',
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
+      ? state.firestore.ordered.orgsInWhichUser
+      : [],
     // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
+      ? state.firestore.ordered.filteredSpaces
+      : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
     activeModal: state.modal.activeModal
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -190,8 +215,11 @@ const mapDispatchToProps = (dispatch) => {
 
 //Connect to Firestore
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -201,12 +229,15 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
+        where: [
+          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
+          ['orgId', '==', props.activeOrg]
+        ],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichUser'
       }
       // {
@@ -280,6 +311,31 @@ const HomeContainer = styled.div`
   span:hover {
     color: #f64e49;
     cursor: pointer;
+  }
+`;
+
+const FollowUpContainer = styled.div`
+  .text {
+    padding-left: 45px;
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    &:hover {
+      color: #f64e49;
+      cursor: pointer;
+    }
+  }
+  .clipboard {
+    width: 1.25rem;
+    position: absolute;
+    right: 249px;
+    margin-top: 11px;
+    &:hover {
+      cursor: pointer;
+      color: blue;
+    }
   }
 `;
 
