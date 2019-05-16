@@ -4,18 +4,18 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal } from '../redux/actions/actionCreators';
+import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
-import { setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
 
+//Import components
 import Spinner from './semantic-components/Spinner';
 
 //Import icons
-import plusIcon from '../images/icon-plus-lightgray.svg';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
@@ -115,7 +115,7 @@ export class NavBar extends Component {
               <span
                 onClick={() => {
                   this.props.resetSpace();
-                  this.props.showModal(null);
+                  this.props.resetThread();
                 }}>
                 Home
               </span>
@@ -136,9 +136,7 @@ export class NavBar extends Component {
                       //********************************************** */
                     )}
                   </OrgContainer>
-                  <div>
-                    <img src={plusIcon} alt="plus icon" />
-                  </div>
+                  <CreateNewSpaceModal {...this.props} />
                 </OuterOrgContainer>
                 <SpaceContainer>
                   {spacesForActiveOrg && (
@@ -148,6 +146,7 @@ export class NavBar extends Component {
                           <span
                             onClick={event => {
                               event.preventDefault();
+                              this.props.resetThread();
                               this.props.switchSpaces(space.id);
                             }}>
                             {space.spaceName}
@@ -188,6 +187,7 @@ const mapDispatchToProps = dispatch => {
       setActiveOrg,
       switchSpaces,
       resetSpace,
+      resetThread,
       showModal
     },
     dispatch
@@ -210,12 +210,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', '==', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', '==', props.uuid],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichUser'
       }
       // {

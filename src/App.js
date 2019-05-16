@@ -11,6 +11,7 @@ import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
 import CreateNewOrganisation from './Components/CreateNewOrganisation';
+import ThreadsScreen from './Components/ThreadsScreen';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
       <div>
         <Route exact path="/register" render={props => <Register {...props} />} />
         <Route exact path="/login" render={props => <Login {...props} />} />
+
         <Route exact path="/homescreen" render={props => <FakeHome {...props} />} />
         <Route exact path="/passwordlesssubmit" render={props => <PasswordlessSubmit {...props} />} />
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
@@ -27,6 +29,7 @@ class App extends Component {
           render={props => <ForgotPassword {...props} />}
         />
         <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
+        <Route exact path="/thread/:id" render={props => <ThreadsScreen {...props} />} />
       </div>
     );
   }

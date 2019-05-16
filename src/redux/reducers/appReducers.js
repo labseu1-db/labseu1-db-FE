@@ -50,3 +50,14 @@ export function editingProfileStatus(state = false, action) {
       return state;
   }
 }
+
+export function threadId(state = '', action) {
+  switch (action.type) {
+    case types.SET_ACTIVE_THREAD:
+      return action.payload;
+    case types.RESET_THREAD:
+      return '';
+    default:
+      return state;
+  }
+}

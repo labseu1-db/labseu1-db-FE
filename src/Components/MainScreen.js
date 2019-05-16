@@ -15,7 +15,7 @@ import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 import Placeholder from './reusable-components/Placeholder';
 
-import { showModal } from '../redux/actions/actionCreators';
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 import CreateThreadModal from './Modals/CreateThreadModal';
 import UserProfile from './UserProfile';
 
@@ -27,10 +27,12 @@ class MainScreen extends React.Component {
     }
     return (
       <StyledMainScreen>
+         
         {this.props.activeModal === 'CreateThreadModal' && (
           <CreateThreadModal
             shoudlBeOpen={true}
             showModal={this.props.showModal}
+            setActiveThread={this.props.setActiveThread}
             activeModal={this.props.activeModal}
           />
         )}
@@ -63,7 +65,7 @@ class MainScreen extends React.Component {
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
-            let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
               <ThreadCard
                 key={t.id}
@@ -74,6 +76,7 @@ class MainScreen extends React.Component {
                 heading={t.threadName}
                 info={t.threadTopic}
                 checked="true"
+                onClick={() => this.props.setActiveThread(t.id)}
               />
             );
           })}
@@ -108,7 +111,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ showModal, setActiveThread }, dispatch);
 };
 
 export default compose(
@@ -120,7 +123,8 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['orgId', '==', props.activeOrg]]
+        where: [['orgId', '==', props.activeOrg]],
+        orderBy: ['threadCreatedAt', 'desc']
       }
     ];
   })

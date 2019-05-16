@@ -14,6 +14,13 @@ export const setActiveOrg = orgId => {
   };
 };
 
+export const setActiveThread = threadId => {
+  return {
+    type: types.SET_ACTIVE_THREAD,
+    payload: threadId
+  };
+};
+
 export const switchSpaces = spaceId => {
   return { type: types.SHOW_SPACES_THREADS, payload: spaceId };
 };
@@ -36,4 +43,7 @@ export const editingProfile = () => {
 
 export const editingProfileDone = () => {
   return { type: types.EDITING_PROFILE_DONE };
+};
+export const resetThread = () => {
+  return { type: types.RESET_THREAD };
 };
