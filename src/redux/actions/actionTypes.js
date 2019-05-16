@@ -1,4 +1,6 @@
 export const RENDER_MODAL = 'RENDER_MODAL';
 export const SET_ACTIVE_ORG = 'SET_ACTIVE_ORG';
+export const SET_ACTIVE_THREAD = 'SET_ACTIVE_THREAD';
 export const SHOW_SPACES_THREADS = 'SHOW_SPACES_THREADS';
 export const RESET_SPACE = 'RESET_SPACE';
+export const RESET_THREAD = 'RESET_THREAD';
