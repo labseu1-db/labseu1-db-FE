@@ -57,7 +57,9 @@ function SpaceThreads(props) {
       {props.threads.length > 0 &&
         props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt);
-          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
+            '0' + dateInfo.getMinutes()
+          ).slice(-2)}`;
 
           return (
             <ThreadCard

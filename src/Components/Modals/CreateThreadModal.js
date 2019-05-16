@@ -99,6 +99,12 @@ class CreateThreadModal extends Component {
           whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
         }
       )
+      .then(() => {
+        let threadRef = this.props.firestore.collection('threads').doc(this.threadId);
+        let whenUserHasSeen = {};
+        whenUserHasSeen[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
+        threadRef.update(whenUserHasSeen);
+      })
       .then(() => this.props.showModal(null))
       .then(() => this.props.setActiveThread(this.threadId))
       .catch(err => console.log(err));
