@@ -27,7 +27,9 @@ export class UpdateComment extends React.Component {
     e.preventDefault();
     let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
     commentRef.update({
-      commentBody: this.state.text
+      commentBody: this.state.text,
+      isCommentUpdated: true,
+      commentUpdatedAt: Date.now()
     });
   };
 
@@ -35,7 +37,7 @@ export class UpdateComment extends React.Component {
     return (
       <StyledCommentContainer
         onSubmit={e => {
-          this.props.updateIsUpdating(false);
+          this.props.setIsUpdating(false);
           this.updateComment(e);
           this.clearInput();
         }}>

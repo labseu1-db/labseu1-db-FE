@@ -19,6 +19,7 @@ export class CommentCard extends React.Component {
   state = {
     didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid')),
     isUpdating: false,
+    isHovering: false,
     text: this.props.content
   };
 
@@ -41,24 +42,56 @@ export class CommentCard extends React.Component {
     });
   };
 
+  setIsHovering = boolean => {
+    this.setState({
+      isHovering: boolean
+    });
+  };
+
+  setIsCommentUpdated = boolean => {
+    this.setState({
+      isCommentUpdated: boolean
+    });
+  };
+
+  dateInfo = new Date(this.props.commentUpdatedAt);
+  date = `${this.dateInfo.getMonth()}/${this.dateInfo.getDate()} ${this.dateInfo.getHours()}:${this.dateInfo.getMinutes()}`;
+
   render() {
-    console.log(this.state.isUpdating);
-    const { img, createdBy, content, commentId, likes, createdByUserId } = this.props;
+    const {
+      img,
+      createdBy,
+      content,
+      commentId,
+      likes,
+      createdByUserId,
+      commentUpdatedAt,
+      isCommentUpdated
+    } = this.props;
     return (
-      <StyledCommentContainer>
-        <Dropdown>
-          <Dropdown.Menu>
-            <Dropdown.Item text="Mark as Decision" />
-            {localStorage.getItem('uuid') === createdByUserId && (
-              <Dropdown.Item text="Edit Comment" onClick={() => this.setIsUpdating(true)} />
-            )}
-            {localStorage.getItem('uuid') === createdByUserId && (
-              <Dropdown.Item text="Delete Comment" onClick={() => this.deleteComment(commentId)} />
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
+      <StyledCommentContainer
+        onMouseEnter={() => this.setIsHovering(true)}
+        onMouseLeave={() => this.setIsHovering(false)}>
+        {this.state.isHovering && (
+          <Dropdown>
+            <Dropdown.Menu>
+              <Dropdown.Item text="Mark as Decision" />
+              {localStorage.getItem('uuid') === createdByUserId && (
+                <Dropdown.Item text="Edit Comment" onClick={() => this.setIsUpdating(true)} />
+              )}
+              {localStorage.getItem('uuid') === createdByUserId && (
+                <Dropdown.Item text="Delete Comment" onClick={() => this.deleteComment(commentId)} />
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
         {this.state.isUpdating && (
-          <UpdateComment commentId={commentId} content={content} setIsUpdating={this.setIsUpdating} />
+          <UpdateComment
+            commentId={commentId}
+            content={content}
+            setIsUpdating={this.setIsUpdating}
+            setIsCommentUpdated={this.setIsCommentUpdated}
+          />
         )}
         {!this.state.isUpdating && (
           <StyledImageContainer>
@@ -70,6 +103,9 @@ export class CommentCard extends React.Component {
           <StyledRightContainer>
             <StyledAuthorsName>{createdBy}</StyledAuthorsName>
             <StyledContent>{content}</StyledContent>
+            {isCommentUpdated && this.state.isHovering && (
+              <StyledUpdatedMessage>Updated at {this.date}</StyledUpdatedMessage>
+            )}
             <StyledLikesContainer>
               {!this.state.didUserLikeComment && (
                 <img
@@ -177,6 +213,14 @@ const StyledLikesContainer = styled.div`
     color: #f64e49;
     font-weight: 600;
   }
+`;
+
+const StyledUpdatedMessage = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #bdc3c9;
+  font-size: 0.8rem;
 `;
 
 const mapStateToProps = state => {

@@ -47,6 +47,8 @@ export class ThreadsScreen extends React.Component {
                 likes={c.arrayOfUserIdsWhoLiked.length}
                 arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
                 isCommentDecided={c.isCommentDecided}
+                isCommentUpdated={c.isCommentUpdated}
+                commentUpdatedAt={c.commentUpdatedAt}
               />
             );
           })}

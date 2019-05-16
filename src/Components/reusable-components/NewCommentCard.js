@@ -36,6 +36,7 @@ export class NewCommentCard extends React.Component {
         commentCreatedByUserId: localStorage.getItem('uuid'),
         commentCreatedByUserName: this.props.profile.fullName,
         isCommentDecided: false,
+        isCommentUpdated: false,
         orgId: this.props.thread.orgId,
         threadId: this.props.thread.id,
         threadName: this.props.thread.threadName
