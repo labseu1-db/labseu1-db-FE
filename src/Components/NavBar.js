@@ -7,7 +7,14 @@ import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
+import {
+  showModal,
+  resetThread,
+  setActiveOrg,
+  switchSpaces,
+  resetSpace,
+  editingProfileDone
+} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
@@ -37,6 +44,9 @@ export class NavBar extends Component {
       }
       if (this.state.profileDropdown === 'Profile') {
         this.props.showModal('Profile');
+      }
+      if (this.state.profileDropdown !== 'Profile') {
+        this.props.showModal(null);
       }
     });
   };
@@ -114,6 +124,8 @@ export class NavBar extends Component {
               <img src={homeIcon} alt="home icon" />
               <span
                 onClick={() => {
+                  this.props.showModal(null);
+                  this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
                 }}>
@@ -146,6 +158,7 @@ export class NavBar extends Component {
                           <span
                             onClick={event => {
                               event.preventDefault();
+                              this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
                             }}>
@@ -188,7 +201,8 @@ const mapDispatchToProps = dispatch => {
       switchSpaces,
       resetSpace,
       resetThread,
-      showModal
+      showModal,
+      editingProfileDone
     },
     dispatch
   );

@@ -13,6 +13,7 @@ import {
 } from '../../redux/actions/actionCreators';
 
 function ProfileCard(props) {
+  console.log(props.orgs);
   return (
     <StyledProfileContainer>
       <ProfileCardUserRow
@@ -74,7 +75,7 @@ export default compose(
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', '==', props.uuid],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgs'
       }
     ];
