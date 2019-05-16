@@ -7,7 +7,7 @@ function ProfileCardOrgsField(props) {
     <StyledProfileCardOrgsField>
       {props.orgs &&
         props.orgs.map(org => {
-          return <ProfileOrgField org={org} user={props.user} />;
+          return <ProfileOrgField key={org.id} org={org} user={props.user} />;
         })}
     </StyledProfileCardOrgsField>
   );

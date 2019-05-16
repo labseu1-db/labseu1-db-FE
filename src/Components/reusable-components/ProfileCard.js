@@ -21,6 +21,7 @@ function ProfileCard(props) {
         secondOnClick={props.editingProfile}
         editingProfileStatus={props.editingProfileStatus}
         editingProfileDone={props.editingProfileDone}
+        uuid={props.uuid}
       />
       <ProfileCardOrgsField orgs={props.orgs} user={props.user} />
     </StyledProfileContainer>

@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withFirestore } from 'react-redux-firebase';
 
 class ProfileCardUserRow extends React.Component {
   constructor(props) {
@@ -22,13 +25,22 @@ class ProfileCardUserRow extends React.Component {
   onSubmitHandler = event => {
     if (event.which === 13 || event.keyCode === 13) {
       event.preventDefault();
-      console.log('Hell');
+      let ref = this.props.firestore.collection('users').doc(this.props.uuid);
+      ref
+        .update({
+          fullName: this.state.fullName
+        })
+        .then(() => {
+          this.props.editingProfileDone();
+        });
     }
   };
 
-  escFunction = () => {
-    if (this.props.editingProfileStatus) {
+  escFunction = event => {
+    if (this.props.editingProfileStatus && event.which === 27) {
       this.props.editingProfileDone();
+    } else {
+      this.onChangeHandler(event);
     }
   };
   render() {
@@ -65,18 +77,32 @@ class ProfileCardUserRow extends React.Component {
   }
 }
 
-export default ProfileCardUserRow;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = {};
+
+export default compose(
+  withFirestore,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(ProfileCardUserRow);
 
 const StyledCancel = styled.span`
   font-size: 11px;
   white-space: pre;
   font-weight: 300;
+  color: rgb(125, 135, 141);
 `;
 
 const StyledNameInput = styled.input`
   font-size: 32px;
   width: 40%;
   border: 1px solid rgb(55, 71, 80);
+  color: rgb(55, 71, 80);
 `;
 
 const StyledNameSubmitForm = styled.form`
