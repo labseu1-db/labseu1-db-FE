@@ -130,7 +130,14 @@ export class NavBar extends Component {
               <Icon.Group className="clipboard" size="large">
                 <Icon name="clipboard outline" />
               </Icon.Group>
-              <div className="text" onClick={() => this.props.showFollowUp()}>
+              <div
+                className="text"
+                onClick={() => {
+                  this.props.showFollowUp();
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                }}
+              >
                 Follow up
               </div>
             </FollowUpContainer>
