@@ -4,15 +4,11 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import styled from 'styled-components';
 
-//Import icons/images
-import placeholder from '../images/placeholder-homescreen.svg';
-
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ThreadCard from './reusable-components/ThreadCard';
-import Placeholder from './reusable-components/Placeholder';
 
-import { showModal } from '../redux/actions/actionCreators';
+import { setActiveThread, hideFollowUp } from '../redux/actions/actionCreators';
 
 //Main component
 class FollowUp extends React.Component {
@@ -25,6 +21,30 @@ class FollowUp extends React.Component {
             info="Get back to the things you've marked as follow up."
           />
         </StyledFirstRow>
+
+        {/*Loop trough all the threads that are associated with the orgId*/}
+        {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
+        {this.props.threads.length > 0 &&
+          this.props.threads.map(t => {
+            let dateInfo = new Date(t.threadCreatedAt);
+            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+            return (
+              <ThreadCard
+                key={t.id}
+                createdBy={t.threadCreatedByUserName}
+                createdAt={date}
+                spaceId={t.spaceId}
+                threadId={t.id}
+                heading={t.threadName}
+                info={t.threadTopic}
+                checked="true"
+                onClick={() => {
+                  this.props.setActiveThread(t.id);
+                  this.props.hideFollowUp();
+                }}
+              />
+            );
+          })}
       </StyledFollowUp>
     );
   }
@@ -34,12 +54,17 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : [],
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : ''
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ setActiveThread, hideFollowUp }, dispatch);
 };
 
 export default compose(
@@ -51,7 +76,7 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'spaces'
+        collection: 'users'
       }
     ];
   })
