@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
@@ -75,6 +75,9 @@ export class NavBar extends Component {
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to='/createneworganisation' />;
+      }
+      if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
+        return <Spinner />;
       }
       return (
         <NavBarContainer>
