@@ -47,3 +47,11 @@ export const editingProfileDone = () => {
 export const resetThread = () => {
   return { type: types.RESET_THREAD };
 };
+
+export const renderProfile = () => {
+  return { type: types.RENDER_PROFILE };
+};
+
+export const notRenderProfile = () => {
+  return { type: types.NOT_RENDER_PROFILE };
+};

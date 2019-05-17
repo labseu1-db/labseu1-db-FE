@@ -61,3 +61,14 @@ export function threadId(state = '', action) {
       return state;
   }
 }
+
+export function profileRenderStatus(state = false, action) {
+  switch (action.type) {
+    case types.RENDER_PROFILE:
+      return true;
+    case types.NOT_RENDER_PROFILE:
+      return false;
+    default:
+      return state;
+  }
+}

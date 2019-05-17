@@ -13,5 +13,6 @@ export const rootReducer = combineReducers({
   spaceId: reducers.spaceId,
   resetPassword: reducers.resetPassword,
   editingProfileStatus: reducers.editingProfileStatus,
-  threadId: reducers.threadId
+  threadId: reducers.threadId,
+  profileRenderStatus: reducers.profileRenderStatus
 });
