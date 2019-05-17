@@ -79,7 +79,7 @@ class CreateNewOrganisation extends Component {
     let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
 
     //aave all collected data about organisation in firestore
-    this.props.firestore
+    return this.props.firestore
       .set(
         { collection: 'organisations', doc: orgId },
         {
@@ -92,7 +92,7 @@ class CreateNewOrganisation extends Component {
           arrayOfAdminsIds: [localStorage.getItem('uuid')]
         }
       )
-      .then(data => {
+      .then(() => {
         localStorage.setItem('activeOrg', orgId);
       });
   };
@@ -124,7 +124,7 @@ class CreateNewOrganisation extends Component {
 
       //add each space in users collection in array (therefore we need to use update instead of add/set)
       let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-      userRef.update({
+      return userRef.update({
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
         arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
       });
