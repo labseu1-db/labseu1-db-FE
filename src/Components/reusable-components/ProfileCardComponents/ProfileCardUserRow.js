@@ -62,7 +62,8 @@ class ProfileCardUserRow extends React.Component {
           content="Change Password"
           border="solid 0.5px #37475026"
           top="0px"
-          right="125px"
+          right="0px"
+          margin="6.5vw"
           onClick={onClick}
         />
         <ProfileCardButton
@@ -120,7 +121,6 @@ const StyledNameSubmitForm = styled.form`
 const StyledFirstRow = styled.div`
   display: flex;
   position: relative;
-  width: 100%;
   img {
     width: 95px;
     height: 95px;

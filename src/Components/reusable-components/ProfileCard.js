@@ -31,8 +31,8 @@ function ProfileCard(props) {
 const StyledProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 28px 20px 20px;
-  margin-bottom: 40px;
+  padding: 4vh 3vh 3vh 3vh;
+  margin-bottom: 4vh;
   border-radius: 8px;
   background-color: rgb(255, 255, 255);
   box-shadow: 0px 0px 10px -8px rgba(0, 0, 0, 1);
