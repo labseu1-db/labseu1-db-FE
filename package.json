@@ -16,6 +16,7 @@
     "redux-firestore": "0.7.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.1",
+    "stripe": "^7.0.0",
     "styled-components": "^4.2.0"
   },
   "scripts": {
