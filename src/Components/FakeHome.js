@@ -12,6 +12,7 @@ import SpaceThreads from './SpaceThreads';
 import ThreadsScreen from './ThreadsScreen';
 
 import { showModal } from '../redux/actions/actionCreators';
+import UserProfile from './UserProfile';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -34,6 +35,7 @@ class FakeHome extends Component {
             {this.props.spaceId && !this.props.threadId && <SpaceThreads {...this.props} />}
             {!this.props.spaceId && !this.props.threadId && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
+            {this.props.profileRenderStatus && <UserProfile {...this.props} />}
           </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
@@ -50,7 +52,8 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId,
-    threadId: state.threadId
+    threadId: state.threadId,
+    profileRenderStatus: state.profileRenderStatus
   };
 };
 
