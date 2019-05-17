@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
 import BackToButton from './reusable-components/BackToButton';
@@ -16,16 +16,29 @@ import { resetThread } from '../redux/actions/actionCreators';
 
 //Main component
 export class ThreadsScreen extends React.Component {
+  componentDidMount() {
+    let threadRef = this.props.firestore.collection('threads').doc(this.props.threadId);
+    let whenUserHasSeen = {};
+    whenUserHasSeen[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
+    threadRef.update(whenUserHasSeen);
+  }
+
+  componentWillUnmount() {
+    let threadRef = this.props.firestore.collection('threads').doc(this.props.threadId);
+    let whenUserHasSeen = {};
+    whenUserHasSeen[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
+    threadRef.update(whenUserHasSeen);
+  }
   render() {
     return (
       <StyledThreadContent>
         <BackToButton onClick={this.props.resetThread} />
-        {this.props.activeThread.threadName && (
+        {this.props.activeThread && this.props.activeThread.threadName && (
           <StyledHeadingContainer>
             <ScreenHeading heading={this.props.activeThread.threadName} />
           </StyledHeadingContainer>
         )}
-        {this.props.activeThread.threadName && (
+        {this.props.activeThread && this.props.activeThread.threadName && (
           <ThreadInformationCard
             img="http://lorempixel.com/480/480"
             createdBy={this.props.activeThread.threadCreatedByUserName}
@@ -90,6 +103,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
+  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
