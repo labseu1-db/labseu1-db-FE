@@ -101,10 +101,13 @@ const StyledCancel = styled.span`
 
 const StyledNameInput = styled.input`
   font-size: 32px;
-  width: 70%;
+  max-width: 14vw;
   border: none;
   font-weight: 300;
   border-bottom: 2px solid #3d4856;
+  @media screen and (max-width: 1500px) {
+    width: 12vw;
+  }
   &:focus {
     border-bottom: 2px solid #6c48f2;
     outline: none;

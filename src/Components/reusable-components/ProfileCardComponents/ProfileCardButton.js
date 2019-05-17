@@ -24,7 +24,8 @@ const ProfileCardButtonStyled = styled.div`
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  padding: 0px 24px;
+  padding: 0px 1.25vw;
+  max-width: 10vw;
   color: #374750;
   background: white;
   border-radius: 15px;
@@ -34,6 +35,9 @@ const ProfileCardButtonStyled = styled.div`
   height: 3vh;
   cursor: pointer;
   transition: 0.5s;
+  @media screen and (max-width: 1700px) {
+    font-size: 0.6rem;
+  }
   &:hover {
     background: #5c4df2;
     color: white;
