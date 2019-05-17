@@ -91,16 +91,18 @@ class Register extends Component {
           .where('arrayOfUsersEmails', 'array-contains', this.state.email);
         orgRef
           .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              console.log(doc.id, ' => ', doc.data());
+          .then(qs => {
+            qs.forEach(doc => {
+              console.log(doc.data());
               this.saveUserIdInOrg(doc.id, userId);
+              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
             });
           })
           .catch(function(error) {
             console.log('Error getting documents: ', error);
           });
       })
+
       .catch(function(error) {
         console.log('Error getting documents: ', error);
       });
@@ -134,6 +136,17 @@ class Register extends Component {
       .doc(orgId)
       .update({
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
       })
       .catch(err => console.log(err));
   };
