@@ -7,7 +7,15 @@ import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
+import {
+  showModal,
+  resetThread,
+  setActiveOrg,
+  switchSpaces,
+  resetSpace,
+  showUpgradeScreen,
+  resetUpgradeScreen
+} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
@@ -38,6 +46,7 @@ export class NavBar extends Component {
     this.props.clearFirestore();
     this.props.resetThread();
     this.props.resetSpace();
+    this.props.resetUpgradeScreen();
     localStorage.clear();
   };
 
@@ -45,6 +54,11 @@ export class NavBar extends Component {
     this.setState({ [name]: value }, () => {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
+      }
+      if (this.state.profileDropdown === 'Upgrade Account') {
+        this.props.resetThread();
+        this.props.resetSpace();
+        this.props.showUpgradeScreen();
       }
     });
   };
@@ -54,6 +68,7 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    // this.props.resetUpgradeScreen();
   };
 
   generateDropdownOptions = () => {};
@@ -77,6 +92,11 @@ export class NavBar extends Component {
           key: 'Create Organisation',
           text: 'Create Organisation',
           value: 'Create Organisation'
+        },
+        {
+          key: 'Upgrade Account',
+          text: 'Upgrade Account',
+          value: 'Upgrade Account'
         },
         {
           key: 'Log out',
@@ -119,6 +139,7 @@ export class NavBar extends Component {
                 onClick={() => {
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.resetUpgradeScreen();
                 }}
               >
                 Home
@@ -151,6 +172,7 @@ export class NavBar extends Component {
                             onClick={event => {
                               event.preventDefault();
                               this.props.resetThread();
+                              this.props.resetUpgradeScreen();
                               this.props.switchSpaces(space.id);
                             }}
                           >
@@ -181,7 +203,8 @@ const mapStateToProps = state => {
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    upgradeScreen: state.upgradeScreen
   };
 };
 
@@ -193,7 +216,9 @@ const mapDispatchToProps = dispatch => {
       switchSpaces,
       resetSpace,
       resetThread,
-      showModal
+      showModal,
+      showUpgradeScreen,
+      resetUpgradeScreen
     },
     dispatch
   );

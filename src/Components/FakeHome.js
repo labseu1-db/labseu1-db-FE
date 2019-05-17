@@ -10,6 +10,7 @@ import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 import SpaceThreads from './SpaceThreads';
 import ThreadsScreen from './ThreadsScreen';
+import UpgradeAccount from './UpgradeAccount';
 
 import { showModal } from '../redux/actions/actionCreators';
 
@@ -32,8 +33,9 @@ class FakeHome extends Component {
         <MidRightContainer>
           <SecondDiv>
             {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
-            {!this.props.spaceId && !this.props.threadId && <MainScreen />}
+            {!this.props.spaceId && !this.props.threadId && !this.props.upgradeScreen && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
+            {!this.props.spaceId && !this.props.threadId && this.props.upgradeScreen && <UpgradeAccount />}
           </SecondDiv>
           <ThirdDiv>
             <RightSidebar />
@@ -50,7 +52,8 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId,
-    threadId: state.threadId
+    threadId: state.threadId,
+    upgradeScreen: state.upgradeScreen
   };
 };
 
