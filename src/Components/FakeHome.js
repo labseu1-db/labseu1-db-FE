@@ -12,6 +12,7 @@ import SpaceThreads from './SpaceThreads';
 import ThreadsScreen from './ThreadsScreen';
 
 import { showModal } from '../redux/actions/actionCreators';
+import FollowUp from './FollowUp';
 
 class FakeHome extends Component {
   componentWillUpdate() {
@@ -32,11 +33,17 @@ class FakeHome extends Component {
         <MidRightContainer>
           <SecondDiv>
             {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
-            {!this.props.spaceId && !this.props.threadId && <MainScreen />}
-            {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
+            {!this.props.spaceId &&
+              !this.props.threadId &&
+              this.props.activeModal !== 'FollowUp' && <MainScreen />}
+            {this.props.threadId && (
+              <ThreadsScreen threadId={this.props.threadId} />
+            )}
+            {this.props.activeModal === 'FollowUp' && <FollowUp />}
           </SecondDiv>
           <ThirdDiv>
-            <RightSidebar />
+            {this.props.activeModal === 'FollowUp' && null}
+            {this.props.activeModal !== 'FollowUp' && <RightSidebar />}
           </ThirdDiv>
         </MidRightContainer>
       </StyledHomeScreen>
