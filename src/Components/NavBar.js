@@ -167,10 +167,7 @@ export class NavBar extends Component {
                               this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
-<<<<<<< HEAD
                               this.props.showModal(null);
-=======
->>>>>>> 1b5405d9a3cf4508544d95e0f48961b8e403bb12
                             }}>
                             {space.spaceName}
                           </span>
