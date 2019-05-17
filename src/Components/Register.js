@@ -85,6 +85,22 @@ class Register extends Component {
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
+      .then(res => {
+        const orgRef = this.props.firestore
+          .collection('organisations')
+          .where('arrayOfUsersEmails', 'array-contains', this.state.email);
+        orgRef
+          .get()
+          .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+              console.log(doc.id, ' => ', doc.data());
+              this.saveUserIdInOrg(doc.id, userId);
+            });
+          })
+          .catch(function(error) {
+            console.log('Error getting documents: ', error);
+          });
+      })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
       });
@@ -110,6 +126,16 @@ class Register extends Component {
           this.setState({ ...INITIAL_STATE, error });
         });
     });
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -182,8 +208,7 @@ class Register extends Component {
                 .catch(error => {
                   console.log(error);
                 });
-            }}
-          >
+            }}>
             <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
