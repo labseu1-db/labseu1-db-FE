@@ -63,7 +63,9 @@ class MainScreen extends React.Component {
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
-            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+              '0' + dateInfo.getMinutes()
+            ).slice(-2)}`;
             return (
               <ThreadCard
                 key={t.id}
@@ -73,7 +75,10 @@ class MainScreen extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
-                checked="true"
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                }
                 onClick={() => this.props.setActiveThread(t.id)}
               />
             );

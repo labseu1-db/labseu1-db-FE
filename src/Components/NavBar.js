@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
@@ -34,6 +34,8 @@ export class NavBar extends Component {
 
   handleLogOut = async () => {
     await this.props.firebase.logout();
+    this.props.resetThread();
+    this.props.resetSpace();
     this.props.clearFirestore();
     localStorage.clear();
   };
@@ -57,6 +59,15 @@ export class NavBar extends Component {
 
   generateDropdownOptions = () => {};
   render() {
+    if (
+      isEmpty(
+        this.props.user ||
+          this.props.orgsFromArrayOfUsersIds ||
+          this.props.spacesForActiveOrg
+      )
+    ) {
+      return <Spinner />;
+    }
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
@@ -86,6 +97,7 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
       }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -96,7 +108,6 @@ export class NavBar extends Component {
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
-                  {' '}
                   <Dropdown
                     inline
                     name={'profileDropdown'}
