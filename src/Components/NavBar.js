@@ -13,7 +13,9 @@ import {
   setActiveOrg,
   switchSpaces,
   resetSpace,
-  editingProfileDone
+  editingProfileDone,
+  notRenderProfile,
+  renderProfile
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
@@ -45,10 +47,11 @@ export class NavBar extends Component {
         this.handleLogOut();
       }
       if (this.state.profileDropdown === 'Profile') {
-        this.props.showModal('Profile');
+        this.props.renderProfile();
       }
       if (this.state.profileDropdown !== 'Profile') {
         this.props.showModal(null);
+        this.props.notRenderProfile();
         this.props.editingProfileDone();
       }
     });
@@ -59,6 +62,7 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    this.props.notRenderProfile();
   };
 
   generateDropdownOptions = () => {};
@@ -134,6 +138,7 @@ export class NavBar extends Component {
                   this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.notRenderProfile();
                 }}>
                 Home
               </span>
@@ -168,6 +173,7 @@ export class NavBar extends Component {
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
                               this.props.showModal(null);
+                              this.props.notRenderProfile();
                             }}>
                             {space.spaceName}
                           </span>
@@ -209,7 +215,9 @@ const mapDispatchToProps = dispatch => {
       resetSpace,
       resetThread,
       showModal,
-      editingProfileDone
+      editingProfileDone,
+      renderProfile,
+      notRenderProfile
     },
     dispatch
   );

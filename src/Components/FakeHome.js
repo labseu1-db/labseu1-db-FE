@@ -33,7 +33,7 @@ class FakeHome extends Component {
         <MidRightContainer>
           <SecondDiv>
             {this.props.spaceId && !this.props.threadId && <SpaceThreads {...this.props} />}
-            {!this.props.spaceId && !this.props.threadId && <MainScreen />}
+            {!this.props.spaceId && !this.props.threadId && !this.props.profileRenderStatus && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
             {this.props.profileRenderStatus && <UserProfile {...this.props} />}
           </SecondDiv>
