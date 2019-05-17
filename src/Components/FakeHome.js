@@ -35,15 +35,15 @@ class FakeHome extends Component {
             {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
             {!this.props.spaceId &&
               !this.props.threadId &&
-              this.props.activeModal !== 'FollowUp' && <MainScreen />}
+              !this.props.followUpStatus && <MainScreen />}
             {this.props.threadId && (
               <ThreadsScreen threadId={this.props.threadId} />
             )}
-            {this.props.activeModal === 'FollowUp' && <FollowUp />}
+            {this.props.followUpStatus && <FollowUp />}
           </SecondDiv>
           <ThirdDiv>
-            {this.props.activeModal === 'FollowUp' && null}
-            {this.props.activeModal !== 'FollowUp' && <RightSidebar />}
+            {this.props.followUpStatus && null}
+            {!this.props.followUpStatus && <RightSidebar />}
           </ThirdDiv>
         </MidRightContainer>
       </StyledHomeScreen>
@@ -57,7 +57,8 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId,
-    threadId: state.threadId
+    threadId: state.threadId,
+    followUpStatus: state.followUpStatus
   };
 };
 

@@ -12,7 +12,9 @@ import {
   resetThread,
   setActiveOrg,
   switchSpaces,
-  resetSpace
+  resetSpace,
+  showFollowUp,
+  hideFollowUp
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
@@ -42,6 +44,7 @@ export class NavBar extends Component {
         this.handleLogOut();
       }
     });
+    this.props.hideFollowUp();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -49,6 +52,7 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    this.props.hideFollowUp();
   };
 
   generateDropdownOptions = () => {};
@@ -116,6 +120,7 @@ export class NavBar extends Component {
                 onClick={() => {
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.hideFollowUp();
                 }}
               >
                 Home
@@ -125,10 +130,7 @@ export class NavBar extends Component {
               <Icon.Group className="clipboard" size="large">
                 <Icon name="clipboard outline" />
               </Icon.Group>
-              <div
-                className="text"
-                onClick={() => this.props.showModal('FollowUp')}
-              >
+              <div className="text" onClick={() => this.props.showFollowUp()}>
                 Follow up
               </div>
             </FollowUpContainer>
@@ -161,6 +163,7 @@ export class NavBar extends Component {
                               event.preventDefault();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
+                              this.props.hideFollowUp();
                             }}
                           >
                             {space.spaceName}
@@ -210,7 +213,9 @@ const mapDispatchToProps = dispatch => {
       switchSpaces,
       resetSpace,
       resetThread,
-      showModal
+      showModal,
+      showFollowUp,
+      hideFollowUp
     },
     dispatch
   );

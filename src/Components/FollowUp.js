@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+
+//Import icons/images
+import placeholder from '../images/placeholder-homescreen.svg';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
+import ThreadCard from './reusable-components/ThreadCard';
+import Placeholder from './reusable-components/Placeholder';
 
 import { showModal } from '../redux/actions/actionCreators';
 
