@@ -11,7 +11,7 @@ function ProfileCardButton(props) {
   };
   return (
     <ProfileCardButtonStyled style={style} onClick={onClick}>
-      <div>{content}</div>
+      {content}
     </ProfileCardButtonStyled>
   );
 }

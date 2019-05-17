@@ -63,7 +63,7 @@ class ProfileCardUserRow extends React.Component {
           border="solid 0.5px #37475026"
           top="0px"
           right="0px"
-          margin="15%"
+          margin="6.5vw"
           onClick={onClick}
         />
         <ProfileCardButton
