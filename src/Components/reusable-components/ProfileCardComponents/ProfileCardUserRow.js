@@ -100,7 +100,7 @@ const StyledCancel = styled.span`
 
 const StyledNameInput = styled.input`
   font-size: 32px;
-  width: 40%;
+  width: 70%;
   border: 1px solid rgb(55, 71, 80);
   color: rgb(55, 71, 80);
 `;
