@@ -41,10 +41,7 @@ class ForgotPassword extends Component {
       .then(() => {
         this.props.history.push('/login');
       })
-      .then(() => {
-        alert('Email has been sent!');
-      })
-      .catch((error) => {
+      .catch(error => {
         const INITIAL_STATE = {
           loginEmail: '',
           error: null
@@ -59,7 +56,7 @@ class ForgotPassword extends Component {
     }
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -71,38 +68,36 @@ class ForgotPassword extends Component {
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
           <StyledForm
-            onSubmit={(event) => {
+            onSubmit={event => {
               this.submitHandler(this.state.loginEmail, event);
-            }}
-          >
+            }}>
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
               <StyledSendEmailButton
                 disabled={isInvalid}
-                onClick={(event) => {
+                onClick={event => {
                   this.submitHandler(this.state.loginEmail, event);
-                }}
-              >
+                }}>
                 Send Email &#62;
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
-          <StyledLink to='/login'>Back to Log In</StyledLink>
+          <StyledLink to="/login">Back to Log In</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
@@ -110,7 +105,7 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {};
 };
 
@@ -118,4 +113,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {};
 
 //Connect to Firestore
-export default compose(connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(ForgotPassword);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
+)(ForgotPassword);
