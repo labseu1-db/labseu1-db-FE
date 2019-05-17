@@ -47,6 +47,9 @@ export class NavBar extends Component {
 
   generateDropdownOptions = () => {};
   render() {
+    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
+      return <Spinner />;
+    }
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
@@ -76,9 +79,7 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to='/createneworganisation' />;
       }
-      if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
-        return <Spinner />;
-      }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -87,7 +88,6 @@ export class NavBar extends Component {
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
-                  {' '}
                   <Dropdown
                     inline
                     name={'profileDropdown'}
