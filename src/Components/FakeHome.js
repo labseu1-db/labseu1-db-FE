@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import NavBar from './NavBar';
 import styled from 'styled-components';
 
@@ -14,12 +14,6 @@ import ThreadsScreen from './ThreadsScreen';
 import { showModal } from '../redux/actions/actionCreators';
 
 class FakeHome extends Component {
-  componentWillUpdate() {
-    if (isEmpty(this.props.auth)) {
-      this.props.history.push('/login');
-    }
-  }
-
   render() {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -27,7 +21,7 @@ class FakeHome extends Component {
     return (
       <StyledHomeScreen>
         <FirstDiv>
-          <NavBar />
+          <NavBar {...this.props} />
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>

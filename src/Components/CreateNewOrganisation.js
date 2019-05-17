@@ -178,9 +178,6 @@ class CreateNewOrganisation extends Component {
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   componentDidMount() {
-    if (localStorage.getItem('uuid') === null) {
-      this.props.history.push('/login');
-    }
     this.props.showModal('CreateOrganisationModal');
   }
 
@@ -232,7 +229,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
