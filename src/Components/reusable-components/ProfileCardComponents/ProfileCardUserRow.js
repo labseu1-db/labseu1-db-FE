@@ -101,7 +101,13 @@ const StyledCancel = styled.span`
 const StyledNameInput = styled.input`
   font-size: 32px;
   width: 70%;
-  border: 1px solid rgb(55, 71, 80);
+  border: none;
+  font-weight: 300;
+  border-bottom: 2px solid #3d4856;
+  &:focus {
+    border-bottom: 2px solid #6c48f2;
+    outline: none;
+  }
   color: rgb(55, 71, 80);
 `;
 
