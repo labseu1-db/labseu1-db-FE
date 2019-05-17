@@ -13,7 +13,6 @@ import {
 } from '../../redux/actions/actionCreators';
 
 function ProfileCard(props) {
-  console.log(props.orgs);
   return (
     <StyledProfileContainer>
       <ProfileCardUserRow
