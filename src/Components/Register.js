@@ -93,7 +93,6 @@ class Register extends Component {
           .get()
           .then(qs => {
             qs.forEach(doc => {
-              console.log(doc.data());
               this.saveUserIdInOrg(doc.id, userId);
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
             });
