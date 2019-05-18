@@ -7,23 +7,24 @@ import styled from 'styled-components';
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
+import CheckoutFormContainer from './CheckoutFormContainer';
 
 import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
 class UpgradeAccount extends React.Component {
+  state = {
+    stripeModal: false
+  };
+  openModal = () => {
+    this.setState({ stripeModal: true });
+  };
   render() {
     return (
       <StyledMainScreen>
         {/* This will be payment modal FROM STRIPE */}
-        {/* {this.props.activeModal === 'CreateThreadModal' && (
-          <CreateThreadModal
-            shoudlBeOpen={true}
-            showModal={this.props.showModal}
-            activeModal={this.props.activeModal}
-          />
-        )} */}
+        {this.state.stripeModal === true && <CheckoutFormContainer />}
         <StyledFirstRow>
           {this.props.activeOrg && this.props.currentOrg && (
             <ScreenHeading heading={this.props.currentOrg.orgName} info="Organization billing overview" />
@@ -36,7 +37,7 @@ class UpgradeAccount extends React.Component {
             <li>Invite more employees to your organisation</li>
             <li>used 0GB of space -- 5.00GB remaining</li>
           </ul>
-          <UpgradePlanButton onClick={e => {}}>
+          <UpgradePlanButton onClick={this.openModal}>
             <div>Upgrade Plan</div>
           </UpgradePlanButton>
         </StyledThreadContainer>
