@@ -16,9 +16,12 @@ import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
+
+//Import Modals
 import CreateThreadModal from './Modals/CreateThreadModal';
 import EditSpaceModal from './Modals/EditSpaceModal';
 import DeleteSpaceModal from './Modals/DeleteSpaceModal';
+import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
 function SpaceThreads(props) {
   return (
@@ -36,6 +39,9 @@ function SpaceThreads(props) {
       )}
       {props.activeModal === 'DeleteSpaceModal' && (
         <DeleteSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} space={props.space} />
+      )}
+      {props.activeModal === 'LeaveSpaceModal' && (
+        <LeaveSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} space={props.space} />
       )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
@@ -59,9 +65,14 @@ function SpaceThreads(props) {
                     }}
                   />
                 )}
-                {/* {localStorage.getItem('uuid') !== props.space.spaceCreatedByUserId && (
-                  <Dropdown.Item text="Leave space" />
-                )} */}
+                {localStorage.getItem('uuid') !== props.space.spaceCreatedByUserId && (
+                  <Dropdown.Item
+                    text="Leave space"
+                    onClick={e => {
+                      props.showModal('LeaveSpaceModal');
+                    }}
+                  />
+                )}
               </Dropdown.Menu>
             </Dropdown>
           </StyledDropdown>

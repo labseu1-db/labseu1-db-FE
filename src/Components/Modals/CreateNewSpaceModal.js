@@ -35,25 +35,37 @@ class CreateNewSpaceModal extends Component {
     this.setState({ model_open: false });
   };
 
-  spaceId = uuid();
-  addSpaceToDatabase = () => {
-    this.props.firestore.set(
-      { collection: 'spaces', doc: this.spaceId },
-      {
-        spaceName: this.state.spaceName,
-        spaceCreatedByUserId: window.localStorage.getItem('uuid'),
-        spaceTopic: this.state.spaceTopic,
-        orgId: this.props.activeOrg,
-        arrayOfUserIdsInSpace: this.state.idsInSpace
-      }
-    );
+  cleanInputs = () => {
+    this.setState({
+      spaceName: '',
+      spaceTopic: '',
+      idsInSpace: [this.props.uuid]
+    });
   };
-  addSpaceToUsers = () => {
+
+  addSpaceToDatabase = () => {
+    const spaceId = uuid();
+    this.props.firestore
+      .set(
+        { collection: 'spaces', doc: spaceId },
+        {
+          spaceName: this.state.spaceName,
+          spaceCreatedByUserId: window.localStorage.getItem('uuid'),
+          spaceTopic: this.state.spaceTopic,
+          orgId: this.props.activeOrg,
+          arrayOfUserIdsInSpace: this.state.idsInSpace
+        }
+      )
+      .then(res => this.addSpaceToUsers(spaceId))
+      .then(res => this.cleanInputs());
+  };
+
+  addSpaceToUsers = spaceId => {
     this.state.idsInSpace.map(id => {
-      return this.props.firestore.update(
+      this.props.firestore.update(
         { collection: 'users', doc: id },
         {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.spaceId),
+          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
           arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
         }
       );
@@ -65,7 +77,6 @@ class CreateNewSpaceModal extends Component {
     const { value } = data;
     this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, value] }));
   };
-
   render() {
     const { organisation } = this.props;
 
@@ -138,7 +149,7 @@ class CreateNewSpaceModal extends Component {
                       disabled={!this.state.spaceName.length > 0 || !this.state.spaceTopic.length > 0}
                       onClick={e => {
                         this.addSpaceToDatabase();
-                        this.addSpaceToUsers();
+                        this.props.showModal(null);
                         this.handleClose();
                       }}>
                       Create Space
