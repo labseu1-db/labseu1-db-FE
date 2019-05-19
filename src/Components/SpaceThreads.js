@@ -30,7 +30,9 @@ function SpaceThreads(props) {
           setActiveThread={props.setActiveThread}
         />
       )}
-      {props.activeModal === 'EditSpaceModal' && <EditSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} />}
+      {props.activeModal === 'EditSpaceModal' && (
+        <EditSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} space={props.space} />
+      )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <StyledButtonsContainer>
