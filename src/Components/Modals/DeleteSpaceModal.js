@@ -5,7 +5,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Redux action
-import { showModal } from '../../redux/actions/actionCreators';
+import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 
 //Styled components
 import styled from 'styled-components';
@@ -19,22 +19,38 @@ class DeleteSpaceModal extends Component {
     this.setState({ model_open: false });
   };
 
-  deleteSpaceFromDatabase = () => {
-    this.props.firestore
-      .collection('spaces')
-      .doc(this.props.space.id)
-      .delete();
-  };
-
-  removeSpaceFromUsers = () => {
+  removeSpaceFromUsersAndDeleteSpace = () => {
     this.props.space.arrayOfUserIdsInSpace.map(id => {
-      return this.props.firestore.update(
-        { collection: 'users', doc: id },
-        {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.props.space.spaceName)
-        }
-      );
+      return this.props.firestore
+        .update(
+          { collection: 'users', doc: id },
+          {
+            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
+            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.props.space.spaceName)
+          }
+        )
+        .then(res => {
+          this.props.threads.map(t => {
+            return this.props.firestore
+              .collection('threads')
+              .doc(t.id)
+              .delete()
+              .then(res => {
+                const ref = this.props.firestore.collection('comments').where('threadId', '==', t.id);
+                ref.get().then(function(querySnapshot) {
+                  querySnapshot.forEach(function(doc) {
+                    doc.ref.delete();
+                  });
+                });
+              })
+              .then(res => {
+                this.props.firestore
+                  .collection('spaces')
+                  .doc(this.props.space.id)
+                  .delete();
+              });
+          });
+        });
     });
   };
 
@@ -64,12 +80,9 @@ class DeleteSpaceModal extends Component {
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal(null);
-                    this.deleteSpaceFromDatabase();
-                    this.removeSpaceFromUsers();
+                    this.removeSpaceFromUsersAndDeleteSpace();
                     this.handleClose();
-                    this.props.resetThread();
                     this.props.resetSpace();
-                    this.props.history.push('/homescreen');
                   }}>
                   Delete Space
                 </StyledButtonCreateSpace>
@@ -87,12 +100,13 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+  return bindActionCreators({ showModal, resetSpace }, dispatch);
 };
 
 //Styled Components
@@ -104,13 +118,8 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', `${props.activeOrg}`]],
-        storeAs: 'usersWithinTheOrg'
+        collection: 'threads',
+        where: [['spaceId', '==', props.space.id]]
       }
     ];
   }),

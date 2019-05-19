@@ -31,7 +31,7 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            {this.props.spaceId && !this.props.threadId && <SpaceThreads spaceIdFromHome={this.props.spaceId} />}
+            {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
             {!this.props.spaceId && !this.props.threadId && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
           </SecondDiv>

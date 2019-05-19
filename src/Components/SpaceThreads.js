@@ -21,7 +21,6 @@ import EditSpaceModal from './Modals/EditSpaceModal';
 import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 
 function SpaceThreads(props) {
-  console.log(props.space);
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
@@ -182,11 +181,11 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: ['spaceId', '==', props.spaceIdFromHome]
+        where: ['spaceId', '==', props.spaceId]
       },
       {
         collection: 'spaces',
-        doc: props.spaceIdFromHome
+        doc: props.spaceId
       }
     ];
   })

@@ -19,7 +19,7 @@ class CreateNewSpaceModal extends Component {
     this.state = {
       spaceName: '',
       spaceTopic: '',
-      idsInSpace: []
+      idsInSpace: [this.props.uuid]
     };
   }
 
@@ -63,7 +63,7 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: [this.props.uuid, ...value] });
+    this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, value] }));
   };
 
   render() {
@@ -135,11 +135,7 @@ class CreateNewSpaceModal extends Component {
 
                     <StyledButtonCreateSpace
                       type="submit"
-                      disabled={
-                        !this.state.spaceName.length > 0 ||
-                        !this.state.spaceTopic.length > 0 ||
-                        !this.state.idsInSpace.length > 0
-                      }
+                      disabled={!this.state.spaceName.length > 0 || !this.state.spaceTopic.length > 0}
                       onClick={e => {
                         this.addSpaceToDatabase();
                         this.addSpaceToUsers();
