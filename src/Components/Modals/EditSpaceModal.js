@@ -122,7 +122,13 @@ class EditSpaceModal extends Component {
               />
               <Modal.Actions>
                 <StyledActions>
-                  <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
+                  <StyledButtonCancel
+                    onClick={() => {
+                      this.handleClose();
+                      this.props.showModal(null);
+                    }}>
+                    Cancel
+                  </StyledButtonCancel>
 
                   <StyledButtonCreateSpace
                     type="submit"

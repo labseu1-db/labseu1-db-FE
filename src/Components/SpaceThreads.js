@@ -18,8 +18,10 @@ import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 import CreateThreadModal from './Modals/CreateThreadModal';
 import EditSpaceModal from './Modals/EditSpaceModal';
+import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 
 function SpaceThreads(props) {
+  console.log(props.space);
   return (
     <StyledMainScreen>
       {props.activeModal === 'CreateThreadModal' && (
@@ -33,6 +35,9 @@ function SpaceThreads(props) {
       {props.activeModal === 'EditSpaceModal' && (
         <EditSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} space={props.space} />
       )}
+      {props.activeModal === 'DeleteSpaceModal' && (
+        <DeleteSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} space={props.space} />
+      )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <StyledButtonsContainer>
@@ -44,6 +49,14 @@ function SpaceThreads(props) {
                     text="Edit space"
                     onClick={e => {
                       props.showModal('EditSpaceModal');
+                    }}
+                  />
+                )}
+                {localStorage.getItem('uuid') === props.space.spaceCreatedByUserId && (
+                  <Dropdown.Item
+                    text="Delete space"
+                    onClick={e => {
+                      props.showModal('DeleteSpaceModal');
                     }}
                   />
                 )}
@@ -169,11 +182,11 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: ['spaceId', '==', props.spaceId]
+        where: ['spaceId', '==', props.spaceIdFromHome]
       },
       {
         collection: 'spaces',
-        doc: props.spaceId
+        doc: props.spaceIdFromHome
       }
     ];
   })
