@@ -62,7 +62,7 @@ class CreateNewSpaceModal extends Component {
 
   addSpaceToUsers = spaceId => {
     this.state.idsInSpace.map(id => {
-      this.props.firestore.update(
+      return this.props.firestore.update(
         { collection: 'users', doc: id },
         {
           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
@@ -75,7 +75,7 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, value] }));
+    this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, ...value] }));
   };
   render() {
     const { organisation } = this.props;

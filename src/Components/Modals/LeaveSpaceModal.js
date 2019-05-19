@@ -28,12 +28,12 @@ class LeaveSpaceModal extends Component {
     );
   };
 
-  removeSpaceFromUsers = () => {
+  removeSpaceFromUser = () => {
     this.props.firestore.update(
       { collection: 'users', doc: localStorage.getItem('uuid') },
       {
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.state.spaceName)
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.props.space.spaceName)
       }
     );
   };
