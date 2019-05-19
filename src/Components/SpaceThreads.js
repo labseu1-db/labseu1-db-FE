@@ -39,13 +39,17 @@ function SpaceThreads(props) {
           <StyledDropdown>
             <Dropdown icon="ellipsis horizontal">
               <Dropdown.Menu>
-                <Dropdown.Item
-                  text="Edit space"
-                  onClick={e => {
-                    props.showModal('EditSpaceModal');
-                  }}
-                />
-                <Dropdown.Item text="Leave space" />
+                {localStorage.getItem('uuid') === props.space.spaceCreatedByUserId && (
+                  <Dropdown.Item
+                    text="Edit space"
+                    onClick={e => {
+                      props.showModal('EditSpaceModal');
+                    }}
+                  />
+                )}
+                {/* {localStorage.getItem('uuid') !== props.space.spaceCreatedByUserId && (
+                  <Dropdown.Item text="Leave space" />
+                )} */}
               </Dropdown.Menu>
             </Dropdown>
           </StyledDropdown>
