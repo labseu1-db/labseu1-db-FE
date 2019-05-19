@@ -32,9 +32,9 @@ class EditSpaceModal extends Component {
     this.setState({ model_open: false });
   };
 
-  addSpaceToDatabase = () => {
+  updateSpaceToDatabase = () => {
     this.props.firestore.update(
-      { collection: 'spaces', doc: this.props.sapece.spaceId },
+      { collection: 'spaces', doc: this.props.space.id },
       {
         spaceName: this.state.spaceName,
         spaceTopic: this.state.spaceTopic,
@@ -47,17 +47,31 @@ class EditSpaceModal extends Component {
       return this.props.firestore.update(
         { collection: 'users', doc: id },
         {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.spaceId),
+          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.props.space.id),
           arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
         }
       );
     });
   };
 
+  removeSpaceFromUsers = () => {
+    this.props.space.arrayOfUserIdsInSpace
+      .filter(id => this.state.idsInSpace.indexOf(id) === -1)
+      .map(id => {
+        return this.props.firestore.update(
+          { collection: 'users', doc: id },
+          {
+            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
+            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.state.spaceName)
+          }
+        );
+      });
+  };
+
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: [this.props.uuid, ...value] });
+    this.setState({ idsInSpace: value });
   };
 
   render() {
@@ -80,7 +94,6 @@ class EditSpaceModal extends Component {
               <Header as="h5">Space name</Header>
               <StyledInput
                 name="spaceName"
-                value={this.props.space.spaceName}
                 type="text"
                 required
                 value={this.state.spaceName}
@@ -103,6 +116,7 @@ class EditSpaceModal extends Component {
                 multiple
                 search
                 selection
+                defaultValue={this.state.idsInSpace}
                 options={userIdsOptions}
                 onChange={this.setIdsToState}
               />
@@ -118,11 +132,14 @@ class EditSpaceModal extends Component {
                       !this.state.idsInSpace.length > 0
                     }
                     onClick={e => {
-                      this.addSpaceToDatabase();
+                      e.preventDefault();
+                      this.props.showModal(null);
+                      this.updateSpaceToDatabase();
                       this.addSpaceToUsers();
+                      this.removeSpaceFromUsers();
                       this.handleClose();
                     }}>
-                    Create Space
+                    Edit Space
                   </StyledButtonCreateSpace>
                 </StyledActions>
               </Modal.Actions>
