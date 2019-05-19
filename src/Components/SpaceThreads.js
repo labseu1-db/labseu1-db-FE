@@ -17,6 +17,7 @@ import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
 import CreateThreadModal from './Modals/CreateThreadModal';
+import EditSpaceModal from './Modals/EditSpaceModal';
 
 function SpaceThreads(props) {
   return (
@@ -29,13 +30,19 @@ function SpaceThreads(props) {
           setActiveThread={props.setActiveThread}
         />
       )}
+      {props.activeModal === 'EditSpaceModal' && <EditSpaceModal shoudlBeOpen={true} activeModal={props.activeModal} />}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
         <StyledButtonsContainer>
           <StyledDropdown>
             <Dropdown icon="ellipsis horizontal">
               <Dropdown.Menu>
-                <Dropdown.Item text="Edit space" />
+                <Dropdown.Item
+                  text="Edit space"
+                  onClick={e => {
+                    props.showModal('EditSpaceModal');
+                  }}
+                />
                 <Dropdown.Item text="Leave space" />
               </Dropdown.Menu>
             </Dropdown>

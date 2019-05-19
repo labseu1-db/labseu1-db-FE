@@ -80,19 +80,7 @@ class EditSpaceModal extends Component {
           value: user.id
         }));
       return (
-        <Modal
-          trigger={
-            <div>
-              <img
-                src={plusIcon}
-                alt="plus icon"
-                onClick={this.handleOpen}
-                disabled={isEmpty(localStorage.getItem('activeOrg'))}
-              />
-            </div>
-          }
-          open={this.state.model_open}
-          size="tiny">
+        <Modal open={this.props.shoudlBeOpen} size="tiny">
           <StyledContainer>
             <Modal.Header>
               <div>
