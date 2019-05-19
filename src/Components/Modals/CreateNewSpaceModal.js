@@ -63,7 +63,7 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: value });
+    this.setState({ idsInSpace: [this.props.uuid, ...value] });
   };
 
   render() {
@@ -72,12 +72,13 @@ class CreateNewSpaceModal extends Component {
     if (isEmpty(organisation)) {
       return <Spinner />;
     } else {
-      console.log(this.props.listOfUsersWithinTheOrg);
-      const userIdsOptions = this.props.listOfUsersWithinTheOrg.map(user => ({
-        key: user.id,
-        text: user.fullName,
-        value: user.id
-      }));
+      const userIdsOptions = this.props.listOfUsersWithinTheOrg
+        .filter(user => user.id !== this.props.uuid)
+        .map(user => ({
+          key: user.id,
+          text: user.fullName,
+          value: user.id
+        }));
       return (
         <Modal
           trigger={
