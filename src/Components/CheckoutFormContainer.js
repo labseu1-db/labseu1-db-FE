@@ -7,7 +7,7 @@ class CheckoutFormContainer extends Component {
     return (
       <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
         <div className="example">
-          <h1>React Stripe Elements Example</h1>
+          {/* <h1>Please enter your payment details</h1> */}
           <Elements>
             <CheckoutForm />
           </Elements>

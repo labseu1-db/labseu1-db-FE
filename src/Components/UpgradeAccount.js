@@ -23,8 +23,6 @@ class UpgradeAccount extends React.Component {
   render() {
     return (
       <StyledMainScreen>
-        {/* This will be payment modal FROM STRIPE */}
-        {this.state.stripeModal === true && <CheckoutFormContainer />}
         <StyledFirstRow>
           {this.props.activeOrg && this.props.currentOrg && (
             <ScreenHeading heading={this.props.currentOrg.orgName} info="Organization billing overview" />
@@ -41,6 +39,8 @@ class UpgradeAccount extends React.Component {
             <div>Upgrade Plan</div>
           </UpgradePlanButton>
         </StyledThreadContainer>
+        {/* This will be payment modal FROM STRIPE */}
+        {this.state.stripeModal === true && <CheckoutFormContainer />}
       </StyledMainScreen>
     );
   }

@@ -11,7 +11,8 @@ class CheckoutForm extends Component {
   async submit(ev) {
     // User clicked submit
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
-    let response = await fetch('/charge', {
+    console.log(token);
+    let response = await fetch('http://localhost:9000/charge', {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: token.id
@@ -19,8 +20,9 @@ class CheckoutForm extends Component {
 
     if (response.ok) {
       this.setState({ complete: true });
+      console.log('response:', response);
     } else {
-      console.log('response', response);
+      console.log('response:', response);
     }
   }
 
@@ -28,9 +30,9 @@ class CheckoutForm extends Component {
     if (this.state.complete) return <h1>Purchase Complete</h1>;
     return (
       <div className="checkout">
-        <p>Would you like to complete the purchase?</p>
+        <h2>Please enter your card details below</h2>
         <CardElement />
-        <button onClick={this.submit}>Submit</button>
+        <button onClick={this.submit}>Pay now</button>
       </div>
     );
   }
