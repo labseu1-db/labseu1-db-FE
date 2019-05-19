@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Dropdown } from 'semantic-ui-react';
 
 //Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
@@ -30,16 +31,27 @@ function SpaceThreads(props) {
       )}
       <StyledFirstRow>
         <ScreenHeading heading={props.space.spaceName} info={`Read all the threads from ${props.space.spaceName}`} />
-        <ScreenButton
-          content="Start a thread"
-          icon={penIconWhite}
-          backgroundColor="#5C4DF2"
-          color="white"
-          border="none"
-          onClick={e => {
-            props.showModal('CreateThreadModal');
-          }}
-        />
+        <StyledButtonsContainer>
+          <StyledDropdown>
+            <Dropdown icon="ellipsis horizontal">
+              <Dropdown.Menu>
+                <Dropdown.Item text="Edit space" />
+                <Dropdown.Item text="Leave space" />
+              </Dropdown.Menu>
+            </Dropdown>
+          </StyledDropdown>
+
+          <ScreenButton
+            content="Start a thread"
+            icon={penIconWhite}
+            backgroundColor="#5C4DF2"
+            color="white"
+            border="none"
+            onClick={e => {
+              props.showModal('CreateThreadModal');
+            }}
+          />
+        </StyledButtonsContainer>
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
 
@@ -97,6 +109,27 @@ const StyledFirstRow = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 5vh;
+`;
+
+const StyledButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledDropdown = styled.div`
+  border: 1px solid #bdc3c9;
+  border-radius: 50%;
+  margin: 0;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  i.ellipsis.horizontal.icon {
+    margin: 0;
+  }
 `;
 
 const mapStateToProps = state => {
