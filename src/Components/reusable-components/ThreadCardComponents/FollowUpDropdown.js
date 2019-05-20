@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Semantic components
-import { Dropdown, Button } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 //Main component
 export class FollowUpDropdown extends React.Component {

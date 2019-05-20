@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import {
+  firestoreConnect
+} from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import components
@@ -22,8 +24,6 @@ class FollowUp extends React.Component {
           />
         </StyledFirstRow>
 
-        {/*Loop trough all the threads that are associated with the orgId*/}
-        {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
@@ -38,6 +38,7 @@ class FollowUp extends React.Component {
                 heading={t.threadName}
                 info={t.threadTopic}
                 checked="true"
+                isFollowUpDecided="true"
                 onClick={() => {
                   this.props.setActiveThread(t.id);
                   this.props.hideFollowUp();
@@ -57,9 +58,7 @@ const mapStateToProps = state => {
     threads: state.firestore.ordered.threads
       ? state.firestore.ordered.threads
       : [],
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : ''
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -68,7 +67,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
@@ -76,7 +74,11 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'users'
+        collection: 'threads',
+        where: [
+          ['isFollowUp', '==', true],
+          ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]
+        ]
       }
     ];
   })
