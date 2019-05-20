@@ -95,6 +95,7 @@ class Register extends Component {
             qs.forEach(doc => {
               this.saveUserIdInOrg(doc.id, userId);
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+              localStorage.setItem('activeOrg', doc.id);
             });
           })
           .catch(function(error) {
@@ -117,16 +118,40 @@ class Register extends Component {
     };
 
     e.preventDefault();
-    this.props.firebase.createUser({ email, password }, { fullName, email }).then(() => {
-      this.props.firebase
-        .login({ email, password })
-        .then(res => {
-          this.saveUserToDatabaseAndToLocalStorage(res);
-        })
-        .catch(error => {
-          this.setState({ ...INITIAL_STATE, error });
-        });
-    });
+    this.props.firebase
+      .createUser({ email, password }, { fullName, email })
+      .then(() => {
+        this.props.firebase
+          .login({ email, password })
+          .then(res => {
+            this.saveUserToDatabaseAndToLocalStorage(res);
+          })
+          .catch(error => {
+            this.setState({ ...INITIAL_STATE, error });
+          });
+      })
+      .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch(err => console.log(err));
   };
 
   saveUserIdInOrg = (orgId, userId) => {
