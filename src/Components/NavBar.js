@@ -120,7 +120,7 @@ export class NavBar extends Component {
               {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
-                <div>
+                <StyledDropdown>
                   <Dropdown
                     inline
                     name={'profileDropdown'}
@@ -130,7 +130,7 @@ export class NavBar extends Component {
                     // defaultValue={'hello'}
                     onChange={this.handleDropDownChange}
                   />
-                </div>
+                </StyledDropdown>
               )}
             </InnerContainerHorizontal>
             <div>
@@ -294,6 +294,17 @@ const HeaderContainer = styled.div`
   }
 `;
 
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+`;
+
 const InnerContainerHorizontal = styled.div`
   display: flex;
   align-items: center;
@@ -348,7 +359,7 @@ const OrgContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: rgb(55, 71, 80);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 
   &:hover {
