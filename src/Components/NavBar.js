@@ -20,6 +20,10 @@ import homeIcon from '../images/icon-home-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
+  // componentWillUpdate() {
+  //   this.handleLogOut();
+  // }
+
   state = {
     profileDropdown: ''
   };

@@ -71,67 +71,51 @@ class CreateNewOrganisation extends Component {
 
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   //1. ADD DATA ABOUT ORGANISATION AND USERS TO ORGANISATIONS COLLECTION
-  addOrganisationToDatabase = orgId => {
+  addOrganisationToDatabase = async orgId => {
     let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
       return e;
     });
     //add creators/admins email to the array of users
     let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
 
-    let alreadyRegisteredUsers = this.findExistingUsers(orgId);
-
-    console.log(alreadyRegisteredUsers);
-
-    let userIds = alreadyRegisteredUsers.concat(localStorage.getItem('uuid'));
-
-    console.log(userIds);
-
-    console.log(alreadyRegisteredUsers);
-
-    //aave all collected data about organisation in firestore
-    this.props.firestore
-      .set(
-        { collection: 'organisations', doc: orgId },
-        {
-          orgName: this.state.orgName,
-          isPremium: false,
-          createdByUserId: localStorage.getItem('uuid'),
-          arrayOfUsersEmails: usersAndAdminsEmails,
-          arrayOfUsersIds: userIds,
-          arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
-          arrayOfAdminsIds: [localStorage.getItem('uuid')]
-        }
-      )
-      .then(data => {
-        localStorage.setItem('activeOrg', orgId);
-        alreadyRegisteredUsers.forEach(user => {
-          console.log(user);
-          this.props.firestore.update(
-            { collection: 'users', doc: user },
-            {
-              arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
-              arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
-            }
-          );
-        });
-      });
-  };
-
-  findExistingUsers = orgId => {
-    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
-      return e;
-    });
     let alreadyRegisteredUsers = [];
-    usersEmailsWithoutEmptyStrings.forEach(email => {
+    await usersEmailsWithoutEmptyStrings.forEach(email => {
       let ref = this.props.firestore.collection('users').where('userEmail', '==', email);
       ref.get().then(qs => {
         qs.forEach(doc => {
-          // console.log('hello');
           alreadyRegisteredUsers.push(doc.id);
+          let userIds = alreadyRegisteredUsers.concat(localStorage.getItem('uuid'));
+
+          this.props.firestore
+            .set(
+              { collection: 'organisations', doc: orgId },
+              {
+                orgName: this.state.orgName,
+                isPremium: false,
+                createdByUserId: localStorage.getItem('uuid'),
+                arrayOfUsersEmails: usersAndAdminsEmails,
+                arrayOfUsersIds: userIds,
+                arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
+                arrayOfAdminsIds: [localStorage.getItem('uuid')]
+              }
+            )
+            .then(data => {
+              localStorage.setItem('activeOrg', orgId);
+              alreadyRegisteredUsers.forEach(user => {
+                this.props.firestore.update(
+                  { collection: 'users', doc: user },
+                  {
+                    arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
+                    arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
+                  }
+                );
+              });
+            });
         });
       });
     });
-    return alreadyRegisteredUsers;
+
+    //aave all collected data about organisation in firestore
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
