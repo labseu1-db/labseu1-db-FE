@@ -57,7 +57,10 @@ function SpaceThreads(props) {
       {props.threads.length > 0 &&
         props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt);
-          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
+            '0' + dateInfo.getMinutes()
+          ).slice(-2)}`;
+
           return (
             <ThreadCard
               key={t.id}
@@ -67,10 +70,13 @@ function SpaceThreads(props) {
               threadId={t.id}
               heading={t.threadName}
               info={t.threadTopic}
-              checked="true"
+              whenUserHasSeen={t.whenUserHasSeen}
+              checked={
+                (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+              }
               onClick={() => {
                 props.setActiveThread(t.id);
-                console.log(t.id);
               }}
               currentSpace={props.space.spaceName}
             />

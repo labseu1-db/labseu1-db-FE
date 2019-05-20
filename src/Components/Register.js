@@ -88,6 +88,24 @@ class Register extends Component {
         localStorage.setItem('uuid', userId);
         localStorage.setItem('userEmail', this.state.email);
       })
+      .then(res => {
+        const orgRef = this.props.firestore
+          .collection('organisations')
+          .where('arrayOfUsersEmails', 'array-contains', this.state.email);
+        orgRef
+          .get()
+          .then(qs => {
+            qs.forEach(doc => {
+              this.saveUserIdInOrg(doc.id, userId);
+              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+              localStorage.setItem('activeOrg', doc.id);
+            });
+          })
+          .catch(function(error) {
+            console.log('Error getting documents: ', error);
+          });
+      })
+
       .catch(function(error) {
         console.log('Error getting documents: ', error);
         this.setState({ error });
@@ -116,12 +134,37 @@ class Register extends Component {
             this.setState({ ...INITIAL_STATE, error });
           });
       })
+<<<<<<< HEAD
       .then(() => {
         this.props.history.push('/createneworganisation');
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       });
+=======
+      .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch(err => console.log(err));
+>>>>>>> 5b2d3885a34b8ff8458da92f3be0928089da5ddd
   };
 
   render() {
@@ -194,8 +237,7 @@ class Register extends Component {
                 .catch(error => {
                   console.log(error);
                 });
-            }}
-          >
+            }}>
             <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
