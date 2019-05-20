@@ -39,9 +39,6 @@ class Register extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    if (isLoaded(this.props.auth) && !isEmpty(this.props.auth)) {
-      this.props.history.push('/homescreen');
-    }
   }
 
   handleInputChange = e => {
@@ -50,8 +47,6 @@ class Register extends Component {
 
   saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = res => {
     let userId = uuid();
-    localStorage.setItem('uuid', userId);
-    localStorage.setItem('userEmail', res.profile.email);
     this.props.firestore
       .collection('users')
       .doc(userId)
@@ -64,15 +59,19 @@ class Register extends Component {
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
+      .then(() => {
+        localStorage.setItem('uuid', userId);
+        localStorage.setItem('userEmail', res.profile.email);
+      })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
+        this.setState({ error });
       });
   };
 
   saveUserToDatabaseAndToLocalStorage = res => {
     let userId = uuid();
-    localStorage.setItem('uuid', userId);
-    localStorage.setItem('userEmail', this.state.email);
+
     this.props.firestore
       .collection('users')
       .doc(userId)
@@ -84,6 +83,10 @@ class Register extends Component {
         arrayOfOrgsIds: [],
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
+      })
+      .then(() => {
+        localStorage.setItem('uuid', userId);
+        localStorage.setItem('userEmail', this.state.email);
       })
       .then(res => {
         const orgRef = this.props.firestore
@@ -105,6 +108,7 @@ class Register extends Component {
 
       .catch(function(error) {
         console.log('Error getting documents: ', error);
+        this.setState({ error });
       });
   };
 
@@ -129,6 +133,12 @@ class Register extends Component {
           .catch(error => {
             this.setState({ ...INITIAL_STATE, error });
           });
+      })
+      .then(() => {
+        this.props.history.push('/createneworganisation');
+      })
+      .catch(error => {
+        this.setState({ ...INITIAL_STATE, error });
       })
       .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
   };
