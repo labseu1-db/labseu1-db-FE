@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import { resetPasswordDone } from '../redux/actions/actionCreators';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -39,7 +40,12 @@ class ForgotPassword extends Component {
     this.props.firebase
       .resetPassword(email)
       .then(() => {
-        this.props.history.push('/login');
+        if (this.props.resetPasswordStatus) {
+          this.props.resetPasswordDone();
+          this.props.history.push('/homescreen');
+        } else {
+          this.props.history.push('/login');
+        }
       })
       .catch(error => {
         const INITIAL_STATE = {
@@ -51,7 +57,7 @@ class ForgotPassword extends Component {
   };
 
   componentWillUpdate() {
-    if (!isEmpty(this.props.auth)) {
+    if (!isEmpty(this.props.auth) && !this.props.resetPasswordStatus) {
       this.props.history.push('/homescreen');
     }
   }
@@ -97,7 +103,16 @@ class ForgotPassword extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <StyledLink to="/login">Back to Log In</StyledLink>
+          {!this.props.resetPasswordStatus && <StyledLink to="/login">Back to Log In</StyledLink>}
+          {this.props.resetPasswordStatus && (
+            <StyledSendEmailButton
+              onClick={() => {
+                this.props.history.push('/homescreen');
+                this.props.resetPasswordDone();
+              }}>
+              Cancel
+            </StyledSendEmailButton>
+          )}
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
@@ -106,11 +121,20 @@ class ForgotPassword extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    resetPasswordStatus: state.resetPassword
+  };
 };
 
 //As we are not dispatching anything - this is empty
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      resetPasswordDone
+    },
+    dispatch
+  );
+};
 
 //Connect to Firestore
 export default compose(

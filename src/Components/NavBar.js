@@ -13,6 +13,9 @@ import {
   setActiveOrg,
   switchSpaces,
   resetSpace,
+  editingProfileDone,
+  notRenderProfile,
+  renderProfile,
   showFollowUp,
   hideFollowUp
 } from '../redux/actions/actionCreators';
@@ -45,8 +48,18 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
       }
+      if (this.state.profileDropdown === 'Profile') {
+        this.props.renderProfile();
+      }
+      if (this.state.profileDropdown !== 'Profile') {
+        this.props.showModal(null);
+        this.props.notRenderProfile();
+        this.props.editingProfileDone();
+      }
     });
     this.props.hideFollowUp();
+    this.props.resetSpace();
+    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -54,18 +67,13 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    this.props.notRenderProfile();
     this.props.hideFollowUp();
   };
 
   generateDropdownOptions = () => {};
   render() {
-    if (
-      isEmpty(
-        this.props.user ||
-          this.props.orgsFromArrayOfUsersIds ||
-          this.props.spacesForActiveOrg
-      )
-    ) {
+    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
@@ -82,6 +90,11 @@ export class NavBar extends Component {
           key: this.props.user.fullName,
           text: this.props.user.fullName,
           value: this.props.user.fullName
+        },
+        {
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
         },
         {
           key: 'Create Organisation',
@@ -102,9 +115,7 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && (
-                <StyledImage src={this.props.user.profileUrl} alt="user" />
-              )}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
@@ -129,11 +140,13 @@ export class NavBar extends Component {
               <img src={homeIcon} alt="home icon" />
               <span
                 onClick={() => {
+                  this.props.showModal(null);
+                  this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}
-              >
+                }}>
                 Home
               </span>
             </HomeContainer>
@@ -147,8 +160,7 @@ export class NavBar extends Component {
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}
-              >
+                }}>
                 Follow up
               </div>
             </FollowUpContainer>
@@ -162,9 +174,7 @@ export class NavBar extends Component {
                         // setActiveOrg={this.props.setActiveOrg}
                         activeOrg={this.props.activeOrg}
                         orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={
-                          this.setSelectedOrgToLocalStorage
-                        }
+                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
                       />
                       //********************************************** */
                     )}
@@ -179,11 +189,13 @@ export class NavBar extends Component {
                           <span
                             onClick={event => {
                               event.preventDefault();
+                              this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
+                              this.props.showModal(null);
+                              this.props.notRenderProfile();
                               this.props.hideFollowUp();
-                            }}
-                          >
+                            }}>
                             {space.spaceName}
                           </span>
                         </div>
@@ -204,20 +216,12 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser
-      ? state.firestore.ordered.filteredUser[0]
-      : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
+    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
-      ? state.firestore.ordered.filteredSpaces
-      : [],
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
     activeModal: state.modal.activeModal
   };
@@ -232,6 +236,9 @@ const mapDispatchToProps = dispatch => {
       resetSpace,
       resetThread,
       showModal,
+      editingProfileDone,
+      renderProfile,
+      notRenderProfile,
       showFollowUp,
       hideFollowUp
     },
@@ -255,10 +262,7 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.activeOrg]
-        ],
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
