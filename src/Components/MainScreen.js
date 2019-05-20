@@ -32,7 +32,10 @@ class MainScreen extends React.Component {
           />
         )}
         <StyledFirstRow>
-          <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+          <ScreenHeading
+            heading="Home"
+            info="Catch up on the most recent threads."
+          />
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
@@ -104,8 +107,12 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : [],
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     activeModal: state.modal.activeModal
   };
 };
