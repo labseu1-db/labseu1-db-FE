@@ -134,14 +134,12 @@ class Register extends Component {
             this.setState({ ...INITIAL_STATE, error });
           });
       })
-<<<<<<< HEAD
       .then(() => {
         this.props.history.push('/createneworganisation');
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
-      });
-=======
+      })
       .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
   };
 
@@ -164,7 +162,6 @@ class Register extends Component {
         arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
       })
       .catch(err => console.log(err));
->>>>>>> 5b2d3885a34b8ff8458da92f3be0928089da5ddd
   };
 
   render() {
