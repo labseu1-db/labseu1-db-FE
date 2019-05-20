@@ -12,7 +12,7 @@ class UserManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamEmailAddress: ['', '', '', ''],
+      teamEmailAddress: [''],
       alert: false
     };
   }
@@ -42,42 +42,6 @@ class UserManagement extends Component {
     let re = /(^$|^.*@.*\..*$)/;
     return re.test(email);
   };
-
-  // updateSpaceToDatabase = () => {
-  //   this.props.firestore.update(
-  //     { collection: 'spaces', doc: this.props.space.id },
-  //     {
-  //       spaceName: this.state.spaceName,
-  //       spaceTopic: this.state.spaceTopic,
-  //       arrayOfUserIdsInSpace: this.state.idsInSpace
-  //     }
-  //   );
-  // };
-  // addSpaceToUsers = () => {
-  //   this.state.idsInSpace.map(id => {
-  //     return this.props.firestore.update(
-  //       { collection: 'users', doc: id },
-  //       {
-  //         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.props.space.id),
-  //         arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
-  //       }
-  //     );
-  //   });
-  // };
-
-  // removeSpaceFromUsers = () => {
-  //   this.props.space.arrayOfUserIdsInSpace
-  //     .filter(id => this.state.idsInSpace.indexOf(id) === -1)
-  //     .map(id => {
-  //       return this.props.firestore.update(
-  //         { collection: 'users', doc: id },
-  //         {
-  //           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-  //           arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.state.spaceName)
-  //         }
-  //       );
-  //     });
-  // };
 
   removeOrgFromUser = id => {
     this.props.firestore.update(
@@ -126,14 +90,30 @@ class UserManagement extends Component {
     });
   };
 
+  addUserEmailsToOrgDatabase = () => {
+    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
+      return e;
+    });
+    usersEmailsWithoutEmptyStrings.forEach(email => {
+      this.props.firestore.update(
+        {
+          collection: 'organisations',
+          doc: this.props.organisation.id
+        },
+        {
+          arrayOfUsersEmails: this.props.firestore.FieldValue.arrayUnion(email)
+        }
+      );
+    });
+  };
+
   render() {
     console.log(this.props.organisation);
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
-          <div>
-            <StyledMainHeader>Your team</StyledMainHeader>
-          </div>
+          <StyledMainHeader>Your team</StyledMainHeader>
+
           <div>
             <Header as="h5">Active Members</Header>
             {this.props.listOfUsersWithinTheOrg.length > 0 &&
@@ -180,6 +160,7 @@ class UserManagement extends Component {
                   <StyledModalButton
                     onClick={e => {
                       e.preventDefault();
+                      this.addUserEmailsToOrgDatabase();
                       this.props.history.push('/homescreen');
                     }}>
                     Invite
@@ -276,6 +257,11 @@ const StyledMainHeader = styled.div`
   color: rgb(55, 71, 80);
   font-family: 'Open Sans', sans-serif;
   padding-bottom: 30px;
+`;
+
+const StyledHeaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledModalCard = styled.div`
