@@ -206,6 +206,7 @@ const StyledGifContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 15px;
   .none {
     display: none;
   }
