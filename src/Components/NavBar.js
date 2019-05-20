@@ -73,6 +73,7 @@ export class NavBar extends Component {
 
   generateDropdownOptions = () => {};
   render() {
+    //Will load spinner if user doesn't exist
     if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
       return <Spinner />;
     }
