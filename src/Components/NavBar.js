@@ -31,6 +31,7 @@ import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 import homeIcon from '../images/icon-home-lightgray.svg';
 import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
@@ -120,6 +121,10 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
 
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
+      }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -147,6 +152,7 @@ export class NavBar extends Component {
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
               <div
+                className="text"
                 onClick={() => {
                   this.props.showModal(null);
                   this.props.editingProfileDone();
@@ -170,6 +176,19 @@ export class NavBar extends Component {
                 Follow up
               </div>
             </RowContainer>
+            {localStorage.getItem('activeOrg') && (
+              <RowContainer>
+                <img src={peopleIcon} alt="users icon" />
+                <div
+                  onClick={() => {
+                    this.props.resetSpace();
+                    this.props.resetThread();
+                    this.props.props.history.push('/users');
+                  }}>
+                  Users
+                </div>
+              </RowContainer>
+            )}
             <div>
               <div>
                 <OuterOrgContainer>
