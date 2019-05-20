@@ -26,7 +26,7 @@ class App extends Component {
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
         <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
         <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
-        <Route exact path="/usermanagement" render={props => <UserManagement {...props} />} />
+        <Route exact path="/users" render={props => <UserManagement {...props} />} />
         <Route exact path="/thread/:id" render={props => <ThreadsScreen {...props} />} />
       </div>
     );

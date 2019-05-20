@@ -18,6 +18,7 @@ import Spinner from './semantic-components/Spinner';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
@@ -77,11 +78,6 @@ export class NavBar extends Component {
           key: 'Log out',
           text: 'Log out',
           value: 'Log out'
-        },
-        {
-          key: 'User Management',
-          text: 'User Management',
-          value: 'User Management'
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
@@ -90,10 +86,6 @@ export class NavBar extends Component {
 
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
-      }
-
-      if (this.state.profileDropdown === 'User Management') {
-        return <Redirect to="/usermanagement" />;
       }
 
       return (
@@ -129,6 +121,17 @@ export class NavBar extends Component {
                   this.props.resetThread();
                 }}>
                 Home
+              </span>
+            </HomeContainer>
+            <HomeContainer>
+              <img src={peopleIcon} alt="users icon" />
+              <span
+                onClick={() => {
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                  this.props.props.history.push('/users');
+                }}>
+                Users
               </span>
             </HomeContainer>
 
@@ -283,6 +286,7 @@ const HomeContainer = styled.div`
   position: relative;
   display: flex;
   align-items: baseline;
+  margin: 15px 0;
   img {
     width: 1.25rem;
     /* margin-right: 7px;

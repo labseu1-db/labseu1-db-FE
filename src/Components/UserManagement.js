@@ -108,17 +108,116 @@ class UserManagement extends Component {
   };
 
   render() {
-    console.log(this.props.organisation);
-    return (
-      <Modal open={true} size="tiny">
-        <StyledContainer>
-          <StyledMainHeader>Your team</StyledMainHeader>
+    if (this.props.organisation.createdByUserId === localStorage.getItem('uuid')) {
+      return (
+        <Modal open={true} size="tiny">
+          <StyledContainer>
+            <StyledMainHeader>Your team</StyledMainHeader>
 
-          <div>
-            <StyledHeaderContainer>
-              <Header as="h5">Active Members</Header>
-              <Subheader>Be careful when deleting, can't be undone.</Subheader>
-            </StyledHeaderContainer>
+            <div>
+              <StyledHeaderContainer>
+                <Header as="h5">Active Members</Header>
+                <Subheader>Be careful when deleting, can't be undone.</Subheader>
+              </StyledHeaderContainer>
+              {this.props.listOfUsersWithinTheOrg.length > 0 &&
+                this.props.listOfUsersWithinTheOrg
+                  .filter(user => user.id !== this.props.uuid)
+                  .map(u => {
+                    return (
+                      <StyledUserContainer key={u.id}>
+                        <div>{u.fullName}</div>
+                        <StyledButtonDelete
+                          onClick={e => {
+                            e.preventDefault();
+                            this.removeSpacesFromUser(u.id);
+                            this.removeOrgFromUser(u.id);
+                            this.removeUserFromOrg(u.id, u.userEmail);
+                          }}>
+                          Delete
+                        </StyledButtonDelete>
+                      </StyledUserContainer>
+                    );
+                  })}
+              <StyledModalCard>
+                <Modal.Content>
+                  <StyledModalForm>
+                    <Header as="h5">Invite users</Header>
+                    <div id="dynamicInput">
+                      {this.state.teamEmailAddress.map((input, i) => (
+                        <StyledModalInput
+                          placeholder="Email address"
+                          type="email"
+                          value={this.state.teamEmailAddress[i]}
+                          onChange={e => {
+                            this.addEmail(e.target.value, i);
+                          }}
+                          key={i}
+                        />
+                      ))}
+                    </div>
+                  </StyledModalForm>
+                  <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
+                </Modal.Content>
+                <Modal.Actions>
+                  <StyledActionButtonsContainer>
+                    <StyledModalButton
+                      onClick={e => {
+                        e.preventDefault();
+                        this.setState({ alert: false });
+                        if (
+                          this.props.organisation.arrayOfUsersEmails.length +
+                            this.state.teamEmailAddress.filter(Boolean).length >
+                            19 &&
+                          this.props.organisation.isPremium === false
+                        ) {
+                          this.setState({ alert: 'subscription' });
+                        } else if (!this.state.inputs.every(this.checkIfEmail)) {
+                          this.setState({ alert: 'email' });
+                        } else {
+                          this.addUserEmailsToOrgDatabase();
+                          this.props.history.push('/homescreen');
+                        }
+                      }}>
+                      Invite
+                    </StyledModalButton>
+                    <StyledModalMainButtonContainer>
+                      <StyledModalButton
+                        className="cancel-button"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.props.history.push('/homescreen');
+                        }}>
+                        Cancel
+                      </StyledModalButton>
+                    </StyledModalMainButtonContainer>
+                  </StyledActionButtonsContainer>
+                </Modal.Actions>
+              </StyledModalCard>
+
+              {this.state.alert === 'email' && (
+                <StyledAlertMessage>
+                  <Message color="red">Please make sure that you are using valid email address.</Message>
+                </StyledAlertMessage>
+              )}
+              {this.state.alert === 'subscription' && (
+                <StyledAlertMessage>
+                  <Message color="red">
+                    With free version you can invite up to 20 users. If you want to invite more, please upgrade your
+                    account.
+                  </Message>
+                </StyledAlertMessage>
+              )}
+            </div>
+          </StyledContainer>
+        </Modal>
+      );
+    }
+    if (this.props.organisation.createdByUserId !== localStorage.getItem('uuid')) {
+      return (
+        <Modal open={true} size="tiny">
+          <StyledContainer>
+            <StyledMainHeader>Your team</StyledMainHeader>
+
             {this.props.listOfUsersWithinTheOrg.length > 0 &&
               this.props.listOfUsersWithinTheOrg
                 .filter(user => user.id !== this.props.uuid)
@@ -126,91 +225,23 @@ class UserManagement extends Component {
                   return (
                     <StyledUserContainer key={u.id}>
                       <div>{u.fullName}</div>
-                      <StyledButtonDelete
-                        onClick={e => {
-                          e.preventDefault();
-                          this.removeSpacesFromUser(u.id);
-                          this.removeOrgFromUser(u.id);
-                          this.removeUserFromOrg(u.id, u.userEmail);
-                        }}>
-                        Delete
-                      </StyledButtonDelete>
                     </StyledUserContainer>
                   );
                 })}
-            <StyledModalCard>
-              <Modal.Content>
-                <StyledModalForm>
-                  <Header as="h5">Invite users</Header>
-                  <div id="dynamicInput">
-                    {this.state.teamEmailAddress.map((input, i) => (
-                      <StyledModalInput
-                        placeholder="Email address"
-                        type="email"
-                        value={this.state.teamEmailAddress[i]}
-                        onChange={e => {
-                          this.addEmail(e.target.value, i);
-                        }}
-                        key={i}
-                      />
-                    ))}
-                  </div>
-                </StyledModalForm>
-                <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
-              </Modal.Content>
-              <Modal.Actions>
-                <StyledActionButtonsContainer>
-                  <StyledModalButton
-                    onClick={e => {
-                      e.preventDefault();
-                      this.setState({ alert: false });
-                      if (
-                        this.props.organisation.arrayOfUsersEmails.length +
-                          this.state.teamEmailAddress.filter(Boolean).length >
-                          19 &&
-                        this.props.organisation.isPremium === false
-                      ) {
-                        this.setState({ alert: 'subscription' });
-                      } else if (!this.state.inputs.every(this.checkIfEmail)) {
-                        this.setState({ alert: 'email' });
-                      } else {
-                        this.addUserEmailsToOrgDatabase();
-                        this.props.history.push('/homescreen');
-                      }
-                    }}>
-                    Invite
-                  </StyledModalButton>
-                  <StyledModalMainButtonContainer>
-                    <StyledModalButton
-                      className="cancel-button"
-                      onClick={e => {
-                        e.preventDefault();
-                        this.props.history.push('/homescreen');
-                      }}>
-                      Cancel
-                    </StyledModalButton>
-                  </StyledModalMainButtonContainer>
-                </StyledActionButtonsContainer>
-              </Modal.Actions>
-            </StyledModalCard>
-
-            {this.state.alert === 'email' && (
-              <StyledAlertMessage>
-                <Message color="red">Please make sure that you are using valid email address.</Message>
-              </StyledAlertMessage>
-            )}
-            {this.state.alert === 'subscription' && (
-              <StyledAlertMessage>
-                <Message color="red">
-                  With free version you can invite up to 20 users. If you want to invite more, please upgrade your
-                  account.
-                </Message>
-              </StyledAlertMessage>
-            )}
-          </div>
-        </StyledContainer>
-      </Modal>
-    );
+          </StyledContainer>
+          <StyledModalMainButtonContainer>
+            <StyledModalButton
+              className="cancel-button"
+              onClick={e => {
+                e.preventDefault();
+                this.props.history.push('/homescreen');
+              }}>
+              Go back
+            </StyledModalButton>
+          </StyledModalMainButtonContainer>
+        </Modal>
+      );
+    }
   }
 }
 
