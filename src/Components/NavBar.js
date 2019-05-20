@@ -35,12 +35,18 @@ export class NavBar extends Component {
     profileDropdown: ''
   };
 
-  handleLogOut = async () => {
-    await this.props.firebase.logout();
-    this.props.resetThread();
-    this.props.resetSpace();
-    this.props.clearFirestore();
-    localStorage.clear();
+  handleLogOut = () => {
+    this.props.firebase
+      .logout()
+      .then(() => {
+        this.props.clearFirestore();
+      })
+      .then(() => {
+        localStorage.clear();
+      })
+      .catch(err => console.log("something's wrong."));
+
+    this.props.history.push('/login');
   };
 
   handleDropDownChange = (e, { name, value }) => {
