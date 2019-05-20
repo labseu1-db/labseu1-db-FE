@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
-import { Header, Modal, Dropdown, Message } from 'semantic-ui-react';
+import { Header, Modal, Message } from 'semantic-ui-react';
 
 class UserManagement extends Component {
   constructor(props) {
@@ -79,26 +79,55 @@ class UserManagement extends Component {
   //     });
   // };
 
-  // setIdsToState = (e, data) => {
-  //   e.preventDefault();
-  //   const { value } = data;
-  //   this.setState({ idsInSpace: value });
-  // };
+  removeOrgFromUser = id => {
+    this.props.firestore.update(
+      { collection: 'users', doc: id },
+      {
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayRemove(this.props.organisation.id),
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayRemove(this.props.organisation.orgName)
+      }
+    );
+  };
+
+  removeUserFromOrg = (id, email) => {
+    this.props.firestore.update(
+      { collection: 'organisations', doc: this.props.organisation.id },
+      {
+        arrayOfUsersEmails: this.props.firestore.FieldValue.arrayRemove(email),
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayRemove(id)
+      }
+    );
+  };
+
+  removeSpacesFromUser = id => {
+    this.props.spaces.forEach(space => {
+      this.props.firestore
+        .update(
+          {
+            collection: 'spaces',
+            doc: space.id
+          },
+          {
+            arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(id)
+          }
+        )
+        .then(res =>
+          this.props.firestore.update(
+            {
+              collection: 'users',
+              doc: id
+            },
+            {
+              arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(space.id),
+              arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(space.spaceName)
+            }
+          )
+        );
+    });
+  };
 
   render() {
-    const userArray = this.props.listOfUsersWithinTheOrg
-      .filter(user => user.id !== this.props.uuid)
-      .map(user => user.fullName);
-
-    const userIdsOptions = this.props.listOfUsersWithinTheOrg
-      .filter(user => user.id !== this.props.uuid)
-      .map(user => ({
-        key: user.id,
-        text: user.fullName,
-        value: user.id
-      }));
-
-    console.log(userArray);
+    console.log(this.props.organisation);
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
@@ -107,20 +136,29 @@ class UserManagement extends Component {
           </div>
           <div>
             <Header as="h5">Active Members</Header>
-            <Dropdown
-              fluid
-              multiple
-              search
-              selection
-              defaultValue={userArray}
-              options={userIdsOptions}
-              onChange={this.setIdsToState}
-            />
-            <Header as="h5">Invite users</Header>
+            {this.props.listOfUsersWithinTheOrg.length > 0 &&
+              this.props.listOfUsersWithinTheOrg
+                .filter(user => user.id !== this.props.uuid)
+                .map(u => {
+                  return (
+                    <StyledUserContainer key={u.id}>
+                      <div>{u.fullName}</div>
+                      <StyledButtonDelete
+                        onClick={e => {
+                          e.preventDefault();
+                          this.removeSpacesFromUser(u.id);
+                          this.removeOrgFromUser(u.id);
+                          this.removeUserFromOrg(u.id, u.userEmail);
+                        }}>
+                        Delete
+                      </StyledButtonDelete>
+                    </StyledUserContainer>
+                  );
+                })}
             <StyledModalCard>
               <Modal.Content>
                 <StyledModalForm>
-                  <StyledModalLabel className="heading">Email addresses</StyledModalLabel>
+                  <Header as="h5">Invite users</Header>
                   <div id="dynamicInput">
                     {this.state.teamEmailAddress.map((input, i) => (
                       <StyledModalInput
@@ -178,6 +216,8 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
+    organisation: state.firestore.ordered.organisations ? state.firestore.ordered.organisations[0] : [],
+    spaces: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
   };
@@ -201,6 +241,14 @@ export default compose(
         collection: 'users',
         where: [['arrayOfOrgsIds', 'array-contains', localStorage.getItem('activeOrg')]],
         storeAs: 'usersWithinTheOrg'
+      },
+      {
+        collection: 'organisations',
+        doc: localStorage.getItem('activeOrg')
+      },
+      {
+        collection: 'spaces',
+        where: [['orgId', '==', localStorage.getItem('activeOrg')]]
       }
     ];
   }),
@@ -212,44 +260,17 @@ const StyledContainer = styled.div`
   border-radius: 6px;
   position: relative;
 `;
-const StyledButtonCancel = styled.button`
+const StyledButtonDelete = styled.button`
   cursor: pointer;
-  padding: 5px 25px;
-  color: #5c4df2;
-  border-radius: 15px;
-  background-color: white;
-  border: 1px solid #5c4df2;
-  margin-right: 10px;
-`;
-const StyledButtonCreateSpace = styled.button`
-  cursor: pointer;
-  padding: 5px 25px;
-  color: white;
-  border: 1px solid #5c4df2;
-  border-radius: 15px;
-  outline: none;
+  padding: 2px 7px;
   background-color: #5c4df2;
-  &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
-  }
-`;
-const StyledInput = styled.input`
-  width: 100%;
-  height: 32px;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  color: #374750;
+  color: white;
+  border-radius: 15px;
+  margin-left: 10px;
   border: none;
-  border-bottom: 2px solid lightgray;
-  padding: 5px 0;
-  margin-bottom: 10px;
-  &:focus {
-    border-bottom: 2px solid #6c48f2;
-    outline: none;
-  }
+  font-size: 0.9rem;
 `;
+
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
@@ -275,25 +296,13 @@ const StyledAlertMessage = styled.div`
 `;
 
 const StyledModalForm = styled.form`
-  padding: 25px 0;
+  padding: 0 0 25px 0;
   display: flex;
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
   .heading {
-    padding-bottom: 40px;
-  }
-`;
-
-const StyledModalLabel = styled.div`
-  font-family: 'Open Sans', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  padding-bottom: 10px;
-  color: black;
-  .ligther-font {
-    font-size: 0.8rem;
-    color: #bdc3c9;
+    padding-bottom: 15px;
   }
 `;
 
@@ -304,8 +313,15 @@ const StyledModalInput = styled.input`
   padding: 10px 0 5px 0;
   margin-bottom: 10px;
   &::placeholder {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
+`;
+
+const StyledUserContainer = styled.div`
+  display: flex;
+  margin: 20px 0;
+  align-items: center;
+  font-size: 1rem;
 `;
 
 const StyledModalButton = styled.button`
