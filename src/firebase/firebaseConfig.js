@@ -1,4 +1,5 @@
 //Firebase configuration - test database
+//Changed Config
 const firebaseConfig = {
   apiKey: 'AIzaSyAnlNryT9tKH9im9-1nSobapAewvi3V3s8',
   authDomain: 'labseu1-db-test.firebaseapp.com',
