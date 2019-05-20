@@ -115,7 +115,10 @@ class UserManagement extends Component {
           <StyledMainHeader>Your team</StyledMainHeader>
 
           <div>
-            <Header as="h5">Active Members</Header>
+            <StyledHeaderContainer>
+              <Header as="h5">Active Members</Header>
+              <Subheader>Be careful when deleting, can't be undone.</Subheader>
+            </StyledHeaderContainer>
             {this.props.listOfUsersWithinTheOrg.length > 0 &&
               this.props.listOfUsersWithinTheOrg
                 .filter(user => user.id !== this.props.uuid)
@@ -252,6 +255,11 @@ const StyledButtonDelete = styled.button`
   font-size: 0.9rem;
 `;
 
+const Subheader = styled.div`
+  font-size: 0.9rem;
+  color: #bdc3c9;
+  margin-left: 10px;
+`;
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
@@ -261,7 +269,10 @@ const StyledMainHeader = styled.div`
 
 const StyledHeaderContainer = styled.div`
   display: flex;
-  justify-content: center;
+  align-items: center;
+  .ui.header {
+    margin: 0;
+  }
 `;
 
 const StyledModalCard = styled.div`
