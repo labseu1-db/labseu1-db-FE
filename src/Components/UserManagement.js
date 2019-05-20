@@ -108,7 +108,6 @@ class UserManagement extends Component {
   };
 
   render() {
-    console.log(this.props.listOfUsersWithinTheOrg);
     if (this.props.organisation.createdByUserId === localStorage.getItem('uuid')) {
       return (
         <Modal open={true} size="tiny">
