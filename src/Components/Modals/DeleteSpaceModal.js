@@ -20,8 +20,8 @@ class DeleteSpaceModal extends Component {
   };
 
   removeSpaceFromUsersAndDeleteSpace = () => {
-    this.props.space.arrayOfUserIdsInSpace.map(id => {
-      return this.props.firestore
+    this.props.space.arrayOfUserIdsInSpace.forEach(id => {
+      this.props.firestore
         .update(
           { collection: 'users', doc: id },
           {
@@ -30,8 +30,8 @@ class DeleteSpaceModal extends Component {
           }
         )
         .then(res => {
-          this.props.threads.map(t => {
-            return this.props.firestore
+          this.props.threads.forEach(t => {
+            this.props.firestore
               .collection('threads')
               .doc(t.id)
               .delete()
@@ -42,14 +42,14 @@ class DeleteSpaceModal extends Component {
                     doc.ref.delete();
                   });
                 });
-              })
-              .then(res => {
-                this.props.firestore
-                  .collection('spaces')
-                  .doc(this.props.space.id)
-                  .delete();
               });
           });
+        })
+        .then(res => {
+          this.props.firestore
+            .collection('spaces')
+            .doc(this.props.space.id)
+            .delete();
         });
     });
   };
