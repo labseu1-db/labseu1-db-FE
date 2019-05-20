@@ -13,5 +13,7 @@ export const rootReducer = combineReducers({
   spaceId: reducers.spaceId,
   threadId: reducers.threadId,
   followUpStatus: reducers.followUpStatus,
-  profileRenderStatus: reducers.profileRenderStatus
+  profileRenderStatus: reducers.profileRenderStatus,
+  editingProfileStatus: reducers.editingProfileStatus,
+  resetPassword: reducers.resetPassword
 });
