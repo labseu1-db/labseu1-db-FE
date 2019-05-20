@@ -154,6 +154,27 @@ class Register extends Component {
       .catch(err => console.log(err));
   };
 
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
     const { email, password, fullName } = this.state;
     const isInvalid = email === '' || password === '' || fullName === '';

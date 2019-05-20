@@ -23,7 +23,7 @@ class CreateNewSpaceModal extends Component {
     };
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -48,11 +48,22 @@ class CreateNewSpaceModal extends Component {
       }
     );
   };
+  addSpaceToUsers = () => {
+    this.state.idsInSpace.map(id => {
+      return this.props.firestore.update(
+        { collection: 'users', doc: id },
+        {
+          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.spaceId),
+          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
+        }
+      );
+    });
+  };
 
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: value });
+    this.setState({ idsInSpace: [this.props.uuid, ...value] });
   };
 
   render() {
@@ -61,55 +72,56 @@ class CreateNewSpaceModal extends Component {
     if (isEmpty(organisation)) {
       return <Spinner />;
     } else {
-      const userIdsOptions = organisation[0].arrayOfUsersIds.map((id, index) => ({
-        key: index,
-        text: organisation[0].arrayOfUsersEmails[index],
-        value: `${id}`
-      }));
+      const userIdsOptions = this.props.listOfUsersWithinTheOrg
+        .filter(user => user.id !== this.props.uuid)
+        .map(user => ({
+          key: user.id,
+          text: user.fullName,
+          value: user.id
+        }));
       return (
         <Modal
           trigger={
             <div>
               <img
                 src={plusIcon}
-                alt='plus icon'
+                alt="plus icon"
                 onClick={this.handleOpen}
                 disabled={isEmpty(localStorage.getItem('activeOrg'))}
               />
             </div>
           }
           open={this.state.model_open}
-          size='tiny'
-        >
+          size="tiny">
           <StyledContainer>
             <Modal.Header>
               <div>
                 <StyledMainHeader>Create a new space</StyledMainHeader>
               </div>
               <div>
-                <Header as='h5'>Space name</Header>
+                <Header as="h5">Space name</Header>
                 <StyledInput
-                  name='spaceName'
-                  placeholder='Product Design'
-                  type='text'
+                  name="spaceName"
+                  placeholder="Product Design"
+                  type="text"
                   required
                   value={this.state.spaceName}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>
+                <Header as="h5">
                   What types of discussions happen here?
                   <StyledOptional>(Optional)</StyledOptional>
                 </Header>
                 <StyledInput
-                  name='spaceTopic'
-                  placeholder='Questions and thoughts about proposals'
-                  type='text'
+                  name="spaceTopic"
+                  placeholder="Questions and thoughts about proposals"
+                  type="text"
                   value={this.state.spaceTopic}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>Members</Header>
+                <Header as="h5">Members</Header>
                 <Dropdown
-                  placeholder='Choose people to add'
+                  placeholder="Choose people to add"
                   fluid
                   multiple
                   search
@@ -122,17 +134,17 @@ class CreateNewSpaceModal extends Component {
                     <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
 
                     <StyledButtonCreateSpace
-                      type='submit'
+                      type="submit"
                       disabled={
                         !this.state.spaceName.length > 0 ||
                         !this.state.spaceTopic.length > 0 ||
                         !this.state.idsInSpace.length > 0
                       }
-                      onClick={(e) => {
+                      onClick={e => {
                         this.addSpaceToDatabase();
+                        this.addSpaceToUsers();
                         this.handleClose();
-                      }}
-                    >
+                      }}>
                       Create Space
                     </StyledButtonCreateSpace>
                   </StyledActions>
@@ -147,7 +159,7 @@ class CreateNewSpaceModal extends Component {
 }
 
 //Export component wrapped in redux actions and store and firestore
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -155,18 +167,22 @@ const mapStateToProps = (state) => {
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
+    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
 //Styled Components
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'organisations',
@@ -176,6 +192,11 @@ export default compose(
       {
         collection: 'users',
         doc: `${props.uuid}`
+      },
+      {
+        collection: 'users',
+        where: [['arrayOfOrgsIds', 'array-contains', `${props.activeOrg}`]],
+        storeAs: 'usersWithinTheOrg'
       }
     ];
   }),
