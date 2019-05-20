@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -26,6 +29,12 @@ class CheckoutForm extends Component {
       });
 
       if (response.ok) {
+        this.props.firestore.update(
+          { collection: 'organisations', doc: this.props.currentOrg.id },
+          {
+            isPremium: true
+          }
+        );
         this.setState({ complete: true });
         console.log('response:', response);
       } else {
@@ -90,7 +99,23 @@ class CheckoutForm extends Component {
   }
 }
 
-export default injectStripe(CheckoutForm);
+const mapStateToProps = state => {
+  return {};
+};
+
+//As we are not dispatching anything - this is empty
+const mapDispatchToProps = {};
+
+export default compose(
+  withFirestore,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
+)(injectStripe(CheckoutForm));
+
+// export default injectStripe(CheckoutForm);
 
 const StyledModalH1 = styled.h1`
   padding-top: 40px;
@@ -180,42 +205,5 @@ const StyledModalLabel = styled.div`
 const CardElementContainer = styled.div`
   padding-left: 25px;
   padding-right: 50px;
-  /* padding-top: 40px; */
   padding-bottom: 40px;
 `;
-
-// return (
-//   <div className="checkout">
-//     <StyledModalH1>
-//       <Modal.Header content="Confirm your purchase" />
-//     </StyledModalH1>
-//     <StyledModalCard>
-//       <Modal.Content>
-//         <StyledModalText>
-//           If you wish to upgrade your account please make a one off payment of $20. This is non-refundable and will
-//           appear on your bank statement as sailor co.
-//         </StyledModalText>
-//         <StyledModalForm>
-//           <StyledModalLabel>
-//             Please enter your card details below{' '}
-//             <span className="ligther-font">(Card number, expiry date and CVC)</span>
-//           </StyledModalLabel>
-//         </StyledModalForm>
-//       </Modal.Content>
-//       <CardElementContainer>
-//         <CardElement style={{ base: { fontSize: '18px' } }} />
-//       </CardElementContainer>
-//       <Modal.Actions>
-//         <StyledActionButtonsContainer>
-//           <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
-
-//           <StyledModalMainButtonContainer>
-//             <StyledModalButton className="cancel-button" onClick={this.props.handleClose}>
-//               Cancel
-//             </StyledModalButton>
-//           </StyledModalMainButtonContainer>
-//         </StyledActionButtonsContainer>
-//       </Modal.Actions>
-//     </StyledModalCard>
-//   </div>
-// );

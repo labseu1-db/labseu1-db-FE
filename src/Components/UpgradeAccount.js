@@ -15,6 +15,24 @@ import { showModal } from '../redux/actions/actionCreators';
 //Main component
 class UpgradeAccount extends React.Component {
   render() {
+    if (this.props.currentOrg.isPremium) {
+      return (
+        <StyledMainScreen>
+          <StyledFirstRow>
+            {this.props.activeOrg && this.props.currentOrg && (
+              <ScreenHeading heading={this.props.currentOrg.orgName} info="Organization billing overview" />
+            )}
+          </StyledFirstRow>
+          <StyledThreadContainerPremium>
+            <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
+            <div>
+              We hope you are enjoying the full benefits of your premium plan. Please contact customer service for any
+              further special requirements.
+            </div>
+          </StyledThreadContainerPremium>
+        </StyledMainScreen>
+      );
+    }
     return (
       <StyledMainScreen>
         <StyledFirstRow>
@@ -29,7 +47,7 @@ class UpgradeAccount extends React.Component {
             <li>Invite more employees to your organisation</li>
             <li>used 0GB of space -- 5.00GB remaining</li>
           </ul>
-          <CheckoutFormContainer />
+          <CheckoutFormContainer currentOrg={this.props.currentOrg} />
         </StyledThreadContainer>
       </StyledMainScreen>
     );
@@ -93,31 +111,18 @@ const StyledThreadContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
-    /* &:hover {
-    border: 1px solid #5c4df2b3;
-    cursor: pointer; */
-  }
 `;
 
-const UpgradePlanButton = styled.button`
+const StyledThreadContainerPremium = styled.div`
+  background-color: white;
+  padding: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  padding: 6px 15px;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  background-color: #5c4df2;
-  color: white;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  img {
-    width: 1.1rem;
-    margin-right: 5px;
-  }
+  height: 140px;
+  margin: 25px 0;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
 `;

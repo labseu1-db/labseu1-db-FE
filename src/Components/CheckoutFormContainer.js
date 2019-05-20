@@ -18,6 +18,7 @@ class CheckoutFormContainer extends Component {
   };
 
   render() {
+    console.log(this.props.currentOrg);
     return (
       <Modal
         trigger={
@@ -33,7 +34,7 @@ class CheckoutFormContainer extends Component {
         <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
           <div className="example">
             <Elements>
-              <CheckoutForm handleClose={this.handleClose} />
+              <CheckoutForm handleClose={this.handleClose} currentOrg={this.props.currentOrg} />
             </Elements>
           </div>
         </StripeProvider>
