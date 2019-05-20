@@ -163,8 +163,20 @@ class UserManagement extends Component {
                   <StyledModalButton
                     onClick={e => {
                       e.preventDefault();
-                      this.addUserEmailsToOrgDatabase();
-                      this.props.history.push('/homescreen');
+                      this.setState({ alert: false });
+                      if (
+                        this.props.organisation.arrayOfUsersEmails.length +
+                          this.state.teamEmailAddress.filter(Boolean).length >
+                          19 &&
+                        this.props.organisation.isPremium === false
+                      ) {
+                        this.setState({ alert: 'subscription' });
+                      } else if (!this.state.inputs.every(this.checkIfEmail)) {
+                        this.setState({ alert: 'email' });
+                      } else {
+                        this.addUserEmailsToOrgDatabase();
+                        this.props.history.push('/homescreen');
+                      }
                     }}>
                     Invite
                   </StyledModalButton>
@@ -185,6 +197,14 @@ class UserManagement extends Component {
             {this.state.alert === 'email' && (
               <StyledAlertMessage>
                 <Message color="red">Please make sure that you are using valid email address.</Message>
+              </StyledAlertMessage>
+            )}
+            {this.state.alert === 'subscription' && (
+              <StyledAlertMessage>
+                <Message color="red">
+                  With free version you can invite up to 20 users. If you want to invite more, please upgrade your
+                  account.
+                </Message>
               </StyledAlertMessage>
             )}
           </div>
