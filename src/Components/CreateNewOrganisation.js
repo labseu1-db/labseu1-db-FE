@@ -145,7 +145,7 @@ class CreateNewOrganisation extends Component {
 
       //add each space in users collection in array (therefore we need to use update instead of add/set)
       let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
-      userRef.update({
+      return userRef.update({
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
         arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
       });

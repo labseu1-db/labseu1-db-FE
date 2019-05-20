@@ -118,16 +118,19 @@ class Register extends Component {
     };
 
     e.preventDefault();
-    this.props.firebase.createUser({ email, password }, { fullName, email }).then(() => {
-      this.props.firebase
-        .login({ email, password })
-        .then(res => {
-          this.saveUserToDatabaseAndToLocalStorage(res);
-        })
-        .catch(error => {
-          this.setState({ ...INITIAL_STATE, error });
-        });
-    });
+    this.props.firebase
+      .createUser({ email, password }, { fullName, email })
+      .then(() => {
+        this.props.firebase
+          .login({ email, password })
+          .then(res => {
+            this.saveUserToDatabaseAndToLocalStorage(res);
+          })
+          .catch(error => {
+            this.setState({ ...INITIAL_STATE, error });
+          });
+      })
+      .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
   };
 
   saveUserIdInOrg = (orgId, userId) => {
