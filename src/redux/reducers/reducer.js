@@ -11,8 +11,7 @@ export const rootReducer = combineReducers({
   modal: reducers.modal,
   activeOrg: reducers.activeOrg,
   spaceId: reducers.spaceId,
-  resetPassword: reducers.resetPassword,
-  editingProfileStatus: reducers.editingProfileStatus,
   threadId: reducers.threadId,
+  followUpStatus: reducers.followUpStatus,
   profileRenderStatus: reducers.profileRenderStatus
 });

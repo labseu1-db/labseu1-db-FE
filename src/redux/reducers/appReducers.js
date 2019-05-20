@@ -72,3 +72,13 @@ export function profileRenderStatus(state = false, action) {
       return state;
   }
 }
+export function followUpStatus(state = false, action) {
+  switch (action.type) {
+    case types.RENDER_FOLLOW_UP:
+      return true;
+    case types.HIDE_FOLLOW_UP:
+      return false;
+    default:
+      return state;
+  }
+}

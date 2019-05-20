@@ -15,7 +15,9 @@ import {
   resetSpace,
   editingProfileDone,
   notRenderProfile,
-  renderProfile
+  renderProfile,
+  showFollowUp,
+  hideFollowUp
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
@@ -55,6 +57,7 @@ export class NavBar extends Component {
         this.props.editingProfileDone();
       }
     });
+    this.props.hideFollowUp();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -63,6 +66,7 @@ export class NavBar extends Component {
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
     this.props.notRenderProfile();
+    this.props.hideFollowUp();
   };
 
   generateDropdownOptions = () => {};
@@ -139,11 +143,25 @@ export class NavBar extends Component {
                   this.props.resetSpace();
                   this.props.resetThread();
                   this.props.notRenderProfile();
+                  this.props.hideFollowUp();
                 }}>
                 Home
               </span>
             </HomeContainer>
-
+            <FollowUpContainer>
+              <Icon.Group className="clipboard" size="large">
+                <Icon name="clipboard outline" />
+              </Icon.Group>
+              <div
+                className="text"
+                onClick={() => {
+                  this.props.showFollowUp();
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                }}>
+                Follow up
+              </div>
+            </FollowUpContainer>
             <div>
               <div>
                 <OuterOrgContainer>
@@ -174,6 +192,7 @@ export class NavBar extends Component {
                               this.props.switchSpaces(space.id);
                               this.props.showModal(null);
                               this.props.notRenderProfile();
+                              this.props.hideFollowUp();
                             }}>
                             {space.spaceName}
                           </span>
@@ -217,7 +236,9 @@ const mapDispatchToProps = dispatch => {
       showModal,
       editingProfileDone,
       renderProfile,
-      notRenderProfile
+      notRenderProfile,
+      showFollowUp,
+      hideFollowUp
     },
     dispatch
   );
@@ -318,6 +339,31 @@ const HomeContainer = styled.div`
   span:hover {
     color: #f64e49;
     cursor: pointer;
+  }
+`;
+
+const FollowUpContainer = styled.div`
+  .text {
+    padding-left: 45px;
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    &:hover {
+      color: #f64e49;
+      cursor: pointer;
+    }
+  }
+  .clipboard {
+    width: 1.25rem;
+    position: absolute;
+    right: 249px;
+    margin-top: 11px;
+    &:hover {
+      cursor: pointer;
+      color: blue;
+    }
   }
 `;
 

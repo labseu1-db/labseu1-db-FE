@@ -47,9 +47,6 @@ class ForgotPassword extends Component {
           this.props.history.push('/login');
         }
       })
-      .then(() => {
-        alert('Email has been sent!');
-      })
       .catch(error => {
         const INITIAL_STATE = {
           loginEmail: '',

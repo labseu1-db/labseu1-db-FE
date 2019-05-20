@@ -55,3 +55,10 @@ export const renderProfile = () => {
 export const notRenderProfile = () => {
   return { type: types.NOT_RENDER_PROFILE };
 };
+export const showFollowUp = () => {
+  return { type: types.RENDER_FOLLOW_UP };
+};
+
+export const hideFollowUp = () => {
+  return { type: types.HIDE_FOLLOW_UP };
+};
