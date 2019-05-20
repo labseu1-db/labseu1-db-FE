@@ -9,7 +9,7 @@ export class NavBarOrgDropdown extends Component {
   // };
   render() {
     return (
-      <span>
+      <div>
         {' '}
         <Dropdown
           inline
@@ -18,7 +18,7 @@ export class NavBarOrgDropdown extends Component {
           basic={true}
           onChange={this.props.setSelectedOrgToLocalStorage}
         />
-      </span>
+      </div>
     );
   }
 }
