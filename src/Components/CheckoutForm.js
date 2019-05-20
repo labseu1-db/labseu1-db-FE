@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  CardElement,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCVCElement,
-  PostalCodeElement,
-  injectStripe
-} from 'react-stripe-elements';
+import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
 
@@ -17,21 +10,27 @@ class CheckoutForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  async submit(ev) {
+  async submit(e) {
+    e.preventDefault();
     // User clicked submit
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
-    console.log(token);
-    let response = await fetch('http://localhost:5001/labseu1-db-test/us-central1/app/charge', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: token.id
-    });
 
-    if (response.ok) {
-      this.setState({ complete: true });
-      console.log('response:', response);
+    if (!token) {
+      window.alert('Incomplete payment details');
     } else {
-      console.log('response:', response);
+      console.log(token);
+      let response = await fetch('http://localhost:5001/labseu1-db-test/us-central1/app/charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: token.id
+      });
+
+      if (response.ok) {
+        this.setState({ complete: true });
+        console.log('response:', response);
+      } else {
+        console.log('response:', response);
+      }
     }
   }
 
@@ -67,27 +66,13 @@ class CheckoutForm extends Component {
               </StyledModalLabel>
             </StyledModalForm>
           </Modal.Content>
-          <CardElementContainer>
-            <CardElement style={{ base: { fontSize: '18px' } }} />
-            {/* <form onSubmit={this.submit}>
-              <label>
-                Card number
-                <CardNumberElement />
-              </label>
-              <label>
-                Expiration date
-                <CardExpiryElement />
-              </label>
-              <label>
-                CVC
-                <CardCVCElement />
-              </label>
-              <label>
-                Postal code
-                <PostalCodeElement />
-              </label>
-            </form> */}
-          </CardElementContainer>
+
+          <form onSubmit={this.submit}>
+            <CardElementContainer>
+              <CardElement style={{ base: { fontSize: '18px' } }} />
+            </CardElementContainer>
+          </form>
+
           <Modal.Actions>
             <StyledActionButtonsContainer>
               <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
@@ -198,3 +183,39 @@ const CardElementContainer = styled.div`
   /* padding-top: 40px; */
   padding-bottom: 40px;
 `;
+
+// return (
+//   <div className="checkout">
+//     <StyledModalH1>
+//       <Modal.Header content="Confirm your purchase" />
+//     </StyledModalH1>
+//     <StyledModalCard>
+//       <Modal.Content>
+//         <StyledModalText>
+//           If you wish to upgrade your account please make a one off payment of $20. This is non-refundable and will
+//           appear on your bank statement as sailor co.
+//         </StyledModalText>
+//         <StyledModalForm>
+//           <StyledModalLabel>
+//             Please enter your card details below{' '}
+//             <span className="ligther-font">(Card number, expiry date and CVC)</span>
+//           </StyledModalLabel>
+//         </StyledModalForm>
+//       </Modal.Content>
+//       <CardElementContainer>
+//         <CardElement style={{ base: { fontSize: '18px' } }} />
+//       </CardElementContainer>
+//       <Modal.Actions>
+//         <StyledActionButtonsContainer>
+//           <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
+
+//           <StyledModalMainButtonContainer>
+//             <StyledModalButton className="cancel-button" onClick={this.props.handleClose}>
+//               Cancel
+//             </StyledModalButton>
+//           </StyledModalMainButtonContainer>
+//         </StyledActionButtonsContainer>
+//       </Modal.Actions>
+//     </StyledModalCard>
+//   </div>
+// );
