@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
-import InviteMoreUsersModal from './Modals/InviteMoreUsersModal';
 
 //Import actions
 import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
@@ -80,9 +79,9 @@ export class NavBar extends Component {
           value: 'Log out'
         },
         {
-          key: 'Invite Users',
-          text: 'Invite Users',
-          value: 'Invite Users'
+          key: 'User Management',
+          text: 'User Management',
+          value: 'User Management'
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
@@ -93,8 +92,8 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
 
-      if (this.state.profileDropdown === 'Invite Users') {
-        return <Redirect to="/inviteusers" />;
+      if (this.state.profileDropdown === 'User Management') {
+        return <Redirect to="/usermanagement" />;
       }
 
       return (
