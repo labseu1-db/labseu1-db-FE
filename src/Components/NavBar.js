@@ -58,6 +58,8 @@ export class NavBar extends Component {
       }
     });
     this.props.hideFollowUp();
+    this.props.resetSpace();
+    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
