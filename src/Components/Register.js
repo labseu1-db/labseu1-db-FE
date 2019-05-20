@@ -85,6 +85,24 @@ class Register extends Component {
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
+      .then(res => {
+        const orgRef = this.props.firestore
+          .collection('organisations')
+          .where('arrayOfUsersEmails', 'array-contains', this.state.email);
+        orgRef
+          .get()
+          .then(qs => {
+            qs.forEach(doc => {
+              this.saveUserIdInOrg(doc.id, userId);
+              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+              localStorage.setItem('activeOrg', doc.id);
+            });
+          })
+          .catch(function(error) {
+            console.log('Error getting documents: ', error);
+          });
+      })
+
       .catch(function(error) {
         console.log('Error getting documents: ', error);
       });
@@ -113,6 +131,27 @@ class Register extends Component {
           });
       })
       .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch(err => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
