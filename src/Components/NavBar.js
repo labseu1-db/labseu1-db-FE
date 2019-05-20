@@ -4,7 +4,9 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
+import InviteMoreUsersModal from './Modals/InviteMoreUsersModal';
 
 //Import actions
 import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
@@ -76,10 +78,23 @@ export class NavBar extends Component {
           key: 'Log out',
           text: 'Log out',
           value: 'Log out'
+        },
+        {
+          key: 'Invite Users',
+          text: 'Invite Users',
+          value: 'Invite Users'
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
+      }
+
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
+      }
+
+      if (this.state.profileDropdown === 'Invite Users') {
+        return <Redirect to="/inviteusers" />;
       }
 
       return (
