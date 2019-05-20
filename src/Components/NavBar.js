@@ -123,17 +123,19 @@ export class NavBar extends Component {
                 Home
               </span>
             </HomeContainer>
-            <HomeContainer>
-              <img src={peopleIcon} alt="users icon" />
-              <span
-                onClick={() => {
-                  this.props.resetSpace();
-                  this.props.resetThread();
-                  this.props.props.history.push('/users');
-                }}>
-                Users
-              </span>
-            </HomeContainer>
+            {localStorage.getItem('activeOrg') && (
+              <HomeContainer>
+                <img src={peopleIcon} alt="users icon" />
+                <span
+                  onClick={() => {
+                    this.props.resetSpace();
+                    this.props.resetThread();
+                    this.props.props.history.push('/users');
+                  }}>
+                  Users
+                </span>
+              </HomeContainer>
+            )}
 
             <div>
               <div>
