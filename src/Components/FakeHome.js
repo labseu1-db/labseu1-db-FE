@@ -17,6 +17,9 @@ import FollowUp from './FollowUp';
 
 class FakeHome extends Component {
   render() {
+    if (!localStorage.getItem('uuid')) {
+      this.props.history.push('/login');
+    }
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
