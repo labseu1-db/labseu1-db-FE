@@ -171,7 +171,7 @@ class UserManagement extends Component {
                           this.props.organisation.isPremium === false
                         ) {
                           this.setState({ alert: 'subscription' });
-                        } else if (!this.state.inputs.every(this.checkIfEmail)) {
+                        } else if (!this.state.teamEmailAddress.every(this.checkIfEmail)) {
                           this.setState({ alert: 'email' });
                         } else {
                           this.addUserEmailsToOrgDatabase();
