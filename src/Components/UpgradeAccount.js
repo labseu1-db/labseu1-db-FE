@@ -14,12 +14,6 @@ import { showModal } from '../redux/actions/actionCreators';
 
 //Main component
 class UpgradeAccount extends React.Component {
-  state = {
-    stripeModal: false
-  };
-  openModal = () => {
-    this.setState({ stripeModal: true });
-  };
   render() {
     return (
       <StyledMainScreen>
@@ -35,12 +29,8 @@ class UpgradeAccount extends React.Component {
             <li>Invite more employees to your organisation</li>
             <li>used 0GB of space -- 5.00GB remaining</li>
           </ul>
-          <UpgradePlanButton onClick={this.openModal}>
-            <div>Upgrade Plan</div>
-          </UpgradePlanButton>
+          <CheckoutFormContainer />
         </StyledThreadContainer>
-        {/* This will be payment modal FROM STRIPE */}
-        {this.state.stripeModal === true && <CheckoutFormContainer />}
       </StyledMainScreen>
     );
   }
