@@ -6,14 +6,12 @@ import styled from 'styled-components';
 
 //Import icons/images
 import penIconWhite from '../images/icon-pen-white.svg';
-import placeholder from '../images/placeholder-homescreen.svg';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
-import Placeholder from './reusable-components/Placeholder';
 
 import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 import CreateThreadModal from './Modals/CreateThreadModal';
