@@ -21,7 +21,7 @@ class CheckoutForm extends Component {
     // User clicked submit
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
     console.log(token);
-    let response = await fetch('http://localhost:9000/charge', {
+    let response = await fetch('http://localhost:5001/labseu1-db-test/us-central1/app/charge', {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: token.id
@@ -68,7 +68,7 @@ class CheckoutForm extends Component {
             </StyledModalForm>
           </Modal.Content>
           <CardElementContainer>
-            <CardElement />
+            <CardElement style={{ base: { fontSize: '18px' } }} />
             {/* <form onSubmit={this.submit}>
               <label>
                 Card number
@@ -194,7 +194,7 @@ const StyledModalLabel = styled.div`
 
 const CardElementContainer = styled.div`
   padding-left: 25px;
-  padding-right: 167px;
+  padding-right: 50px;
   /* padding-top: 40px; */
   padding-bottom: 40px;
 `;
