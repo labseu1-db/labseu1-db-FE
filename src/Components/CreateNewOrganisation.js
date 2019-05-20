@@ -82,9 +82,7 @@ class CreateNewOrganisation extends Component {
 
     console.log(alreadyRegisteredUsers);
 
-    let userIds = alreadyRegisteredUsers;
-
-    userIds.concat(localStorage.getItem('uuid'));
+    let userIds = alreadyRegisteredUsers.concat(localStorage.getItem('uuid'));
 
     console.log(userIds);
 
