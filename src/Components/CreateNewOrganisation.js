@@ -94,7 +94,34 @@ class CreateNewOrganisation extends Component {
       )
       .then(data => {
         localStorage.setItem('activeOrg', orgId);
+      })
+      .then(data => {
+        findExistingUsers(orgId);
       });
+  };
+
+  findExistingUsers = orgId => {
+    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
+      return e;
+    });
+    let alreadyRegisteredUsers = [];
+    usersEmailsWithoutEmptyStrings.forEach(email => {
+      let ref = this.props.firestore.collection('users').where('userEmail', '==', email);
+      ref.get().then(qs => {
+        qs.forEach(doc => {
+          alreadyRegisteredUsers.push(doc.id);
+        });
+      });
+    });
+
+    alreadyRegisteredUsers.map(email => {
+      this.props.firestore.update(
+        { collection: 'organisations', doc: orgId },
+        {
+          arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(email)
+        }
+      );
+    });
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
