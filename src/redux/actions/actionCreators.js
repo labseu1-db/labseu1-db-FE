@@ -32,3 +32,11 @@ export const resetSpace = () => {
 export const resetThread = () => {
   return { type: types.RESET_THREAD };
 };
+
+export const showFollowUp = () => {
+  return { type: types.RENDER_FOLLOW_UP };
+};
+
+export const hideFollowUp = () => {
+  return { type: types.HIDE_FOLLOW_UP };
+};
