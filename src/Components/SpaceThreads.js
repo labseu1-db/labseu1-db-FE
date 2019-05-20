@@ -166,6 +166,14 @@ const StyledDropdown = styled.div`
   i.ellipsis.horizontal.icon {
     margin: 0;
   }
+  .ui.dropdown .menu > .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
 `;
 
 const mapStateToProps = state => {

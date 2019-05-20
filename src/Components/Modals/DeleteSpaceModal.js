@@ -56,7 +56,7 @@ class DeleteSpaceModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} size="tiny">
+      <Modal open={this.props.shoudlBeOpen} size="small">
         <StyledContainer>
           <Modal.Header>
             <div>
