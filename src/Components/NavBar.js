@@ -8,7 +8,18 @@ import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
-import { showModal, resetThread, setActiveOrg, switchSpaces, resetSpace } from '../redux/actions/actionCreators';
+import {
+  showModal,
+  resetThread,
+  setActiveOrg,
+  switchSpaces,
+  resetSpace,
+  editingProfileDone,
+  notRenderProfile,
+  renderProfile,
+  showFollowUp,
+  hideFollowUp
+} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Icon, Dropdown } from 'semantic-ui-react';
@@ -39,7 +50,18 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
       }
+      if (this.state.profileDropdown === 'Profile') {
+        this.props.renderProfile();
+      }
+      if (this.state.profileDropdown !== 'Profile') {
+        this.props.showModal(null);
+        this.props.notRenderProfile();
+        this.props.editingProfileDone();
+      }
     });
+    this.props.hideFollowUp();
+    this.props.resetSpace();
+    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -47,6 +69,8 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    this.props.notRenderProfile();
+    this.props.hideFollowUp();
   };
 
   generateDropdownOptions = () => {};
@@ -68,6 +92,11 @@ export class NavBar extends Component {
           key: this.props.user.fullName,
           text: this.props.user.fullName,
           value: this.props.user.fullName
+        },
+        {
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
         },
         {
           key: 'Create Organisation',
@@ -117,8 +146,12 @@ export class NavBar extends Component {
               <img src={homeIcon} alt="home icon" />
               <span
                 onClick={() => {
+                  this.props.showModal(null);
+                  this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.notRenderProfile();
+                  this.props.hideFollowUp();
                 }}>
                 Home
               </span>
@@ -136,6 +169,21 @@ export class NavBar extends Component {
                 </span>
               </HomeContainer>
             )}
+
+            <FollowUpContainer>
+              <Icon.Group className="clipboard" size="large">
+                <Icon name="clipboard outline" />
+              </Icon.Group>
+              <div
+                className="text"
+                onClick={() => {
+                  this.props.showFollowUp();
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                }}>
+                Follow up
+              </div>
+            </FollowUpContainer>
 
             <div>
               <div>
@@ -162,8 +210,12 @@ export class NavBar extends Component {
                           <span
                             onClick={event => {
                               event.preventDefault();
+                              this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
+                              this.props.showModal(null);
+                              this.props.notRenderProfile();
+                              this.props.hideFollowUp();
                             }}>
                             {space.spaceName}
                           </span>
@@ -204,7 +256,12 @@ const mapDispatchToProps = dispatch => {
       switchSpaces,
       resetSpace,
       resetThread,
-      showModal
+      showModal,
+      editingProfileDone,
+      renderProfile,
+      notRenderProfile,
+      showFollowUp,
+      hideFollowUp
     },
     dispatch
   );
@@ -306,6 +363,31 @@ const HomeContainer = styled.div`
   span:hover {
     color: #f64e49;
     cursor: pointer;
+  }
+`;
+
+const FollowUpContainer = styled.div`
+  .text {
+    padding-left: 45px;
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    &:hover {
+      color: #f64e49;
+      cursor: pointer;
+    }
+  }
+  .clipboard {
+    width: 1.25rem;
+    position: absolute;
+    right: 249px;
+    margin-top: 11px;
+    &:hover {
+      cursor: pointer;
+      color: blue;
+    }
   }
 `;
 
