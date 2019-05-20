@@ -78,6 +78,18 @@ class CreateNewOrganisation extends Component {
     //add creators/admins email to the array of users
     let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
 
+    let alreadyRegisteredUsers = this.findExistingUsers(orgId);
+
+    console.log(alreadyRegisteredUsers);
+
+    let userIds = alreadyRegisteredUsers;
+
+    userIds.concat(localStorage.getItem('uuid'));
+
+    console.log(userIds);
+
+    console.log(alreadyRegisteredUsers);
+
     //aave all collected data about organisation in firestore
     this.props.firestore
       .set(
@@ -87,16 +99,23 @@ class CreateNewOrganisation extends Component {
           isPremium: false,
           createdByUserId: localStorage.getItem('uuid'),
           arrayOfUsersEmails: usersAndAdminsEmails,
-          arrayOfUsersIds: [localStorage.getItem('uuid')],
+          arrayOfUsersIds: userIds,
           arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
           arrayOfAdminsIds: [localStorage.getItem('uuid')]
         }
       )
       .then(data => {
         localStorage.setItem('activeOrg', orgId);
-      })
-      .then(data => {
-        findExistingUsers(orgId);
+        alreadyRegisteredUsers.forEach(user => {
+          console.log(user);
+          this.props.firestore.update(
+            { collection: 'users', doc: user },
+            {
+              arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
+              arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
+            }
+          );
+        });
       });
   };
 
@@ -109,19 +128,12 @@ class CreateNewOrganisation extends Component {
       let ref = this.props.firestore.collection('users').where('userEmail', '==', email);
       ref.get().then(qs => {
         qs.forEach(doc => {
+          // console.log('hello');
           alreadyRegisteredUsers.push(doc.id);
         });
       });
     });
-
-    alreadyRegisteredUsers.map(email => {
-      this.props.firestore.update(
-        { collection: 'organisations', doc: orgId },
-        {
-          arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(email)
-        }
-      );
-    });
+    return alreadyRegisteredUsers;
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
