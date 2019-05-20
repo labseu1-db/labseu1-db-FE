@@ -23,7 +23,7 @@ class CreateNewSpaceModal extends Component {
     };
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -72,67 +72,67 @@ class CreateNewSpaceModal extends Component {
             <div>
               <img
                 src={plusIcon}
-                alt='plus icon'
+                alt="plus icon"
                 onClick={this.handleOpen}
                 disabled={isEmpty(localStorage.getItem('activeOrg'))}
               />
             </div>
           }
           open={this.state.model_open}
-          size='tiny'
-        >
+          size="tiny">
           <StyledContainer>
             <Modal.Header>
               <div>
                 <StyledMainHeader>Create a new space</StyledMainHeader>
               </div>
               <div>
-                <Header as='h5'>Space name</Header>
+                <Header as="h5">Space name</Header>
                 <StyledInput
-                  name='spaceName'
-                  placeholder='Product Design'
-                  type='text'
+                  name="spaceName"
+                  placeholder="Product Design"
+                  type="text"
                   required
                   value={this.state.spaceName}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>
+                <Header as="h5">
                   What types of discussions happen here?
                   <StyledOptional>(Optional)</StyledOptional>
                 </Header>
                 <StyledInput
-                  name='spaceTopic'
-                  placeholder='Questions and thoughts about proposals'
-                  type='text'
+                  name="spaceTopic"
+                  placeholder="Questions and thoughts about proposals"
+                  type="text"
                   value={this.state.spaceTopic}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>Members</Header>
-                <Dropdown
-                  placeholder='Choose people to add'
-                  fluid
-                  multiple
-                  search
-                  selection
-                  options={userIdsOptions}
-                  onChange={this.setIdsToState}
-                />
+                <Header as="h5">Members</Header>
+                <StyledDropdown>
+                  <Dropdown
+                    placeholder="Choose people to add"
+                    fluid
+                    multiple
+                    search
+                    selection
+                    options={userIdsOptions}
+                    onChange={this.setIdsToState}
+                  />
+                </StyledDropdown>
                 <Modal.Actions>
                   <StyledActions>
                     <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
 
                     <StyledButtonCreateSpace
-                      type='submit'
+                      type="submit"
                       disabled={
                         !this.state.spaceName.length > 0 ||
                         !this.state.spaceTopic.length > 0 ||
                         !this.state.idsInSpace.length > 0
                       }
-                      onClick={(e) => {
+                      onClick={e => {
                         this.addSpaceToDatabase();
                         this.handleClose();
-                      }}
-                    >
+                      }}>
                       Create Space
                     </StyledButtonCreateSpace>
                   </StyledActions>
@@ -147,7 +147,7 @@ class CreateNewSpaceModal extends Component {
 }
 
 //Export component wrapped in redux actions and store and firestore
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -159,14 +159,17 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
 //Styled Components
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'organisations',
@@ -209,6 +212,26 @@ const StyledButtonCreateSpace = styled.button`
     border: 1px solid #cfd5f2;
   }
 `;
+
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+  .ui.label {
+    background: #5c4df2;
+    color: white;
+    border: none;
+  }
+  .i.icon.delete {
+    color: white;
+  }
+`;
+
 const StyledInput = styled.input`
   width: 100%;
   height: 32px;
