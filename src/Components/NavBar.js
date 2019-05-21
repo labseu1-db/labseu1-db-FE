@@ -243,27 +243,26 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <div key={index}>
-                          <RowDiv
-                            style={
-                              this.state.activeSpace === space.spaceName
-                                ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' }
-                                : {}
-                            }
-                            onClick={event => {
-                              event.preventDefault();
-                              this.clickedSpace(space.spaceName);
-                              this.props.editingProfileDone();
-                              this.props.resetThread();
-                              this.props.switchSpaces(space.id);
-                              this.props.showModal(null);
-                              this.props.notRenderProfile();
-                              this.props.hideFollowUp();
-                            }}
-                          >
-                            {space.spaceName}
-                          </RowDiv>
-                        </div>
+                        <RowDiv
+                          key={index}
+                          style={
+                            this.state.activeSpace === space.spaceName
+                              ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' }
+                              : {}
+                          }
+                          onClick={event => {
+                            event.preventDefault();
+                            this.clickedSpace(space.spaceName);
+                            this.props.editingProfileDone();
+                            this.props.resetThread();
+                            this.props.switchSpaces(space.id);
+                            this.props.showModal(null);
+                            this.props.notRenderProfile();
+                            this.props.hideFollowUp();
+                          }}
+                        >
+                          {space.spaceName}
+                        </RowDiv>
                       ))}
                     </div>
                   )}
@@ -461,6 +460,9 @@ const SpaceContainer = styled.div`
   line-height: 30px;
   margin-left: 40px;
   div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     div {
       &:hover {
         color: #f64e49;
