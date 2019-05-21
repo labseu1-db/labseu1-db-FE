@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import NavBar from './NavBar';
 import styled from 'styled-components';
 
@@ -16,20 +16,17 @@ import UserProfile from './UserProfile';
 import FollowUp from './FollowUp';
 
 class FakeHome extends Component {
-  componentWillUpdate() {
-    if (isEmpty(this.props.auth)) {
+  render() {
+    if (!localStorage.getItem('uuid')) {
       this.props.history.push('/login');
     }
-  }
-
-  render() {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
     return (
       <StyledHomeScreen>
         <FirstDiv>
-          <NavBar />
+          <NavBar {...this.props} />
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
