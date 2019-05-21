@@ -159,11 +159,11 @@ const StyledCommentContainer = styled.div`
   background-color: white;
   padding: 20px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 40px;
   .ui.dropdown {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 15px;
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -230,7 +230,7 @@ const StyledUpdatedMessage = styled.div`
 `;
 
 const StyledDecision = styled.div`
-  height: 30px;
+  height: 40px;
   position: absolute;
   background-color: #fff6dd;
   border-radius: 10px 10px 0 0;

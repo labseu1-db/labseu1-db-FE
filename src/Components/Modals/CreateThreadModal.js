@@ -143,15 +143,17 @@ class CreateThreadModal extends Component {
           </TextStylingContainer>
         </MiniModalLeft>
         <MiniModalRight>
-          <Dropdown
-            placeholder="Add a Space"
-            fluid
-            search
-            selection
-            options={spaceOptions}
-            basic={true}
-            onChange={this.saveSpaceToThread}
-          />
+          <StyledDropdown>
+            <Dropdown
+              placeholder="Add a Space"
+              fluid
+              search
+              selection
+              options={spaceOptions}
+              basic={true}
+              onChange={this.saveSpaceToThread}
+            />
+          </StyledDropdown>
         </MiniModalRight>
         <Modal.Content>
           <StyledInputsContainer>
@@ -291,6 +293,27 @@ const MiniModalRight = styled.div`
     background-color: transparent;
     border: none;
     outline: none;
+  }
+`;
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+  .ui.label {
+    background: #5c4df2;
+    color: white;
+    border: none;
+  }
+  .i.icon.delete {
+    color: white;
+  }
+  div {
+    color: white;
   }
 `;
 

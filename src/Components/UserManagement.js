@@ -12,7 +12,9 @@ class UserManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamEmailAddress: [''],
+
+      teamEmailAddress: ['', '', '', ''],
+
       alert: false
     };
   }
@@ -112,13 +114,18 @@ class UserManagement extends Component {
       return (
         <Modal open={true} size="tiny">
           <StyledContainer>
-            <StyledMainHeader>Your team</StyledMainHeader>
+
+            <StyledMainHeader>Your Team</StyledMainHeader>
 
             <div>
-              <StyledHeaderContainer>
-                <Header as="h5">Active Members</Header>
-                <Subheader>Be careful when deleting, can't be undone.</Subheader>
-              </StyledHeaderContainer>
+              {this.props.listOfUsersWithinTheOrg.length > 1 && (
+                <StyledHeaderContainer>
+                  <Header as="h5" className="first-heading">
+                    Active Members
+                  </Header>
+                  <Subheader>Be very careful when deleting users as this can't be undone.</Subheader>
+                </StyledHeaderContainer>
+              )}
               {this.props.listOfUsersWithinTheOrg.length > 0 &&
                 this.props.listOfUsersWithinTheOrg
                   .filter(user => user.id !== this.props.uuid)
@@ -141,7 +148,9 @@ class UserManagement extends Component {
               <StyledModalCard>
                 <Modal.Content>
                   <StyledModalForm>
-                    <Header as="h5">Invite users</Header>
+
+                    <Header as="h5">Invite more users</Header>
+
                     <div id="dynamicInput">
                       {this.state.teamEmailAddress.map((input, i) => (
                         <StyledModalInput
@@ -193,7 +202,6 @@ class UserManagement extends Component {
                   </StyledActionButtonsContainer>
                 </Modal.Actions>
               </StyledModalCard>
-
               {this.state.alert === 'email' && (
                 <StyledAlertMessage>
                   <Message color="red">Please make sure that you are using valid email address.</Message>
@@ -309,18 +317,22 @@ const StyledButtonDelete = styled.button`
 const Subheader = styled.div`
   font-size: 0.9rem;
   color: #bdc3c9;
-  margin-left: 10px;
+  margin-top: 5px;
+
 `;
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
   font-family: 'Open Sans', sans-serif;
-  padding-bottom: 30px;
+  text-align: center;
+
 `;
 
 const StyledHeaderContainer = styled.div`
   display: flex;
-  align-items: center;
+
+  flex-direction: column;
+  margin-top: 30px;
   .ui.header {
     margin: 0;
   }
@@ -328,13 +340,9 @@ const StyledHeaderContainer = styled.div`
 
 const StyledModalCard = styled.div`
   background-color: white;
-  margin-top: 50px;
+  margin-top: 30px;
   border-radius: 5px;
-  input:focus,
-  button:focus,
-  textarea:focus {
-    outline: none;
-  }
+
 `;
 
 const StyledAlertMessage = styled.div`
@@ -363,6 +371,10 @@ const StyledModalInput = styled.input`
   &::placeholder {
     font-size: 1rem;
   }
+  &:focus {
+    border-bottom: 2px solid #5c4df2;
+  }
+
 `;
 
 const StyledUserContainer = styled.div`

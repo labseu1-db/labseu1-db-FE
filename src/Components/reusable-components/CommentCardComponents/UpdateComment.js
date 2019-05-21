@@ -86,7 +86,7 @@ const StyledInput = styled.input`
   border: 1px solid #bdc3c9;
   width: 100%;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 7px 10px;
   ::placeholder {
     color: #bdc3c9;
     font-size: 0.9rem;
