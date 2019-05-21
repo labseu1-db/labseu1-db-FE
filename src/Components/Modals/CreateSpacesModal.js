@@ -81,14 +81,17 @@ export default class CreateSpacesModal extends Component {
                 onClick={e => {
                   let orgId = uuid();
                   e.preventDefault();
-                  this.props.showModal('null');
-                  this.props.addOrganisationToDatabase(orgId);
-                  this.props.addOrganisationToUsers(orgId);
-                  this.props.addSpacesToSpacesAndUsers(orgId);
-                  this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId);
-                  this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId);
-                  this.props.clearState();
-                  this.props.props.history.push('/homescreen');
+                  Promise.all([
+                    this.props.showModal('null'),
+                    this.props.addOrganisationToUsers(orgId),
+                    this.props.addSpacesToSpacesAndUsers(orgId),
+                    this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId),
+                    this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId),
+                    this.props.clearState(),
+                    this.props.addOrganisationToDatabase(orgId)
+                  ]).then(values => {
+                    this.props.props.history.push('/homescreen');
+                  });
                 }}>
                 Finish
               </StyledModalButton>

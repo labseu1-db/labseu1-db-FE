@@ -23,7 +23,6 @@ class MainScreen extends React.Component {
   render() {
     return (
       <StyledMainScreen>
-         
         {this.props.activeModal === 'CreateThreadModal' && (
           <CreateThreadModal
             shoudlBeOpen={true}
@@ -33,7 +32,10 @@ class MainScreen extends React.Component {
           />
         )}
         <StyledFirstRow>
-          <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+          <ScreenHeading
+            heading="Home"
+            info="Catch up on the most recent threads."
+          />
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
@@ -61,7 +63,9 @@ class MainScreen extends React.Component {
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
-            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
+            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+              '0' + dateInfo.getMinutes()
+            ).slice(-2)}`;
             return (
               <ThreadCard
                 key={t.id}
@@ -71,7 +75,10 @@ class MainScreen extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
-                checked="true"
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                }
                 onClick={() => this.props.setActiveThread(t.id)}
               />
             );
@@ -100,8 +107,12 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : [],
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     activeModal: state.modal.activeModal
   };
 };
