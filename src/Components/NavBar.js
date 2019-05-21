@@ -181,20 +181,12 @@ export class NavBar extends Component {
                 }}
               >
                 Home
-<<<<<<< HEAD
               </RowDiv>
             </RowContainer>
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
               <RowDiv
                 style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
-=======
-              </div>
-            </RowContainer>
-            <RowContainer>
-              <img src={clipboardIcon} alt="home icon" />
-              <div
->>>>>>> 7ea71be31731aa63a87d4024463e74eeb0527476
                 className="text"
                 onClick={() => {
                   this.highlightFollowUp();
