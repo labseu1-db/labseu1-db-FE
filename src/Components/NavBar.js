@@ -58,11 +58,6 @@ export class NavBar extends Component {
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
         {
-          key: this.props.user.fullName,
-          text: this.props.user.fullName,
-          value: this.props.user.fullName
-        },
-        {
           key: 'Create Organisation',
           text: 'Create Organisation',
           value: 'Create Organisation'
@@ -84,14 +79,12 @@ export class NavBar extends Component {
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
-                  {' '}
                   <Dropdown
                     inline
                     name={'profileDropdown'}
                     basic={true}
                     options={userOptions}
-                    defaultValue={this.props.user.fullName}
-                    // defaultValue={'hello'}
+                    text={this.props.user.fullName}
                     onChange={this.handleDropDownChange}
                   />
                 </div>
