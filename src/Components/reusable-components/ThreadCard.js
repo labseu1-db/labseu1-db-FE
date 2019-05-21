@@ -9,7 +9,7 @@ import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponent
 import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
 import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
-import FollowUpDropdown from './ThreadCardComponents/FollowUpDropdown';
+import FollowUpButton from './ThreadCardComponents/FollowUpButton';
 
 //Main component
 export class ThreadCard extends React.Component {
@@ -23,32 +23,50 @@ export class ThreadCard extends React.Component {
     });
   };
 
-  render(){
-  const { createdBy, createdAt, heading, info, checked, threadId, onClick, currentSpace, isFollowUpDecided } = this.props;
-  return (
-    <div>
-      <StyledThreadContainer onClick={onClick}>
-        <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
-        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={currentSpace} checked={checked} />
-        <ThreadMiddleComponent heading={heading} info={info} />
-        <StyledFollowUpContainer
-            className={`${isFollowUpDecided && 'paddingTop'}`}
-            onMouseEnter={() => this.setIsHovering(true)}
-            onMouseLeave={() => this.setIsHovering(false)}
-          >
-            {isFollowUpDecided && ( <StyledDecision>Marked for followup</StyledDecision> )}
-            {this.state.isHovering && (  <FollowUpDropdown isFollowUpDecided={isFollowUpDecided} threadId={threadId} />
+  render() {
+    const {
+      createdBy,
+      createdAt,
+      heading,
+      info,
+      checked,
+      threadId,
+      onClick,
+      currentSpace,
+      isFollowUpDecided
+    } = this.props;
+    return (
+      <div>
+        <StyledThreadContainer onClick={onClick}>
+          <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
+          <ThreadLeftComponentText
+            createdBy={createdBy}
+            createdAt={createdAt}
+            space={currentSpace}
+            checked={checked}
+          />
+          <ThreadMiddleComponent heading={heading} info={info} />
+          <StyledFollowUpContainer>
+            {isFollowUpDecided && (
+              <StyledDecision>Marked for followup</StyledDecision>
             )}
+            {
+              <FollowUpButton
+                isFollowUpDecided={isFollowUpDecided}
+                threadId={threadId}
+              />
+            }
           </StyledFollowUpContainer>
-        <ThreadRightComponent threadId={threadId} />
-      </StyledThreadContainer>
-    </div>
+          <ThreadRightComponent threadId={threadId} />
+        </StyledThreadContainer>
+      </div>
     );
   }
 }
 
-
 //Styling
+const StyledFollowUpContainer = styled.div``;
+
 const StyledThreadContainer = styled.div`
   background-color: white;
   padding: 20px;
@@ -65,49 +83,40 @@ const StyledThreadContainer = styled.div`
   }
 `;
 
-const StyledFollowUpContainer = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: flex-start;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
+const StyledDecision = styled.div`
   background-color: white;
-  padding: 10px;
-  width: 3%;
-  margin-top: 2px;
-  margin-right: -80px;
-  .ui.dropdown {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    width: 20px;
-    height: 10px;
+  color: black;
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+  border-radius: 100px;
+  border: 2px solid #e7e7e7;
+  font-size: 11px;
+  line-height: normal;
+  margin-top: 57px;
+  margin-right: -18px;
+  padding-left: 9px;
+  padding-right: 9px;
+  text-align: center;
+  border-radius: 10px;
+  white-space: nowrap;
+  &:hover {
+    border: 1px solid black;
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }
 `;
-
-const StyledDecision = styled.div`
-  height: 78px;
-  padding: 12px;
-  position: absolute;
-  background-color: #fff6dd;
-  border-radius: 10px 10px 0 0;
-  top: 27px;
-  right: 2px;
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-  font-weight: 600;
-  font-size: 0.9rem;
-`;
-
 
 //Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeSpace: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
+    activeSpace: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces[0]
+      : []
   };
 };
 
