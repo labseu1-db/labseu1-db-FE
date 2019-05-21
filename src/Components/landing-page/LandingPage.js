@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 //Import icons/images
 import landingPageBanner from '../../images/landing-page-banner.svg';
-import temporaryIcon from '../../images/icon-box-darkgray.svg';
+import lineGreen from '../../images/line-green.svg';
 import treeLogo from '../../images/tree-logo.png';
 
 //Import components
+import LandingNavbar from './LandingNavbar';
 
 //Main component
 export default class LandingPage extends React.Component {
@@ -14,24 +16,17 @@ export default class LandingPage extends React.Component {
     return (
       <StyledLandingContainer>
         <TopLandingContainer>
-          <StyledNavbar>
-            <NavbarContainer>
-              <LeftNavbarContainer>
-                <LogoContainer>
-                  <img className="logo" src={treeLogo} alt="logo" />
-                  <div className="text">Pinely</div>
-                </LogoContainer>
-                <div className="navbar-item">Team</div>
-                <div className="navbar-item">Pricing</div>
-              </LeftNavbarContainer>
-              <MiddleNavbarContainer />
-              <RightNavbarContainer className="navbar-item sign">Sign in</RightNavbarContainer>
-            </NavbarContainer>
-          </StyledNavbar>
-          <div>
-            <h1 />
-          </div>
-          <img className="banner" src={landingPageBanner} alt="people using computer" />
+          <LandingNavbar />
+          <LandingBanner>
+            <LandingHeader>
+              <h1>Decision making simpler, more pleasant and much more productive</h1>
+              <div>
+                Pinely is a carefully designed platform for growing teams to stay on the same page, have broad
+                discussions, and make the right decisions.
+              </div>
+            </LandingHeader>
+            <img className="banner" src={landingPageBanner} alt="people using computer" />
+          </LandingBanner>
         </TopLandingContainer>
       </StyledLandingContainer>
     );
@@ -41,75 +36,52 @@ export default class LandingPage extends React.Component {
 const StyledLandingContainer = styled.div`
   width: 100vw;
   min-height: 100vh;
+  /* background-image: url(${lineGreen});
+  background-repeat: no-repeat;
+  background-size: 125vh;
+  background-position-x: right;
+  background-position-y: top; */
+  a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      color: #308c66;
+    }
+  }
 `;
 
 const TopLandingContainer = styled.div`
   width: 100vw;
-  min-height: 50vh;
+  height: 50vh;
   background-color: #f7b8011a;
   display: flex;
   flex-direction: column;
-
   .banner {
     position: absolute;
-    top: 150px;
-    right: 20vw;
+    top: 120px;
+    right: 15vw;
     width: 35vw;
     z-index: 2;
   }
 `;
 
-const StyledNavbar = styled.div`
-  width: 100vw;
-  height: 80px;
+const LandingBanner = styled.div`
+  margin: 0 5vw 0 15vw;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
+  height: 100%;
+  width: 25vw;
 `;
 
-const NavbarContainer = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  .navbar-item {
-    font-size: 15px;
-    cursor: pointer;
+const LandingHeader = styled.div`
+  line-height: 1.6;
+  div {
+    font-size: 1.2rem;
+    padding-top: 10px;
   }
-  .sign {
-    font-weight: 600;
+  h1 {
+    font-size: 2.5rem;
   }
-`;
-
-const LeftNavbarContainer = styled.div`
-  width: 30%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  .logo {
-    padding-right: 10px;
-    width: 40px;
-  }
-  .text {
-    font-size: 26px;
-    font-weight: 600;
-  }
-`;
-const MiddleNavbarContainer = styled.div`
-  width: 40%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const RightNavbarContainer = styled.div`
-  width: 20%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
 `;
