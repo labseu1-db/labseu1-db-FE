@@ -306,7 +306,7 @@ const StyledContainer = styled.div`
 const StyledButtonDelete = styled.button`
   cursor: pointer;
   padding: 2px 7px;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   color: white;
   border-radius: 15px;
   margin-left: 10px;
@@ -372,7 +372,7 @@ const StyledModalInput = styled.input`
     font-size: 1rem;
   }
   &:focus {
-    border-bottom: 2px solid #5c4df2;
+    border-bottom: 2px solid #00bc98;
   }
 
 `;
@@ -392,7 +392,7 @@ const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledActionButtonsContainer = styled.div`
@@ -405,9 +405,9 @@ const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
@@ -415,6 +415,6 @@ const StyledModalAdder = styled.div`
   font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #5c4df2;
+  color: #00bc98;
   cursor: pointer;
 `;

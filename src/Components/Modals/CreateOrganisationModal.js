@@ -129,7 +129,7 @@ const StyledModalInput = styled.input`
   padding: 10px 0 5px 0;
   margin-bottom: 10px;
   &:focus {
-    border-bottom: 2px solid #5c4df2;
+    border-bottom: 2px solid #00bc98;
   }
   &::placeholder {
     font-size: 1.2rem;

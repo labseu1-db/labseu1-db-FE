@@ -157,7 +157,7 @@ const StyledDropdown = styled.div`
     margin: 0;
   }
   .ui.dropdown .menu > .item:hover {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
   }
   .item {

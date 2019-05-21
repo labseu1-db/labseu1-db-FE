@@ -37,12 +37,8 @@ const StyledBackToButton = styled.button`
   cursor: pointer;
   &:hover {
     color: white;
-<<<<<<< HEAD
     background-color: #00bc98;
-=======
-    background-color: #5c4df2;
-    border: 1px solid #5c4df2;
->>>>>>> 7ea71be31731aa63a87d4024463e74eeb0527476
+    border: 1px solid #00bc98;
   }
   &:focus {
     outline: none;

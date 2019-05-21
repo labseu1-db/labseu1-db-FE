@@ -90,7 +90,7 @@ export class NewCommentCard extends React.Component {
           <StyledButtonContainer>
             <ScreenButton
               content="GIF"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconCheckWhite}

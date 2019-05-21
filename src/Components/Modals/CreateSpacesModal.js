@@ -157,7 +157,7 @@ const StyledModalInput = styled.input`
     font-size: 1rem;
   }
   &:focus {
-    border-bottom: 2px solid #5c4df2;
+    border-bottom: 2px solid #00bc98;
   }
 `;
 
