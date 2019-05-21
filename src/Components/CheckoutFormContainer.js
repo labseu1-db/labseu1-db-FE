@@ -18,7 +18,6 @@ class CheckoutFormContainer extends Component {
   };
 
   render() {
-    console.log(this.props.currentOrg);
     return (
       <Modal
         trigger={

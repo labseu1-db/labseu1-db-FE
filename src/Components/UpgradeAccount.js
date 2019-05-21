@@ -120,7 +120,7 @@ const StyledThreadContainerPremium = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  height: 140px;
+  height: 120px;
   margin: 25px 0;
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);

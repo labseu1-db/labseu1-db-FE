@@ -19,9 +19,8 @@ class CheckoutForm extends Component {
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
 
     if (!token) {
-      window.alert('Incomplete payment details');
+      window.alert('Invalid payment details');
     } else {
-      console.log(token);
       let response = await fetch('http://localhost:5001/labseu1-db-test/us-central1/app/charge', {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
@@ -29,19 +28,23 @@ class CheckoutForm extends Component {
       });
 
       if (response.ok) {
-        this.props.firestore.update(
-          { collection: 'organisations', doc: this.props.currentOrg.id },
-          {
-            isPremium: true
-          }
-        );
         this.setState({ complete: true });
-        console.log('response:', response);
       } else {
-        console.log('response:', response);
+        window.alert('Error processing payment');
+        this.props.handleClose();
       }
     }
   }
+
+  completeUpgrade = () => {
+    this.props.firestore.update(
+      { collection: 'organisations', doc: this.props.currentOrg.id },
+      {
+        isPremium: true
+      }
+    );
+    this.props.handleClose();
+  };
 
   render() {
     if (this.state.complete) {
@@ -52,7 +55,7 @@ class CheckoutForm extends Component {
           </StyledModalH1>
 
           <StyledModalMainButtonContainerOk>
-            <StyledModalButton onClick={this.props.handleClose}>OK</StyledModalButton>
+            <StyledModalButtonUpgrade onClick={this.completeUpgrade}>Upgrade Account</StyledModalButtonUpgrade>
           </StyledModalMainButtonContainerOk>
         </div>
       );
@@ -135,6 +138,17 @@ const StyledModalButton = styled.button`
   background-color: #5c4df2;
 `;
 
+const StyledModalButtonUpgrade = styled.button`
+  width: 150px;
+  padding: 5px 15px;
+  margin: 0 0 25px 0;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  background-color: #5c4df2;
+`;
+
 const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -148,6 +162,7 @@ const StyledModalMainButtonContainer = styled.div`
 const StyledModalMainButtonContainerOk = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 25px;
   .cancel-button {
     color: #5c4df2;
     background-color: white;
