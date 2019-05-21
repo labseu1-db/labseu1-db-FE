@@ -145,9 +145,9 @@ export class NavBar extends Component {
                 </StyledDropdown>
               )}
             </InnerContainerHorizontal>
-            <div>
+            {/* <div>
               <Icon name="cog" />
-            </div>
+            </div> */}
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
