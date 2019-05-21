@@ -47,6 +47,7 @@ const NavbarContainer = styled.div`
   align-items: flex-end;
   .navbar-item {
     font-size: 15px;
+    padding-bottom: 5px;
     cursor: pointer;
     &:hover {
       color: #308c66;
@@ -58,7 +59,7 @@ const NavbarContainer = styled.div`
 `;
 
 const LeftNavbarContainer = styled.div`
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -67,10 +68,10 @@ const LeftNavbarContainer = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   .logo {
     padding-right: 10px;
-    width: 40px;
+    width: 48px;
   }
   .text {
     font-size: 26px;
