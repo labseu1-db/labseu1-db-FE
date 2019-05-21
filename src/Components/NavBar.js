@@ -177,7 +177,7 @@ export class NavBar extends Component {
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedHome ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' } : {}}
+                style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
                 onClick={() => {
                   this.highlightHome();
@@ -195,7 +195,7 @@ export class NavBar extends Component {
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedFollowUp ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' } : {}}
+                style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
                 onClick={() => {
                   this.highlightFollowUp();
@@ -246,7 +246,7 @@ export class NavBar extends Component {
                           key={index}
                           style={
                             this.state.activeSpace === space.spaceName
-                              ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' }
+                              ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
                               : {}
                           }
                           onClick={event => {
