@@ -12,9 +12,10 @@ import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import ScreenButton from './reusable-components/ScreenButton';
 import ThreadCard from './reusable-components/ThreadCard';
-
-import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 import CreateThreadModal from './Modals/CreateThreadModal';
+
+//Actions
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
 //Main component
 class MainScreen extends React.Component {

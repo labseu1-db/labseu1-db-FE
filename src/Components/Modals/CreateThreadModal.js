@@ -23,7 +23,8 @@ class CreateThreadModal extends Component {
       threadName: '',
       threadTopic: '',
       spaceId: '',
-      threadCreatedByUserName: ''
+      threadCreatedByUserName: '',
+      display: 'none'
     };
     this.onChange = editorState => {
       this.setState({ editorState });
@@ -254,6 +255,7 @@ const MiniModalLeft = styled.div`
   background-color: #3f3b50;
   border-radius: 15px;
 `;
+
 const StyledContainerTitles = styled.p`
   color: white;
   font-size: 10px;
