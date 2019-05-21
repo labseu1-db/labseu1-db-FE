@@ -51,7 +51,7 @@ const StyledPlaceholderHeading = styled.div`
   color: white;
   line-height: 2.5;
   padding: 0 20px;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 10px 10px 0 0;

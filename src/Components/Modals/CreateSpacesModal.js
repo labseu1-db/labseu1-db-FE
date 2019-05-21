@@ -171,7 +171,7 @@ const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledActionButtonsContainer = styled.div`
@@ -184,9 +184,9 @@ const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
@@ -227,7 +227,7 @@ const StyledModalSpacesContainer = styled.div`
     background-color: #19bd98;
   }
   .borderclass {
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 

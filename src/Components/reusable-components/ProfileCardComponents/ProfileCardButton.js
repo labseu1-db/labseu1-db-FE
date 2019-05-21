@@ -39,7 +39,7 @@ const ProfileCardButtonStyled = styled.div`
     font-size: 0.6rem;
   }
   &:hover {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
   }
   &:focus {

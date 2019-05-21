@@ -74,7 +74,7 @@ export class NewCommentCard extends React.Component {
           {this.state.text.length > 0 && (
             <ScreenButton
               content="Submit"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconPenWhite}
@@ -118,7 +118,7 @@ const StyledImageContainer = styled.div`
   .initials {
     border-radius: 50%;
     max-width: 100%;
-    background-color: #5c4df2;
+    background-color: #00bc98;
   }
 `;
 const StyledRightInput = styled.input`

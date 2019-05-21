@@ -37,7 +37,7 @@ const StyledThreadContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
   &:hover {
-    border: 1px solid #5c4df2b3;
+    border: 1px solid #00bc98b3;
     cursor: pointer;
   }
 `;

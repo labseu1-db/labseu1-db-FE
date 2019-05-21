@@ -115,7 +115,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: #faf9f7;
+  background-color: #FFF0E6;
   color: #3d4856;
   width: 100%;
   height: 100vh;

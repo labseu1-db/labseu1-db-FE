@@ -32,14 +32,11 @@ class MainScreen extends React.Component {
           />
         )}
         <StyledFirstRow>
-          <ScreenHeading
-            heading="Home"
-            info="Catch up on the most recent threads."
-          />
+          <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
-            backgroundColor="#5C4DF2"
+            backgroundColor="#00bc98"
             color="white"
             border="none"
             onClick={e => {
@@ -90,7 +87,7 @@ class MainScreen extends React.Component {
 
 //Styling
 const StyledMainScreen = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff0e6;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
@@ -107,12 +104,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : [],
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     activeModal: state.modal.activeModal
   };
 };

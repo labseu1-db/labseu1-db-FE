@@ -324,9 +324,9 @@ const CursonImg = styled.img`
   height: 16px;
 `;
 const StyledIconButton = styled.button`
-  color: #5c4df2;
+  color: #00bc98;
   background-color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 50%;
   outline: none;
   padding: 5px 7px 3px 7px;
@@ -335,10 +335,10 @@ const StyledButton = styled.button`
   cursor: pointer;
   padding: 5px 25px;
   color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   margin-right: 10px;
   &:disabled {
     background-color: #cfd5f2;
@@ -348,8 +348,8 @@ const StyledButton = styled.button`
 const StyledBackButton = styled.button`
   cursor: pointer;
   padding: 5px 25px;
-  color: #5c4df2;
-  border: 1px solid #5c4df2;
+  color: #00bc98;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
   background-color: white;
