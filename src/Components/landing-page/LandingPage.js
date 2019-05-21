@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 //Import icons/images
 import productScreen from '../../images/product.png';
@@ -25,6 +24,18 @@ export default class LandingPage extends React.Component {
             </div>
           </StyledContentSection>
           <StyledContentSection>
+            <StyledDescribtionCard>
+              <h3>Create organisations</h3>
+              <div>
+                In Pinely, we call organisations trees. This is because we want our app to be used not only by
+                companies, but also by any group of people that work together on solving problems. We believe that
+                Pinely will help all teams, unions, groups and companies with comunication, decision making and
+                inclusion. As an idividual, you can be member of as many trees, as you need. Every Company deserves a
+                “front page” where you can go to get caught up on your most important discussions. Using this new web
+                app users will be able to participate in forum conversations where people can share news, content, or
+                comment on other people’s posts
+              </div>
+            </StyledDescribtionCard>
             <StyledDescribtionCard>
               <h3>Create a space</h3>
               <div>
