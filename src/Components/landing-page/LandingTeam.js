@@ -13,7 +13,7 @@ import sean from '../../images/sean.png';
 export default class LandingTeam extends React.Component {
   render() {
     return (
-      <StyledTeamContainer>
+      <StyledTeamContainer id="team">
         <h3>Amazing team behing Pinely</h3>
         <StyledPeopleConatiner>
           <StyledCard>
@@ -77,7 +77,7 @@ export default class LandingTeam extends React.Component {
 const StyledTeamContainer = styled.div`
   background-color: #f7b8011a;
   width: 100%;
-  margin-top: 10vh;
+  margin: 10vh 0;
   padding: 7vh 15vw;
   display: flex;
   flex-direction: column;

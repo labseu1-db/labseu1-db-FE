@@ -12,17 +12,17 @@ export default class LandingMidBanner extends React.Component {
       <StyledMidBanner>
         <h1>Better discussions, better decisions.</h1>
         <div>Get your team on Pinely today and start moving forward, together.</div>
-        <div>
-          <input />
+        {/* <div>
+          <input placeholder="Enter your email" />
           <button>submit</button>
-        </div>
+        </div> */}
       </StyledMidBanner>
     );
   }
 }
 
 const StyledMidBanner = styled.div`
-  margin-top: 10vh;
+  margin: 10vh 0 3vh 0;
   width: 100%;
   padding: 5vh 15vw;
   background-color: #308c6633;
@@ -45,6 +45,10 @@ const StyledMidBanner = styled.div`
     margin: 15px 15px 10px 0px;
     padding: 5px 15px;
     min-width: 20%;
+    ::placeholder {
+      font-size: 0.8rem;
+      color: darkgray;
+    }
   }
 
   button {

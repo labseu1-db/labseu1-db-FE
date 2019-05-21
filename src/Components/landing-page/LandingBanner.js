@@ -25,6 +25,13 @@ export default class LandingBanner extends React.Component {
   }
 }
 
+/*
+$break-large: 1300px;
+$break-large: 900px;
+$break-large: 700px;
+$break-small: 320px; 
+*/
+
 const StyledLandingBanner = styled.div`
   margin: 0 5vw 0 0;
   display: flex;

@@ -1,16 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-//Import icons/images
-import productScreen from '../../images/product.png';
-
-//Import components
-
 //Main component
 export default class LandingPricing extends React.Component {
   render() {
     return (
-      <StyledContent>
+      <StyledContent id="pricing">
         <h2>Pricing</h2>
         <StyledPricingCards>
           <StyledPricingCard>
@@ -42,7 +37,7 @@ export default class LandingPricing extends React.Component {
 const StyledContent = styled.div`
   width: 100%;
   min-height: 40vh;
-  margin-top: 10vh;
+  margin: 10vh 0;
   padding: 0 15vw;
   display: flex;
   flex-direction: column;

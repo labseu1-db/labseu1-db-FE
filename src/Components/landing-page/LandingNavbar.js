@@ -19,8 +19,14 @@ export default class LandingNavbar extends React.Component {
                 <a href="/">Pinely</a>
               </div>
             </LogoContainer>
-            <div className="navbar-item">Team</div>
-            <div className="navbar-item">Pricing</div>
+            <div className="navbar-item">
+              {' '}
+              <a href="#team">Team</a>
+            </div>
+            <div className="navbar-item">
+              {' '}
+              <a href="#pricing">Pricing</a>
+            </div>
           </LeftNavbarContainer>
           <MiddleNavbarContainer />
           <RightNavbarContainer className="navbar-item sign">
