@@ -163,7 +163,7 @@ export class NavBar extends Component {
                   onClick={() => {
                     this.props.resetSpace();
                     this.props.resetThread();
-                    this.props.props.history.push('/users');
+                    this.props.history.push('/users');
                   }}>
                   Users
                 </span>
