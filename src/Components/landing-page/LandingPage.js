@@ -48,7 +48,7 @@ const StyledLandingContainer = styled.div`
     text-decoration: none;
     color: inherit;
     &:hover {
-      color: #308c66;
+      color: #f64e49;
     }
   }
 `;
@@ -57,7 +57,7 @@ const TopLandingContainer = styled.div`
   width: 100%;
   height: 60vh;
   padding: 0 15vw;
-  background-color: #f7b8011a;
+  background-color: #00bc981a;
   display: flex;
   flex-direction: column;
   .banner {
