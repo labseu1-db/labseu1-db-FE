@@ -35,7 +35,9 @@ import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: ''
+    profileDropdown: '',
+    highlightedHome: false,
+    highlightedFollowUp: false
   };
 
   handleLogOut = () => {
@@ -80,7 +82,20 @@ export class NavBar extends Component {
     this.props.hideFollowUp();
   };
 
-  generateDropdownOptions = () => {};
+  highlightHome = () => {
+    this.setState({ highlightedHome: true, highlightedFollowUp: false });
+  };
+
+  highlightFollowUp = () => {
+    this.setState({ highlightedHome: false, highlightedFollowUp: true });
+  };
+
+  // clearHighlightedNav = () => {
+  //   this.setState({
+  //     highlightedHome:
+  //   })
+  // };
+
   render() {
     //Will load spinner if user doesn't exist
     if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
@@ -151,42 +166,49 @@ export class NavBar extends Component {
           <InnerContainer>
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
-              <div
+              <RowDiv
+                style={this.state.highlightedHome ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
                 onClick={() => {
+                  this.highlightHome();
                   this.props.showModal(null);
                   this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}>
+                }}
+              >
                 Home
-              </div>
+              </RowDiv>
             </RowContainer>
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
-              <div
+              <RowDiv
+                style={this.state.highlightedFollowUp ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
                 onClick={() => {
+                  this.highlightFollowUp();
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}>
+                }}
+              >
                 Follow up
-              </div>
+              </RowDiv>
             </RowContainer>
             {localStorage.getItem('activeOrg') && (
               <RowContainer>
                 <img src={peopleIcon} alt="users icon" />
-                <div
+                <RowDiv
                   onClick={() => {
                     this.props.resetSpace();
                     this.props.resetThread();
                     this.props.props.history.push('/users');
-                  }}>
+                  }}
+                >
                   Users
-                </div>
+                </RowDiv>
               </RowContainer>
             )}
             <div>
@@ -221,7 +243,8 @@ export class NavBar extends Component {
                               this.props.showModal(null);
                               this.props.notRenderProfile();
                               this.props.hideFollowUp();
-                            }}>
+                            }}
+                          >
                             {space.spaceName}
                           </div>
                         </div>
@@ -372,6 +395,11 @@ const RowContainer = styled.div`
     color: #f64e49;
     cursor: pointer;
   }
+`;
+
+const RowDiv = styled.div`
+  padding: 5px 12px;
+  border-radius: 15px;
 `;
 
 const OrgContainer = styled.div`
