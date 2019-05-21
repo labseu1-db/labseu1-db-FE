@@ -61,7 +61,8 @@ export class CommentCard extends React.Component {
       likes,
       createdByUserId,
       isCommentUpdated,
-      isCommentDecided
+      isCommentDecided,
+      gifUrl
     } = this.props;
 
     const dateInfo = new Date(this.props.commentUpdatedAt);
@@ -103,6 +104,7 @@ export class CommentCard extends React.Component {
               <StyledAuthorsName>{createdBy}</StyledAuthorsName>
               <StyledContent>{content}</StyledContent>
               {isCommentUpdated && <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>}
+              {gifUrl && <GifInComment src={gifUrl} alt="gif" />}
               <StyledLikesContainer>
                 {!this.state.didUserLikeComment && (
                   <img
@@ -242,6 +244,12 @@ const StyledDecision = styled.div`
   padding-left: 10px;
   font-weight: 600;
   font-size: 0.9rem;
+`;
+
+const GifInComment = styled.img`
+  max-height: 70px;
+  border-radius: 5px;
+  margin: 10px 0;
 `;
 
 const mapStateToProps = state => {

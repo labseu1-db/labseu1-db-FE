@@ -29,6 +29,7 @@ import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
+
 import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
 import peopleIcon from '../images/icon-people-lightgray.svg';
@@ -180,12 +181,20 @@ export class NavBar extends Component {
                 }}
               >
                 Home
+<<<<<<< HEAD
               </RowDiv>
             </RowContainer>
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
               <RowDiv
                 style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+=======
+              </div>
+            </RowContainer>
+            <RowContainer>
+              <img src={clipboardIcon} alt="home icon" />
+              <div
+>>>>>>> 7ea71be31731aa63a87d4024463e74eeb0527476
                 className="text"
                 onClick={() => {
                   this.highlightFollowUp();
@@ -388,9 +397,11 @@ const RowContainer = styled.div`
   margin: 15px 0;
   position: relative;
   display: flex;
+
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+
   img {
     width: 1.25rem;
     margin-right: 15px;
