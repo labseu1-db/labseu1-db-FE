@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 //Import icons/images
-import landingPageBanner from '../../images/landing-page-banner.svg';
-import lineGreen from '../../images/line-green.svg';
-import treeLogo from '../../images/tree-logo.png';
+import productScreen from '../../images/product.png';
 
 //Import components
 import LandingNavbar from './LandingNavbar';
+import LandingBanner from './LandingBanner';
 
 //Main component
 export default class LandingPage extends React.Component {
@@ -17,17 +16,38 @@ export default class LandingPage extends React.Component {
       <StyledLandingContainer>
         <TopLandingContainer>
           <LandingNavbar />
-          <LandingBanner>
-            <LandingHeader>
-              <h1>Decision making simpler, more pleasant and much more productive</h1>
-              <div>
-                Pinely is a carefully designed platform for growing teams to stay on the same page, have broad
-                discussions, and make the right decisions.
-              </div>
-            </LandingHeader>
-            <img className="banner" src={landingPageBanner} alt="people using computer" />
-          </LandingBanner>
+          <LandingBanner />
         </TopLandingContainer>
+        <StyledContent>
+          <StyledContentSection>
+            <div>
+              <img src={productScreen} alt="product" />
+            </div>
+          </StyledContentSection>
+          <StyledContentSection>
+            <StyledDescribtionCard>
+              <h3>Create a space</h3>
+              <div>
+                This is your team's virtual meeting room. Once created, invite others and start your discussion - no
+                scheduling required.
+              </div>
+            </StyledDescribtionCard>
+            <StyledDescribtionCard>
+              <h3>Start a thread</h3>
+              <div>
+                Ask questions, get feedback and hash out ideas with your team. Make better decisions with all the
+                context you need in one place.
+              </div>
+            </StyledDescribtionCard>
+            <StyledDescribtionCard>
+              <h3>Mark the decision</h3>
+              <div>
+                When you're done hearing from everyone on a thread, highlight the decision so everyone is on the same
+                page.
+              </div>
+            </StyledDescribtionCard>
+          </StyledContentSection>
+        </StyledContent>
       </StyledLandingContainer>
     );
   }
@@ -36,11 +56,8 @@ export default class LandingPage extends React.Component {
 const StyledLandingContainer = styled.div`
   width: 100vw;
   min-height: 100vh;
-  /* background-image: url(${lineGreen});
-  background-repeat: no-repeat;
-  background-size: 125vh;
-  background-position-x: right;
-  background-position-y: top; */
+  letter-spacing: 1.1;
+  line-height: 1.7;
   a {
     text-decoration: none;
     color: inherit;
@@ -51,37 +68,46 @@ const StyledLandingContainer = styled.div`
 `;
 
 const TopLandingContainer = styled.div`
-  width: 100vw;
-  height: 50vh;
+  width: 100%;
+  height: 60vh;
+  padding: 0 15vw;
   background-color: #f7b8011a;
   display: flex;
   flex-direction: column;
   .banner {
     position: absolute;
-    top: 120px;
-    right: 15vw;
-    width: 35vw;
+    top: 20vh;
+    right: 10vw;
+    width: 40vw;
     z-index: 2;
   }
 `;
 
-const LandingBanner = styled.div`
-  margin: 0 5vw 0 15vw;
+const StyledContent = styled.div`
+  width: 100%;
+  margin-top: 30vh;
+  height: 50vh;
+  padding: 0 15vw;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  height: 100%;
-  width: 25vw;
+  justify-content: space-between;
 `;
 
-const LandingHeader = styled.div`
-  line-height: 1.6;
-  div {
-    font-size: 1.2rem;
-    padding-top: 10px;
+const StyledContentSection = styled.div`
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  img {
+    max-width: 100%;
   }
-  h1 {
-    font-size: 2.5rem;
+`;
+
+const StyledDescribtionCard = styled.div`
+  margin-bottom: 10vh;
+
+  h3 {
+    font-size: 1.3rem;
+  }
+  div {
+    font-size: 1.1rem;
   }
 `;

@@ -33,7 +33,7 @@ export default class LandingNavbar extends React.Component {
 }
 
 const StyledNavbar = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 80px;
   display: flex;
   align-items: center;
@@ -41,7 +41,7 @@ const StyledNavbar = styled.div`
 `;
 
 const NavbarContainer = styled.div`
-  width: 70%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -58,7 +58,7 @@ const NavbarContainer = styled.div`
 `;
 
 const LeftNavbarContainer = styled.div`
-  width: 20%;
+  width: 30%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
