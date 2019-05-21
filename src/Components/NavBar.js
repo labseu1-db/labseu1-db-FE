@@ -4,7 +4,6 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
 import {
@@ -25,10 +24,15 @@ import { Icon, Dropdown } from 'semantic-ui-react';
 
 //Import components
 import Spinner from './semantic-components/Spinner';
+import { NavBarOrgDropdown } from './NavBarOrgDropdown';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
-import { NavBarOrgDropdown } from './NavBarOrgDropdown';
+
+import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
+import discIcon from '../images/icon-disc-darkgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
@@ -118,6 +122,10 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
 
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
+      }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -125,7 +133,7 @@ export class NavBar extends Component {
               {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
-                <div>
+                <StyledDropdown>
                   <Dropdown
                     inline
                     name={'profileDropdown'}
@@ -134,7 +142,7 @@ export class NavBar extends Component {
                     defaultValue={this.props.user.fullName}
                     onChange={this.handleDropDownChange}
                   />
-                </div>
+                </StyledDropdown>
               )}
             </InnerContainerHorizontal>
             <div>
@@ -142,9 +150,10 @@ export class NavBar extends Component {
             </div>
           </HeaderContainer>
           <InnerContainer>
-            <HomeContainer>
+            <RowContainer>
               <img src={homeIcon} alt="home icon" />
-              <span
+              <div
+                className="text"
                 onClick={() => {
                   this.props.showModal(null);
                   this.props.editingProfileDone();
@@ -154,12 +163,10 @@ export class NavBar extends Component {
                   this.props.hideFollowUp();
                 }}>
                 Home
-              </span>
-            </HomeContainer>
-            <FollowUpContainer>
-              <Icon.Group className="clipboard" size="large">
-                <Icon name="clipboard outline" />
-              </Icon.Group>
+              </div>
+            </RowContainer>
+            <RowContainer>
+              <img src={clipboardIcon} alt="home icon" />
               <div
                 className="text"
                 onClick={() => {
@@ -169,12 +176,26 @@ export class NavBar extends Component {
                 }}>
                 Follow up
               </div>
-            </FollowUpContainer>
+            </RowContainer>
+            {localStorage.getItem('activeOrg') && (
+              <RowContainer>
+                <img src={peopleIcon} alt="users icon" />
+                <div
+                  onClick={() => {
+                    this.props.resetSpace();
+                    this.props.resetThread();
+                    this.props.props.history.push('/users');
+                  }}>
+                  Users
+                </div>
+              </RowContainer>
+            )}
             <div>
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <Icon name="building outline" size="large" />
+                    <img src={discIcon} alt="home icon" />
+
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
@@ -192,7 +213,7 @@ export class NavBar extends Component {
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
                         <div key={index}>
-                          <span
+                          <div
                             onClick={event => {
                               event.preventDefault();
                               this.props.editingProfileDone();
@@ -203,7 +224,7 @@ export class NavBar extends Component {
                               this.props.hideFollowUp();
                             }}>
                             {space.spaceName}
-                          </span>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -287,7 +308,7 @@ export default compose(
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
-  padding-right: 32px;
+  padding-right: 15px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -296,6 +317,17 @@ const HeaderContainer = styled.div`
     &:hover {
       cursor: pointer;
     }
+  }
+`;
+
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
   }
 `;
 
@@ -325,53 +357,23 @@ const InnerContainer = styled.div`
   padding-bottom: 16px;
 `;
 
-const HomeContainer = styled.div`
+const RowContainer = styled.div`
   padding-left: 4px;
+  margin: 15px 0;
   position: relative;
   display: flex;
-  align-items: baseline;
+
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+
   img {
     width: 1.25rem;
-    /* margin-right: 7px;
-    margin-left: 4px; */
-    position: absolute;
-    right: 249px;
-    bottom: 4px;
-    &:hover {
-      cursor: pointer;
-    }
+    margin-right: 15px;
   }
-  span {
-    padding-left: 41px;
-  }
-  span:hover {
+  div:hover {
     color: #f64e49;
     cursor: pointer;
-  }
-`;
-
-const FollowUpContainer = styled.div`
-  .text {
-    padding-left: 45px;
-    padding-top: 15px;
-    margin-bottom: 50px;
-    position: relative;
-    display: flex;
-    align-items: baseline;
-    &:hover {
-      color: #f64e49;
-      cursor: pointer;
-    }
-  }
-  .clipboard {
-    width: 1.25rem;
-    position: absolute;
-    right: 249px;
-    margin-top: 11px;
-    &:hover {
-      cursor: pointer;
-      color: blue;
-    }
   }
 `;
 
@@ -383,21 +385,15 @@ const OrgContainer = styled.div`
   padding-left: 4px;
   display: flex;
   align-items: center;
-  align-items: baseline;
+  justify-content: center;
   color: rgb(55, 71, 80);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  span {
-    padding-right: 8px;
-    padding-left: 12px;
-  }
+
   &:hover {
     cursor: pointer;
     border-radius: 16px;
     box-shadow: 3px 3px 13px -10px #000;
-    .chevron {
-      color: #f64e49;
-    }
   }
 `;
 
@@ -413,7 +409,7 @@ const OuterOrgContainer = styled.div`
   img {
     width: 1.25rem;
     margin-right: 8px;
-    margin-right: 20px;
+    margin-right: 15px;
     &:hover {
       cursor: pointer;
     }
@@ -421,13 +417,14 @@ const OuterOrgContainer = styled.div`
 `;
 
 const SpaceContainer = styled.div`
-  margin-left: 8px;
   line-height: 30px;
-  span {
-    margin-left: 40px;
-    &:hover {
-      color: #f64e49;
-      cursor: pointer;
+  margin-left: 40px;
+  div {
+    div {
+      &:hover {
+        color: #f64e49;
+        cursor: pointer;
+      }
     }
   }
 `;

@@ -120,11 +120,6 @@ const StyledModalCard = styled.div`
   background-color: white;
   margin-top: 50px;
   border-radius: 5px;
-  input:focus,
-  button:focus,
-  textarea:focus {
-    outline: none;
-  }
 `;
 
 const StyledAlertMessage = styled.div`
@@ -162,8 +157,11 @@ const StyledModalInput = styled.input`
   border-bottom: 2px solid #bdc3c9;
   padding: 10px 0 5px 0;
   margin-bottom: 10px;
+  &:focus {
+    border-bottom: 2px solid #5c4df2;
+  }
   &::placeholder {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;
 

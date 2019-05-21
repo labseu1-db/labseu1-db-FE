@@ -131,22 +131,28 @@ class CreateNewSpaceModal extends Component {
                   onChange={this.handleInputChange}
                 />
                 <Header as="h5">Members</Header>
-                <Dropdown
-                  placeholder="Choose people to add"
-                  fluid
-                  multiple
-                  search
-                  selection
-                  options={userIdsOptions}
-                  onChange={this.setIdsToState}
-                />
+                <StyledDropdown>
+                  <Dropdown
+                    placeholder="Choose people to add"
+                    fluid
+                    multiple
+                    search
+                    selection
+                    options={userIdsOptions}
+                    onChange={this.setIdsToState}
+                  />
+                </StyledDropdown>
                 <Modal.Actions>
                   <StyledActions>
                     <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
 
                     <StyledButtonCreateSpace
                       type="submit"
-                      disabled={!this.state.spaceName.length > 0 || !this.state.spaceTopic.length > 0}
+                      disabled={
+                        !this.state.spaceName.length > 0 ||
+                        !this.state.spaceTopic.length > 0 ||
+                        !this.state.idsInSpace.length > 0
+                      }
                       onClick={e => {
                         this.addSpaceToDatabase();
                         this.props.showModal(null);
@@ -237,6 +243,26 @@ const StyledButtonCreateSpace = styled.button`
     border: 1px solid #cfd5f2;
   }
 `;
+
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+  .ui.label {
+    background: #5c4df2;
+    color: white;
+    border: none;
+  }
+  .i.icon.delete {
+    color: white;
+  }
+`;
+
 const StyledInput = styled.input`
   width: 100%;
   height: 32px;

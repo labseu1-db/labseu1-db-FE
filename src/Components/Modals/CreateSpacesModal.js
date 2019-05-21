@@ -123,11 +123,6 @@ const StyledModalCard = styled.div`
   background-color: white;
   margin-top: 50px;
   border-radius: 5px;
-  input:focus,
-  button:focus,
-  textarea:focus {
-    outline: none;
-  }
 `;
 
 const StyledModalForm = styled.form`
@@ -159,7 +154,10 @@ const StyledModalInput = styled.input`
   padding: 10px 0 5px 0;
   margin-bottom: 10px;
   &::placeholder {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+  &:focus {
+    border-bottom: 2px solid #5c4df2;
   }
 `;
 
@@ -204,27 +202,35 @@ const StyledModalSpacesContainer = styled.div`
   margin-bottom: 20px;
   .eggplant {
     background-color: #403b4f;
+    border: 2px solid #403b4f;
   }
   .darkgreen {
     background-color: #2e7c87;
+    border: 2px solid #2e7c87;
   }
   .violet {
     background-color: #5c44f2;
+    border: 2px solid #5c44f2;
   }
   .darkolive {
     background-color: #36484e;
+    border: 2px solid #36484e;
   }
   .yellow {
     background-color: #d99e49;
+    border: 2px solid #d99e49;
   }
   .red {
     background-color: #f26551;
+    border: 2px solid #f26551;
   }
   .lightblue {
     background-color: #19a9e3;
+    border: 2px solid #19a9e3;
   }
   .green {
     background-color: #19bd98;
+    border: 2px solid #19bd98;
   }
   .borderclass {
     border: 2px solid #00bc98;
