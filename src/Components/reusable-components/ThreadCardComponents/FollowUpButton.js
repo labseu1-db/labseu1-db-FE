@@ -9,33 +9,41 @@ import { Icon } from 'semantic-ui-react';
 
 //Main component
 export class FollowUpButton extends React.Component {
+  state = {
+    isFollowUpText: 'Follow Up'
+  };
+
   markAsFollowUp = e => {
-    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ isFollowUpText: 'Marked for followup' });
     let threadRef = this.props.firestore
       .collection('threads')
       .doc(this.props.threadId);
-    threadRef.update({
-      isFollowUp: true,
-      arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
-        localStorage.getItem('uuid')
-      )
-    });
+    threadRef
+      .update({
+        isFollowUp: true,
+        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
+          localStorage.getItem('uuid')
+        )
+      })
+      .then(() => {
+        this.setState({ isFollowUpText: 'Marked for followup' });
+      });
   };
 
   render() {
     return (
       <div>
+        {console.log('isFollowUpText:', this.state.isFollowUpText)}
         {!this.props.isFollowUpDecided && (
           <StyledFollowUpButton
-            className="button1"
-            id="toggle"
-            value="Follow Up"
+            value={this.state.isFollowUpText}
             onClick={e => this.markAsFollowUp(e)}
           >
             <Icon.Group className="clipboard" size="large">
               <Icon name="clipboard outline" />
             </Icon.Group>
-            Follow Up
+            {this.state.isFollowUpText}
           </StyledFollowUpButton>
         )}
       </div>
