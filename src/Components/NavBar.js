@@ -50,7 +50,7 @@ export class NavBar extends Component {
       .then(() => {
         localStorage.clear();
       })
-      .catch((err) => console.log("something's wrong."));
+      .catch(err => console.log("something's wrong."));
 
     this.props.history.push('/login');
   };
@@ -114,7 +114,7 @@ export class NavBar extends Component {
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map((org) => ({
+      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
         key: org.orgName,
         text: org.orgName,
         value: `${org.id}`
@@ -133,7 +133,7 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to='/createneworganisation' />;
+        return <Redirect to="/createneworganisation" />;
       }
 
       if (this.state.profileDropdown === 'Create Organisation') {
@@ -144,7 +144,7 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt='user' />}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -160,21 +160,15 @@ export class NavBar extends Component {
               )}
             </InnerContainerHorizontal>
             <div>
-              <Icon name='cog' />
+              <Icon name="cog" />
             </div>
           </HeaderContainer>
           <InnerContainer>
-<<<<<<< HEAD
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
               <RowDiv
                 style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
-=======
-            <HomeContainer>
-              <img src={homeIcon} alt='home icon' />
-              <span
->>>>>>> d0195ba7fa33bd8ccd62b7956c9679faeab9392d
                 onClick={() => {
                   this.highlightHome();
                   this.props.showModal(null);
@@ -186,7 +180,6 @@ export class NavBar extends Component {
                 }}
               >
                 Home
-<<<<<<< HEAD
               </RowDiv>
             </RowContainer>
             <RowContainer>
@@ -194,16 +187,6 @@ export class NavBar extends Component {
               <RowDiv
                 style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
-=======
-              </span>
-            </HomeContainer>
-            <FollowUpContainer>
-              <Icon.Group className='clipboard' size='large'>
-                <Icon name='clipboard outline' />
-              </Icon.Group>
-              <div
-                className='text'
->>>>>>> d0195ba7fa33bd8ccd62b7956c9679faeab9392d
                 onClick={() => {
                   this.highlightFollowUp();
                   this.props.showFollowUp();
@@ -232,12 +215,8 @@ export class NavBar extends Component {
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-<<<<<<< HEAD
                     <img src={discIcon} alt="home icon" />
 
-=======
-                    <Icon name='building outline' size='large' />
->>>>>>> d0195ba7fa33bd8ccd62b7956c9679faeab9392d
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
@@ -253,7 +232,6 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-<<<<<<< HEAD
                         <RowDiv
                           key={index}
                           style={
@@ -274,23 +252,6 @@ export class NavBar extends Component {
                         >
                           {space.spaceName}
                         </RowDiv>
-=======
-                        <div key={index}>
-                          <span
-                            onClick={(event) => {
-                              event.preventDefault();
-                              this.props.editingProfileDone();
-                              this.props.resetThread();
-                              this.props.switchSpaces(space.id);
-                              this.props.showModal(null);
-                              this.props.notRenderProfile();
-                              this.props.hideFollowUp();
-                            }}
-                          >
-                            {space.spaceName}
-                          </span>
-                        </div>
->>>>>>> d0195ba7fa33bd8ccd62b7956c9679faeab9392d
                       ))}
                     </div>
                   )}
@@ -306,7 +267,7 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
@@ -319,7 +280,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -340,8 +301,11 @@ const mapDispatchToProps = (dispatch) => {
 
 //Connect to Firestore
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -351,12 +315,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichUser'
       }
       // {
