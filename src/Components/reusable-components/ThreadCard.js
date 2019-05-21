@@ -35,7 +35,7 @@ function ThreadCard(props) {
           checked={checked}
         />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <StyledFollowUpContainer>
+        <div>
           {isFollowUpDecided && (
             <StyledDecision>Marked for followup</StyledDecision>
           )}
@@ -45,7 +45,7 @@ function ThreadCard(props) {
               threadId={threadId}
             />
           }
-        </StyledFollowUpContainer>
+        </div>
         <ThreadRightComponent threadId={threadId} />
       </StyledThreadContainer>
     </div>
@@ -53,8 +53,6 @@ function ThreadCard(props) {
 }
 
 //Styling
-const StyledFollowUpContainer = styled.div``;
-
 const StyledThreadContainer = styled.div`
   background-color: white;
   padding: 20px;
