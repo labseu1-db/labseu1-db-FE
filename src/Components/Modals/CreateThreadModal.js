@@ -23,7 +23,8 @@ class CreateThreadModal extends Component {
       threadName: '',
       threadTopic: '',
       spaceId: '',
-      threadCreatedByUserName: ''
+      threadCreatedByUserName: '',
+      display: 'none'
     };
     this.onChange = editorState => {
       this.setState({ editorState });
@@ -143,15 +144,17 @@ class CreateThreadModal extends Component {
           </TextStylingContainer>
         </MiniModalLeft>
         <MiniModalRight>
-          <Dropdown
-            placeholder="Add a Space"
-            fluid
-            search
-            selection
-            options={spaceOptions}
-            basic={true}
-            onChange={this.saveSpaceToThread}
-          />
+          <StyledDropdown>
+            <Dropdown
+              placeholder="Add a Space"
+              fluid
+              search
+              selection
+              options={spaceOptions}
+              basic={true}
+              onChange={this.saveSpaceToThread}
+            />
+          </StyledDropdown>
         </MiniModalRight>
         <Modal.Content>
           <StyledInputsContainer>
@@ -252,6 +255,7 @@ const MiniModalLeft = styled.div`
   background-color: #3f3b50;
   border-radius: 15px;
 `;
+
 const StyledContainerTitles = styled.p`
   color: white;
   font-size: 10px;
@@ -291,6 +295,27 @@ const MiniModalRight = styled.div`
     background-color: transparent;
     border: none;
     outline: none;
+  }
+`;
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #5c4df2;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+  .ui.label {
+    background: #5c4df2;
+    color: white;
+    border: none;
+  }
+  .i.icon.delete {
+    color: white;
+  }
+  div {
+    color: white;
   }
 `;
 
