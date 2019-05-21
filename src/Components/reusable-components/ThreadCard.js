@@ -12,56 +12,44 @@ import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 import FollowUpButton from './ThreadCardComponents/FollowUpButton';
 
 //Main component
-export class ThreadCard extends React.Component {
-  state = {
-    isHovering: false
-  };
-
-  setIsHovering = boolean => {
-    this.setState({
-      isHovering: boolean
-    });
-  };
-
-  render() {
-    const {
-      createdBy,
-      createdAt,
-      heading,
-      info,
-      checked,
-      threadId,
-      onClick,
-      currentSpace,
-      isFollowUpDecided
-    } = this.props;
-    return (
-      <div>
-        <StyledThreadContainer onClick={onClick}>
-          <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
-          <ThreadLeftComponentText
-            createdBy={createdBy}
-            createdAt={createdAt}
-            space={currentSpace}
-            checked={checked}
-          />
-          <ThreadMiddleComponent heading={heading} info={info} />
-          <StyledFollowUpContainer>
-            {isFollowUpDecided && (
-              <StyledDecision>Marked for followup</StyledDecision>
-            )}
-            {
-              <FollowUpButton
-                isFollowUpDecided={isFollowUpDecided}
-                threadId={threadId}
-              />
-            }
-          </StyledFollowUpContainer>
-          <ThreadRightComponent threadId={threadId} />
-        </StyledThreadContainer>
-      </div>
-    );
-  }
+function ThreadCard(props) {
+  const {
+    createdBy,
+    createdAt,
+    heading,
+    info,
+    checked,
+    threadId,
+    onClick,
+    currentSpace,
+    isFollowUpDecided
+  } = props;
+  return (
+    <div>
+      <StyledThreadContainer onClick={onClick}>
+        <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
+        <ThreadLeftComponentText
+          createdBy={createdBy}
+          createdAt={createdAt}
+          space={currentSpace}
+          checked={checked}
+        />
+        <ThreadMiddleComponent heading={heading} info={info} />
+        <StyledFollowUpContainer>
+          {isFollowUpDecided && (
+            <StyledDecision>Marked for followup</StyledDecision>
+          )}
+          {
+            <FollowUpButton
+              isFollowUpDecided={isFollowUpDecided}
+              threadId={threadId}
+            />
+          }
+        </StyledFollowUpContainer>
+        <ThreadRightComponent threadId={threadId} />
+      </StyledThreadContainer>
+    </div>
+  );
 }
 
 //Styling
