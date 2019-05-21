@@ -4,6 +4,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
@@ -28,6 +29,7 @@ import Spinner from './semantic-components/Spinner';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 
 export class NavBar extends Component {
@@ -118,6 +120,10 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
 
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
+      }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -156,6 +162,20 @@ export class NavBar extends Component {
                 Home
               </span>
             </HomeContainer>
+            {localStorage.getItem('activeOrg') && (
+              <HomeContainer>
+                <img src={peopleIcon} alt="users icon" />
+                <span
+                  onClick={() => {
+                    this.props.resetSpace();
+                    this.props.resetThread();
+                    this.props.history.push('/users');
+                  }}>
+                  Users
+                </span>
+              </HomeContainer>
+            )}
+
             <FollowUpContainer>
               <Icon.Group className="clipboard" size="large">
                 <Icon name="clipboard outline" />
@@ -170,6 +190,7 @@ export class NavBar extends Component {
                 Follow up
               </div>
             </FollowUpContainer>
+
             <div>
               <div>
                 <OuterOrgContainer>
@@ -330,6 +351,7 @@ const HomeContainer = styled.div`
   position: relative;
   display: flex;
   align-items: baseline;
+  margin: 15px 0;
   img {
     width: 1.25rem;
     /* margin-right: 7px;
