@@ -10,6 +10,7 @@ import LandingBanner from './LandingBanner';
 import LandingContent from './LandingContent';
 import LandingMidBanner from './LandingMidBanner';
 import LandingTeam from './LandingTeam';
+import LandingPricing from './LandingPricing';
 
 //Main component
 export default class LandingPage extends React.Component {
@@ -21,8 +22,9 @@ export default class LandingPage extends React.Component {
           <LandingBanner />
         </TopLandingContainer>
         <LandingContent />
-        <LandingMidBanner />
         <LandingTeam />
+        <LandingPricing />
+        <LandingMidBanner />
       </StyledLandingContainer>
     );
   }

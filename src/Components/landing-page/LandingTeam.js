@@ -75,9 +75,10 @@ export default class LandingTeam extends React.Component {
 }
 
 const StyledTeamContainer = styled.div`
+  background-color: #f7b8011a;
   width: 100%;
   margin-top: 10vh;
-  padding: 0 15vw;
+  padding: 7vh 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
