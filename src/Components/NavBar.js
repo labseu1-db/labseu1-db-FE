@@ -20,7 +20,7 @@ import {
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
-import { Icon, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 //Import components
 import Spinner from './semantic-components/Spinner';

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons
-import checkIconWhite from '../../../images/icon-check-white.svg';
+import checkIconGreen from '../../../images/icon-check-green.svg';
 import closeIconWhite from '../../../images/icon-close-white.svg';
 
 //Main component
@@ -16,7 +16,7 @@ function ThreadLeftComponentImage(props) {
       <div className="line" />
       {checked === 'true' && (
         <div className="initial-small true">
-          <img src={checkIconWhite} alt="check icon" />
+          <img src={checkIconGreen} alt="check icon" />
         </div>
       )}
       {checked === 'false' && (
@@ -53,8 +53,8 @@ const StyledImagesContainer = styled.div`
     font-weight: 600;
     font-size: 0.9rem;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,15 +63,12 @@ const StyledImagesContainer = styled.div`
     }
   }
   .true {
-    background-color: #00bc98;
     background-color: white;
-    border: 4px solid #00bc98;
+    border: 3px solid #00bc98;
   }
   .false {
-    /* background-color: #f64e49; */
     background-color: white;
     border: 3px solid #f64e49;
-    color: #f64e49;
   }
   .line {
     background: linear-gradient(#bdc3c9, #bdc3c9) no-repeat center/1px 100%;

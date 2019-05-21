@@ -8,11 +8,11 @@ import { firestoreConnect } from 'react-redux-firebase';
 import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
 import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
-import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
+// import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, heading, info, checked, threadId, onClick, currentSpace } = props;
+  const { createdBy, createdAt, heading, info, checked, onClick, currentSpace } = props;
   return (
     <div>
       <StyledThreadContainer onClick={onClick}>

@@ -300,7 +300,10 @@ const MiniModalRight = styled.div`
 const StyledDropdown = styled.div`
   .ui.dropdown .menu > .item:hover {
     background: #00bc98;
-    color: white;e
+    color: white;
+  }
+  .ui.dropdown:not(.button) > .default.text {
+    color: white;
   }
   .item {
     margin: 5px;
