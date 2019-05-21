@@ -149,8 +149,8 @@ const StyledButtonCreateSpace = styled.button`
   outline: none;
   background-color: #00bc98;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
 

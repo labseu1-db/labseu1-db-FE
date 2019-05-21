@@ -64,9 +64,14 @@ const StyledImagesContainer = styled.div`
   }
   .true {
     background-color: #00bc98;
+    background-color: white;
+    border: 4px solid #00bc98;
   }
   .false {
-    background-color: #f64e49;
+    /* background-color: #f64e49; */
+    background-color: white;
+    border: 3px solid #f64e49;
+    color: #f64e49;
   }
   .line {
     background: linear-gradient(#bdc3c9, #bdc3c9) no-repeat center/1px 100%;

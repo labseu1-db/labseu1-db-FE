@@ -252,7 +252,7 @@ const MiniModalLeft = styled.div`
   width: 220px;
   padding: 15px 10px;
   flex-direction: column;
-  background-color: #3f3b50;
+  background-color: #f64e49;
   border-radius: 15px;
 `;
 
@@ -262,7 +262,7 @@ const StyledContainerTitles = styled.p`
 `;
 const TextStylingContainer = styled.div`
   border-radius: 15px;
-  background-color: #322f40;
+  background-color: #f64e49;
   width: 100%;
 `;
 const TextStylingIcon = styled.img`
@@ -273,7 +273,7 @@ const TextStylingButtons = styled.button`
   cursor: pointer;
   width: 100%;
   color: white;
-  background-color: #322f40;
+  background-color: #f64e49;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -288,7 +288,7 @@ const MiniModalRight = styled.div`
   right: -250px;
   width: 200px;
   padding: 15px 10px;
-  background-color: #3f3b50;
+  background-color: #f64e49;
   border-radius: 15px;
   .ui.selection.dropdown {
     color: white;
@@ -300,7 +300,7 @@ const MiniModalRight = styled.div`
 const StyledDropdown = styled.div`
   .ui.dropdown .menu > .item:hover {
     background: #00bc98;
-    color: white;
+    color: white;e
   }
   .item {
     margin: 5px;
@@ -366,8 +366,8 @@ const StyledButton = styled.button`
   background-color: #00bc98;
   margin-right: 10px;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
 const StyledBackButton = styled.button`
@@ -380,7 +380,7 @@ const StyledBackButton = styled.button`
   background-color: white;
   margin-right: 10px;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
