@@ -19,16 +19,12 @@ export class FollowUpButton extends React.Component {
     let threadRef = this.props.firestore
       .collection('threads')
       .doc(this.props.threadId);
-    threadRef
-      .update({
-        isFollowUp: true,
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
-          localStorage.getItem('uuid')
-        )
-      })
-      .then(() => {
-        this.setState({ isFollowUpText: 'Marked for followup' });
-      });
+    threadRef.update({
+      isFollowUp: true,
+      arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
+        localStorage.getItem('uuid')
+      )
+    });
   };
 
   render() {
@@ -74,7 +70,7 @@ const StyledFollowUpButton = styled.div`
   background-color: white;
   color: black;
   display: flex;
-  height: 100%;
+  height: 30px;
   align-items: center;
   justify-content: center;
   letter-spacing: 0.5px;
