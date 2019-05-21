@@ -26,7 +26,7 @@ class FakeHome extends Component {
     return (
       <StyledHomeScreen>
         <FirstDiv>
-          <NavBar props={this.props} />
+          <NavBar {...this.props} />
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
