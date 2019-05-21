@@ -6,6 +6,8 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { paymentEndPoint } from '../firebase/firebaseConfig';
+
 class CheckoutForm extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ class CheckoutForm extends Component {
     if (!token) {
       window.alert('Invalid payment details');
     } else {
-      let response = await fetch('http://localhost:5001/labseu1-db-test/us-central1/app/charge', {
+      let response = await fetch(paymentEndPoint, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
         body: token.id
@@ -31,6 +33,7 @@ class CheckoutForm extends Component {
         this.setState({ complete: true });
       } else {
         window.alert('Error processing payment');
+        console.log(response);
         this.props.handleClose();
       }
     }

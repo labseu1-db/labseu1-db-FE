@@ -9,3 +9,8 @@ const firebaseConfig = {
 };
 
 export default firebaseConfig;
+
+export const paymentEndPoint = 'http://localhost:5001/labseu1-db-test/us-central1/app/charge';
+
+// hosted on firebase:
+// 'https://us-central1-labseu1-db-test.cloudfunctions.net/app/charge';
