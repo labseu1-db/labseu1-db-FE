@@ -37,12 +37,18 @@ export class NavBar extends Component {
     profileDropdown: ''
   };
 
-  handleLogOut = async () => {
-    await this.props.firebase.logout();
-    this.props.resetThread();
-    this.props.resetSpace();
-    this.props.clearFirestore();
-    localStorage.clear();
+  handleLogOut = () => {
+    this.props.firebase
+      .logout()
+      .then(() => {
+        this.props.clearFirestore();
+      })
+      .then(() => {
+        localStorage.clear();
+      })
+      .catch(err => console.log("something's wrong."));
+
+    this.props.history.push('/login');
   };
 
   handleDropDownChange = (e, { name, value }) => {
@@ -75,6 +81,7 @@ export class NavBar extends Component {
 
   generateDropdownOptions = () => {};
   render() {
+    //Will load spinner if user doesn't exist
     if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
       return <Spinner />;
     }
@@ -131,7 +138,6 @@ export class NavBar extends Component {
                     basic={true}
                     options={userOptions}
                     defaultValue={this.props.user.fullName}
-                    // defaultValue={'hello'}
                     onChange={this.handleDropDownChange}
                   />
                 </div>
