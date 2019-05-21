@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, isEmpty, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import NavBar from './NavBar';
 import styled from 'styled-components';
 
@@ -13,32 +13,38 @@ import ThreadsScreen from './ThreadsScreen';
 import UpgradeAccount from './UpgradeAccount';
 
 import { showModal } from '../redux/actions/actionCreators';
+import UserProfile from './UserProfile';
+import FollowUp from './FollowUp';
 
 class FakeHome extends Component {
-  componentWillUpdate() {
-    if (isEmpty(this.props.auth)) {
+  render() {
+    if (!localStorage.getItem('uuid')) {
       this.props.history.push('/login');
     }
-  }
-
-  render() {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
     return (
       <StyledHomeScreen>
         <FirstDiv>
-          <NavBar />
+          <NavBar {...this.props} />
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
             {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
-            {!this.props.spaceId && !this.props.threadId && !this.props.upgradeScreen && <MainScreen />}
+            {!this.props.spaceId &&
+              !this.props.threadId &&
+              !this.props.followUpStatus &&
+              !this.props.profileRenderStatus &&
+              !this.props.upgradeScreen && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
+            {this.props.followUpStatus && <FollowUp />}
+            {this.props.profileRenderStatus && <UserProfile {...this.props} />}
             {!this.props.spaceId && !this.props.threadId && this.props.upgradeScreen && <UpgradeAccount />}
           </SecondDiv>
           <ThirdDiv>
-            <RightSidebar />
+            {this.props.followUpStatus && null}
+            {!this.props.followUpStatus && <RightSidebar />}
           </ThirdDiv>
         </MidRightContainer>
       </StyledHomeScreen>
@@ -53,7 +59,9 @@ const mapStateToProps = state => {
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId,
     threadId: state.threadId,
-    upgradeScreen: state.upgradeScreen
+    upgradeScreen: state.upgradeScreen,
+    followUpStatus: state.followUpStatus,
+    profileRenderStatus: state.profileRenderStatus
   };
 };
 

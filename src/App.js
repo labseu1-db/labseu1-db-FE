@@ -23,7 +23,11 @@ class App extends Component {
         <Route exact path="/homescreen" render={props => <FakeHome {...props} />} />
         <Route exact path="/passwordlesssubmit" render={props => <PasswordlessSubmit {...props} />} />
         <Route exact path="/passwordlesscheck" render={props => <PasswordlessCheck {...props} />} />
-        <Route exact path="/forgotPassword" render={props => <ForgotPassword {...props} />} />
+        <Route
+          exact
+          path={this.props.resetPasswordStatus ? '/changePassword' : '/forgotPassword'}
+          render={props => <ForgotPassword {...props} />}
+        />
         <Route exact path="/createneworganisation" render={props => <CreateNewOrganisation {...props} />} />
         <Route exact path="/thread/:id" render={props => <ThreadsScreen {...props} />} />
       </div>
@@ -34,7 +38,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    resetPasswordStatus: state.resetPassword
   };
 };
 

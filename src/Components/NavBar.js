@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
@@ -14,7 +14,12 @@ import {
   switchSpaces,
   resetSpace,
   showUpgradeScreen,
-  resetUpgradeScreen
+  resetUpgradeScreen,
+  editingProfileDone,
+  notRenderProfile,
+  renderProfile,
+  showFollowUp,
+  hideFollowUp
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
@@ -32,13 +37,18 @@ export class NavBar extends Component {
     profileDropdown: ''
   };
 
-  handleLogOut = async () => {
-    await this.props.firebase.logout();
-    this.props.clearFirestore();
-    this.props.resetThread();
-    this.props.resetSpace();
-    this.props.resetUpgradeScreen();
-    localStorage.clear();
+  handleLogOut = () => {
+    this.props.firebase
+      .logout()
+      .then(() => {
+        this.props.clearFirestore();
+      })
+      .then(() => {
+        localStorage.clear();
+      })
+      .catch(err => console.log("something's wrong."));
+
+    this.props.history.push('/login');
   };
 
   handleDropDownChange = (e, { name, value }) => {
@@ -50,8 +60,19 @@ export class NavBar extends Component {
         this.props.resetThread();
         this.props.resetSpace();
         this.props.showUpgradeScreen();
+        if (this.state.profileDropdown === 'Profile') {
+          this.props.renderProfile();
+        }
+        if (this.state.profileDropdown !== 'Profile') {
+          this.props.showModal(null);
+          this.props.notRenderProfile();
+          this.props.editingProfileDone();
+        }
       }
     });
+    this.props.hideFollowUp();
+    this.props.resetSpace();
+    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -59,11 +80,16 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
-    // this.props.resetUpgradeScreen();
+    this.props.notRenderProfile();
+    this.props.hideFollowUp();
   };
 
   generateDropdownOptions = () => {};
   render() {
+    //Will load spinner if user doesn't exist
+    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
+      return <Spinner />;
+    }
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
@@ -78,6 +104,11 @@ export class NavBar extends Component {
           key: this.props.user.fullName,
           text: this.props.user.fullName,
           value: this.props.user.fullName
+        },
+        {
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
         },
         {
           key: 'Create Organisation',
@@ -98,6 +129,7 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
       }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -106,14 +138,12 @@ export class NavBar extends Component {
               {orgOptions && (
                 //this.props.user.fullName
                 <div>
-                  {' '}
                   <Dropdown
                     inline
                     name={'profileDropdown'}
                     basic={true}
                     options={userOptions}
                     defaultValue={this.props.user.fullName}
-                    // defaultValue={'hello'}
                     onChange={this.handleDropDownChange}
                   />
                 </div>
@@ -128,15 +158,33 @@ export class NavBar extends Component {
               <img src={homeIcon} alt="home icon" />
               <span
                 onClick={() => {
+                  this.props.showModal(null);
+                  this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
                   this.props.resetUpgradeScreen();
+                  this.props.notRenderProfile();
+                  this.props.hideFollowUp();
                 }}
               >
                 Home
               </span>
             </HomeContainer>
-
+            <FollowUpContainer>
+              <Icon.Group className="clipboard" size="large">
+                <Icon name="clipboard outline" />
+              </Icon.Group>
+              <div
+                className="text"
+                onClick={() => {
+                  this.props.showFollowUp();
+                  this.props.resetSpace();
+                  this.props.resetThread();
+                }}
+              >
+                Follow up
+              </div>
+            </FollowUpContainer>
             <div>
               <div>
                 <OuterOrgContainer>
@@ -149,7 +197,6 @@ export class NavBar extends Component {
                         orgOptions={orgOptions}
                         setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
                       />
-                      //********************************************** */
                     )}
                   </OrgContainer>
                   <CreateNewSpaceModal {...this.props} />
@@ -162,9 +209,13 @@ export class NavBar extends Component {
                           <span
                             onClick={event => {
                               event.preventDefault();
+                              this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.resetUpgradeScreen();
                               this.props.switchSpaces(space.id);
+                              this.props.showModal(null);
+                              this.props.notRenderProfile();
+                              this.props.hideFollowUp();
                             }}
                           >
                             {space.spaceName}
@@ -209,7 +260,12 @@ const mapDispatchToProps = dispatch => {
       resetThread,
       showModal,
       showUpgradeScreen,
-      resetUpgradeScreen
+      resetUpgradeScreen,
+      editingProfileDone,
+      renderProfile,
+      notRenderProfile,
+      showFollowUp,
+      hideFollowUp
     },
     dispatch
   );
@@ -310,6 +366,31 @@ const HomeContainer = styled.div`
   span:hover {
     color: #f64e49;
     cursor: pointer;
+  }
+`;
+
+const FollowUpContainer = styled.div`
+  .text {
+    padding-left: 45px;
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    &:hover {
+      color: #f64e49;
+      cursor: pointer;
+    }
+  }
+  .clipboard {
+    width: 1.25rem;
+    position: absolute;
+    right: 249px;
+    margin-top: 11px;
+    &:hover {
+      cursor: pointer;
+      color: blue;
+    }
   }
 `;
 

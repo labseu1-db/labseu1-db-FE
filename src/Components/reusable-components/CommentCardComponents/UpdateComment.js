@@ -1,20 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
-import ScreenButton from '../reusable-components/ScreenButton';
+import ScreenButton from '../ScreenButton';
 
 //Import icons
-import IconPenWhite from '../../images/icon-pen-white.svg';
+import IconPenWhite from '../../../images/icon-pen-white.svg';
 
 //Main component
-export class NewCommentCard extends React.Component {
+export class UpdateComment extends React.Component {
   state = {
-    text: ''
+    text: this.props.content
   };
 
   handleInputChange = e => {
@@ -24,43 +23,26 @@ export class NewCommentCard extends React.Component {
   clearInput = () => {
     this.setState({ text: '' });
   };
-  createNewComment = e => {
+  updateComment = e => {
     e.preventDefault();
-    let commentId = uuid();
-    this.props.firestore.set(
-      { collection: 'comments', doc: commentId },
-      {
-        arrayOfUserIdsWhoLiked: [],
-        commentBody: this.state.text,
-        commentCreatedAt: Date.now(),
-        commentCreatedByUserId: localStorage.getItem('uuid'),
-        commentCreatedByUserName: this.props.profile.fullName,
-        isCommentDecided: false,
-        orgId: this.props.thread.orgId,
-        threadId: this.props.thread.id,
-        threadName: this.props.thread.threadName
-      }
-    );
+    let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
+    commentRef.update({
+      commentBody: this.state.text,
+      isCommentUpdated: true,
+      commentUpdatedAt: Date.now()
+    });
   };
 
   render() {
-    const { img } = this.props;
     return (
       <StyledCommentContainer
         onSubmit={e => {
-          this.createNewComment(e);
+          this.props.setIsUpdating(false);
+          this.updateComment(e);
           this.clearInput();
         }}>
         <StyledTopContainer>
-          <StyledImageContainer>
-            <img src={img} alt="author" /> {/* <div className="initials">{createdBy[0]}</div> */}
-          </StyledImageContainer>
-          <StyledRightInput
-            placeholder="Comment on the thread"
-            name="text"
-            value={this.state.text}
-            onChange={this.handleInputChange}
-          />
+          <StyledInput name="text" value={this.state.text} onChange={this.handleInputChange} />
         </StyledTopContainer>
         <StyledButtonContainer>
           {this.state.text.length > 0 && (
@@ -71,7 +53,8 @@ export class NewCommentCard extends React.Component {
               border="none"
               icon={IconPenWhite}
               onClick={e => {
-                this.createNewComment(e);
+                this.props.setIsUpdating(false);
+                this.updateComment(e);
                 this.clearInput();
               }}
             />
@@ -88,9 +71,7 @@ const StyledCommentContainer = styled.form`
   flex-direction: column;
   justify-content: flex-start;
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 20px;
   width: 100%;
   margin-top: 30px;
 `;
@@ -100,20 +81,7 @@ const StyledTopContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    max-width: 100%;
-    background-color: #5c4df2;
-  }
-`;
-const StyledRightInput = styled.input`
+const StyledInput = styled.input`
   margin-left: 30px;
   border: 1px solid #bdc3c9;
   width: 100%;
@@ -141,9 +109,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {};
 
 export default compose(
+  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   firestoreConnect()
-)(NewCommentCard);
+)(UpdateComment);
