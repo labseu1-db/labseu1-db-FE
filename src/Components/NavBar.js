@@ -37,7 +37,8 @@ export class NavBar extends Component {
   state = {
     profileDropdown: '',
     highlightedHome: false,
-    highlightedFollowUp: false
+    highlightedFollowUp: false,
+    activeSpace: ''
   };
 
   handleLogOut = () => {
@@ -83,18 +84,27 @@ export class NavBar extends Component {
   };
 
   highlightHome = () => {
-    this.setState({ highlightedHome: true, highlightedFollowUp: false });
+    this.setState({ highlightedHome: true, highlightedFollowUp: false, highlightedSpace: false, activeSpace: '' });
   };
 
   highlightFollowUp = () => {
-    this.setState({ highlightedHome: false, highlightedFollowUp: true });
+    this.setState({ highlightedHome: false, highlightedFollowUp: true, highlightedSpace: false, activeSpace: '' });
   };
 
-  // clearHighlightedNav = () => {
-  //   this.setState({
-  //     highlightedHome:
-  //   })
-  // };
+  clickedSpace = spaceName => {
+    this.setState({
+      activeSpace: spaceName,
+      highlightedHome: false,
+      highlightedFollowUp: false
+    });
+  };
+
+  clearHighlightedNav = () => {
+    this.setState({
+      highlightedHome: false,
+      highlightFollowUp: false
+    });
+  };
 
   render() {
     //Will load spinner if user doesn't exist
@@ -234,9 +244,15 @@ export class NavBar extends Component {
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
                         <div key={index}>
-                          <div
+                          <RowDiv
+                            style={
+                              this.state.activeSpace === space.spaceName
+                                ? { backgroundColor: '#99C56C', color: 'rgb(55, 71, 80)' }
+                                : {}
+                            }
                             onClick={event => {
                               event.preventDefault();
+                              this.clickedSpace(space.spaceName);
                               this.props.editingProfileDone();
                               this.props.resetThread();
                               this.props.switchSpaces(space.id);
@@ -246,7 +262,7 @@ export class NavBar extends Component {
                             }}
                           >
                             {space.spaceName}
-                          </div>
+                          </RowDiv>
                         </div>
                       ))}
                     </div>
