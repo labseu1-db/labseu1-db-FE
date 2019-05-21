@@ -74,7 +74,7 @@ const StyledFollowUpButton = styled.div`
   background-color: white;
   color: black;
   display: flex;
-  height: 30px;
+  height: 100%;
   align-items: center;
   justify-content: center;
   letter-spacing: 0.5px;
@@ -82,7 +82,6 @@ const StyledFollowUpButton = styled.div`
   border: 2px solid #e7e7e7;
   font-size: 11px;
   line-height: normal;
-  margin-top: 57px;
   margin-right: -18px;
   padding-left: 9px;
   padding-right: 9px;

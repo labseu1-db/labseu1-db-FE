@@ -24,6 +24,11 @@ function ThreadCard(props) {
     currentSpace,
     isFollowUpDecided
   } = props;
+
+  const stopPropagation = e => {
+    e.stopPropagation();
+  };
+
   return (
     <div>
       <StyledThreadContainer onClick={onClick}>
@@ -37,7 +42,9 @@ function ThreadCard(props) {
         <ThreadMiddleComponent heading={heading} info={info} />
         <StyledFollowUp>
           {isFollowUpDecided && (
-            <StyledDecision>Marked for followup</StyledDecision>
+            <StyledDecision onClick={stopPropagation}>
+              Marked for followup
+            </StyledDecision>
           )}
           {
             <FollowUpButton
