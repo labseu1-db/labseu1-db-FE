@@ -5,7 +5,7 @@ export const StyledLogin = styled.div`
   width: 100%;
   height: 100vh;
   padding-top: 50px;
-  background-color: #fff0e6;
+  background-color: #fff7f3;
 `;
 
 export const StyledLoginCon = styled.div`

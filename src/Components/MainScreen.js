@@ -77,7 +77,7 @@ class MainScreen extends React.Component {
 
 //Styling
 const StyledMainScreen = styled.div`
-  background-color: #fff0e6;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;

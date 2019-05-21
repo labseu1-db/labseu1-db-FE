@@ -59,7 +59,7 @@ const StyledImagesContainer = styled.div`
     align-items: center;
     justify-content: center;
     img {
-      width: 70%;
+      width: 80%;
     }
   }
   .true {

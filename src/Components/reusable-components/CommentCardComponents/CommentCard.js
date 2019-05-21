@@ -235,7 +235,7 @@ const StyledDecision = styled.div`
   height: 40px;
   position: absolute;
   color: white;
-  background-color: #ffc206;
+  background-color: #00bc98;
   border-radius: 10px 10px 0 0;
   width: 100%;
   top: 0;

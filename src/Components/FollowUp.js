@@ -16,10 +16,7 @@ class FollowUp extends React.Component {
     return (
       <StyledFollowUp>
         <StyledFirstRow>
-          <ScreenHeading
-            heading="Follow Up"
-            info="Get back to the things you've marked as follow up."
-          />
+          <ScreenHeading heading="Follow Up" info="Get back to the things you've marked as follow up." />
         </StyledFirstRow>
 
         {/*Loop trough all the threads that are associated with the orgId*/}
@@ -54,12 +51,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : [],
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : ''
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : ''
   };
 };
 
@@ -84,7 +77,7 @@ export default compose(
 
 //Styling
 const StyledFollowUp = styled.div`
-  background-color: #FFF0E6;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
