@@ -275,7 +275,7 @@ const StyledInput = styled.input`
   padding: 5px 0;
   margin-bottom: 10px;
   &:focus {
-    border-bottom: 2px solid #6c48f2;
+    border-bottom: 2px solid #00bc98;
     outline: none;
   }
 `;

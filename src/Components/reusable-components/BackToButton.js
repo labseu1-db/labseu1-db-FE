@@ -33,7 +33,7 @@ const StyledBackToButton = styled.button`
   position: relative;
   color: #3d4856;
   background-color: white;
-  border: 1px solid #bdc3c9;
+  border: 1px solid #00bc98;
   cursor: pointer;
   &:hover {
     color: white;

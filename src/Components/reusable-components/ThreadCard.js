@@ -19,7 +19,7 @@ function ThreadCard(props) {
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={currentSpace} checked={checked} />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightComponent threadId={threadId} />
+        {/* <ThreadRightComponent threadId={threadId} /> */}
       </StyledThreadContainer>
     </div>
   );

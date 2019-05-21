@@ -234,7 +234,7 @@ const StyledUpdatedMessage = styled.div`
 const StyledDecision = styled.div`
   height: 40px;
   position: absolute;
-  background-color: #fff6dd;
+  background-color: #ffc206;
   border-radius: 10px 10px 0 0;
   width: 100%;
   top: 0;

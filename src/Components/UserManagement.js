@@ -12,7 +12,6 @@ class UserManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       teamEmailAddress: ['', '', '', ''],
 
       alert: false
@@ -114,7 +113,6 @@ class UserManagement extends Component {
       return (
         <Modal open={true} size="tiny">
           <StyledContainer>
-
             <StyledMainHeader>Your Team</StyledMainHeader>
 
             <div>
@@ -148,7 +146,6 @@ class UserManagement extends Component {
               <StyledModalCard>
                 <Modal.Content>
                   <StyledModalForm>
-
                     <Header as="h5">Invite more users</Header>
 
                     <div id="dynamicInput">
@@ -196,7 +193,7 @@ class UserManagement extends Component {
                           e.preventDefault();
                           this.props.history.push('/homescreen');
                         }}>
-                        Cancel
+                        Go back
                       </StyledModalButton>
                     </StyledModalMainButtonContainer>
                   </StyledActionButtonsContainer>
@@ -306,7 +303,7 @@ const StyledContainer = styled.div`
 const StyledButtonDelete = styled.button`
   cursor: pointer;
   padding: 2px 7px;
-  background-color: #00bc98;
+  background-color: #f64e49;
   color: white;
   border-radius: 15px;
   margin-left: 10px;
@@ -318,14 +315,12 @@ const Subheader = styled.div`
   font-size: 0.9rem;
   color: #bdc3c9;
   margin-top: 5px;
-
 `;
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
   font-family: 'Open Sans', sans-serif;
   text-align: center;
-
 `;
 
 const StyledHeaderContainer = styled.div`
@@ -342,7 +337,6 @@ const StyledModalCard = styled.div`
   background-color: white;
   margin-top: 30px;
   border-radius: 5px;
-
 `;
 
 const StyledAlertMessage = styled.div`
@@ -374,7 +368,6 @@ const StyledModalInput = styled.input`
   &:focus {
     border-bottom: 2px solid #00bc98;
   }
-
 `;
 
 const StyledUserContainer = styled.div`
