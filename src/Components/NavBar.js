@@ -29,6 +29,7 @@ import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
+
 import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
 import peopleIcon from '../images/icon-people-lightgray.svg';
@@ -361,9 +362,11 @@ const RowContainer = styled.div`
   margin: 15px 0;
   position: relative;
   display: flex;
+
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+
   img {
     width: 1.25rem;
     margin-right: 15px;
