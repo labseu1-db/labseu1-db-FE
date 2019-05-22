@@ -56,7 +56,7 @@ const StyledPhotoContainer = styled.div`
   }
   .initials {
     border-radius: 50%;
-    background-color: #00bc98;
+    background-color: #1158c0;
     width: 50px;
     height: 50px;
     display: flex;
