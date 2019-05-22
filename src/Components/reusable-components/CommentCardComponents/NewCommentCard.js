@@ -74,7 +74,7 @@ export class NewCommentCard extends React.Component {
     return (
       <StyledCommentContainer>
         <StyledTopContainer>
-          <AvatarFromLetter username={this.props.profile.fullName} />
+          <AvatarFromLetter username={this.props.profile.fullName} height="32px" width="32px" />
           <StyledRightInput
             placeholder="Comment on the thread"
             name="text"
@@ -145,7 +145,7 @@ const StyledCommentContainer = styled.form`
 
 const StyledTopContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 
 const StyledGifImage = styled.div`
@@ -176,7 +176,7 @@ const StyledGifAndButtons = styled.div`
 const StyledRightInput = styled.input`
   margin-left: 30px;
   border: 1px solid #bdc3c9;
-  width: 100%;
+  width: 95%;
   border-radius: 10px;
   padding: 5px 10px;
   ::placeholder {

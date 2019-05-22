@@ -55,7 +55,6 @@ export class CommentCard extends React.Component {
 
   render() {
     const {
-      img,
       createdBy,
       content,
       commentId,
@@ -94,7 +93,7 @@ export class CommentCard extends React.Component {
               setIsCommentUpdated={this.setIsCommentUpdated}
             />
           )}
-          {!this.state.isUpdating && <AvatarFromLetter username={createdBy} />}
+          {!this.state.isUpdating && <AvatarFromLetter marginTop="4px" username={createdBy} />}
           {!this.state.isUpdating && (
             <StyledRightContainer>
               <StyledAuthorsName>{createdBy}</StyledAuthorsName>
@@ -157,7 +156,7 @@ const StyledCommentContainer = styled.div`
   background-color: white;
   padding: 30px;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 50px;
   .ui.dropdown {
     position: absolute;
     top: 10px;
