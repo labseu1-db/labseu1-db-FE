@@ -16,7 +16,7 @@ export function ThreadInformationCard(props) {
       <StyledTopContent>
         <StyledPhotoContainer>
           {/* <img src={img} alt="author" /> */}
-          <div className="initials">{createdBy[0]}</div>
+          <div className="initials">{createdBy[0].toUpperCase()}</div>
         </StyledPhotoContainer>
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
@@ -56,7 +56,7 @@ const StyledPhotoContainer = styled.div`
   }
   .initials {
     border-radius: 50%;
-    background-color: #1158c0;
+    background-color: #ffc206;
     width: 50px;
     height: 50px;
     display: flex;

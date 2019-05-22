@@ -95,8 +95,8 @@ export class CommentCard extends React.Component {
           )}
           {!this.state.isUpdating && (
             <StyledImageContainer>
-              <img src={img} alt="author" />
-              {/* <div className="initials">{createdBy[0]}</div> */}
+              {/* <img src={img} alt="author" /> */}
+              <div className="initials">{createdBy[0].toUpperCase()}</div>
             </StyledImageContainer>
           )}
           {!this.state.isUpdating && (
@@ -159,7 +159,7 @@ const StyledCommentContainer = styled.div`
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 20px;
+  padding: 30px 20px 20px 30px;
   width: 100%;
   margin-top: 40px;
   .ui.dropdown {
@@ -180,14 +180,14 @@ const StyledImageContainer = styled.div`
   }
   .initials {
     border-radius: 50%;
-    background-color: #00bc98;
-    width: 50px;
-    height: 50px;
+    background-color: #ffc206;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 `;
 const StyledRightContainer = styled.div`
