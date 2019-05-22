@@ -16,12 +16,17 @@ const StyledImageContainer = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #ff934c;
+  /* background-color: #ff934c; */
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
-  /* background-color: #ffc206; */
-  /* background-color: #ff8434; */
-  /* background-color: #ff706c; */
+  background-color: #ffc206;
+  background-color: #dbc3b6;
+  background-color: #fff7f3;
+  background-color: #e4d0c6;
+  background-color: #ffc9ad;
+  background-color: #ffb48f;
+  background-color: #ff8434;
+  background-color: #ff706c;
 `;
