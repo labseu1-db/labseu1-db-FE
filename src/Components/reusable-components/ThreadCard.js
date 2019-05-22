@@ -8,18 +8,18 @@ import { firestoreConnect } from 'react-redux-firebase';
 import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
 import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
-import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
+// import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, heading, info, checked, threadId, onClick, currentSpace } = props;
+  const { createdBy, createdAt, heading, info, checked, onClick, currentSpace } = props;
   return (
     <div>
       <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={currentSpace} checked={checked} />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightComponent threadId={threadId} />
+        {/* <ThreadRightComponent threadId={threadId} /> */}
       </StyledThreadContainer>
     </div>
   );
@@ -37,7 +37,7 @@ const StyledThreadContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
   &:hover {
-    border: 1px solid #5c4df2b3;
+    border: 1px solid #00bc98b3;
     cursor: pointer;
   }
 `;

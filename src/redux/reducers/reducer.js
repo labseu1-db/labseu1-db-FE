@@ -12,6 +12,7 @@ export const rootReducer = combineReducers({
   activeOrg: reducers.activeOrg,
   spaceId: reducers.spaceId,
   threadId: reducers.threadId,
+  upgradeScreen: reducers.upgradeScreen,
   followUpStatus: reducers.followUpStatus,
   profileRenderStatus: reducers.profileRenderStatus,
   editingProfileStatus: reducers.editingProfileStatus,

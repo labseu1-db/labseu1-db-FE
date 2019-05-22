@@ -56,7 +56,7 @@ class DeleteSpaceModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} size="tiny">
+      <Modal open={this.props.shoudlBeOpen} size="small">
         <StyledContainer>
           <Modal.Header>
             <div>
@@ -134,23 +134,23 @@ const StyledContainer = styled.div`
 const StyledButtonCancel = styled.button`
   cursor: pointer;
   padding: 5px 25px;
-  color: #5c4df2;
+  color: #00bc98;
   border-radius: 15px;
   background-color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   margin-right: 10px;
 `;
 const StyledButtonCreateSpace = styled.button`
   cursor: pointer;
   padding: 5px 25px;
   color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
 

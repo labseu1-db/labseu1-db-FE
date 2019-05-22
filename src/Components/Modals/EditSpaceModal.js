@@ -132,11 +132,7 @@ class EditSpaceModal extends Component {
 
                   <StyledButtonCreateSpace
                     type="submit"
-                    disabled={
-                      !this.state.spaceName.length > 0 ||
-                      !this.state.spaceTopic.length > 0 ||
-                      !this.state.idsInSpace.length > 0
-                    }
+                    disabled={!this.state.spaceName.length > 0 || !this.state.idsInSpace.length > 0}
                     onClick={e => {
                       e.preventDefault();
                       this.props.showModal(null);
@@ -203,23 +199,23 @@ const StyledContainer = styled.div`
 const StyledButtonCancel = styled.button`
   cursor: pointer;
   padding: 5px 25px;
-  color: #5c4df2;
+  color: #00bc98;
   border-radius: 15px;
   background-color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   margin-right: 10px;
 `;
 const StyledButtonCreateSpace = styled.button`
   cursor: pointer;
   padding: 5px 25px;
   color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
 const StyledInput = styled.input`
@@ -234,7 +230,7 @@ const StyledInput = styled.input`
   padding: 5px 0;
   margin-bottom: 10px;
   &:focus {
-    border-bottom: 2px solid #6c48f2;
+    border-bottom: 2px solid #00bc98;
     outline: none;
   }
 `;

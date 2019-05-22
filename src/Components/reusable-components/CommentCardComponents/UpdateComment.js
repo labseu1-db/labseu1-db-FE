@@ -48,7 +48,7 @@ export class UpdateComment extends React.Component {
           {this.state.text.length > 0 && (
             <ScreenButton
               content="Submit"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconPenWhite}
@@ -86,7 +86,7 @@ const StyledInput = styled.input`
   border: 1px solid #bdc3c9;
   width: 100%;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 7px 10px;
   ::placeholder {
     color: #bdc3c9;
     font-size: 0.9rem;

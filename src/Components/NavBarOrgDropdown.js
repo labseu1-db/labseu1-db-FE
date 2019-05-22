@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 export class NavBarOrgDropdown extends Component {
   // handleInput = e => {
@@ -9,7 +10,7 @@ export class NavBarOrgDropdown extends Component {
   // };
   render() {
     return (
-      <span>
+      <StyledDropdown>
         {' '}
         <Dropdown
           inline
@@ -18,7 +19,19 @@ export class NavBarOrgDropdown extends Component {
           basic={true}
           onChange={this.props.setSelectedOrgToLocalStorage}
         />
-      </span>
+      </StyledDropdown>
     );
   }
 }
+
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #00bc98;
+    color: white;
+  }
+
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+`;

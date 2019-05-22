@@ -80,7 +80,7 @@ function SpaceThreads(props) {
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
-            backgroundColor="#5C4DF2"
+            backgroundColor="#00bc98"
             color="white"
             border="none"
             onClick={e => {
@@ -90,16 +90,6 @@ function SpaceThreads(props) {
         </StyledButtonsContainer>
       </StyledFirstRow>
       <ScreenSectionHeading heading="Recent" />
-
-      {/* If not threads, show placeholder - IT RENDERS PLACEHOLDER FOR A SECOND WHEN RENDERING THREADS
-      {/*WE NEED TO FIGURE OUT THE LOGIC, BUT FOR NOW IT IS GOING TO BE COMMENTED OUT*/}
-      {/* {props.threads.length === 0 && (
-        <Placeholder
-          heading='Learn about Home'
-          info='Home is a great place where you find all information about active threads and current discussion. Be allways on the top of the things!'
-          image={placeholder}
-        />
-      )} */}
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {props.threads.length > 0 &&
@@ -135,7 +125,7 @@ function SpaceThreads(props) {
 }
 
 const StyledMainScreen = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
@@ -153,7 +143,7 @@ const StyledButtonsContainer = styled.div`
 `;
 
 const StyledDropdown = styled.div`
-  border: 1px solid #bdc3c9;
+  border: 1px solid #00bc98;
   border-radius: 50%;
   margin: 0;
   margin-right: 10px;
@@ -163,8 +153,17 @@ const StyledDropdown = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-color: white;
   i.ellipsis.horizontal.icon {
     margin: 0;
+  }
+  .ui.dropdown .menu > .item:hover {
+    background: #00bc98;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
   }
 `;
 

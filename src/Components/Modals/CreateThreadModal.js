@@ -23,7 +23,8 @@ class CreateThreadModal extends Component {
       threadName: '',
       threadTopic: '',
       spaceId: '',
-      threadCreatedByUserName: ''
+      threadCreatedByUserName: '',
+      display: 'none'
     };
     this.onChange = editorState => {
       this.setState({ editorState });
@@ -143,15 +144,17 @@ class CreateThreadModal extends Component {
           </TextStylingContainer>
         </MiniModalLeft>
         <MiniModalRight>
-          <Dropdown
-            placeholder="Add a Space"
-            fluid
-            search
-            selection
-            options={spaceOptions}
-            basic={true}
-            onChange={this.saveSpaceToThread}
-          />
+          <StyledDropdown>
+            <Dropdown
+              placeholder="Add a Space"
+              fluid
+              search
+              selection
+              options={spaceOptions}
+              basic={true}
+              onChange={this.saveSpaceToThread}
+            />
+          </StyledDropdown>
         </MiniModalRight>
         <Modal.Content>
           <StyledInputsContainer>
@@ -249,16 +252,17 @@ const MiniModalLeft = styled.div`
   width: 220px;
   padding: 15px 10px;
   flex-direction: column;
-  background-color: #3f3b50;
+  background-color: #f64e49;
   border-radius: 15px;
 `;
+
 const StyledContainerTitles = styled.p`
   color: white;
   font-size: 10px;
 `;
 const TextStylingContainer = styled.div`
   border-radius: 15px;
-  background-color: #322f40;
+  background-color: #f64e49;
   width: 100%;
 `;
 const TextStylingIcon = styled.img`
@@ -269,7 +273,7 @@ const TextStylingButtons = styled.button`
   cursor: pointer;
   width: 100%;
   color: white;
-  background-color: #322f40;
+  background-color: #f64e49;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -284,13 +288,37 @@ const MiniModalRight = styled.div`
   right: -250px;
   width: 200px;
   padding: 15px 10px;
-  background-color: #3f3b50;
+  background-color: #f64e49;
   border-radius: 15px;
   .ui.selection.dropdown {
     color: white;
     background-color: transparent;
     border: none;
     outline: none;
+  }
+`;
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu > .item:hover {
+    background: #00bc98;
+    color: white;
+  }
+  .ui.dropdown:not(.button) > .default.text {
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
+  }
+  .ui.label {
+    background: #00bc98;
+    color: white;
+    border: none;
+  }
+  .i.icon.delete {
+    color: white;
+  }
+  div {
+    color: white;
   }
 `;
 
@@ -324,9 +352,9 @@ const CursonImg = styled.img`
   height: 16px;
 `;
 const StyledIconButton = styled.button`
-  color: #5c4df2;
+  color: #00bc98;
   background-color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 50%;
   outline: none;
   padding: 5px 7px 3px 7px;
@@ -335,27 +363,27 @@ const StyledButton = styled.button`
   cursor: pointer;
   padding: 5px 25px;
   color: white;
-  border: 1px solid #5c4df2;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   margin-right: 10px;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;
 const StyledBackButton = styled.button`
   cursor: pointer;
   padding: 5px 25px;
-  color: #5c4df2;
-  border: 1px solid #5c4df2;
+  color: #00bc98;
+  border: 1px solid #00bc98;
   border-radius: 15px;
   outline: none;
   background-color: white;
   margin-right: 10px;
   &:disabled {
-    background-color: #cfd5f2;
-    border: 1px solid #cfd5f2;
+    background-color: #00bc9880;
+    border: none;
   }
 `;

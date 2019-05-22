@@ -57,7 +57,7 @@ export default compose(
 )(UserProfile);
 
 const StyledMainScreen = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 12%;
   margin: 0 auto;
