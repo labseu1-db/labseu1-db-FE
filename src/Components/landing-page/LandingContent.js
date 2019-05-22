@@ -18,7 +18,7 @@ export default class LandingContent extends React.Component {
         </StyledContentSection>
         <StyledContentSection>
           <StyledDescribtionCard>
-            <h3>Create organisations</h3>
+            <h3>Create a tree</h3>
             <div>
               In Pinely, we call organisations trees. We want for our app to not only be used by companies, but also by
               any groups of people that work together on solving problems. We believe that Pinely will help all teams,
@@ -28,14 +28,14 @@ export default class LandingContent extends React.Component {
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
-            <h3>Create a space</h3>
+            <h3>Create a branch</h3>
             <div>
               Spaces, or as we call them branches, are your team's meeting rooms. Once they are created, invite others
               and start the discussion. No scheduling required. Perfect for all (but especially distributed) teams.
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
-            <h3>Start a thread</h3>
+            <h3>Start a twig</h3>
             <div>
               You can call them threads, but we trully enjoy the name twigs. Ask questions, get feedback and hash out
               ideas with your team. Make better decisions with all the context you need in one place. And you can say
