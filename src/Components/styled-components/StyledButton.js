@@ -4,7 +4,7 @@ export const StyledButton = styled.button`
   font-size: 1.3rem;
   width: 105px;
   padding: 5px 15px;
-  background-color: #6c48f2;
+  background-color: #00bc98;
   color: white;
   border-radius: 15px;
   border: none;
@@ -24,7 +24,7 @@ export const ForgotPasswordDiv = styled.div`
   border: none;
   cursor: pointer;
   &:hover {
-    color: #6c48f2;
+    color: #00bc98;
   }
 `;
 
@@ -32,7 +32,7 @@ export const StyledSendEmailButton = styled.button`
   font-size: 1.3rem;
   width: 150px;
   padding: 5px 15px;
-  background-color: #6c48f2;
+  background-color: #00bc98;
   color: white;
   border-radius: 15px;
   border: none;
@@ -53,7 +53,7 @@ export const PasswordlessButton = styled.button`
   padding: 0;
   cursor: pointer;
   &:hover {
-    color: #6c48f2;
+    color: #00bc98;
   }
 `;
 

@@ -62,6 +62,7 @@ export class ThreadsScreen extends React.Component {
                 isCommentDecided={c.isCommentDecided}
                 isCommentUpdated={c.isCommentUpdated}
                 commentUpdatedAt={c.commentUpdatedAt}
+                gifUrl={c.gifUrl}
               />
             );
           })}

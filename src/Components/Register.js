@@ -13,11 +13,16 @@ import {
   StyledInput,
   StyledLabel,
   StyledLoginCon,
-  StyledLowerSignIn
+  StyledLowerSignIn,
+  StyledIcon
 } from './styled-components/StyledLogin';
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
+
+//Images/Icons
+import showPassword from '../images/icon-eye-green.svg';
+import hidePassword from '../images/icon-eye-gray.svg';
 
 class Register extends Component {
   static propTypes = {
@@ -39,19 +44,14 @@ class Register extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    if (isLoaded(this.props.auth) && !isEmpty(this.props.auth)) {
-      this.props.history.push('/homescreen');
-    }
   }
 
-  handleInputChange = e => {
+  handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = res => {
+  saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = (res) => {
     let userId = uuid();
-    localStorage.setItem('uuid', userId);
-    localStorage.setItem('userEmail', res.profile.email);
     this.props.firestore
       .collection('users')
       .doc(userId)
@@ -64,15 +64,19 @@ class Register extends Component {
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
+      .then(() => {
+        localStorage.setItem('uuid', userId);
+        localStorage.setItem('userEmail', res.profile.email);
+      })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
+        this.setState({ error });
       });
   };
 
-  saveUserToDatabaseAndToLocalStorage = res => {
+  saveUserToDatabaseAndToLocalStorage = (res) => {
     let userId = uuid();
-    localStorage.setItem('uuid', userId);
-    localStorage.setItem('userEmail', this.state.email);
+
     this.props.firestore
       .collection('users')
       .doc(userId)
@@ -85,12 +89,36 @@ class Register extends Component {
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
+      .then(() => {
+        localStorage.setItem('uuid', userId);
+        localStorage.setItem('userEmail', this.state.email);
+      })
+      .then((res) => {
+        const orgRef = this.props.firestore
+          .collection('organisations')
+          .where('arrayOfUsersEmails', 'array-contains', this.state.email);
+        orgRef
+          .get()
+          .then((qs) => {
+            qs.forEach((doc) => {
+              this.saveUserIdInOrg(doc.id, userId);
+              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+
+              localStorage.setItem('activeOrg', doc.id);
+
+            });
+          })
+          .catch(function(error) {
+            console.log('Error getting documents: ', error);
+          });
+      })
       .catch(function(error) {
         console.log('Error getting documents: ', error);
+        this.setState({ error });
       });
   };
 
-  createAndLogInNewUser = e => {
+  createAndLogInNewUser = (e) => {
     const { email, password, fullName } = this.state;
     const INITIAL_STATE = {
       email: '',
@@ -100,16 +128,81 @@ class Register extends Component {
     };
 
     e.preventDefault();
-    this.props.firebase.createUser({ email, password }, { fullName, email }).then(() => {
-      this.props.firebase
-        .login({ email, password })
-        .then(res => {
-          this.saveUserToDatabaseAndToLocalStorage(res);
-        })
-        .catch(error => {
-          this.setState({ ...INITIAL_STATE, error });
-        });
-    });
+    this.props.firebase
+      .createUser({ email, password }, { fullName, email })
+      .then(() => {
+        this.props.firebase
+          .login({ email, password })
+          .then((res) => {
+            this.saveUserToDatabaseAndToLocalStorage(res);
+          })
+          .catch((error) => {
+            this.setState({ ...INITIAL_STATE, error });
+          });
+      })
+      .then(() => {
+        this.props.history.push('/createneworganisation');
+      })
+      .catch((error) => {
+        this.setState({ ...INITIAL_STATE, error });
+      })
+      .catch((error) => this.setState({ ...INITIAL_STATE, error: error }));
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch((err) => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch((err) => console.log(err));
+  };
+
+  saveUserIdInOrg = (orgId, userId) => {
+    this.props.firestore
+      .collection('organisations')
+      .doc(orgId)
+      .update({
+        arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
+      })
+      .catch((err) => console.log(err));
+  };
+
+  saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
+    this.props.firestore
+      .collection('users')
+      .doc(userId)
+      .update({
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
+      })
+      .catch((err) => console.log(err));
+  };
+
+  togglePassword = () => {
+    let temp = document.getElementById('typepass');
+    let passwordIcon = document.getElementById('passwordIcon');
+    if (temp.type === 'password') {
+      temp.type = 'text';
+      passwordIcon.src = hidePassword;
+      passwordIcon.alt = 'hidePassword';
+    } else {
+      temp.type = 'password';
+      passwordIcon.src = showPassword;
+      passwordIcon.alt = 'showPassword';
+    }
   };
 
   render() {
@@ -130,61 +223,63 @@ class Register extends Component {
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
               <StyledInput
-                name="fullName"
+                name='fullName'
                 value={this.state.fullName}
-                type="text"
+                type='text'
                 onChange={this.handleInputChange}
-                placeholder="Tony Stark"
+                placeholder='Tony Stark'
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
               <StyledInput
-                name="email"
+                name='email'
                 value={this.state.email}
-                type="email"
+                type='email'
                 onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
+                placeholder='tonystark@example.com'
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                name="password"
+                id='typepass'
+                name='password'
                 value={this.state.password}
-                type="password"
+                type='password'
                 onChange={this.handleInputChange}
-                placeholder="········"
+                placeholder='········'
               />
+              <StyledIcon id='passwordIcon' src={showPassword} alt='showPassword' onClick={this.togglePassword} />
             </StyledLabel>
 
             <StyledLowerSignIn>
-              <StyledLink to="/login"> Already have an account? </StyledLink>
+              <StyledLink to='/login'> Already have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.createAndLogInNewUser}>
                 Register
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
               {this.state.error.message}
             </Message>
           )}
           <Button
-            color="google plus"
+            color='google plus'
             onClick={() => {
               this.props.firebase
                 .login({ provider: 'google', type: 'popup' })
-                .then(res => {
+                .then((res) => {
                   this.saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn(res);
                 })
-                .catch(error => {
+                .catch((error) => {
                   console.log(error);
                 });
             }}
           >
-            <Icon name="google plus" /> Sign in with Google
+            <Icon name='google plus' /> Sign in with Google
           </Button>
         </StyledLoginCon>
         <LoginAnimation />
@@ -193,24 +288,17 @@ class Register extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
-export default compose(
-  withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firebaseConnect()
-)(Register);
+export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Register);

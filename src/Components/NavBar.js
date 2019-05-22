@@ -4,7 +4,6 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import actions
 import {
@@ -13,31 +12,50 @@ import {
   setActiveOrg,
   switchSpaces,
   resetSpace,
+  showUpgradeScreen,
+  resetUpgradeScreen,
+  editingProfileDone,
+  notRenderProfile,
+  renderProfile,
   showFollowUp,
   hideFollowUp
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
-import { Icon, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 //Import components
 import Spinner from './semantic-components/Spinner';
+import { NavBarOrgDropdown } from './NavBarOrgDropdown';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
-import { NavBarOrgDropdown } from './NavBarOrgDropdown';
+
+import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
+import discIcon from '../images/icon-disc-darkgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: ''
+    profileDropdown: '',
+    highlightedHome: false,
+    highlightedFollowUp: false,
+    activeSpace: ''
   };
 
-  handleLogOut = async () => {
-    await this.props.firebase.logout();
-    this.props.resetThread();
-    this.props.resetSpace();
-    this.props.clearFirestore();
-    localStorage.clear();
+  handleLogOut = () => {
+    this.props.firebase
+      .logout()
+      .then(() => {
+        this.props.clearFirestore();
+      })
+      .then(() => {
+        localStorage.clear();
+      })
+      .catch(err => console.log("something's wrong."));
+
+    this.props.history.push('/login');
   };
 
   handleDropDownChange = (e, { name, value }) => {
@@ -45,8 +63,23 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
       }
+      if (this.state.profileDropdown === 'Upgrade Account') {
+        this.props.resetThread();
+        this.props.resetSpace();
+        this.props.showUpgradeScreen();
+        if (this.state.profileDropdown === 'Profile') {
+          this.props.renderProfile();
+        }
+        if (this.state.profileDropdown !== 'Profile') {
+          this.props.showModal(null);
+          this.props.notRenderProfile();
+          this.props.editingProfileDone();
+        }
+      }
     });
     this.props.hideFollowUp();
+    this.props.resetSpace();
+    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
@@ -54,18 +87,36 @@ export class NavBar extends Component {
     const { value } = data;
     localStorage.setItem('activeOrg', value);
     this.props.resetSpace();
+    this.props.notRenderProfile();
     this.props.hideFollowUp();
   };
 
-  generateDropdownOptions = () => {};
+  highlightHome = () => {
+    this.setState({ highlightedHome: true, highlightedFollowUp: false, highlightedSpace: false, activeSpace: '' });
+  };
+
+  highlightFollowUp = () => {
+    this.setState({ highlightedHome: false, highlightedFollowUp: true, highlightedSpace: false, activeSpace: '' });
+  };
+
+  clickedSpace = spaceName => {
+    this.setState({
+      activeSpace: spaceName,
+      highlightedHome: false,
+      highlightedFollowUp: false
+    });
+  };
+
+  clearHighlightedNav = () => {
+    this.setState({
+      highlightedHome: false,
+      highlightFollowUp: false
+    });
+  };
+
   render() {
-    if (
-      isEmpty(
-        this.props.user ||
-          this.props.orgsFromArrayOfUsersIds ||
-          this.props.spacesForActiveOrg
-      )
-    ) {
+    //Will load spinner if user doesn't exist
+    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
@@ -79,14 +130,14 @@ export class NavBar extends Component {
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
         {
-          key: this.props.user.fullName,
-          text: this.props.user.fullName,
-          value: this.props.user.fullName
-        },
-        {
           key: 'Create Organisation',
           text: 'Create Organisation',
           value: 'Create Organisation'
+        },
+        {
+          key: 'Upgrade Account',
+          text: 'Upgrade Account',
+          value: 'Upgrade Account'
         },
         {
           key: 'Log out',
@@ -98,75 +149,95 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
 
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
+      }
+
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && (
-                <StyledImage src={this.props.user.profileUrl} alt="user" />
-              )}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
-                <div>
+                <StyledDropdown>
                   <Dropdown
                     inline
                     name={'profileDropdown'}
                     basic={true}
                     options={userOptions}
-                    defaultValue={this.props.user.fullName}
-                    // defaultValue={'hello'}
+                    text={this.props.user.fullName}
                     onChange={this.handleDropDownChange}
                   />
-                </div>
+                </StyledDropdown>
               )}
             </InnerContainerHorizontal>
-            <div>
+            {/* <div>
               <Icon name="cog" />
-            </div>
+            </div> */}
           </HeaderContainer>
           <InnerContainer>
-            <HomeContainer>
+            <RowContainer>
               <img src={homeIcon} alt="home icon" />
-              <span
+              <RowDiv
+                style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+                className="text"
                 onClick={() => {
+                  this.highlightHome();
+                  this.props.showModal(null);
+                  this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.resetUpgradeScreen();
+                  this.props.notRenderProfile();
                   this.props.hideFollowUp();
                 }}
               >
                 Home
-              </span>
-            </HomeContainer>
-            <FollowUpContainer>
-              <Icon.Group className="clipboard" size="large">
-                <Icon name="clipboard outline" />
-              </Icon.Group>
-              <div
+              </RowDiv>
+            </RowContainer>
+            <RowContainer>
+              <img src={clipboardIcon} alt="home icon" />
+              <RowDiv
+                style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
                 className="text"
                 onClick={() => {
+                  this.highlightFollowUp();
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
                 }}
               >
                 Follow up
-              </div>
-            </FollowUpContainer>
+              </RowDiv>
+            </RowContainer>
+            {localStorage.getItem('activeOrg') && (
+              <RowContainer>
+                <img src={peopleIcon} alt="users icon" />
+                <RowDiv
+                  onClick={() => {
+                    this.props.resetSpace();
+                    this.props.resetThread();
+                    this.props.history.push('/users');
+                  }}
+                >
+                  Users
+                </RowDiv>
+              </RowContainer>
+            )}
             <div>
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <Icon name="building outline" size="large" />
+                    <img src={discIcon} alt="home icon" />
+
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
                         activeOrg={this.props.activeOrg}
                         orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={
-                          this.setSelectedOrgToLocalStorage
-                        }
+                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
                       />
-                      //********************************************** */
                     )}
                   </OrgContainer>
                   <CreateNewSpaceModal {...this.props} />
@@ -175,18 +246,27 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <div key={index}>
-                          <span
-                            onClick={event => {
-                              event.preventDefault();
-                              this.props.resetThread();
-                              this.props.switchSpaces(space.id);
-                              this.props.hideFollowUp();
-                            }}
-                          >
-                            {space.spaceName}
-                          </span>
-                        </div>
+                        <RowDiv
+                          key={index}
+                          style={
+                            this.state.activeSpace === space.spaceName
+                              ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                              : {}
+                          }
+                          onClick={event => {
+                            event.preventDefault();
+                            this.clickedSpace(space.spaceName);
+                            this.props.editingProfileDone();
+                            this.props.resetUpgradeScreen();
+                            this.props.resetThread();
+                            this.props.switchSpaces(space.id);
+                            this.props.showModal(null);
+                            this.props.notRenderProfile();
+                            this.props.hideFollowUp();
+                          }}
+                        >
+                          {space.spaceName}
+                        </RowDiv>
                       ))}
                     </div>
                   )}
@@ -204,22 +284,15 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser
-      ? state.firestore.ordered.filteredUser[0]
-      : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
+    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
     // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
-      ? state.firestore.ordered.filteredSpaces
-      : [],
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
+    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    upgradeScreen: state.upgradeScreen
   };
 };
 
@@ -232,6 +305,11 @@ const mapDispatchToProps = dispatch => {
       resetSpace,
       resetThread,
       showModal,
+      showUpgradeScreen,
+      resetUpgradeScreen,
+      editingProfileDone,
+      renderProfile,
+      notRenderProfile,
       showFollowUp,
       hideFollowUp
     },
@@ -255,10 +333,7 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.activeOrg]
-        ],
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
@@ -277,7 +352,7 @@ export default compose(
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
-  padding-right: 32px;
+  padding-right: 15px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -286,6 +361,17 @@ const HeaderContainer = styled.div`
     &:hover {
       cursor: pointer;
     }
+  }
+`;
+
+const StyledDropdown = styled.div`
+  .ui.dropdown .menu .item:hover {
+    background: #00bc98;
+    color: white;
+  }
+  .item {
+    margin: 5px;
+    border-radius: 5px;
   }
 `;
 
@@ -315,54 +401,29 @@ const InnerContainer = styled.div`
   padding-bottom: 16px;
 `;
 
-const HomeContainer = styled.div`
+const RowContainer = styled.div`
   padding-left: 4px;
+  margin: 15px 0;
   position: relative;
   display: flex;
-  align-items: baseline;
+
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+
   img {
     width: 1.25rem;
-    /* margin-right: 7px;
-    margin-left: 4px; */
-    position: absolute;
-    right: 249px;
-    bottom: 4px;
-    &:hover {
-      cursor: pointer;
-    }
+    margin-right: 15px;
   }
-  span {
-    padding-left: 41px;
-  }
-  span:hover {
+  div:hover {
     color: #f64e49;
     cursor: pointer;
   }
 `;
 
-const FollowUpContainer = styled.div`
-  .text {
-    padding-left: 45px;
-    padding-top: 15px;
-    margin-bottom: 50px;
-    position: relative;
-    display: flex;
-    align-items: baseline;
-    &:hover {
-      color: #f64e49;
-      cursor: pointer;
-    }
-  }
-  .clipboard {
-    width: 1.25rem;
-    position: absolute;
-    right: 249px;
-    margin-top: 11px;
-    &:hover {
-      cursor: pointer;
-      color: blue;
-    }
-  }
+const RowDiv = styled.div`
+  padding: 5px 12px;
+  border-radius: 15px;
 `;
 
 const OrgContainer = styled.div`
@@ -373,21 +434,15 @@ const OrgContainer = styled.div`
   padding-left: 4px;
   display: flex;
   align-items: center;
-  align-items: baseline;
+  justify-content: center;
   color: rgb(55, 71, 80);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  span {
-    padding-right: 8px;
-    padding-left: 12px;
-  }
+
   &:hover {
     cursor: pointer;
     border-radius: 16px;
     box-shadow: 3px 3px 13px -10px #000;
-    .chevron {
-      color: #f64e49;
-    }
   }
 `;
 
@@ -403,7 +458,7 @@ const OuterOrgContainer = styled.div`
   img {
     width: 1.25rem;
     margin-right: 8px;
-    margin-right: 20px;
+    margin-right: 15px;
     &:hover {
       cursor: pointer;
     }
@@ -411,13 +466,17 @@ const OuterOrgContainer = styled.div`
 `;
 
 const SpaceContainer = styled.div`
-  margin-left: 8px;
   line-height: 30px;
-  span {
-    margin-left: 40px;
-    &:hover {
-      color: #f64e49;
-      cursor: pointer;
+  margin-left: 40px;
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    div {
+      &:hover {
+        color: #f64e49;
+        cursor: pointer;
+      }
     }
   }
 `;

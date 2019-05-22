@@ -83,7 +83,7 @@ export const StyledModalAdder = styled.div`
   font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #5c4df2;
+  color: #00bc98;
   padding: 0 25px;
   cursor: pointer;
 `;
@@ -99,7 +99,7 @@ export const StyledModalInput = styled.input`
   }
 
   &:focus {
-    border-bottom: 2px solid #5c4df2;
+    border-bottom: 2px solid #00bc98;
     outline: none;
   }
 `;
@@ -112,16 +112,16 @@ export const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 export const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
@@ -162,7 +162,7 @@ export const StyledModalSpacesContainer = styled.div`
     background-color: #19bd98;
   }
   .borderclass {
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 

@@ -8,13 +8,18 @@ import { firestoreConnect } from 'react-redux-firebase';
 //Import components
 import ScreenButton from '../ScreenButton';
 
+import GifComponent from '../GifComponent';
+
 //Import icons
 import IconPenWhite from '../../../images/icon-pen-white.svg';
+import IconCheckWhite from '../../../images/icon-check-white.svg';
 
 //Main component
 export class NewCommentCard extends React.Component {
   state = {
-    text: ''
+    text: '',
+    display: 'none',
+    gif: ''
   };
 
   handleInputChange = e => {
@@ -24,6 +29,20 @@ export class NewCommentCard extends React.Component {
   clearInput = () => {
     this.setState({ text: '' });
   };
+
+  toggleDisplay = () => {
+    if (this.state.display === 'none') {
+      this.setState({
+        display: 'block'
+      });
+    }
+    if (this.state.display === 'block') {
+      this.setState({
+        display: 'none'
+      });
+    }
+  };
+
   createNewComment = e => {
     e.preventDefault();
     let commentId = uuid();
@@ -39,7 +58,8 @@ export class NewCommentCard extends React.Component {
         isCommentUpdated: false,
         orgId: this.props.thread.orgId,
         threadId: this.props.thread.id,
-        threadName: this.props.thread.threadName
+        threadName: this.props.thread.threadName,
+        gifUrl: this.state.gif
       }
     );
     this.props.firestore.update(
@@ -48,17 +68,13 @@ export class NewCommentCard extends React.Component {
         lastCommentCreatedAt: Date.now()
       }
     );
-
   };
 
   render() {
+    console.log(this.state.gif);
     const { img } = this.props;
     return (
-      <StyledCommentContainer
-        onSubmit={e => {
-          this.createNewComment(e);
-          this.clearInput();
-        }}>
+      <StyledCommentContainer>
         <StyledTopContainer>
           <StyledImageContainer>
             <img src={img} alt="author" /> {/* <div className="initials">{createdBy[0]}</div> */}
@@ -70,21 +86,49 @@ export class NewCommentCard extends React.Component {
             onChange={this.handleInputChange}
           />
         </StyledTopContainer>
-        <StyledButtonContainer>
-          {this.state.text.length > 0 && (
+        <StyledGifAndButtons>
+          <StyledButtonContainer>
+            <ScreenButton
+              content="GIF"
+              backgroundColor="#00bc98"
+              color="white"
+              border="none"
+              icon={IconCheckWhite}
+              onClick={e => {
+                e.preventDefault();
+                this.toggleDisplay();
+              }}
+            />
             <ScreenButton
               content="Submit"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconPenWhite}
               onClick={e => {
                 this.createNewComment(e);
                 this.clearInput();
+                this.setState({ gif: '' });
               }}
             />
+          </StyledButtonContainer>
+          {this.state.gif !== '' && (
+            <StyledGifImage>
+              <img src={this.state.gif} alt="gif" />
+              <div onClick={() => this.setState({ gif: '' })}>x</div>
+            </StyledGifImage>
           )}
-        </StyledButtonContainer>
+        </StyledGifAndButtons>
+        <StyledGifContainer>
+          <div className={this.state.display}>
+            <GifComponent
+              onSelected={gif => {
+                this.setState({ gif });
+                this.toggleDisplay();
+              }}
+            />
+          </div>
+        </StyledGifContainer>
       </StyledCommentContainer>
     );
   }
@@ -108,6 +152,31 @@ const StyledTopContainer = styled.div`
   justify-content: flex-start;
 `;
 
+const StyledGifImage = styled.div`
+  margin: 15px 0 0 66px;
+  height: 100px;
+  border-radius: 5px;
+  display: flex;
+  img {
+    max-height: 100%;
+    border-radius: 5px;
+  }
+  div {
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: -15px;
+  }
+`;
+
+const StyledGifAndButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: center;
+`;
+
 const StyledImageContainer = styled.div`
   width: 35px;
   height: 35px;
@@ -118,7 +187,7 @@ const StyledImageContainer = styled.div`
   .initials {
     border-radius: 50%;
     max-width: 100%;
-    background-color: #5c4df2;
+    background-color: #00bc98;
   }
 `;
 const StyledRightInput = styled.input`
@@ -133,10 +202,28 @@ const StyledRightInput = styled.input`
   }
 `;
 
+const StyledGifContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  .none {
+    display: none;
+  }
+  .block {
+    display: block;
+  }
+`;
+
 const StyledButtonContainer = styled.div`
+  display: flex;
   align-self: flex-end;
   border: none;
   margin-top: 30px;
+  margin-right: 5px;
+  button {
+    margin-right: 10px;
+  }
 `;
 
 const mapStateToProps = state => {

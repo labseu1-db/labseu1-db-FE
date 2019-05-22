@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import {
-  firestoreConnect
-} from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import components
@@ -86,7 +84,7 @@ export default compose(
 
 //Styling
 const StyledFollowUp = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
