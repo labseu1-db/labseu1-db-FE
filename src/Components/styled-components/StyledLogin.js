@@ -5,7 +5,7 @@ export const StyledLogin = styled.div`
   width: 100%;
   height: 100vh;
   padding-top: 50px;
-  background-color: #faf9f7;
+  background-color: #fff7f3;
 `;
 
 export const StyledLoginCon = styled.div`
@@ -35,7 +35,7 @@ export const StyledInput = styled.input`
   padding: 5px 0;
   margin-bottom: 10px;
   &:focus {
-    border-bottom: 2px solid #6c48f2;
+    border-bottom: 2px solid #00bc98;
     outline: none;
   }
 `;
@@ -70,5 +70,3 @@ export const StyledIcon = styled.img`
   z-index: 2;
   cursor: pointer;
 `;
-
-

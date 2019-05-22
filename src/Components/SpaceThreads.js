@@ -80,7 +80,7 @@ function SpaceThreads(props) {
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
-            backgroundColor="#5C4DF2"
+            backgroundColor="#00bc98"
             color="white"
             border="none"
             onClick={e => {
@@ -125,7 +125,7 @@ function SpaceThreads(props) {
 }
 
 const StyledMainScreen = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
@@ -143,7 +143,7 @@ const StyledButtonsContainer = styled.div`
 `;
 
 const StyledDropdown = styled.div`
-  border: 1px solid #bdc3c9;
+  border: 1px solid #00bc98;
   border-radius: 50%;
   margin: 0;
   margin-right: 10px;
@@ -153,11 +153,12 @@ const StyledDropdown = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-color: white;
   i.ellipsis.horizontal.icon {
     margin: 0;
   }
   .ui.dropdown .menu > .item:hover {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
   }
   .item {

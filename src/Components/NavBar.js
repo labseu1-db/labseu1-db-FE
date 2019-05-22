@@ -22,7 +22,7 @@ import {
 } from '../redux/actions/actionCreators';
 
 //Import semantic components
-import { Icon, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 //Import components
 import Spinner from './semantic-components/Spinner';
@@ -172,9 +172,9 @@ export class NavBar extends Component {
                 </StyledDropdown>
               )}
             </InnerContainerHorizontal>
-            <div>
+            {/* <div>
               <Icon name="cog" />
-            </div>
+            </div> */}
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
@@ -366,7 +366,7 @@ const HeaderContainer = styled.div`
 
 const StyledDropdown = styled.div`
   .ui.dropdown .menu .item:hover {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
   }
   .item {

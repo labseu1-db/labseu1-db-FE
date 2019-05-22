@@ -35,7 +35,7 @@ class MainScreen extends React.Component {
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
-            backgroundColor="#5C4DF2"
+            backgroundColor="#00bc98"
             color="white"
             border="none"
             onClick={e => {
@@ -77,7 +77,7 @@ class MainScreen extends React.Component {
 
 //Styling
 const StyledMainScreen = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;

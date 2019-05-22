@@ -180,7 +180,7 @@ const StyledImageContainer = styled.div`
   }
   .initials {
     border-radius: 50%;
-    background-color: #5c4df2;
+    background-color: #00bc98;
     width: 50px;
     height: 50px;
     display: flex;
@@ -234,7 +234,8 @@ const StyledUpdatedMessage = styled.div`
 const StyledDecision = styled.div`
   height: 40px;
   position: absolute;
-  background-color: #fff6dd;
+  color: white;
+  background-color: #00bc98;
   border-radius: 10px 10px 0 0;
   width: 100%;
   top: 0;

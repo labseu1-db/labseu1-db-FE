@@ -121,7 +121,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   color: #3d4856;
   width: 100%;
   height: 100vh;
@@ -134,7 +134,7 @@ const GetStarted = styled.div`
   box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
 `;
 const GetStartedTop = styled.div`
-  background-color: #6c48f2;
+  background-color: #f64e49;
   border-radius: 15px 15px 0 0;
   color: white;
   text-align: end;

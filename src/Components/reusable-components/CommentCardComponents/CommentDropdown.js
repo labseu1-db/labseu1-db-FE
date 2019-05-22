@@ -52,7 +52,7 @@ export class CommentDropdown extends React.Component {
 //Styling
 const StyledDropdown = styled.div`
   .ui.dropdown .menu > .item:hover {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
   }
   .item {
@@ -60,7 +60,7 @@ const StyledDropdown = styled.div`
     border-radius: 5px;
   }
   .ui.label {
-    background: #5c4df2;
+    background: #00bc98;
     color: white;
     border: none;
   }

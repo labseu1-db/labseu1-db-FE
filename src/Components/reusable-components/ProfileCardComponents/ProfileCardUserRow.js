@@ -110,7 +110,7 @@ const StyledNameInput = styled.input`
     width: 12vw;
   }
   &:focus {
-    border-bottom: 2px solid #6c48f2;
+    border-bottom: 2px solid #00bc98;
     outline: none;
   }
   color: rgb(55, 71, 80);

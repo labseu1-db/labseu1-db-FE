@@ -48,7 +48,7 @@ export class UpdateComment extends React.Component {
           {this.state.text.length > 0 && (
             <ScreenButton
               content="Submit"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconPenWhite}

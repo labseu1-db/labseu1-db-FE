@@ -90,7 +90,7 @@ export class NewCommentCard extends React.Component {
           <StyledButtonContainer>
             <ScreenButton
               content="GIF"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconCheckWhite}
@@ -101,7 +101,7 @@ export class NewCommentCard extends React.Component {
             />
             <ScreenButton
               content="Submit"
-              backgroundColor="#5C4DF2"
+              backgroundColor="#00bc98"
               color="white"
               border="none"
               icon={IconPenWhite}
@@ -187,7 +187,7 @@ const StyledImageContainer = styled.div`
   .initials {
     border-radius: 50%;
     max-width: 100%;
-    background-color: #5c4df2;
+    background-color: #00bc98;
   }
 `;
 const StyledRightInput = styled.input`
