@@ -62,10 +62,10 @@ function ThreadCard(props) {
 //Styling
 const StyledFollowUp = styled.div`
   height: 100%;
+  width: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5;
 `;
 
 const StyledThreadContainer = styled.div`
@@ -96,7 +96,7 @@ const StyledDecision = styled.div`
   border: 2px solid #e7e7e7;
   font-size: 11px;
   line-height: normal;
-  margin-right: -18px;
+  margin-right: 68px;
   padding-left: 9px;
   padding-right: 9px;
   text-align: center;

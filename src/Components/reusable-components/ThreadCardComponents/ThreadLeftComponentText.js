@@ -29,6 +29,7 @@ const StyledLeftContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   height: 100%;
+  padding-left: 2%;
   .lighter-color {
     opacity: 0.8;
   }
