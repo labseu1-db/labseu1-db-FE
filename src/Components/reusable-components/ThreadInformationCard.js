@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+//Import components
+import AvatarFromLetter from '../reusable-components/AvatarFromLetter';
+
 //Main component
 export function ThreadInformationCard(props) {
   const { createdBy, createdAt, info, space } = props;
@@ -14,10 +17,7 @@ export function ThreadInformationCard(props) {
   return (
     <StyledThreadContainer>
       <StyledTopContent>
-        <StyledPhotoContainer>
-          {/* <img src={img} alt="author" /> */}
-          <div className="initials">{createdBy[0]}</div>
-        </StyledPhotoContainer>
+        <AvatarFromLetter username={createdBy} marginBottom="8px" />
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
@@ -47,25 +47,7 @@ const StyledTopContent = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-const StyledPhotoContainer = styled.div`
-  width: 50px;
-  height: 50px;
-  img {
-    max-width: 100%;
-    border-radius: 50%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #00bc98;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-  }
-`;
+
 const StyledRightSideOfContainer = styled.div`
   display: flex;
   flex-direction: column;

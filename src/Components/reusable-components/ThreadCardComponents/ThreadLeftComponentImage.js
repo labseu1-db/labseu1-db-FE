@@ -5,14 +5,14 @@ import styled from 'styled-components';
 import checkIconGreen from '../../../images/icon-check-green.svg';
 import closeIconWhite from '../../../images/icon-close-white.svg';
 
+//Import components
+import AvatarFromLetter from '../AvatarFromLetter';
 //Main component
 function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
     <StyledImagesContainer>
-      <div>
-        <div className="initial-large">{createdBy[0]}</div>
-      </div>
+      <AvatarFromLetter username={createdBy} />
       <div className="line" />
       {checked === 'true' && (
         <div className="initial-small true">

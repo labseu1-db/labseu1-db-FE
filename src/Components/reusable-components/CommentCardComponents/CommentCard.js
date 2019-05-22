@@ -11,6 +11,7 @@ import heartIconRed from '../../../images/icon-heart-red.svg';
 //Import components
 import UpdateComment from './UpdateComment';
 import CommentDropdown from './CommentDropdown';
+import AvatarFromLetter from '../AvatarFromLetter';
 
 //Main component
 export class CommentCard extends React.Component {
@@ -54,7 +55,6 @@ export class CommentCard extends React.Component {
 
   render() {
     const {
-      img,
       createdBy,
       content,
       commentId,
@@ -93,12 +93,7 @@ export class CommentCard extends React.Component {
               setIsCommentUpdated={this.setIsCommentUpdated}
             />
           )}
-          {!this.state.isUpdating && (
-            <StyledImageContainer>
-              <img src={img} alt="author" />
-              {/* <div className="initials">{createdBy[0]}</div> */}
-            </StyledImageContainer>
-          )}
+          {!this.state.isUpdating && <AvatarFromLetter marginTop="4px" username={createdBy} />}
           {!this.state.isUpdating && (
             <StyledRightContainer>
               <StyledAuthorsName>{createdBy}</StyledAuthorsName>
@@ -159,9 +154,9 @@ const StyledCommentContainer = styled.div`
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 50px;
   .ui.dropdown {
     position: absolute;
     top: 10px;
@@ -171,25 +166,7 @@ const StyledCommentContainer = styled.div`
     cursor: pointer;
   }
 `;
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #00bc98;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-  }
-`;
+
 const StyledRightContainer = styled.div`
   padding-left: 30px;
 `;
