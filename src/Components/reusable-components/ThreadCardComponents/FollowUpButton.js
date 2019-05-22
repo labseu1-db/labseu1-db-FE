@@ -77,7 +77,6 @@ const StyledFollowUpButton = styled.div`
   border: 2px solid #e7e7e7;
   font-size: 11px;
   line-height: normal;
-  margin-right: 33px;
   padding-left: 9px;
   padding-right: 9px;
   text-align: center;
