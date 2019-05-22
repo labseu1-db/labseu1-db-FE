@@ -230,8 +230,8 @@ class CreateThreadModal extends Component {
                   <Message warning attached="bottom">
                     <Icon name="warning" />
                     {this.state.error3 === 'wordIsTooLong'
-                      ? 'A word can only be 100 characters long'
-                      : 'Thread name can only have 1100 characters'}
+                      ? 'A word can only be 60 characters long'
+                      : 'Thread name can only have 1000 characters'}
                   </Message>
                 ))}
             </StyledThreadInput>
