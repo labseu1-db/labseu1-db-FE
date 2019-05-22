@@ -26,7 +26,7 @@ const StyledImageContainer = styled.div`
   background-color: #fff7f3;
   background-color: #e4d0c6;
   background-color: #ffc9ad;
-  background-color: #ffb48f;
   background-color: #ff8434;
   background-color: #ff706c;
+  background-color: #ffb48f;
 `;
