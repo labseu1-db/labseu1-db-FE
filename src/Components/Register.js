@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 import { Button, Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
+import { Redirect } from 'react-router-dom';
 
 import { StyledButton } from './styled-components/StyledButton';
 import {
@@ -47,11 +48,11 @@ class Register extends Component {
     }
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = (res) => {
+  saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = res => {
     let userId = uuid();
     this.props.firestore
       .collection('users')
@@ -75,7 +76,7 @@ class Register extends Component {
       });
   };
 
-  saveUserToDatabaseAndToLocalStorage = (res) => {
+  saveUserToDatabaseAndToLocalStorage = res => {
     let userId = uuid();
 
     this.props.firestore
@@ -94,14 +95,14 @@ class Register extends Component {
         localStorage.setItem('uuid', userId);
         localStorage.setItem('userEmail', this.state.email);
       })
-      .then((res) => {
+      .then(res => {
         const orgRef = this.props.firestore
           .collection('organisations')
           .where('arrayOfUsersEmails', 'array-contains', this.state.email);
         orgRef
           .get()
-          .then((qs) => {
-            qs.forEach((doc) => {
+          .then(qs => {
+            qs.forEach(doc => {
               this.saveUserIdInOrg(doc.id, userId);
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
 
@@ -118,7 +119,7 @@ class Register extends Component {
       });
   };
 
-  createAndLogInNewUser = (e) => {
+  createAndLogInNewUser = e => {
     const { email, password, fullName } = this.state;
     const INITIAL_STATE = {
       email: '',
@@ -133,20 +134,20 @@ class Register extends Component {
       .then(() => {
         this.props.firebase
           .login({ email, password })
-          .then((res) => {
+          .then(res => {
             this.saveUserToDatabaseAndToLocalStorage(res);
           })
-          .catch((error) => {
+          .catch(error => {
             this.setState({ ...INITIAL_STATE, error });
           });
       })
       .then(() => {
         this.props.history.push('/createneworganisation');
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       })
-      .catch((error) => this.setState({ ...INITIAL_STATE, error: error }));
+      .catch(error => this.setState({ ...INITIAL_STATE, error: error }));
   };
 
   saveUserIdInOrg = (orgId, userId) => {
@@ -156,7 +157,7 @@ class Register extends Component {
       .update({
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
@@ -167,7 +168,7 @@ class Register extends Component {
         arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
         arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   saveUserIdInOrg = (orgId, userId) => {
@@ -177,7 +178,7 @@ class Register extends Component {
       .update({
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
@@ -188,7 +189,7 @@ class Register extends Component {
         arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
         arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId)
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   togglePassword = () => {
@@ -216,7 +217,7 @@ class Register extends Component {
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
-      return null;
+      return <Redirect to="/homescreen" />;
     }
     return (
       <StyledLogin>
@@ -226,63 +227,62 @@ class Register extends Component {
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
               <StyledInput
-                name='fullName'
+                name="fullName"
                 value={this.state.fullName}
-                type='text'
+                type="text"
                 onChange={this.handleInputChange}
-                placeholder='Tony Stark'
+                placeholder="Tony Stark"
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
               <StyledInput
-                name='email'
+                name="email"
                 value={this.state.email}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                id='typepass'
-                name='password'
+                id="typepass"
+                name="password"
                 value={this.state.password}
-                type='password'
+                type="password"
                 onChange={this.handleInputChange}
-                placeholder='········'
+                placeholder="········"
               />
-              <StyledIcon id='passwordIcon' src={showPassword} alt='showPassword' onClick={this.togglePassword} />
+              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
             </StyledLabel>
 
             <StyledLowerSignIn>
-              <StyledLink to='/login'> Already have an account? </StyledLink>
+              <StyledLink to="/login"> Already have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.createAndLogInNewUser}>
                 Register
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
           <Button
-            color='google plus'
+            color="google plus"
             onClick={() => {
               this.props.firebase
                 .login({ provider: 'google', type: 'popup' })
-                .then((res) => {
+                .then(res => {
                   this.saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn(res);
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log(error);
                 });
-            }}
-          >
-            <Icon name='google plus' /> Sign in with Google
+            }}>
+            <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
         <LoginAnimation />
@@ -291,17 +291,24 @@ class Register extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
-export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Register);
+export default compose(
+  withFirestore,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(Register);
