@@ -9,7 +9,6 @@ import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponent
 import ThreadLeftComponentText from './ThreadCardComponents/ThreadLeftComponentText';
 import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent';
 import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
-import FollowUpButton from './ThreadCardComponents/FollowUpButton';
 
 //Main component
 function ThreadCard(props) {
@@ -40,33 +39,21 @@ function ThreadCard(props) {
           checked={checked}
         />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <StyledFollowUp>
-          {isFollowUpDecided && (
-            <StyledDecision onClick={stopPropagation}>
-              Marked for followup
-            </StyledDecision>
-          )}
-          {
-            <FollowUpButton
-              isFollowUpDecided={isFollowUpDecided}
-              threadId={threadId}
-            />
-          }
-        </StyledFollowUp>
-        <ThreadRightComponent threadId={threadId} />
+        {isFollowUpDecided && (
+          <StyledDecision onClick={stopPropagation}>
+            Marked for followup
+          </StyledDecision>
+        )}
+        <ThreadRightComponent
+          isFollowUpDecided={isFollowUpDecided}
+          threadId={threadId}
+        />
       </StyledThreadContainer>
     </div>
   );
 }
 
 //Styling
-const StyledFollowUp = styled.div`
-  height: 100%;
-  width: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const StyledThreadContainer = styled.div`
   background-color: white;
@@ -84,24 +71,17 @@ const StyledThreadContainer = styled.div`
   }
 `;
 
-const StyledDecision = styled.div`
+const StyledDecision = styled.button`
   background-color: white;
-  color: black;
-  display: flex;
+  color: #9c9c9c;
+  font-size: 13px;
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   height: 30px;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.5px;
-  border-radius: 100px;
-  border: 2px solid #e7e7e7;
-  font-size: 11px;
-  line-height: normal;
-  margin-right: 49px;
-  padding-left: 9px;
-  padding-right: 9px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 15px;
   white-space: nowrap;
+  position: relative;
+  display: flex;
   &:hover {
     border: 1px solid black;
     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.3);
