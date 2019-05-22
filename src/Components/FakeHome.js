@@ -10,6 +10,7 @@ import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
 import SpaceThreads from './SpaceThreads';
 import ThreadsScreen from './ThreadsScreen';
+import UpgradeAccount from './UpgradeAccount';
 
 import { showModal } from '../redux/actions/actionCreators';
 import UserProfile from './UserProfile';
@@ -26,7 +27,7 @@ class FakeHome extends Component {
     return (
       <StyledHomeScreen>
         <FirstDiv>
-          <NavBar props={this.props} />
+          <NavBar {...this.props} />
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
@@ -34,10 +35,12 @@ class FakeHome extends Component {
             {!this.props.spaceId &&
               !this.props.threadId &&
               !this.props.followUpStatus &&
-              !this.props.profileRenderStatus && <MainScreen />}
+              !this.props.profileRenderStatus &&
+              !this.props.upgradeScreen && <MainScreen />}
             {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
             {this.props.followUpStatus && <FollowUp />}
             {this.props.profileRenderStatus && <UserProfile {...this.props} />}
+            {!this.props.spaceId && !this.props.threadId && this.props.upgradeScreen && <UpgradeAccount />}
           </SecondDiv>
           <ThirdDiv>
             {this.props.followUpStatus && null}
@@ -56,6 +59,7 @@ const mapStateToProps = state => {
     activeModal: state.modal.activeModal,
     spaceId: state.spaceId,
     threadId: state.threadId,
+    upgradeScreen: state.upgradeScreen,
     followUpStatus: state.followUpStatus,
     profileRenderStatus: state.profileRenderStatus
   };

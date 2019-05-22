@@ -62,6 +62,17 @@ export function threadId(state = '', action) {
   }
 }
 
+export function upgradeScreen(state = false, action) {
+  switch (action.type) {
+    case types.SHOW_UPGRADE_SCREEN:
+      return true;
+    case types.RESET_UPGRADE_SCREEN:
+      return false;
+    default:
+      return state;
+  }
+}
+
 export function profileRenderStatus(state = false, action) {
   switch (action.type) {
     case types.RENDER_PROFILE:
