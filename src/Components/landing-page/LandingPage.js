@@ -60,6 +60,9 @@ const TopLandingContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
   }
+  @media screen and (max-width: 600px) {
+    padding: 0 5vw;
+  }
   .banner {
     position: absolute;
     top: 20vh;

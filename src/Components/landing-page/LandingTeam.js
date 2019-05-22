@@ -101,8 +101,12 @@ const StyledTeamContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 7vh 10vw;
   }
+  @media screen and (max-width: 600px) {
+    padding: 7vh 5vw;
+  }
   h3 {
     font-size: 2.3rem;
+    text-align: center;
   }
 `;
 
@@ -122,6 +126,14 @@ const StyledCard = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  @media screen and (max-width: 1100px) {
+    width: 30%;
+    margin-bottom: 50px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 50%;
+    margin-bottom: 50px;
+  }
   h5 {
     margin: 10px 0 0 0;
     cursor: pointer;
@@ -135,6 +147,12 @@ const StyledCard = styled.div`
     .image-div {
     width: 40%;
     text-align: center;
+    @media screen and (max-width: 800px) {
+      width: 60%;
+    }
+    @media screen and (max-width: 600px) {
+      width: 60%;
+    }
     img {
       width: 100%;
     }
