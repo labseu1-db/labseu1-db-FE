@@ -159,7 +159,7 @@ const StyledCommentContainer = styled.div`
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 30px 20px 20px 30px;
+  padding: 30px;
   width: 100%;
   margin-top: 40px;
   .ui.dropdown {

@@ -77,7 +77,8 @@ export class NewCommentCard extends React.Component {
       <StyledCommentContainer>
         <StyledTopContainer>
           <StyledImageContainer>
-            <img src={img} alt="author" /> {/* <div className="initials">{createdBy[0]}</div> */}
+            {/* <img src={img} alt="author" /> */}
+            <div className="initials">{this.props.profile.fullName[0].toUpperCase()}</div>
           </StyledImageContainer>
           <StyledRightInput
             placeholder="Comment on the thread"
@@ -142,7 +143,7 @@ const StyledCommentContainer = styled.form`
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   width: 100%;
   margin-top: 30px;
 `;
@@ -186,10 +187,17 @@ const StyledImageContainer = styled.div`
   }
   .initials {
     border-radius: 50%;
-    max-width: 100%;
-    background-color: #00bc98;
+    background-color: #ffc206;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
   }
 `;
+
 const StyledRightInput = styled.input`
   margin-left: 30px;
   border: 1px solid #bdc3c9;

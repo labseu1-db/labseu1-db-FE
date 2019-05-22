@@ -10,9 +10,10 @@ function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
     <StyledImagesContainer>
-      <div>
-        <div className="initial-large">{createdBy[0]}</div>
-      </div>
+      <StyledImageContainer>
+        {/* <img src={img} alt="author" /> */}
+        <div className="initials">{createdBy[0].toUpperCase()}</div>
+      </StyledImageContainer>
       <div className="line" />
       {checked === 'true' && (
         <div className="initial-small true">
@@ -75,6 +76,26 @@ const StyledImagesContainer = styled.div`
     width: 30px;
     height: 30px;
     margin: 10px 0;
+  }
+`;
+
+const StyledImageContainer = styled.div`
+  width: 35px;
+  height: 35px;
+  img {
+    border-radius: 50%;
+    max-height: 100%;
+  }
+  .initials {
+    border-radius: 50%;
+    background-color: #ffc206;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
   }
 `;
 

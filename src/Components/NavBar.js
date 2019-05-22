@@ -157,7 +157,12 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
+              {this.props.user.fullName && (
+                <StyledImageContainer>
+                  {/* <img src={img} alt="author" /> */}
+                  <div className="initials">{this.props.user.fullName[0].toUpperCase()}</div>
+                </StyledImageContainer>
+              )}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -191,8 +196,7 @@ export class NavBar extends Component {
                   this.props.resetUpgradeScreen();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}
-              >
+                }}>
                 Home
               </RowDiv>
             </RowContainer>
@@ -206,8 +210,7 @@ export class NavBar extends Component {
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}
-              >
+                }}>
                 Follow up
               </RowDiv>
             </RowContainer>
@@ -219,8 +222,7 @@ export class NavBar extends Component {
                     this.props.resetSpace();
                     this.props.resetThread();
                     this.props.history.push('/users');
-                  }}
-                >
+                  }}>
                   Users
                 </RowDiv>
               </RowContainer>
@@ -263,8 +265,7 @@ export class NavBar extends Component {
                             this.props.showModal(null);
                             this.props.notRenderProfile();
                             this.props.hideFollowUp();
-                          }}
-                        >
+                          }}>
                           {space.spaceName}
                         </RowDiv>
                       ))}
@@ -490,9 +491,29 @@ const NavBarContainer = styled.div`
   font-size: 13px;
 `;
 
-const StyledImage = styled.img`
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  margin-right: 8px;
+// const StyledImage = styled.img`
+//   height: 32px;
+//   width: 32px;
+//   border-radius: 50%;
+//   margin-right: 8px;
+// `;
+
+const StyledImageContainer = styled.div`
+  width: 35px;
+  height: 35px;
+  img {
+    border-radius: 50%;
+    max-height: 100%;
+  }
+  .initials {
+    border-radius: 50%;
+    background-color: #ffc206;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+  }
 `;
