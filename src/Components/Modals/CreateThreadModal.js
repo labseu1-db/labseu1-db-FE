@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-import { Modal, Dropdown } from 'semantic-ui-react';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { Modal, Dropdown, Message, Icon } from 'semantic-ui-react';
+import { Editor, EditorState, RichUtils, convertToRaw, ContentState } from 'draft-js';
 import uuid from 'uuid';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
@@ -27,9 +27,42 @@ class CreateThreadModal extends Component {
       display: 'none'
     };
     this.onChange = editorState => {
-      this.setState({ editorState });
+      const contentState = editorState.getCurrentContent();
+      const oldContent = this.state.editorState.getCurrentContent();
+      let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
+      let threadTopic = rawDraftContentState.blocks[0].text;
+      let words = threadTopic.split(' ');
+      let wordsWithSpecificLength = words.every(word => word.length < 100);
+      console.log(words);
+      console.log(wordsWithSpecificLength);
+      console.log(this.state.error3);
+      if (
+        contentState === oldContent ||
+        (threadTopic.length <= 1000 && wordsWithSpecificLength) ||
+        window.event.which === 8
+      ) {
+        this.setState({ editorState });
+        this.setState({ error2: '' });
+        this.setState({ error3: '' });
+      } else {
+        const editorState = EditorState.undo(
+          EditorState.push(
+            this.state.editorState,
+            ContentState.createFromText(oldContent.getPlainText()),
+            'delete-character'
+          )
+        );
+        this.setState({ editorState });
+      }
+      if (threadTopic.length > 1100) {
+        this.setState({ error2: 'toManyThreadTopicCharacters' });
+      }
+      if (!wordsWithSpecificLength) {
+        editorState = EditorState.undo(editorState);
+        this.setState({ error3: 'wordIsTooLong' });
+      }
+      this.focus = () => this.refs.editor.focus();
     };
-    this.focus = () => this.refs.editor.focus();
   }
 
   componentWillMount() {}
@@ -45,8 +78,17 @@ class CreateThreadModal extends Component {
     this.setState({ spaceId: value });
   };
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = event => {
+    if (
+      this.state.threadName.length <= 40 ||
+      event.target.name !== 'threadName' ||
+      window.event.inputType === 'deleteContentBackward'
+    ) {
+      this.setState({ [event.target.name]: event.target.value });
+      this.setState({ error: '' });
+    } else if (this.state.threadName.length > 16 && event.target.name === 'threadName') {
+      this.setState({ error: 'toManyCharactersInThreadName' });
+    }
   };
 
   toggleMiniMondal = () => {
@@ -163,8 +205,15 @@ class CreateThreadModal extends Component {
               type="text"
               placeholder="Create a title"
               required
-              onChange={this.handleInputChange}
+              value={this.state.threadName}
+              onChange={event => this.handleInputChange(event)}
             />
+            {this.state.error === 'toManyCharactersInThreadName' && (
+              <Message warning attached="bottom">
+                <Icon name="warning" />
+                Thread name can only have 40 characters
+              </Message>
+            )}
             <StyledThreadInput onClick={this.focus}>
               <Editor
                 name="threadTopic"
@@ -176,6 +225,15 @@ class CreateThreadModal extends Component {
                 handleKeyCommand={this.handleKeyCommand}
                 ref="editor"
               />
+              {this.state.error2 === 'toManyThreadTopicCharacters' ||
+                (this.state.error3 === 'wordIsTooLong' && (
+                  <Message warning attached="bottom">
+                    <Icon name="warning" />
+                    {this.state.error3 === 'wordIsTooLong'
+                      ? 'A word can only be 100 characters long'
+                      : 'Thread name can only have 1100 characters'}
+                  </Message>
+                ))}
             </StyledThreadInput>
           </StyledInputsContainer>
         </Modal.Content>
@@ -341,7 +399,7 @@ const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
-  height: 440px;
+  height: 370px;
 `;
 const StyledActions = styled.div`
   display: flex;
