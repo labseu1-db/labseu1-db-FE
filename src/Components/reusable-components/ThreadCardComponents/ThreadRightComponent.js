@@ -15,6 +15,7 @@ export class ThreadRightComponent extends React.Component {
 
   markAsFollowUp = e => {
     e.stopPropagation();
+    //this.setState({ isFollowUpText: e.target.value });
     this.setState({ isFollowUpText: 'Marked for followup' });
     let threadRef = this.props.firestore
       .collection('threads')
@@ -25,8 +26,13 @@ export class ThreadRightComponent extends React.Component {
         localStorage.getItem('uuid')
       )
     });
+    console.log(`isFollowUp ${threadRef.isFollowUp}`);
   };
+
   render() {
+    const stopPropagation = e => {
+      e.stopPropagation();
+    };
     return (
       <div>
         {!this.props.isFollowUpDecided && (
@@ -39,6 +45,11 @@ export class ThreadRightComponent extends React.Component {
               {this.state.isFollowUpText}
             </StyledFollowUpButton>
           </StyledRightContainer>
+        )}
+        {this.props.isFollowUpDecided && (
+          <StyledDecision onClick={stopPropagation}>
+            Marked for followup
+          </StyledDecision>
         )}
       </div>
     );
@@ -75,13 +86,28 @@ const StyledFollowUpButton = styled.button`
   position: relative;
   display: flex;
   &:hover {
-    border: 1px solid black;
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.3);
+    border: 1px solid #00bc98b3;
     cursor: pointer;
   }
   img {
     width: 1.25rem;
     margin-right: 5px;
+  }
+`;
+
+const StyledDecision = styled.button`
+  background-color: white;
+  color: #9c9c9c;
+  font-size: 13px;
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  height: 30px;
+  text-align: center;
+  border-radius: 15px;
+  white-space: nowrap;
+  position: relative;
+  display: flex;
+  &:hover {
+    border: 1px solid #00bc98b3;
   }
 `;
 
@@ -102,12 +128,4 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect()
-  //   props => {
-  //   return [
-  //     {
-  //       collection: 'comments',
-  //       where: [['threadId', '==', props.threadId]]
-  //     }
-  //   ];
-  // }
 )(ThreadRightComponent);

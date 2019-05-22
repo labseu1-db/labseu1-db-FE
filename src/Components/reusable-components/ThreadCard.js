@@ -39,11 +39,6 @@ function ThreadCard(props) {
           checked={checked}
         />
         <ThreadMiddleComponent heading={heading} info={info} />
-        {isFollowUpDecided && (
-          <StyledDecision onClick={stopPropagation}>
-            Marked for followup
-          </StyledDecision>
-        )}
         <ThreadRightComponent
           isFollowUpDecided={isFollowUpDecided}
           threadId={threadId}
@@ -54,7 +49,6 @@ function ThreadCard(props) {
 }
 
 //Styling
-
 const StyledThreadContainer = styled.div`
   background-color: white;
   padding: 20px;
@@ -67,24 +61,6 @@ const StyledThreadContainer = styled.div`
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
   &:hover {
     border: 1px solid #00bc98b3;
-    cursor: pointer;
-  }
-`;
-
-const StyledDecision = styled.button`
-  background-color: white;
-  color: #9c9c9c;
-  font-size: 13px;
-  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
-  height: 30px;
-  text-align: center;
-  border-radius: 15px;
-  white-space: nowrap;
-  position: relative;
-  display: flex;
-  &:hover {
-    border: 1px solid black;
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }
 `;
