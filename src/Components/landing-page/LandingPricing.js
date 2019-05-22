@@ -10,7 +10,7 @@ export default class LandingPricing extends React.Component {
         <StyledPricingCards>
           <StyledPricingCard>
             <h2>Free</h2>
-            <h3>$0 member/month</h3>
+            <h3>$0</h3>
             <div className="item">Up to 20 guests</div>
             <div className="item"> Unlimited spaces</div>
             <div className="item">Access 150 most recent threads</div>
@@ -20,10 +20,10 @@ export default class LandingPricing extends React.Component {
           </StyledPricingCard>
           <StyledPricingCard>
             <h2>Premium</h2>
-            <h3>$10 member/month</h3>
-            <div className="item">Up to 20 guests</div>
+            <h3>$20</h3>
+            <div className="item">Up to 150 guests</div>
             <div className="item"> Unlimited spaces</div>
-            <div className="item">Access 150 most recent threads</div>
+            <div className="item">Access to all threads</div>
             <button className="try-button">
               <a href="/login">Try now</a>
             </button>
