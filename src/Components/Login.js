@@ -5,7 +5,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
-import { Button, Icon, Message } from 'semantic-ui-react';
+import { Icon, Message } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 
 //Import styling
@@ -27,7 +27,7 @@ import hidePassword from '../images/icon-eye-gray.svg';
 
 //Animation
 import LoginAnimation from './animations/LoginAnimation';
-import { PasswordlessButton } from './styled-components/StyledButton';
+// import { PasswordlessButton } from './styled-components/StyledButton';
 
 class Login extends Component {
   static propTypes = {
@@ -160,7 +160,7 @@ class Login extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <Button
+          {/* <Button
             color='google plus'
             onClick={() =>
               this.props.firebase
@@ -173,10 +173,10 @@ class Login extends Component {
                 })}
           >
             <Icon name='google plus' /> Sign in with Google
-          </Button>
-          <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
+          </Button> */}
+          {/* <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
             Email Me a Link to Sign In
-          </PasswordlessButton>
+          </PasswordlessButton> */}
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>

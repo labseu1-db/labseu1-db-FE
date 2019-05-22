@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
-import { Button, Icon, Message } from 'semantic-ui-react';
+import { Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
 
 import { StyledButton } from './styled-components/StyledButton';
@@ -105,7 +105,6 @@ class Register extends Component {
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
 
               localStorage.setItem('activeOrg', doc.id);
-
             });
           })
           .catch(function(error) {
@@ -266,7 +265,7 @@ class Register extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <Button
+          {/* <Button
             color='google plus'
             onClick={() => {
               this.props.firebase
@@ -280,7 +279,7 @@ class Register extends Component {
             }}
           >
             <Icon name='google plus' /> Sign in with Google
-          </Button>
+          </Button> */}
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
