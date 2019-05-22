@@ -47,25 +47,7 @@ const StyledTopContent = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
-const StyledPhotoContainer = styled.div`
-  width: 50px;
-  height: 50px;
-  img {
-    max-width: 100%;
-    border-radius: 50%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #ffc206;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-  }
-`;
+
 const StyledRightSideOfContainer = styled.div`
   display: flex;
   flex-direction: column;
