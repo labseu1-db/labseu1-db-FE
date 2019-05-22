@@ -54,7 +54,7 @@ class CheckoutForm extends Component {
       return (
         <div>
           <StyledModalH1>
-            <Modal.Header content="Purchase Complete" />
+            <Modal.Header content='Purchase Complete' />
           </StyledModalH1>
 
           <StyledModalMainButtonContainerOk>
@@ -64,9 +64,9 @@ class CheckoutForm extends Component {
       );
     }
     return (
-      <div className="checkout">
+      <div className='checkout'>
         <StyledModalH1>
-          <Modal.Header content="Confirm your purchase" />
+          <Modal.Header content='Confirm your purchase' />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
@@ -77,7 +77,7 @@ class CheckoutForm extends Component {
             <StyledModalForm>
               <StyledModalLabel>
                 Please enter your card details below{' '}
-                <span className="ligther-font">(Card number, expiry date and CVC)</span>
+                <span className='ligther-font'>(Card number, expiry date and CVC)</span>
               </StyledModalLabel>
             </StyledModalForm>
           </Modal.Content>
@@ -93,7 +93,7 @@ class CheckoutForm extends Component {
               <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
 
               <StyledModalMainButtonContainer>
-                <StyledModalButton className="cancel-button" onClick={this.props.handleClose}>
+                <StyledModalButton className='cancel-button' onClick={this.props.handleClose}>
                   Cancel
                 </StyledModalButton>
               </StyledModalMainButtonContainer>
@@ -105,21 +105,16 @@ class CheckoutForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {};
 };
 
 //As we are not dispatching anything - this is empty
 const mapDispatchToProps = {};
 
-export default compose(
-  withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect()
-)(injectStripe(CheckoutForm));
+export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(
+  injectStripe(CheckoutForm)
+);
 
 // export default injectStripe(CheckoutForm);
 
@@ -138,7 +133,7 @@ const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledModalButtonUpgrade = styled.button`
@@ -149,16 +144,16 @@ const StyledModalButtonUpgrade = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
@@ -167,9 +162,9 @@ const StyledModalMainButtonContainerOk = styled.div`
   justify-content: center;
   margin-top: 25px;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
