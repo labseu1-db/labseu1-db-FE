@@ -30,7 +30,6 @@ export class FollowUpButton extends React.Component {
   render() {
     return (
       <div>
-        {console.log('isFollowUpText:', this.state.isFollowUpText)}
         {!this.props.isFollowUpDecided && (
           <StyledFollowUpButton
             value={this.state.isFollowUpText}
