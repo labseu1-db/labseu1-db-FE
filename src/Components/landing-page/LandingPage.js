@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-//Import icons/images
-import productScreen from '../../images/product.png';
-
 //Import components
 import LandingNavbar from './LandingNavbar';
 import LandingBanner from './LandingBanner';
@@ -60,6 +57,9 @@ const TopLandingContainer = styled.div`
   background-color: #00bc981a;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 1500px) {
+    padding: 0 10vw;
+  }
   .banner {
     position: absolute;
     top: 20vh;

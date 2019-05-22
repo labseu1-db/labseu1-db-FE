@@ -69,6 +69,18 @@ const LeftNavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  @media screen and (max-width: 1200px) {
+    width: 30%;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 40%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 600px) {
+    width: 80%;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -89,7 +101,18 @@ const MiddleNavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width: 1000px) {
+    width: 30%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 10%;
+  }
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `;
+
 const RightNavbarContainer = styled.div`
   width: 20%;
   display: flex;

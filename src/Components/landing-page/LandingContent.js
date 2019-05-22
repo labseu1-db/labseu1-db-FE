@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 //Import icons/images
 import productScreen from '../../images/product-screen.png';
+import commentScreen from '../../images/comment-screen.png';
 
 //Import components
 
@@ -14,6 +15,7 @@ export default class LandingContent extends React.Component {
         <StyledContentSection>
           <div>
             <img src={productScreen} alt="product" />
+            <img src={commentScreen} alt="product" />
           </div>
         </StyledContentSection>
         <StyledContentSection>
@@ -62,20 +64,26 @@ const StyledContent = styled.div`
   padding: 0 15vw;
   display: flex;
   justify-content: space-between;
+  align-items: stretch;
+  @media screen and (max-width: 1500px) {
+    padding: 0 10vw;
+  }
 `;
 
 const StyledContentSection = styled.div`
   width: 45%;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
   img {
     max-width: 100%;
   }
 `;
 
 const StyledDescribtionCard = styled.div`
-  margin-bottom: 5vh;
-
+  display: flex;
+  flex-direction: column;
   h3 {
     font-size: 1.3rem;
   }

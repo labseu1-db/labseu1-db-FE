@@ -29,6 +29,9 @@ const StyledMidBanner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media screen and (max-width: 1500px) {
+    padding: 5vh 10vw;
+  }
   h1 {
     font-size: 2.5rem;
     text-align: center;

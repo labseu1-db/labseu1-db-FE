@@ -6,6 +6,8 @@ import elisa from '../../images/elisa.png';
 import ivana from '../../images/ivana.png';
 import samar from '../../images/samar.png';
 import sean from '../../images/sean.png';
+import novina from '../../images/novina.png';
+import thorben from '../../images/thorben.png';
 
 //Import components
 
@@ -21,7 +23,7 @@ export default class LandingTeam extends React.Component {
               <img src={elisa} alt="Elisa" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank">
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
                 <h5>Elisa Martin</h5>
               </a>
               <div>Fullstack developer</div>
@@ -32,7 +34,7 @@ export default class LandingTeam extends React.Component {
               <img src={ivana} alt="Ivana" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank">
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
                 <h5>Ivana Huckova</h5>
               </a>
               <div>Fullstack developer</div>
@@ -40,10 +42,21 @@ export default class LandingTeam extends React.Component {
           </StyledCard>
           <StyledCard>
             <div className="image-div">
+              <img src={novina} alt="Novina" />
+            </div>
+            <div>
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+                <h5>Novina Pun</h5>
+              </a>
+              <div>Fullstack Developer</div>
+            </div>
+          </StyledCard>
+          <StyledCard>
+            <div className="image-div">
               <img src={samar} alt="Samar" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank">
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
                 <h5>Samar Vir</h5>
               </a>
               <div>Project Manager</div>
@@ -54,19 +67,22 @@ export default class LandingTeam extends React.Component {
               <img src={sean} alt="Sean" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank">
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
                 <h5>Sean Attawell</h5>
               </a>
               <div>Fullstack Developer</div>
             </div>
           </StyledCard>
           <StyledCard>
-            <img />
-            <div />
-          </StyledCard>
-          <StyledCard>
-            <img />
-            <div />
+            <div className="image-div">
+              <img src={thorben} alt="Thorben" />
+            </div>
+            <div>
+              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+                <h5>Thorben Bender</h5>
+              </a>
+              <div>Fullstack Developer</div>
+            </div>
           </StyledCard>
         </StyledPeopleConatiner>
       </StyledTeamContainer>
@@ -82,6 +98,9 @@ const StyledTeamContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 1500px) {
+    padding: 7vh 10vw;
+  }
   h3 {
     font-size: 2.3rem;
   }

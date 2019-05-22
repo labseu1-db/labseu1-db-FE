@@ -42,6 +42,9 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 1500px) {
+    padding: 5vh 10vw;
+  }
   h2 {
     font-size: 2.3rem;
   }
@@ -61,6 +64,10 @@ const StyledPricingCard = styled.div`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  color: #4c4c78;
+  @media screen and (max-width: 1500px) {
+    width: 30%;
+  }
 
   h2 {
     text-align: center;
