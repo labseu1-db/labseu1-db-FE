@@ -4,19 +4,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-//Import icons
-import messageIconDarkgray from '../../../images/icon-message-darkgray.svg';
-
 //Main component
 function ThreadRightComponent(props) {
-  return (
-    <StyledRightContainer>
-      <div className="row-with-image">
-        <img src={messageIconDarkgray} alt="message icon" />
-        {/* <div>{props.comments.length}</div> */}
-      </div>
-    </StyledRightContainer>
-  );
+  return <StyledRightContainer />;
 }
 
 //Styling
