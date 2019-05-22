@@ -4,31 +4,73 @@ import styled from 'styled-components';
 export default function AvatarFromLetter(props) {
   const style = {
     marginTop: props.marginTop,
-    fontSize: props.fontSize,
-    width: props.width,
-    height: props.height,
-    // color: '#374650'
+    marginBottom: props.marginBottom,
     color: 'white'
   };
-  return <StyledImageContainer style={style}>{props.username[0].toUpperCase()}</StyledImageContainer>;
+
+  return (
+    <StyledImageContainer style={style}>
+      <div
+        className={
+          props.username[0].toUpperCase() < 'E'
+            ? 'first'
+            : props.username[0].toUpperCase() < 'J'
+            ? 'second'
+            : props.username[0].toUpperCase() < 'O'
+            ? 'third'
+            : props.username[0].toUpperCase() < 'T'
+            ? 'fourth'
+            : 'fifth'
+        }>
+        {props.username[0].toUpperCase()}
+      </div>
+    </StyledImageContainer>
+  );
 }
 
 const StyledImageContainer = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  /* background-color: #ff934c; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #ffc206;
-  background-color: #dbc3b6;
-  background-color: #fff7f3;
-  /* background-color: #e4d0c6; */
-  /* background-color: #ffc9ad; */
-  /* background-color: #ff8434;
-  background-color: #ff706c; */
-  background-color: #ffb48f;
+  div {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    /* background-color: #ff934c; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .first {
+    /* background-color: #ffb48f;
+    background-color: #49d1b7; */
+    background-color: #27c3a4;
+    color: white;
+  }
+  .second {
+    /* background-color: #ffd18f;
+    background-color: #5689d4; */
+    background-color: #f64e49;
+    color: white;
+  }
+
+  .third {
+    /* background-color: #6284a6;
+    background-color: #ffc158; */
+    background-color: #ff8333;
+    color: white;
+  }
+
+  .fourth {
+    /* background-color: #60ab90;
+    background-color: #ff9a58; */
+    background-color: #ffb433;
+    color: white;
+  }
+
+  .fifth {
+    /* background-color: #60ab90;
+    background-color: #ff9a58; */
+    background-color: #3670c6;
+    color: white;
+  }
 `;

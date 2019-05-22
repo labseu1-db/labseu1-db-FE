@@ -17,7 +17,7 @@ export function ThreadInformationCard(props) {
   return (
     <StyledThreadContainer>
       <StyledTopContent>
-        <AvatarFromLetter username={createdBy} width="50px" height="50px" fontSize="1.5rem" />
+        <AvatarFromLetter username={createdBy} marginBottom="8px" />
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
