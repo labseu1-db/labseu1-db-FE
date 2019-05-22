@@ -53,7 +53,7 @@ const StyledNavbar = styled.div`
 
 const NavbarContainer = styled.div`
   width: 100%;
-  padding-top: 5px;
+  padding-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;

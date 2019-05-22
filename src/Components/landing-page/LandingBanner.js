@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import landingPageBanner from '../../images/banner.svg';
+import landingPageBanner from '../../images/bulb-background.png';
 
 //Import components
 
@@ -12,7 +12,7 @@ export default class LandingBanner extends React.Component {
     return (
       <StyledLandingBanner>
         <LandingHeader>
-          <h1>Decision making simpler, more pleasant and more productive</h1>
+          <h1>Making decision making simpler, more pleasant and more productive</h1>
           <div>
             Pinely is a carefully designed platform for growing teams to stay on the same page, have broad discussions,
             and make the right decisions.
@@ -25,7 +25,7 @@ export default class LandingBanner extends React.Component {
 }
 
 const StyledLandingBanner = styled.div`
-  margin: 7vh 0 0 0;
+  margin: 0vh 0 0 0;
   width: 100%;
   display: flex;
   align-items: center;
@@ -39,9 +39,16 @@ const StyledLandingBanner = styled.div`
   }
 
   .banner {
-    width: 50%;
+    width: 55%;
+    padding-top: 30px;
+    @media screen and (max-width: 1500px) {
+      padding-top: 0px;
+      width: 50%;
+      margin-top: 50px;
+      margin-left: 100px;
+    }
     @media screen and (max-width: 1000px) {
-      width: 70%;
+      width: 100%;
       margin-top: 50px;
       margin-left: 100px;
     }
