@@ -16,7 +16,7 @@ export default class LandingTeam extends React.Component {
   render() {
     return (
       <StyledTeamContainer id="team">
-        <h3>The amazing team behing Pinely</h3>
+        <h3>The amazing team behind Pinely</h3>
         <StyledPeopleConatiner>
           <StyledCard>
             <div className="image-div">
