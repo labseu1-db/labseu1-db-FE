@@ -38,7 +38,10 @@ import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: ''
+    profileDropdown: '',
+    highlightedHome: false,
+    highlightedFollowUp: false,
+    activeSpace: ''
   };
 
   handleLogOut = () => {
@@ -50,7 +53,7 @@ export class NavBar extends Component {
       .then(() => {
         localStorage.clear();
       })
-      .catch((err) => console.log("something's wrong."));
+      .catch(err => console.log("something's wrong."));
 
     this.props.history.push('/login');
   };
@@ -88,7 +91,29 @@ export class NavBar extends Component {
     this.props.hideFollowUp();
   };
 
-  generateDropdownOptions = () => {};
+  highlightHome = () => {
+    this.setState({ highlightedHome: true, highlightedFollowUp: false, highlightedSpace: false, activeSpace: '' });
+  };
+
+  highlightFollowUp = () => {
+    this.setState({ highlightedHome: false, highlightedFollowUp: true, highlightedSpace: false, activeSpace: '' });
+  };
+
+  clickedSpace = spaceName => {
+    this.setState({
+      activeSpace: spaceName,
+      highlightedHome: false,
+      highlightedFollowUp: false
+    });
+  };
+
+  clearHighlightedNav = () => {
+    this.setState({
+      highlightedHome: false,
+      highlightFollowUp: false
+    });
+  };
+
   render() {
     //Will load spinner if user doesn't exist
     if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
@@ -97,7 +122,7 @@ export class NavBar extends Component {
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map((org) => ({
+      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
         key: org.orgName,
         text: org.orgName,
         value: `${org.id}`
@@ -121,18 +146,18 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to='/createneworganisation' />;
+        return <Redirect to="/createneworganisation" />;
       }
 
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to='/createneworganisation' />;
+        return <Redirect to="/createneworganisation" />;
       }
 
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt='user' />}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -148,15 +173,17 @@ export class NavBar extends Component {
               )}
             </InnerContainerHorizontal>
             <div>
-              <Icon name='cog' />
+              <Icon name="cog" />
             </div>
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
-              <img src={homeIcon} alt='home icon' />
-              <div
-                className='text'
+              <img src={homeIcon} alt="home icon" />
+              <RowDiv
+                style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+                className="text"
                 onClick={() => {
+                  this.highlightHome();
                   this.props.showModal(null);
                   this.props.editingProfileDone();
                   this.props.resetSpace();
@@ -167,40 +194,42 @@ export class NavBar extends Component {
                 }}
               >
                 Home
-              </div>
+              </RowDiv>
             </RowContainer>
             <RowContainer>
-              <img src={clipboardIcon} alt='home icon' />
-              <div
-                className='text'
+              <img src={clipboardIcon} alt="home icon" />
+              <RowDiv
+                style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+                className="text"
                 onClick={() => {
+                  this.highlightFollowUp();
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
                 }}
               >
                 Follow up
-              </div>
+              </RowDiv>
             </RowContainer>
             {localStorage.getItem('activeOrg') && (
               <RowContainer>
-                <img src={peopleIcon} alt='users icon' />
-                <div
+                <img src={peopleIcon} alt="users icon" />
+                <RowDiv
                   onClick={() => {
                     this.props.resetSpace();
                     this.props.resetThread();
-                    this.props.props.history.push('/users');
+                    this.props.history.push('/users');
                   }}
                 >
                   Users
-                </div>
+                </RowDiv>
               </RowContainer>
             )}
             <div>
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <img src={discIcon} alt='home icon' />
+                    <img src={discIcon} alt="home icon" />
 
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
@@ -217,22 +246,27 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <div key={index}>
-                          <div
-                            onClick={(event) => {
-                              event.preventDefault();
-                              this.props.editingProfileDone();
-                              this.props.resetThread();
-                              this.props.resetUpgradeScreen();
-                              this.props.switchSpaces(space.id);
-                              this.props.showModal(null);
-                              this.props.notRenderProfile();
-                              this.props.hideFollowUp();
-                            }}
-                          >
-                            {space.spaceName}
-                          </div>
-                        </div>
+                        <RowDiv
+                          key={index}
+                          style={
+                            this.state.activeSpace === space.spaceName
+                              ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                              : {}
+                          }
+                          onClick={event => {
+                            event.preventDefault();
+                            this.clickedSpace(space.spaceName);
+                            this.props.editingProfileDone();
+                            this.props.resetUpgradeScreen();
+                            this.props.resetThread();
+                            this.props.switchSpaces(space.id);
+                            this.props.showModal(null);
+                            this.props.notRenderProfile();
+                            this.props.hideFollowUp();
+                          }}
+                        >
+                          {space.spaceName}
+                        </RowDiv>
                       ))}
                     </div>
                   )}
@@ -248,7 +282,7 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
@@ -262,7 +296,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -285,8 +319,11 @@ const mapDispatchToProps = (dispatch) => {
 
 //Connect to Firestore
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -296,12 +333,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
+        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
         storeAs: 'orgsInWhichUser'
       }
       // {
@@ -384,6 +421,11 @@ const RowContainer = styled.div`
   }
 `;
 
+const RowDiv = styled.div`
+  padding: 5px 12px;
+  border-radius: 15px;
+`;
+
 const OrgContainer = styled.div`
   margin-top: 20px;
   margin-bottom: 8px;
@@ -427,6 +469,9 @@ const SpaceContainer = styled.div`
   line-height: 30px;
   margin-left: 40px;
   div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     div {
       &:hover {
         color: #f64e49;
