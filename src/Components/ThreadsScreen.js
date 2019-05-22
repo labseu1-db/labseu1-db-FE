@@ -88,6 +88,7 @@ const StyledThreadContent = styled.div`
 
 const StyledHeadingContainer = styled.div`
   margin: 40px 0 30px 0;
+  line-height: 1.3;
 `;
 
 const mapStateToProps = state => {
