@@ -123,6 +123,7 @@ const StyledPeopleConatiner = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
+  font-size: 1.1rem;
 `;
 
 const StyledCard = styled.div`
@@ -143,16 +144,19 @@ const StyledCard = styled.div`
   h5 {
     margin: 10px 0 0 0;
     cursor: pointer;
+    font-size: 1.1rem;
     &:hover {
       color: #00bc98;
     }
     a {
       text-decoration: none;
+      font-size: 1.1rem;
     }
   }
     .image-div {
     width: 40%;
     text-align: center;
+    margin-bottom: 10px;
     @media screen and (max-width: 800px) {
       width: 60%;
     }

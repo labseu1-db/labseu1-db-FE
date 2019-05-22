@@ -10,13 +10,6 @@ import LandingTeam from './LandingTeam';
 import LandingPricing from './LandingPricing';
 import LandingFooter from './LandingFooter';
 
-/*
-$break-large: 1200px; 
-$break-large: 900px;
-$break-large: 700px;
-$break-small: 320px; 
-*/
-
 //Main component
 export default class LandingPage extends React.Component {
   render() {

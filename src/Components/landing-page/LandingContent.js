@@ -18,7 +18,7 @@ export default class LandingContent extends React.Component {
         <StyledContentSection>
           <StyledDescribtionCard>
             <h3>Create an organisation</h3>
-            <div>
+            <div className="content-div">
               We believe that Pinely will help all teams, groups, organisations and companies with comunication,
               decision making and inclusion. As an idividual, you can be member of as many organisations, as you need.
               Because every team deserves a place where you can go to get caught up on your most important discussions.
@@ -26,7 +26,7 @@ export default class LandingContent extends React.Component {
           </StyledDescribtionCard>
           <StyledDescribtionCard>
             <h3>Create a space</h3>
-            <div>
+            <div className="content-div">
               Spaces are your team's meeting rooms. Once they are created, invite others and start the discussion. No
               scheduling required. Perfect for all, but especially distributed teams.
             </div>
@@ -35,7 +35,7 @@ export default class LandingContent extends React.Component {
         <StyledContentSection>
           <StyledDescribtionCard>
             <h3>Start a thread</h3>
-            <div>
+            <div className="content-div">
               Ask questions, get feedback and hash out ideas with your team. Make better decisions with all the context
               you need in one place. And you can say goodbye to situations, where people are being left off meeting
               invites and group chats happenning in private with fewer people than before.
@@ -43,7 +43,7 @@ export default class LandingContent extends React.Component {
           </StyledDescribtionCard>
           <StyledDescribtionCard>
             <h3>Mark the decision</h3>
-            <div>
+            <div className="content-div">
               When you're done hearing from everyone on a thread, highlight the final decision so everyone is on the
               same page. Make decision making simpler, more pleasant and more productive.
             </div>
@@ -116,21 +116,26 @@ const StyledContentSection = styled.div`
 const StyledDescribtionCard = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: left;
   @media screen and (max-width: 1000px) {
     padding-bottom: 50px;
   }
   h3 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     @media screen and (max-width: 1000px) {
       text-align: center;
       font-size: 1.5rem;
     }
   }
   div {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     padding-bottom: 30px;
+    text-align: left;
     @media screen and (max-width: 1200px) {
       padding-bottom: 10px;
+      text-align: left;
+    }
+    @media screen and (max-width: 1000px) {
       text-align: center;
     }
   }

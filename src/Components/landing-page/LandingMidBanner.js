@@ -35,6 +35,9 @@ const StyledMidBanner = styled.div`
   h1 {
     font-size: 2.5rem;
     text-align: center;
+    @media screen and (max-width: 600px) {
+      font-size: 1.7rem;
+    }
   }
   div {
     font-size: 1.2rem;
