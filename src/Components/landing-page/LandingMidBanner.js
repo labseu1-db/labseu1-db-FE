@@ -25,7 +25,7 @@ const StyledMidBanner = styled.div`
   margin: 10vh 0 3vh 0;
   width: 100%;
   padding: 5vh 15vw;
-  background-color: #308c6633;
+  background-color: #00bc9833;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,7 +56,7 @@ const StyledMidBanner = styled.div`
 
   button {
     padding: 5px 15px;
-    background-color: #308c66;
+    background-color: #00bc98;
     color: white;
     border-radius: 15px;
     border: none;

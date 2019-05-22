@@ -144,7 +144,7 @@ const StyledCard = styled.div`
     margin: 10px 0 0 0;
     cursor: pointer;
     &:hover {
-      color: #308c66;
+      color: #00bc98;
     }
     a {
       text-decoration: none;

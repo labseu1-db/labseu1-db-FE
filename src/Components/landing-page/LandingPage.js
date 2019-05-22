@@ -52,7 +52,7 @@ const StyledLandingContainer = styled.div`
 
 const TopLandingContainer = styled.div`
   width: 100%;
-  height: 60vh;
+  height: 75vh;
   padding: 0 15vw;
   background-color: #00bc981a;
   display: flex;
@@ -60,14 +60,13 @@ const TopLandingContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 1000px) {
+    height: 100vh;
+  }
+  @media screen and (max-width: 800px) {
     padding: 0 5vw;
   }
-  .banner {
-    position: absolute;
-    top: 20vh;
-    right: 10vw;
-    width: 40vw;
-    z-index: 2;
+  @media screen and (max-width: 400px) {
+    padding: 0 3vw;
   }
 `;

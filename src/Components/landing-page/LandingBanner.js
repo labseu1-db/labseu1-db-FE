@@ -24,30 +24,58 @@ export default class LandingBanner extends React.Component {
   }
 }
 
-/*
-$break-large: 1300px;
-$break-large: 900px;
-$break-large: 700px;
-$break-small: 320px; 
-*/
-
 const StyledLandingBanner = styled.div`
-  margin: 0 5vw 0 0;
+  margin: 7vh 0 0 0;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   height: 100%;
-  width: 25vw;
+  @media screen and (max-width: 1000px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 2vh 0 0 0;
+  }
+
+  .banner {
+    width: 50%;
+    @media screen and (max-width: 1000px) {
+      width: 70%;
+      margin-top: 50px;
+      margin-left: 100px;
+    }
+    @media screen and (max-width: 800px) {
+      width: 70%;
+    }
+    @media screen and (max-width: 700px) {
+      margin-left: 70px;
+    }
+    @media screen and (max-width: 600px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 400px) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
 `;
 
 const LandingHeader = styled.div`
+  width: 40%;
   line-height: 1.6;
+  @media screen and (max-width: 1000px) {
+    width: 70%;
+    text-align: center;
+  }
   div {
     font-size: 1.2rem;
     padding-top: 10px;
   }
   h1 {
     font-size: 2.5rem;
+    @media screen and (max-width: 400px) {
+      font-size: 2.3rem;
+    }
   }
 `;

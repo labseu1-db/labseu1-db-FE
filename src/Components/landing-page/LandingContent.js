@@ -62,7 +62,7 @@ export default class LandingContent extends React.Component {
 
 const StyledContent = styled.div`
   width: 100%;
-  margin-top: 30vh;
+  margin-top: 15vh;
   padding: 0 15vw;
   display: flex;
   flex-wrap: wrap;

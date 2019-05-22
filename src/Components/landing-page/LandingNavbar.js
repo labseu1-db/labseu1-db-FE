@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import treeLogo from '../../images/tree-logo.png';
+import treeLogo from '../../images/pinely-logo.svg';
 
 //Import components
 
@@ -21,11 +21,15 @@ export default class LandingNavbar extends React.Component {
             </LogoContainer>
             <div className="navbar-item">
               {' '}
-              <a href="#team">Team</a>
+              <a href="#team" className="mobile-none">
+                Team
+              </a>
             </div>
             <div className="navbar-item">
               {' '}
-              <a href="#pricing">Pricing</a>
+              <a href="#pricing" className="mobile-none">
+                Pricing
+              </a>
             </div>
           </LeftNavbarContainer>
           <MiddleNavbarContainer />
@@ -44,23 +48,29 @@ const StyledNavbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
 `;
 
 const NavbarContainer = styled.div`
   width: 100%;
+  padding-top: 5px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   .navbar-item {
     font-size: 15px;
-    padding-bottom: 5px;
     cursor: pointer;
     &:hover {
-      color: #308c66;
+      color: #00bc98;
     }
   }
   .sign {
     font-weight: 600;
+  }
+  .mobile-none {
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
   }
 `;
 
@@ -68,7 +78,7 @@ const LeftNavbarContainer = styled.div`
   width: 25%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   @media screen and (max-width: 1200px) {
     width: 30%;
   }
@@ -89,7 +99,8 @@ const LogoContainer = styled.div`
   align-items: flex-start;
   .logo {
     padding-right: 10px;
-    width: 48px;
+    margin-right: 5px;
+    width: 40px;
   }
   .text {
     font-size: 26px;
@@ -122,7 +133,7 @@ const RightNavbarContainer = styled.div`
     text-decoration: none;
     color: inherit;
     &:hover {
-      color: #308c66;
+      color: #00bc98;
     }
   }
 `;
