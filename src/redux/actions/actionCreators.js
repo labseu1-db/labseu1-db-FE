@@ -48,6 +48,14 @@ export const resetThread = () => {
   return { type: types.RESET_THREAD };
 };
 
+export const showUpgradeScreen = () => {
+  return { type: types.SHOW_UPGRADE_SCREEN };
+};
+
+export const resetUpgradeScreen = () => {
+  return { type: types.RESET_UPGRADE_SCREEN };
+};
+
 export const renderProfile = () => {
   return { type: types.RENDER_PROFILE };
 };

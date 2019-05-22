@@ -12,6 +12,8 @@ import {
   setActiveOrg,
   switchSpaces,
   resetSpace,
+  showUpgradeScreen,
+  resetUpgradeScreen,
   editingProfileDone,
   notRenderProfile,
   renderProfile,
@@ -58,13 +60,18 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
       }
-      if (this.state.profileDropdown === 'Profile') {
-        this.props.renderProfile();
-      }
-      if (this.state.profileDropdown !== 'Profile') {
-        this.props.showModal(null);
-        this.props.notRenderProfile();
-        this.props.editingProfileDone();
+      if (this.state.profileDropdown === 'Upgrade Account') {
+        this.props.resetThread();
+        this.props.resetSpace();
+        this.props.showUpgradeScreen();
+        if (this.state.profileDropdown === 'Profile') {
+          this.props.renderProfile();
+        }
+        if (this.state.profileDropdown !== 'Profile') {
+          this.props.showModal(null);
+          this.props.notRenderProfile();
+          this.props.editingProfileDone();
+        }
       }
     });
     this.props.hideFollowUp();
@@ -101,6 +108,11 @@ export class NavBar extends Component {
           key: 'Create Organisation',
           text: 'Create Organisation',
           value: 'Create Organisation'
+        },
+        {
+          key: 'Upgrade Account',
+          text: 'Upgrade Account',
+          value: 'Upgrade Account'
         },
         {
           key: 'Log out',
@@ -149,6 +161,7 @@ export class NavBar extends Component {
                   this.props.editingProfileDone();
                   this.props.resetSpace();
                   this.props.resetThread();
+                  this.props.resetUpgradeScreen();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
                 }}
@@ -196,7 +209,6 @@ export class NavBar extends Component {
                         orgOptions={orgOptions}
                         setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
                       />
-                      //********************************************** */
                     )}
                   </OrgContainer>
                   <CreateNewSpaceModal {...this.props} />
@@ -211,6 +223,7 @@ export class NavBar extends Component {
                               event.preventDefault();
                               this.props.editingProfileDone();
                               this.props.resetThread();
+                              this.props.resetUpgradeScreen();
                               this.props.switchSpaces(space.id);
                               this.props.showModal(null);
                               this.props.notRenderProfile();
@@ -244,7 +257,8 @@ const mapStateToProps = (state) => {
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    upgradeScreen: state.upgradeScreen
   };
 };
 
@@ -257,6 +271,8 @@ const mapDispatchToProps = (dispatch) => {
       resetSpace,
       resetThread,
       showModal,
+      showUpgradeScreen,
+      resetUpgradeScreen,
       editingProfileDone,
       renderProfile,
       notRenderProfile,
