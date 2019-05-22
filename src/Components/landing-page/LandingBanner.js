@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 //Import icons/images
 import landingPageBanner from '../../images/landing-page-banner.svg';
