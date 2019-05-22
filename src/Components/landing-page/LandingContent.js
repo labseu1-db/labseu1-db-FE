@@ -13,10 +13,7 @@ export default class LandingContent extends React.Component {
     return (
       <StyledContent>
         <StyledContentSection>
-          <div>
-            <img src={productScreen} alt="product" />
-            <img src={commentScreen} alt="product" />
-          </div>
+          <img src={productScreen} alt="product" />
         </StyledContentSection>
         <StyledContentSection>
           <StyledDescribtionCard>
@@ -36,6 +33,8 @@ export default class LandingContent extends React.Component {
               and start the discussion. No scheduling required. Perfect for all (but especially distributed) teams.
             </div>
           </StyledDescribtionCard>
+        </StyledContentSection>
+        <StyledContentSection>
           <StyledDescribtionCard>
             <h3>Start a twig</h3>
             <div>
@@ -53,6 +52,9 @@ export default class LandingContent extends React.Component {
             </div>
           </StyledDescribtionCard>
         </StyledContentSection>
+        <StyledContentSection>
+          <img src={commentScreen} alt="product" />
+        </StyledContentSection>
       </StyledContent>
     );
   }
@@ -63,19 +65,52 @@ const StyledContent = styled.div`
   margin-top: 30vh;
   padding: 0 15vw;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
+  }
+  @media screen and (max-width: 1500px) {
+    padding: 0 10vw;
+  }
+  @media screen and (max-width: 1200px) {
+    margin-top: 10vh;
+  }
+  @media screen and (max-width: 800px) {
+    padding: 0 5vw;
+  }
+  @media screen and (max-width: 400px) {
+    padding: 3vw;
   }
 `;
 
 const StyledContentSection = styled.div`
-  width: 45%;
+  width: 40%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 10vh 0;
+  @media screen and (max-width: 1200px) {
+    width: 46%;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    margin: 3vh 0;
+    :nth-child(1) {
+      order: 1;
+    }
+    :nth-child(2) {
+      order: 1;
+    }
+    :nth-child(3) {
+      order: 4;
+    }
+    :nth-child(4) {
+      order: 3;
+    }
+  }
   img {
     max-width: 100%;
   }
@@ -84,10 +119,22 @@ const StyledContentSection = styled.div`
 const StyledDescribtionCard = styled.div`
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 1000px) {
+    padding-bottom: 50px;
+  }
   h3 {
     font-size: 1.3rem;
+    @media screen and (max-width: 1000px) {
+      text-align: center;
+      font-size: 1.5rem;
+    }
   }
   div {
     font-size: 1.1rem;
+    padding-bottom: 30px;
+    @media screen and (max-width: 1200px) {
+      padding-bottom: 10px;
+      text-align: center;
+    }
   }
 `;

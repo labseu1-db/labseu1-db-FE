@@ -45,6 +45,12 @@ const StyledContent = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 5vh 10vw;
   }
+  @media screen and (max-width: 800px) {
+    padding: 5vh 5vw;
+  }
+  @media screen and (max-width: 400px) {
+    padding: 5vh 3vw;
+  }
   h2 {
     font-size: 2.3rem;
   }
@@ -52,6 +58,7 @@ const StyledContent = styled.div`
 
 const StyledPricingCards = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   width: 100%;
 `;
@@ -67,6 +74,20 @@ const StyledPricingCard = styled.div`
   color: #4c4c78;
   @media screen and (max-width: 1500px) {
     width: 30%;
+  }
+  @media screen and (max-width: 1100px) {
+    width: 35%;
+  }
+  @media screen and (max-width: 900px) {
+    width: 50%;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 450px) {
+    width: 90%;
   }
 
   h2 {

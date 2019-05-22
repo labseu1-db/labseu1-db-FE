@@ -68,7 +68,7 @@ export default class LandingTeam extends React.Component {
             </div>
             <div>
               <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
-                <h5>Sean Attawell</h5>
+                <h5>Sean Attewell</h5>
               </a>
               <div>Fullstack Developer</div>
             </div>
@@ -91,7 +91,7 @@ export default class LandingTeam extends React.Component {
 }
 
 const StyledTeamContainer = styled.div`
-  background-color: #f7b8011a;
+  background-color: #fff7f3;
   width: 100%;
   margin: 10vh 0;
   padding: 7vh 15vw;
@@ -101,8 +101,14 @@ const StyledTeamContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 7vh 10vw;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 1000px) {
+    margin: 3vh 0;
+  }
+  @media screen and (max-width: 800px) {
     padding: 7vh 5vw;
+  }
+  @media screen and (max-width: 400px) {
+    padding: 7vh 3vw;
   }
   h3 {
     font-size: 2.3rem;
