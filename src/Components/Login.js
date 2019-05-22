@@ -41,7 +41,8 @@ class Login extends Component {
   state = {
     loginEmail: '',
     loginPassword: '',
-    error: null
+    error: null,
+    savinUsergInfoToDb: false
   };
 
   componentWillUpdate() {
@@ -61,6 +62,7 @@ class Login extends Component {
       error: null
     };
     e.preventDefault();
+    this.setState({ savinUsergInfoToDb: true });
     this.props.firebase
       .login({
         email: this.state.loginEmail,
@@ -112,6 +114,10 @@ class Login extends Component {
     const isInvalid = loginPassword === '' || loginEmail === '';
 
     if (!isLoaded(this.props.auth)) {
+      return <Spinner />;
+    }
+    if (this.state.savinUsergInfoToDb === true) {
+      console.log('Spinner spinning');
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
