@@ -5,15 +5,14 @@ import styled from 'styled-components';
 import checkIconGreen from '../../../images/icon-check-green.svg';
 import closeIconWhite from '../../../images/icon-close-white.svg';
 
+//Import components
+import AvatarFromLetter from '../AvatarFromLetter';
 //Main component
 function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
     <StyledImagesContainer>
-      <StyledImageContainer>
-        {/* <img src={img} alt="author" /> */}
-        <div className="initials">{createdBy[0].toUpperCase()}</div>
-      </StyledImageContainer>
+      <AvatarFromLetter username={createdBy} />
       <div className="line" />
       {checked === 'true' && (
         <div className="initial-small true">
@@ -76,26 +75,6 @@ const StyledImagesContainer = styled.div`
     width: 30px;
     height: 30px;
     margin: 10px 0;
-  }
-`;
-
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #ffc206;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
   }
 `;
 

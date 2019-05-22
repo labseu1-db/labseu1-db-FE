@@ -7,8 +7,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import ScreenButton from '../ScreenButton';
-
 import GifComponent from '../GifComponent';
+import AvatarFromLetter from '../AvatarFromLetter';
 
 //Import icons
 import IconPenWhite from '../../../images/icon-pen-white.svg';
@@ -71,15 +71,10 @@ export class NewCommentCard extends React.Component {
   };
 
   render() {
-    console.log(this.state.gif);
-    const { img } = this.props;
     return (
       <StyledCommentContainer>
         <StyledTopContainer>
-          <StyledImageContainer>
-            {/* <img src={img} alt="author" /> */}
-            <div className="initials">{this.props.profile.fullName[0].toUpperCase()}</div>
-          </StyledImageContainer>
+          <AvatarFromLetter username={this.props.profile.fullName} />
           <StyledRightInput
             placeholder="Comment on the thread"
             name="text"
@@ -176,26 +171,6 @@ const StyledGifAndButtons = styled.div`
   justify-content: space-between;
   flex-direction: row-reverse;
   align-items: center;
-`;
-
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #ffc206;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-  }
 `;
 
 const StyledRightInput = styled.input`

@@ -11,6 +11,7 @@ import heartIconRed from '../../../images/icon-heart-red.svg';
 //Import components
 import UpdateComment from './UpdateComment';
 import CommentDropdown from './CommentDropdown';
+import AvatarFromLetter from '../AvatarFromLetter';
 
 //Main component
 export class CommentCard extends React.Component {
@@ -93,12 +94,7 @@ export class CommentCard extends React.Component {
               setIsCommentUpdated={this.setIsCommentUpdated}
             />
           )}
-          {!this.state.isUpdating && (
-            <StyledImageContainer>
-              {/* <img src={img} alt="author" /> */}
-              <div className="initials">{createdBy[0].toUpperCase()}</div>
-            </StyledImageContainer>
-          )}
+          {!this.state.isUpdating && <AvatarFromLetter username={createdBy} />}
           {!this.state.isUpdating && (
             <StyledRightContainer>
               <StyledAuthorsName>{createdBy}</StyledAuthorsName>
@@ -171,25 +167,7 @@ const StyledCommentContainer = styled.div`
     cursor: pointer;
   }
 `;
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #ffc206;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-  }
-`;
+
 const StyledRightContainer = styled.div`
   padding-left: 30px;
 `;

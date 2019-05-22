@@ -28,6 +28,7 @@ import { Dropdown } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
+import AvatarFromLetter from './reusable-components/AvatarFromLetter';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
@@ -157,12 +158,7 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.fullName && (
-                <StyledImageContainer>
-                  {/* <img src={img} alt="author" /> */}
-                  <div className="initials">{this.props.user.fullName[0].toUpperCase()}</div>
-                </StyledImageContainer>
-              )}
+              {this.props.user.fullName && <AvatarFromLetter username={this.props.user.fullName} />}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -489,31 +485,4 @@ const NavBarContainer = styled.div`
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
-`;
-
-// const StyledImage = styled.img`
-//   height: 32px;
-//   width: 32px;
-//   border-radius: 50%;
-//   margin-right: 8px;
-// `;
-
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    background-color: #ffc206;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-  }
 `;

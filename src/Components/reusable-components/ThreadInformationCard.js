@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+//Import components
+import AvatarFromLetter from '../reusable-components/AvatarFromLetter';
+
 //Main component
 export function ThreadInformationCard(props) {
   const { createdBy, createdAt, info, space } = props;
@@ -14,9 +17,7 @@ export function ThreadInformationCard(props) {
   return (
     <StyledThreadContainer>
       <StyledTopContent>
-        <StyledPhotoContainer>
-          <div className="initials">{createdBy[0].toUpperCase()}</div>
-        </StyledPhotoContainer>
+        <AvatarFromLetter username={createdBy} />
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
