@@ -33,12 +33,11 @@ class CreateThreadModal extends Component {
       let threadTopic = rawDraftContentState.blocks[0].text;
       let words = threadTopic.split(' ');
       let wordsWithSpecificLength = words.every(word => word.length < 60);
-      console.log(words);
-      console.log(wordsWithSpecificLength);
-      console.log(this.state.error3);
+      console.log(threadTopic.length);
+      console.log(this.state.error2);
       if (
         contentState === oldContent ||
-        (threadTopic.length <= 1000 && wordsWithSpecificLength) ||
+        (threadTopic.length <= 600 && wordsWithSpecificLength) ||
         window.event.which === 8
       ) {
         this.setState({ editorState });
@@ -54,7 +53,7 @@ class CreateThreadModal extends Component {
         );
         this.setState({ editorState });
       }
-      if (threadTopic.length > 1100) {
+      if (threadTopic.length > 600) {
         this.setState({ error2: 'toManyThreadTopicCharacters' });
       }
       if (!wordsWithSpecificLength) {
@@ -225,15 +224,17 @@ class CreateThreadModal extends Component {
                 handleKeyCommand={this.handleKeyCommand}
                 ref="editor"
               />
-              {this.state.error2 === 'toManyThreadTopicCharacters' ||
-                (this.state.error3 === 'wordIsTooLong' && (
-                  <Message warning attached="bottom">
-                    <Icon name="warning" />
-                    {this.state.error3 === 'wordIsTooLong'
-                      ? 'A word can only be 60 characters long'
-                      : 'Thread name can only have 1000 characters'}
-                  </Message>
-                ))}
+              {this.state.error3 === 'wordIsTooLong' && (
+                <Message warning attached="bottom">
+                  <Icon name="warning" />A word can only be 60 characters long
+                </Message>
+              )}
+              {this.state.error2 === 'toManyThreadTopicCharacters' && (
+                <Message warning attached="bottom">
+                  <Icon name="warning" />
+                  Thread name can only have 1000 characters
+                </Message>
+              )}
             </StyledThreadInput>
           </StyledInputsContainer>
         </Modal.Content>
@@ -399,7 +400,7 @@ const StyledThreadInput = styled.div`
   border: none;
   outline: none;
   width: 100%;
-  height: 370px;
+  height: 320px;
 `;
 const StyledActions = styled.div`
   display: flex;
