@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import productScreen from '../../images/product.png';
+import productScreen from '../../images/product-screen.png';
 
 //Import components
 
