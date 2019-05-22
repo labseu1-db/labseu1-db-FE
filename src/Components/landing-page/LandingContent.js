@@ -118,30 +118,29 @@ const StyledDescribtionCard = styled.div`
   flex-direction: column;
   text-align: left;
   .blue {
-      color: #3670c6
-    }
-    .red {
-      color: #F64E49
-    }
-    .orange {
-      color: #FF8333
-    }
+    color: #3670c6;
+  }
+  .red {
+    color: #f64e49;
+  }
+  .orange {
+    color: #ff8333;
+  }
 
-    .green {
-      color: #29C2A5
-    }
+  .green {
+    color: #29c2a5;
+  }
   @media screen and (max-width: 1000px) {
     padding-bottom: 50px;
   }
   h3 {
     font-size: 2rem;
-    
-    }
-    @media screen and (max-width: 1000px) {
-      text-align: center;
-      font-size: 1.5rem;
-    }
   }
+  @media screen and (max-width: 1000px) {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
   div {
     font-size: 1.3rem;
     padding-bottom: 30px;

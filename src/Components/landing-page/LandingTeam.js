@@ -8,6 +8,7 @@ import samar from '../../images/samar.png';
 import sean from '../../images/sean.png';
 import novina from '../../images/novina.png';
 import thorben from '../../images/thorben.png';
+import backgroundImage from '../../images/background-team.png';
 
 //Import components
 
@@ -91,13 +92,13 @@ export default class LandingTeam extends React.Component {
 }
 
 const StyledTeamContainer = styled.div`
-  background-color: #fff7f3;
   width: 100%;
-  margin: 10vh 0;
-  padding: 7vh 15vw;
+  padding: 20vh 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url(${backgroundImage});
+  background-size: 60%;
   @media screen and (max-width: 1500px) {
     padding: 7vh 10vw;
   }

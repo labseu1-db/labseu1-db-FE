@@ -20,9 +20,10 @@ export default class LandingPage extends React.Component {
           <LandingBanner />
         </TopLandingContainer>
         <LandingContent />
+        <LandingMidBanner />
         <LandingTeam />
         <LandingPricing />
-        <LandingMidBanner />
+
         <LandingFooter />
       </StyledLandingContainer>
     );
@@ -65,8 +66,8 @@ const TopLandingContainer = styled.div`
     -ms-transform-origin: 70%;
     transform-origin: 0;
     z-index: -1;
-}
   }
+
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
   }
