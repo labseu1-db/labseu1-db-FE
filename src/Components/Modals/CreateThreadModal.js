@@ -32,7 +32,7 @@ class CreateThreadModal extends Component {
       let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
       let threadTopic = rawDraftContentState.blocks[0].text;
       let words = threadTopic.split(' ');
-      let wordsWithSpecificLength = words.every(word => word.length < 100);
+      let wordsWithSpecificLength = words.every(word => word.length < 60);
       console.log(words);
       console.log(wordsWithSpecificLength);
       console.log(this.state.error3);
