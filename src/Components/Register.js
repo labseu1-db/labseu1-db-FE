@@ -37,7 +37,8 @@ class Register extends Component {
     email: '',
     password: '',
     fullName: '',
-    error: null
+    error: null,
+    savinUsergInfoToDb: false
   };
 
   componentWillUpdate() {
@@ -105,7 +106,6 @@ class Register extends Component {
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
 
               localStorage.setItem('activeOrg', doc.id);
-
             });
           })
           .catch(function(error) {
@@ -126,8 +126,8 @@ class Register extends Component {
       fullName: '',
       error: null
     };
-
     e.preventDefault();
+    this.setState({ savinUsergInfoToDb: true });
     this.props.firebase
       .createUser({ email, password }, { fullName, email })
       .then(() => {
@@ -210,6 +210,9 @@ class Register extends Component {
     const isInvalid = email === '' || password === '' || fullName === '';
 
     if (!isLoaded(this.props.auth)) {
+      return <Spinner />;
+    }
+    if (this.state.savinUsergInfoToDb === true) {
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {

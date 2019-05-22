@@ -117,7 +117,7 @@ class Login extends Component {
       return <Spinner />;
     }
     if (this.state.savinUsergInfoToDb === true) {
-      console.log('Spinner spinning');
+    
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
