@@ -45,7 +45,7 @@ const StyledLandingContainer = styled.div`
     text-decoration: none;
     color: inherit;
     &:hover {
-      color: #f64e49;
+      color: #00bc98;
     }
   }
 `;
