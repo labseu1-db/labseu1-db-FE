@@ -48,7 +48,7 @@ export class NavBar extends Component {
       .then(() => {
         localStorage.clear();
       })
-      .catch(err => console.log("something's wrong."));
+      .catch((err) => console.log("something's wrong."));
 
     this.props.history.push('/login');
   };
@@ -90,23 +90,13 @@ export class NavBar extends Component {
     if (this.props.user.id === this.props.uuid) {
       const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
+      const orgOptions = orgsFromArrayOfUsersIds.map((org) => ({
         key: org.orgName,
         text: org.orgName,
         value: `${org.id}`
       }));
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
-        {
-          key: this.props.user.fullName,
-          text: this.props.user.fullName,
-          value: this.props.user.fullName
-        },
-        {
-          key: 'Profile',
-          text: 'Profile',
-          value: 'Profile'
-        },
         {
           key: 'Create Organisation',
           text: 'Create Organisation',
@@ -119,18 +109,18 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
+        return <Redirect to='/createneworganisation' />;
       }
 
       if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
+        return <Redirect to='/createneworganisation' />;
       }
 
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
+              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt='user' />}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -139,21 +129,21 @@ export class NavBar extends Component {
                     name={'profileDropdown'}
                     basic={true}
                     options={userOptions}
-                    defaultValue={this.props.user.fullName}
+                    text={this.props.user.fullName}
                     onChange={this.handleDropDownChange}
                   />
                 </StyledDropdown>
               )}
             </InnerContainerHorizontal>
             <div>
-              <Icon name="cog" />
+              <Icon name='cog' />
             </div>
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
-              <img src={homeIcon} alt="home icon" />
+              <img src={homeIcon} alt='home icon' />
               <div
-                className="text"
+                className='text'
                 onClick={() => {
                   this.props.showModal(null);
                   this.props.editingProfileDone();
@@ -161,31 +151,34 @@ export class NavBar extends Component {
                   this.props.resetThread();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}>
+                }}
+              >
                 Home
               </div>
             </RowContainer>
             <RowContainer>
-              <img src={clipboardIcon} alt="home icon" />
+              <img src={clipboardIcon} alt='home icon' />
               <div
-                className="text"
+                className='text'
                 onClick={() => {
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}>
+                }}
+              >
                 Follow up
               </div>
             </RowContainer>
             {localStorage.getItem('activeOrg') && (
               <RowContainer>
-                <img src={peopleIcon} alt="users icon" />
+                <img src={peopleIcon} alt='users icon' />
                 <div
                   onClick={() => {
                     this.props.resetSpace();
                     this.props.resetThread();
                     this.props.props.history.push('/users');
-                  }}>
+                  }}
+                >
                   Users
                 </div>
               </RowContainer>
@@ -194,7 +187,7 @@ export class NavBar extends Component {
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <img src={discIcon} alt="home icon" />
+                    <img src={discIcon} alt='home icon' />
 
                     {this.props.activeOrg && (
                       <NavBarOrgDropdown
@@ -214,7 +207,7 @@ export class NavBar extends Component {
                       {spacesForActiveOrg.map((space, index) => (
                         <div key={index}>
                           <div
-                            onClick={event => {
+                            onClick={(event) => {
                               event.preventDefault();
                               this.props.editingProfileDone();
                               this.props.resetThread();
@@ -222,7 +215,8 @@ export class NavBar extends Component {
                               this.props.showModal(null);
                               this.props.notRenderProfile();
                               this.props.hideFollowUp();
-                            }}>
+                            }}
+                          >
                             {space.spaceName}
                           </div>
                         </div>
@@ -241,7 +235,7 @@ export class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
@@ -254,7 +248,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
@@ -275,11 +269,8 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect(props => {
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
@@ -289,12 +280,12 @@ export default compose(
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [ [ 'arrayOfUserIdsInSpace', 'array-contains', props.uuid ], [ 'orgId', '==', props.activeOrg ] ],
         storeAs: 'filteredSpaces'
       },
       {
         collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
+        where: [ 'arrayOfUsersIds', 'array-contains', props.uuid ],
         storeAs: 'orgsInWhichUser'
       }
       // {
