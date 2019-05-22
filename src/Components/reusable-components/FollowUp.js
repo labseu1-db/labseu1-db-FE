@@ -21,7 +21,6 @@ class FollowUp extends React.Component {
             info="Get back to the things you've marked as follow up."
           />
         </StyledFirstRow>
-
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
@@ -37,10 +36,10 @@ class FollowUp extends React.Component {
                 info={t.threadTopic}
                 checked="true"
                 isFollowUpDecided="true"
-                onClick={() => {
-                  this.props.setActiveThread(t.id);
-                  this.props.hideFollowUp();
-                }}
+                /*  onClick={() => {
+                                    this.props.setActiveThread(t.id);
+                                    this.props.hideFollowUp();
+                                }} */
               />
             );
           })}
@@ -84,7 +83,7 @@ export default compose(
 
 //Styling
 const StyledFollowUp = styled.div`
-  background-color: #fff7f3;
+  background-color: #faf9f7;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
