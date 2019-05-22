@@ -32,11 +32,13 @@ const StyledBackToButton = styled.button`
   border: none;
   position: relative;
   color: #3d4856;
+  background-color: white;
   border: 1px solid #bdc3c9;
   cursor: pointer;
   &:hover {
     color: white;
     background-color: #5c4df2;
+    border: 1px solid #5c4df2;
   }
   &:focus {
     outline: none;

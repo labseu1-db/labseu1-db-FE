@@ -98,7 +98,9 @@ class Register extends Component {
             qs.forEach(doc => {
               this.saveUserIdInOrg(doc.id, userId);
               this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+
               localStorage.setItem('activeOrg', doc.id);
+
             });
           })
           .catch(function(error) {

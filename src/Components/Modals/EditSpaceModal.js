@@ -132,11 +132,7 @@ class EditSpaceModal extends Component {
 
                   <StyledButtonCreateSpace
                     type="submit"
-                    disabled={
-                      !this.state.spaceName.length > 0 ||
-                      !this.state.spaceTopic.length > 0 ||
-                      !this.state.idsInSpace.length > 0
-                    }
+                    disabled={!this.state.spaceName.length > 0 || !this.state.idsInSpace.length > 0}
                     onClick={e => {
                       e.preventDefault();
                       this.props.showModal(null);
