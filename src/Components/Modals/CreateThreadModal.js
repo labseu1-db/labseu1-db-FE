@@ -85,7 +85,7 @@ class CreateThreadModal extends Component {
     ) {
       this.setState({ [event.target.name]: event.target.value });
       this.setState({ error: '' });
-    } else if (this.state.threadName.length > 16 && event.target.name === 'threadName') {
+    } else if (this.state.threadName.length > 40 && event.target.name === 'threadName') {
       this.setState({ error: 'toManyCharactersInThreadName' });
     }
   };
