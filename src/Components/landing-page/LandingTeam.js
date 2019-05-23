@@ -105,7 +105,7 @@ const StyledTeamContainer = styled.div`
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
   }
-    @media screen and (max-width: 800px) {
+  @media screen and (max-width: 800px) {
     padding: 7vh 5vw;
   }
   @media screen and (max-width: 400px) {
@@ -147,7 +147,7 @@ const StyledCard = styled.div`
     cursor: pointer;
     font-size: 1.1rem;
     &:hover {
-      color: #00bc98;
+      color: #f64d4a;
     }
     a {
       text-decoration: none;
@@ -155,7 +155,7 @@ const StyledCard = styled.div`
     }
   }
     .image-div {
-    width: 40%;
+    width: 50%;
     text-align: center;
     margin-bottom: 10px;
     @media screen and (max-width: 800px) {
