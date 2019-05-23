@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ThreadCard from './reusable-components/ThreadCard';
 
+//Import action creators
 import { setActiveThread, hideFollowUp } from '../redux/actions/actionCreators';
 
 //Main component

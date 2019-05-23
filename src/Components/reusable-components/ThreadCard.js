@@ -24,10 +24,6 @@ function ThreadCard(props) {
     isFollowUpDecided
   } = props;
 
-  const stopPropagation = e => {
-    e.stopPropagation();
-  };
-
   return (
     <div>
       <StyledThreadContainer onClick={onClick}>

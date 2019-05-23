@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons
@@ -15,8 +15,11 @@ export class ThreadRightComponent extends React.Component {
 
   markAsFollowUp = e => {
     e.stopPropagation();
-    //this.setState({ isFollowUpText: e.target.value });
     this.setState({ isFollowUpText: 'Marked for followup' });
+    /*
+    localStorage.setItem('isFollowUpText', 'yoo');
+    const isFollowUpTextLS = localStorage.getItem('isFollowUpText');
+*/
     let threadRef = this.props.firestore
       .collection('threads')
       .doc(this.props.threadId);
@@ -26,7 +29,6 @@ export class ThreadRightComponent extends React.Component {
         localStorage.getItem('uuid')
       )
     });
-    console.log(`isFollowUp ${threadRef.isFollowUp}`);
   };
 
   render() {

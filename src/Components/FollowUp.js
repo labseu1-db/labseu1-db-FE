@@ -37,10 +37,6 @@ class FollowUp extends React.Component {
                 info={t.threadTopic}
                 checked="true"
                 isFollowUpDecided="true"
-                onClick={() => {
-                  this.props.setActiveThread(t.id);
-                  this.props.hideFollowUp();
-                }}
               />
             );
           })}
