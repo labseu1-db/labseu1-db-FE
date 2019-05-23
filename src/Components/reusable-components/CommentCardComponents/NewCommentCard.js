@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+import { Message, Icon } from 'semantic-ui-react';
+
 //Import components
 import ScreenButton from '../ScreenButton';
 
@@ -23,7 +25,16 @@ export class NewCommentCard extends React.Component {
   };
 
   handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    let words = this.state.text.split(' ');
+    let wordsWithSpecificLength = words.every(word => word.length <= 70);
+    console.log(window.event);
+    if (wordsWithSpecificLength || e.target.name !== 'text' || window.event.inputType === 'deleteContentBackward') {
+      this.setState({ [e.target.name]: e.target.value });
+      this.setState({ error: '' });
+    }
+    if (!wordsWithSpecificLength) {
+      this.setState({ error: 'wordIsTooLong' });
+    }
   };
 
   clearInput = () => {
@@ -75,6 +86,11 @@ export class NewCommentCard extends React.Component {
     const { img } = this.props;
     return (
       <StyledCommentContainer>
+        {this.state.error === 'wordIsTooLong' && (
+          <Message warning attached="bottom">
+            <Icon name="warning" />A word can only be 70 characters long
+          </Message>
+        )}
         <StyledTopContainer>
           <StyledImageContainer>
             <img src={img} alt="author" /> {/* <div className="initials">{createdBy[0]}</div> */}
