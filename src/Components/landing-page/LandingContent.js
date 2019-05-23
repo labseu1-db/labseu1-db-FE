@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 //Import icons/images
 import commentScreen from '../../images/product-video.gif';
+import productVideo from '../../images/product-video.mp4';
 
 //Import components
 
@@ -12,7 +13,10 @@ export default class LandingContent extends React.Component {
     return (
       <StyledContent>
         <StyledContentSection>
-          <img src={commentScreen} alt="product" />
+          <video autoPlay loop muted playsInline>
+            <source src={productVideo} type="video/mp4" />
+          </video>
+          {/* <img src={commentScreen} alt="product" /> */}
         </StyledContentSection>
         <StyledContentSection>
           <StyledDescribtionCard>
@@ -92,7 +96,7 @@ const StyledContentSection = styled.div`
     width: 100%;
     margin: 3vh 0;
   }
-  img {
+  video {
     max-width: 100%;
   }
 `;
