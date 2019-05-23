@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import landingPageBanner from '../../images/bulb-background.png';
+import landingPageBanner from '../../images/landing-banner-bulb.svg';
 
 //Import components
 
@@ -32,10 +32,17 @@ const StyledLandingBanner = styled.div`
   justify-content: space-between;
   height: 100%;
   @media screen and (max-width: 1000px) {
+    /* align-items: center;
+    justify-content: center;
+    flex-direction: column; */
+    margin: 10vh 0 0 0;
+    align-items: flex-start;
+  }
+
+  @media screen and (max-width: 800px) {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 2vh 0 0 0;
   }
 
   .banner {
@@ -47,13 +54,20 @@ const StyledLandingBanner = styled.div`
       margin-top: 50px;
       margin-left: 100px;
     }
+
+    @media screen and (max-width: 1200px) {
+      padding-top: 0px;
+      width: 50%;
+      margin-top: -7vh;
+      margin-left: 0;
+    }
     @media screen and (max-width: 1000px) {
-      width: 100%;
-      margin-top: 50px;
-      margin-left: 100px;
+      margin-top: 0px;
+      margin-left: 0px;
+      width: 55%;
     }
     @media screen and (max-width: 800px) {
-      width: 70%;
+      width: 80%;
     }
     @media screen and (max-width: 700px) {
       margin-left: 70px;
@@ -72,8 +86,13 @@ const LandingHeader = styled.div`
   width: 40%;
   line-height: 1.6;
   @media screen and (max-width: 1000px) {
-    width: 70%;
+    width: 42%;
     text-align: center;
+  }
+
+  @media screen and (max-width: 800px) {
+    margin-top: 5vh;
+    width: 62%;
   }
   div {
     font-size: 1.2rem;

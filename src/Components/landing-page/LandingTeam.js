@@ -8,7 +8,7 @@ import samar from '../../images/samar.png';
 import sean from '../../images/sean.png';
 import novina from '../../images/novina.png';
 import thorben from '../../images/thorben.png';
-import backgroundImage from '../../images/background-team.png';
+import backgroundTeam from '../../images/background-team.svg';
 
 //Import components
 
@@ -97,8 +97,17 @@ const StyledTeamContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url(${backgroundImage});
-  background-size: 60%;
+  background: url(${backgroundTeam}) repeat-x 0 / 100% auto;
+  min-height: 100%;
+  animation: ani 90s linear infinite;
+  @keyframes ani {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100vw 0;
+    }
+  }
   @media screen and (max-width: 1500px) {
     padding: 30vh 10vw 35vh 10vw;
   }

@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import iconCardGreen from '../../images/icon-card-green.svg';
+import iconLineGreen from '../../images/icon-line-green.svg';
+
 //Main component
 export default class LandingPricing extends React.Component {
   render() {
@@ -10,7 +13,9 @@ export default class LandingPricing extends React.Component {
         <StyledPricingCards>
           <StyledPricingCard>
             <h2>Free</h2>
-            <h3>$0</h3>
+            <img src={iconLineGreen} alt="card" />
+            <h2>$0</h2>
+
             <div className="item">Up to 20 guests</div>
             <div className="item"> Unlimited spaces</div>
             <div className="item">Access 150 most recent threads</div>
@@ -20,7 +25,9 @@ export default class LandingPricing extends React.Component {
           </StyledPricingCard>
           <StyledPricingCard>
             <h2>Premium</h2>
-            <h3>$20</h3>
+            <img src={iconCardGreen} alt="card" />
+            <h2>$20</h2>
+
             <div className="item">Up to 150 guests</div>
             <div className="item"> Unlimited spaces</div>
             <div className="item">Access to all threads</div>
@@ -52,7 +59,7 @@ const StyledContent = styled.div`
     padding: 5vh 3vw;
   }
   h2 {
-    font-size: 2.3rem;
+    font-size: 2.5rem;
   }
 `;
 
@@ -65,13 +72,13 @@ const StyledPricingCards = styled.div`
 
 const StyledPricingCard = styled.div`
   padding: 40px 10px;
-  width: 25%;
-  background-color: #4c4c781a;
+  width: 20%;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   margin: 20px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  color: #4c4c78;
+
   @media screen and (max-width: 1500px) {
     width: 30%;
   }
@@ -94,7 +101,7 @@ const StyledPricingCard = styled.div`
     text-align: center;
     margin: 10px 0;
     font-size: 2rem;
-    color: #4c4c78;
+    color: #00bc98;
   }
   h3 {
     text-align: center;
@@ -105,7 +112,7 @@ const StyledPricingCard = styled.div`
   }
   .item {
     text-align: center;
-    color: #4c4c78;
+
     font-weight: bold;
     padding: 10px 0;
   }
@@ -114,7 +121,7 @@ const StyledPricingCard = styled.div`
     margin-top: 40px;
     padding: 10px 15px;
     color: white;
-    background-color: #4c4c78;
+    background-color: #00bc98;
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -122,12 +129,11 @@ const StyledPricingCard = styled.div`
     align-self: center;
     cursor: pointer;
     &:hover {
-      background-color: #fbd98c;
+      color: #00bc98;
+      background-color: white;
+      border: 2px solid #00bc98;
     }
-    a {
-      &:hover {
-        color: white;
-      }
+    
     }
   }
 `;

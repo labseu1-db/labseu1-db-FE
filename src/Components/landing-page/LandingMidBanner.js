@@ -25,7 +25,11 @@ export default class LandingMidBanner extends React.Component {
 }
 
 const StyledMidBanner = styled.div`
+<<<<<<< HEAD
   margin: 0 0 3vh 0;
+=======
+  margin: 0vh 0 3vh 0;
+>>>>>>> 8e7324d8ceeb03efa1122b83125a1673c174e034
   width: 100%;
   padding: 10vh 15vw;
   background-color: #3670c666;
