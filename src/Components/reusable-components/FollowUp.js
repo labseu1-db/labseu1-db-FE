@@ -71,7 +71,8 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [['isFollowUp', '==', true], ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]]
+        where: [['isFollowUp', '==', true], ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]],
+        orderBy: ['threadCreatedAt', 'desc']
       }
     ];
   })
