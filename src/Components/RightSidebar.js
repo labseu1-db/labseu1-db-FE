@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Modal, Image } from 'semantic-ui-react';
 import checkMarkOff from '../images/icon-check-darkgray.svg';
 import checkMarkOn from '../images/icon-check-purple.svg';
-import plantImg from '../images/img-bg-plant.png';
+//import plantImg from '../images/img-bg-plant.png';
+import plantImg from '../images/tulip.svg';
 import discussionImg from '../images/img-modal-discussion.svg';
 import mobileImg from '../images/img-modal-mobile.svg';
 import voiceImg from '../images/img-modal-voice.svg';
@@ -27,20 +28,20 @@ export default class RightSidebar extends React.Component {
         <SearchSpace />
         <GetStarted>
           <GetStartedTop>
-            <PlantImg src={plantImg} alt="plant" />
+            <PlantImg src={plantImg} alt='plant' />
             <p>Let's Get Started!</p>
           </GetStartedTop>
           <GetStartedCheckboxes>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOn" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOn' />
               <Paragraph>Create an organization</Paragraph>
             </GetStartedCheck>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOff" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOff' />
               <Paragraph>Create space</Paragraph>
             </GetStartedCheck>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOn" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOn' />
               <Paragraph>Invite Team Members</Paragraph>
             </GetStartedCheck>
           </GetStartedCheckboxes>
@@ -49,10 +50,10 @@ export default class RightSidebar extends React.Component {
         <LearnMore>
           <p>Learn about Threads</p>
           <LearnTopic onClick={this.toggleCheckFirst}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check01" />
-            <Modal size="tiny" trigger={<Paragraph>What is Threads?</Paragraph>}>
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check01' />
+            <Modal size='tiny' trigger={<Paragraph>What is Threads?</Paragraph>}>
               <ModalImg>
-                <Image src={discussionImg} size="medium" centered />
+                <Image src={discussionImg} size='medium' centered />
               </ModalImg>
               <Modal.Header>What is Threads?</Modal.Header>
               <Modal.Content>
@@ -67,10 +68,10 @@ export default class RightSidebar extends React.Component {
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckSecond}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check02" />
-            <Modal size="tiny" trigger={<Paragraph>What are spaces and how do I use them? </Paragraph>}>
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check02' />
+            <Modal size='tiny' trigger={<Paragraph>What are spaces and how do I use them? </Paragraph>}>
               <ModalImg>
-                <Image src={mobileImg} size="medium" centered />
+                <Image src={mobileImg} size='medium' centered />
               </ModalImg>
               <Modal.Header>What are spaces and how do I use them?</Modal.Header>
               <Modal.Content>
@@ -85,10 +86,10 @@ export default class RightSidebar extends React.Component {
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckThird}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check03" />
-            <Modal size="tiny" trigger={<Paragraph>What threads should I write?</Paragraph>}>
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check03' />
+            <Modal size='tiny' trigger={<Paragraph>What threads should I write?</Paragraph>}>
               <ModalImg>
-                <Image src={voiceImg} size="medium" centered />
+                <Image src={voiceImg} size='medium' centered />
               </ModalImg>
               <Modal.Header>What threads should I write?</Modal.Header>
               <Modal.Content>
@@ -108,15 +109,9 @@ export default class RightSidebar extends React.Component {
   }
 }
 
-const Paragraph = styled.p`
-  padding-left: 10px;
-`;
-const CheckImg = styled.img`
-  height: 12px;
-`;
-const SearchSpace = styled.div`
-  height: 10hv;
-`;
+const Paragraph = styled.p`padding-left: 10px;`;
+const CheckImg = styled.img`height: 12px;`;
+const SearchSpace = styled.div`height: 10hv;`;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -134,7 +129,7 @@ const GetStarted = styled.div`
   box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
 `;
 const GetStartedTop = styled.div`
-  background-color: #f64e49;
+  background-color: #00bc98;
   border-radius: 15px 15px 0 0;
   color: white;
   text-align: end;
@@ -175,6 +170,4 @@ const LearnTopic = styled.div`
   -moz-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
   box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
 `;
-const ModalImg = styled.div`
-  padding: 20px 0;
-`;
+const ModalImg = styled.div`padding: 20px 0;`;
