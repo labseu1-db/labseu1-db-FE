@@ -8,6 +8,7 @@ import samar from '../../images/samar.png';
 import sean from '../../images/sean.png';
 import novina from '../../images/novina.png';
 import thorben from '../../images/thorben.png';
+
 import backgroundTeam from '../../images/background-team.svg';
 
 //Import components
