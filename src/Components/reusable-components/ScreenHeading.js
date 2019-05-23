@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 function ScreenHeading(props) {
-  const { heading, info } = props;
+  const { heading, info, topic } = props;
   return (
     <div>
       <StyledHeadingContainer>
-        <div className="heading">{heading}</div>
-        <div className="info">{info}</div>
+        <div className='heading'>{heading}</div>
+        <div className='info'>{info}</div>
+        <div className='topic'>{topic}</div>
       </StyledHeadingContainer>
     </div>
   );
