@@ -51,28 +51,28 @@ function SpaceThreads(props) {
         />
         <StyledButtonsContainer>
           <StyledDropdown>
-            <Dropdown icon='ellipsis horizontal'>
+            <Dropdown icon="ellipsis horizontal">
               <Dropdown.Menu>
                 {localStorage.getItem('uuid') === props.space.spaceCreatedByUserId && (
                   <Dropdown.Item
-                    text='Edit space'
-                    onClick={(e) => {
+                    text="Edit space"
+                    onClick={e => {
                       props.showModal('EditSpaceModal');
                     }}
                   />
                 )}
                 {localStorage.getItem('uuid') === props.space.spaceCreatedByUserId && (
                   <Dropdown.Item
-                    text='Delete space'
-                    onClick={(e) => {
+                    text="Delete space"
+                    onClick={e => {
                       props.showModal('DeleteSpaceModal');
                     }}
                   />
                 )}
                 {localStorage.getItem('uuid') !== props.space.spaceCreatedByUserId && (
                   <Dropdown.Item
-                    text='Leave space'
-                    onClick={(e) => {
+                    text="Leave space"
+                    onClick={e => {
                       props.showModal('LeaveSpaceModal');
                     }}
                   />
@@ -82,25 +82,26 @@ function SpaceThreads(props) {
           </StyledDropdown>
 
           <ScreenButton
-            content='Start a thread'
+            content="Start a thread"
             icon={penIconWhite}
-            backgroundColor='#00bc98'
-            color='white'
-            border='none'
-            onClick={(e) => {
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            onClick={e => {
               props.showModal('CreateThreadModal');
             }}
           />
         </StyledButtonsContainer>
       </StyledFirstRow>
-      <ScreenSectionHeading heading='Recent' />
+      <ScreenSectionHeading heading="Recent" />
 
       {/*Loop trough all the threads that are associated with the orgId*/}
       {props.threads.length > 0 &&
-        props.threads.map((t) => {
+        props.threads.map(t => {
           let dateInfo = new Date(t.threadCreatedAt);
-          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${('0' +
-            dateInfo.getMinutes()).slice(-2)}`;
+          let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
+            '0' + dateInfo.getMinutes()
+          ).slice(-2)}`;
 
           return (
             <ThreadCard
@@ -175,7 +176,7 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -187,17 +188,21 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({ showModal, setActiveThread }, dispatch);
 };
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => {
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
     return [
       {
         collection: 'threads',
-        where: [ 'spaceId', '==', props.spaceId ]
+        where: ['spaceId', '==', props.spaceId],
+        orderBy: ['threadCreatedAt', 'desc']
       },
       {
         collection: 'spaces',
