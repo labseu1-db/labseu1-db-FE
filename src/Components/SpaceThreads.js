@@ -109,6 +109,11 @@ function SpaceThreads(props) {
               heading={t.threadName}
               info={t.threadTopic}
               whenUserHasSeen={t.whenUserHasSeen}
+              isFollowUpDecided={
+                t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(localStorage.getItem('uuid'))
+                  ? true
+                  : false
+              }
               checked={
                 (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
                 (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
@@ -174,7 +179,8 @@ const mapStateToProps = state => {
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
     space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
     spaceId: state.spaceId,
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 

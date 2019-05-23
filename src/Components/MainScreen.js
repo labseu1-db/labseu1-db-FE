@@ -48,7 +48,7 @@ class MainScreen extends React.Component {
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
-          this.props.threads.map(t => {
+          this.props.threads.map((t, i) => {
             let dateInfo = new Date(t.threadCreatedAt);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
               '0' + dateInfo.getMinutes()
@@ -62,6 +62,9 @@ class MainScreen extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
+                isFollowUpDecided={
+                  t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(this.props.uuid) ? true : false
+                }
                 checked={
                   (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
                   (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
@@ -94,9 +97,10 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
+    threads: state.firestore.ordered.mainScreenThreads ? state.firestore.ordered.mainScreenThreads : [],
     activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
-    activeModal: state.modal.activeModal
+    activeModal: state.modal.activeModal,
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -114,7 +118,8 @@ export default compose(
       {
         collection: 'threads',
         where: [['orgId', '==', props.activeOrg]],
-        orderBy: ['threadCreatedAt', 'desc']
+        orderBy: ['threadCreatedAt', 'desc'],
+        storeAs: 'mainScreenThreads'
       }
     ];
   })

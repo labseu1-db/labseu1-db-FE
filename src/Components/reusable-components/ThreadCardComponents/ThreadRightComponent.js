@@ -3,31 +3,18 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-
 //Import icons
 import clipboardIcon from '../../../images/icon-clipboard-lightgray.svg';
 
 //Main component
 export class ThreadRightComponent extends React.Component {
-  state = {
-    isFollowUpText: 'Follow up'
-  };
-
   markAsFollowUp = e => {
     e.stopPropagation();
-    this.setState({ isFollowUpText: 'Marked for followup' });
-    /*
-    localStorage.setItem('isFollowUpText', 'yoo');
-    const isFollowUpTextLS = localStorage.getItem('isFollowUpText');
-*/
-    let threadRef = this.props.firestore
-      .collection('threads')
-      .doc(this.props.threadId);
+
+    let threadRef = this.props.firestore.collection('threads').doc(this.props.threadId);
     threadRef.update({
       isFollowUp: true,
-      arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
-        localStorage.getItem('uuid')
-      )
+      arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
     });
   };
 
@@ -38,21 +25,14 @@ export class ThreadRightComponent extends React.Component {
     return (
       <div>
         {!this.props.isFollowUpDecided && (
-          <StyledRightContainer
-            value={this.state.isFollowUpText}
-            onClick={e => this.markAsFollowUp(e)}
-          >
+          <StyledRightContainer value={'Follow up'} onClick={e => this.markAsFollowUp(e)}>
             <StyledFollowUpButton>
               <img src={clipboardIcon} alt="home icon" />
               {this.state.isFollowUpText}
             </StyledFollowUpButton>
           </StyledRightContainer>
         )}
-        {this.props.isFollowUpDecided && (
-          <StyledDecision onClick={stopPropagation}>
-            Marked for followup
-          </StyledDecision>
-        )}
+        {this.props.isFollowUpDecided && <StyledDecision onClick={stopPropagation}>Marked for followup</StyledDecision>}
       </div>
     );
   }
@@ -118,6 +98,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
+
+    // followupArray: state.followUpText
   };
 };
 
