@@ -10,7 +10,7 @@ script:
   - yarn run build
 deploy:
   provider: firebase
-  token: $FIREBASE_TOKEN_PRODUCTION
+  token: $FIREBASE_TOKEN
   skip-cleanup: true
   local_dir: build
   on:
