@@ -79,7 +79,7 @@ export default compose(
 
 //Styling
 const StyledFollowUp = styled.div`
-  background-color: #faf9f7;
+  background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
 `;
