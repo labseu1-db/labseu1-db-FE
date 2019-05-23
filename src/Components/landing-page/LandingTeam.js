@@ -93,19 +93,19 @@ export default class LandingTeam extends React.Component {
 
 const StyledTeamContainer = styled.div`
   width: 100%;
-  padding: 20vh 15vw;
+  padding: 25vh 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-image: url(${backgroundImage});
   background-size: 60%;
   @media screen and (max-width: 1500px) {
-    padding: 7vh 10vw;
+    padding: 30vh 10vw;
   }
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
   }
-  @media screen and (max-width: 800px) {
+    @media screen and (max-width: 800px) {
     padding: 7vh 5vw;
   }
   @media screen and (max-width: 400px) {

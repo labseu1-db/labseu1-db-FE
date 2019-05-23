@@ -20,8 +20,8 @@ export default class LandingPage extends React.Component {
           <LandingBanner />
         </TopLandingContainer>
         <LandingContent />
-        <LandingMidBanner />
         <LandingTeam />
+        <LandingMidBanner />
         <LandingPricing />
 
         <LandingFooter />
