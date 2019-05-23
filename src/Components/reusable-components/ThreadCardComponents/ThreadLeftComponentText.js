@@ -24,6 +24,7 @@ function ThreadLeftComponentText(props) {
 //Styling
 const StyledLeftContainer = styled.div`
   width: 20%;
+  padding-left: 4%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

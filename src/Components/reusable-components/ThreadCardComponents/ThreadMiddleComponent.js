@@ -9,7 +9,11 @@ function ThreadMiddleComponent(props) {
     <StyledMiddleContainer>
       <div className="thread-heading">{heading}</div>
       {/* If lenght of info is longer than 175 characters, make it shorter and add ...*/}
-      {info.length < 170 ? <div className="info">{info}</div> : <div className="info">{shorterInfo}...</div>}
+      {info.length < 170 ? (
+        <div className="info">{info}</div>
+      ) : (
+        <div className="info">{shorterInfo}...</div>
+      )}
     </StyledMiddleContainer>
   );
 }
@@ -17,6 +21,7 @@ function ThreadMiddleComponent(props) {
 //Styling
 const StyledMiddleContainer = styled.div`
   width: 65%;
+  padding-left: 4%;
   height: 100%;
   .thread-heading {
     font-size: 1.4rem;
