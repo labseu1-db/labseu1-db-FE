@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
+import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 //Import icons
@@ -118,7 +118,6 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
-    // comments: state.firestore.ordered.comments ? state.firestore.ordered.comments : []
   };
 };
 
