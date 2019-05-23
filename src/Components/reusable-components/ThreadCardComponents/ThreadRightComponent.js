@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 //Import icons
-import clipboardIcon from '../../../images/icon-clipboard-lightgray.svg';
+import clipboardIcon from '../../../images/icon-clipboard-green.svg';
 
 //Main component
 export class ThreadRightComponent extends React.Component {
@@ -29,14 +29,14 @@ export class ThreadRightComponent extends React.Component {
       <div>
         {!this.props.isFollowUpDecided && (
           <StyledRightContainer onClick={e => this.markAsFollowUp(e)}>
-            <StyledFollowUpButton>
-              <img src={clipboardIcon} alt="home icon" />
-              Follow Up
-            </StyledFollowUpButton>
+            <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
           </StyledRightContainer>
         )}
         {this.props.isFollowUpDecided && (
-          <StyledDecision onClick={e => this.markAsFollowUp(e)}>Marked for followup</StyledDecision>
+          <StyledDecision onClick={e => this.markAsFollowUp(e)}>
+            <img src={clipboardIcon} alt="home icon" />
+            Following
+          </StyledDecision>
         )}
       </div>
     );
@@ -63,17 +63,19 @@ const StyledRightContainer = styled.div`
 
 const StyledFollowUpButton = styled.button`
   background-color: white;
-  color: #9c9c9c;
+  color: #bdc3c9;
   font-size: 13px;
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   height: 30px;
   text-align: center;
+  border: none;
   border-radius: 15px;
   white-space: nowrap;
   position: relative;
   display: flex;
   &:hover {
-    border: 1px solid #00bc98b3;
+    /* border: 1px solid #00bc98; */
+    font-weight: 600;
     cursor: pointer;
   }
   img {
@@ -84,17 +86,24 @@ const StyledFollowUpButton = styled.button`
 
 const StyledDecision = styled.button`
   background-color: white;
-  color: #9c9c9c;
+  color: #00bc98;
   font-size: 13px;
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   height: 30px;
   text-align: center;
+  border: none;
   border-radius: 15px;
   white-space: nowrap;
   position: relative;
   display: flex;
+  img {
+    width: 1.25rem;
+    margin-right: 5px;
+  }
   &:hover {
-    border: 1px solid #00bc98b3;
+    /* border: 1px solid #00bc98b3; */
+    font-weight: 600;
+    cursor: pointer;
   }
 `;
 

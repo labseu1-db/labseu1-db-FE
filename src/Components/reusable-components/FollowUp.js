@@ -5,11 +5,11 @@ import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import components
-import ScreenHeading from './reusable-components/ScreenHeading';
-import ThreadCard from './reusable-components/ThreadCard';
+import ScreenHeading from './ScreenHeading';
+import ThreadCard from './ThreadCard';
 
 //Import action creators
-import { setActiveThread, hideFollowUp } from '../redux/actions/actionCreators';
+import { setActiveThread, hideFollowUp } from '../../redux/actions/actionCreators';
 
 //Main component
 class FollowUp extends React.Component {
@@ -17,10 +17,7 @@ class FollowUp extends React.Component {
     return (
       <StyledFollowUp>
         <StyledFirstRow>
-          <ScreenHeading
-            heading="Follow Up"
-            info="Get back to the things you've marked as follow up."
-          />
+          <ScreenHeading heading="Follow Up" info="Get back to the things you've marked as follow up." />
         </StyledFirstRow>
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
@@ -35,6 +32,14 @@ class FollowUp extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                }
+                onClick={() => {
+                  this.props.setActiveThread(t.id);
+                  this.props.hideFollowUp();
+                }}
                 isFollowUpDecided="true"
               />
             );
@@ -48,9 +53,7 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : [],
+    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
@@ -68,10 +71,7 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [
-          ['isFollowUp', '==', true],
-          ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]
-        ]
+        where: [['isFollowUp', '==', true], ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]]
       }
     ];
   })

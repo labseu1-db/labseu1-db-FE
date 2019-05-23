@@ -19,7 +19,6 @@ class CheckoutForm extends Component {
     e.preventDefault();
     // User clicked submit
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
-
     if (!token) {
       window.alert('Invalid payment details');
     } else {
@@ -33,7 +32,6 @@ class CheckoutForm extends Component {
         this.setState({ complete: true });
       } else {
         window.alert('Error processing payment');
-        console.log(response);
         this.props.handleClose();
       }
     }
@@ -138,7 +136,7 @@ const StyledModalButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledModalButtonUpgrade = styled.button`
@@ -149,16 +147,16 @@ const StyledModalButtonUpgrade = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
 `;
 
 const StyledModalMainButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 
@@ -167,9 +165,9 @@ const StyledModalMainButtonContainerOk = styled.div`
   justify-content: center;
   margin-top: 25px;
   .cancel-button {
-    color: #5c4df2;
+    color: #00bc98;
     background-color: white;
-    border: 2px solid #5c4df2;
+    border: 2px solid #00bc98;
   }
 `;
 

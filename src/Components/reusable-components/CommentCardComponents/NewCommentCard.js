@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+import { Message, Icon } from 'semantic-ui-react';
+
 //Import components
 import ScreenButton from '../ScreenButton';
-
 import GifComponent from '../GifComponent';
+import AvatarFromLetter from '../AvatarFromLetter';
 
 //Import icons
 import IconPenWhite from '../../../images/icon-pen-white.svg';
@@ -23,7 +25,15 @@ export class NewCommentCard extends React.Component {
   };
 
   handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    let words = this.state.text.split(' ');
+    let wordsWithSpecificLength = words.every(word => word.length <= 70);
+    if (wordsWithSpecificLength || e.target.name !== 'text' || window.event.inputType === 'deleteContentBackward') {
+      this.setState({ [e.target.name]: e.target.value });
+      this.setState({ error: '' });
+    }
+    if (!wordsWithSpecificLength) {
+      this.setState({ error: 'wordIsTooLong' });
+    }
   };
 
   clearInput = () => {
@@ -71,14 +81,15 @@ export class NewCommentCard extends React.Component {
   };
 
   render() {
-    console.log(this.state.gif);
-    const { img } = this.props;
     return (
       <StyledCommentContainer>
+        {this.state.error === 'wordIsTooLong' && (
+          <Message warning attached="bottom">
+            <Icon name="warning" />A word can only be 70 characters long
+          </Message>
+        )}
         <StyledTopContainer>
-          <StyledImageContainer>
-            <img src={img} alt="author" /> {/* <div className="initials">{createdBy[0]}</div> */}
-          </StyledImageContainer>
+          <AvatarFromLetter username={this.props.profile.fullName} height="32px" width="32px" />
           <StyledRightInput
             placeholder="Comment on the thread"
             name="text"
@@ -142,14 +153,14 @@ const StyledCommentContainer = styled.form`
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   width: 100%;
   margin-top: 30px;
 `;
 
 const StyledTopContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 
 const StyledGifImage = styled.div`
@@ -177,23 +188,10 @@ const StyledGifAndButtons = styled.div`
   align-items: center;
 `;
 
-const StyledImageContainer = styled.div`
-  width: 35px;
-  height: 35px;
-  img {
-    border-radius: 50%;
-    max-height: 100%;
-  }
-  .initials {
-    border-radius: 50%;
-    max-width: 100%;
-    background-color: #00bc98;
-  }
-`;
 const StyledRightInput = styled.input`
   margin-left: 30px;
   border: 1px solid #bdc3c9;
-  width: 100%;
+  width: 95%;
   border-radius: 10px;
   padding: 5px 10px;
   ::placeholder {
