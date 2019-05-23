@@ -111,6 +111,12 @@ const StyledTeamContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 30vh 10vw 35vh 10vw;
   }
+  @media screen and (max-width: 1100px) {
+    background: url(${backgroundTeam});
+    animation: none;
+    background-size: 100%;
+  }
+
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
   }

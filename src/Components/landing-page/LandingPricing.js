@@ -76,7 +76,7 @@ const StyledPricingCards = styled.div`
 const StyledPricingCard = styled.div`
   padding: 40px 10px;
   width: 20%;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
+  background-color: #00bc981a;
   margin: 20px;
   border-radius: 5px;
   display: flex;
