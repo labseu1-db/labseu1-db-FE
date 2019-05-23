@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import productScreen from '../../images/product-image.png';
 import commentScreen from '../../images/product-video.gif';
 
 //Import components
@@ -54,7 +53,7 @@ export default class LandingContent extends React.Component {
 
 const StyledContent = styled.div`
   width: 100%;
-  margin-top: 15vh;
+  margin-top: 10vh;
   padding: 0 15vw;
   display: flex;
   flex-wrap: wrap;
