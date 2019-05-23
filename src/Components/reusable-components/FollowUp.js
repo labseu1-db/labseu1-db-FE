@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import components
-import ScreenHeading from './reusable-components/ScreenHeading';
-import ThreadCard from './reusable-components/ThreadCard';
+import ScreenHeading from './ScreenHeading';
+import ThreadCard from './ThreadCard';
 
-import { setActiveThread, hideFollowUp } from '../redux/actions/actionCreators';
+//Import action creators
+import { setActiveThread, hideFollowUp } from '../../redux/actions/actionCreators';
 
 //Main component
 class FollowUp extends React.Component {
@@ -18,9 +19,6 @@ class FollowUp extends React.Component {
         <StyledFirstRow>
           <ScreenHeading heading="Follow Up" info="Get back to the things you've marked as follow up." />
         </StyledFirstRow>
-
-        {/*Loop trough all the threads that are associated with the orgId*/}
-        {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
         {this.props.threads.length > 0 &&
           this.props.threads.map(t => {
             let dateInfo = new Date(t.threadCreatedAt);
@@ -34,11 +32,15 @@ class FollowUp extends React.Component {
                 threadId={t.id}
                 heading={t.threadName}
                 info={t.threadTopic}
-                checked="true"
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
+                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                }
                 onClick={() => {
                   this.props.setActiveThread(t.id);
                   this.props.hideFollowUp();
                 }}
+                isFollowUpDecided="true"
               />
             );
           })}
@@ -52,7 +54,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : ''
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -61,7 +63,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  withFirestore,
   connect(
     mapStateToProps,
     mapDispatchToProps
@@ -69,7 +70,8 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: 'users'
+        collection: 'threads',
+        where: [['isFollowUp', '==', true], ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]]
       }
     ];
   })
