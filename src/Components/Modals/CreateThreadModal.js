@@ -4,7 +4,13 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 import { Modal, Dropdown, Message, Icon } from 'semantic-ui-react';
-import { Editor, EditorState, RichUtils, convertToRaw, ContentState } from 'draft-js';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertToRaw,
+  ContentState
+} from 'draft-js';
 import uuid from 'uuid';
 import 'draft-js/dist/Draft.css';
 import styled from 'styled-components';
@@ -29,7 +35,9 @@ class CreateThreadModal extends Component {
     this.onChange = editorState => {
       const contentState = editorState.getCurrentContent();
       const oldContent = this.state.editorState.getCurrentContent();
-      let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
+      let rawDraftContentState = convertToRaw(
+        this.state.editorState.getCurrentContent()
+      );
       let threadTopic = rawDraftContentState.blocks[0].text;
       let words = threadTopic.split(' ');
       let wordsWithSpecificLength = words.every(word => word.length <= 70);
@@ -65,8 +73,12 @@ class CreateThreadModal extends Component {
   componentWillMount() {}
 
   saveEditorText = () => {
-    let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
-    this.setState({ threadTopic: rawDraftContentState.blocks[0].text }, () => this.addNewThread());
+    let rawDraftContentState = convertToRaw(
+      this.state.editorState.getCurrentContent()
+    );
+    this.setState({ threadTopic: rawDraftContentState.blocks[0].text }, () =>
+      this.addNewThread()
+    );
   };
 
   saveSpaceToThread = (e, data) => {
@@ -83,7 +95,10 @@ class CreateThreadModal extends Component {
     ) {
       this.setState({ [event.target.name]: event.target.value });
       this.setState({ error: '' });
-    } else if (this.state.threadName.length > 40 && event.target.name === 'threadName') {
+    } else if (
+      this.state.threadName.length > 40 &&
+      event.target.name === 'threadName'
+    ) {
       this.setState({ error: 'toManyCharactersInThreadName' });
     }
   };
@@ -98,7 +113,10 @@ class CreateThreadModal extends Component {
   };
 
   handleKeyCommand = command => {
-    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+    const newState = RichUtils.handleKeyCommand(
+      this.state.editorState,
+      command
+    );
     if (newState) {
       this.onChange(newState);
       return 'handled';
@@ -107,7 +125,9 @@ class CreateThreadModal extends Component {
   };
 
   onUnderlineClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE'));
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE')
+    );
   };
 
   onBoldClick = () => {
@@ -115,7 +135,9 @@ class CreateThreadModal extends Component {
   };
 
   onItalicClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC')
+    );
   };
 
   onCodeClick = () => {
@@ -140,9 +162,13 @@ class CreateThreadModal extends Component {
         }
       )
       .then(() => {
-        let threadRef = this.props.firestore.collection('threads').doc(this.threadId);
+        let threadRef = this.props.firestore
+          .collection('threads')
+          .doc(this.threadId);
         let whenUserHasSeen = {};
-        whenUserHasSeen[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
+        whenUserHasSeen[
+          `whenUserHasSeen.${localStorage.getItem('uuid')}`
+        ] = Date.now();
         threadRef.update(whenUserHasSeen);
       })
       .then(() => this.props.showModal(null))
@@ -247,14 +273,19 @@ class CreateThreadModal extends Component {
                 onClick={e => {
                   e.preventDefault();
                   this.props.showModal(null);
-                }}>
+                }}
+              >
                 Back
               </StyledBackButton>
               <StyledButton
-                disabled={!this.state.threadName.length > 0 || !this.state.spaceId.length > 0}
+                disabled={
+                  !this.state.threadName.length > 0 ||
+                  !this.state.spaceId.length > 0
+                }
                 onClick={() => {
                   this.saveEditorText();
-                }}>
+                }}
+              >
                 Post
               </StyledButton>
             </div>
@@ -269,9 +300,13 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn ? state.firestore.ordered.spacesUserIsIn : [],
+    spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn
+      ? state.firestore.ordered.spacesUserIsIn
+      : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
@@ -291,7 +326,10 @@ export default compose(
     return [
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [
+          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
+          ['orgId', '==', props.activeOrg]
+        ],
         storeAs: 'spacesUserIsIn'
       },
       {
@@ -309,7 +347,7 @@ const MiniModalLeft = styled.div`
   width: 220px;
   padding: 15px 10px;
   flex-direction: column;
-  background-color: #f64e49;
+  background-color: #11282d;
   border-radius: 15px;
 `;
 
@@ -319,7 +357,7 @@ const StyledContainerTitles = styled.p`
 `;
 const TextStylingContainer = styled.div`
   border-radius: 15px;
-  background-color: #f64e49;
+  background-color: #11282d;
   width: 100%;
 `;
 const TextStylingIcon = styled.img`
@@ -330,7 +368,7 @@ const TextStylingButtons = styled.button`
   cursor: pointer;
   width: 100%;
   color: white;
-  background-color: #f64e49;
+  background-color: #11282d;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -345,7 +383,7 @@ const MiniModalRight = styled.div`
   right: -250px;
   width: 200px;
   padding: 15px 10px;
-  background-color: #f64e49;
+  background-color: #11282d;
   border-radius: 15px;
   .ui.selection.dropdown {
     color: white;
