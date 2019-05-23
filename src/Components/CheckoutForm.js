@@ -19,7 +19,6 @@ class CheckoutForm extends Component {
     e.preventDefault();
     // User clicked submit
     let { token } = await this.props.stripe.createToken({ name: 'Name' });
-
     if (!token) {
       window.alert('Invalid payment details');
     } else {
@@ -33,7 +32,6 @@ class CheckoutForm extends Component {
         this.setState({ complete: true });
       } else {
         window.alert('Error processing payment');
-        console.log(response);
         this.props.handleClose();
       }
     }
@@ -54,7 +52,7 @@ class CheckoutForm extends Component {
       return (
         <div>
           <StyledModalH1>
-            <Modal.Header content='Purchase Complete' />
+            <Modal.Header content="Purchase Complete" />
           </StyledModalH1>
 
           <StyledModalMainButtonContainerOk>
@@ -64,9 +62,9 @@ class CheckoutForm extends Component {
       );
     }
     return (
-      <div className='checkout'>
+      <div className="checkout">
         <StyledModalH1>
-          <Modal.Header content='Confirm your purchase' />
+          <Modal.Header content="Confirm your purchase" />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
@@ -77,7 +75,7 @@ class CheckoutForm extends Component {
             <StyledModalForm>
               <StyledModalLabel>
                 Please enter your card details below{' '}
-                <span className='ligther-font'>(Card number, expiry date and CVC)</span>
+                <span className="ligther-font">(Card number, expiry date and CVC)</span>
               </StyledModalLabel>
             </StyledModalForm>
           </Modal.Content>
@@ -93,7 +91,7 @@ class CheckoutForm extends Component {
               <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
 
               <StyledModalMainButtonContainer>
-                <StyledModalButton className='cancel-button' onClick={this.props.handleClose}>
+                <StyledModalButton className="cancel-button" onClick={this.props.handleClose}>
                   Cancel
                 </StyledModalButton>
               </StyledModalMainButtonContainer>
@@ -105,16 +103,21 @@ class CheckoutForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {};
 };
 
 //As we are not dispatching anything - this is empty
 const mapDispatchToProps = {};
 
-export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(
-  injectStripe(CheckoutForm)
-);
+export default compose(
+  withFirestore,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
+)(injectStripe(CheckoutForm));
 
 // export default injectStripe(CheckoutForm);
 
