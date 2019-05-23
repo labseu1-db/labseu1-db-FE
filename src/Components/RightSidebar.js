@@ -51,20 +51,23 @@ export default class RightSidebar extends React.Component {
           <p>Learn about Threads</p>
           <LearnTopic onClick={this.toggleCheckFirst}>
             <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check01' />
-            <Modal size='tiny' trigger={<Paragraph>What is Threads?</Paragraph>}>
+            <Modal size='tiny' trigger={<Paragraph>What is Pinely?</Paragraph>}>
               <ModalImg>
                 <Image src={discussionImg} size='medium' centered />
               </ModalImg>
-              <Modal.Header>What is Threads?</Modal.Header>
-              <Modal.Content>
-                <Modal.Description>
-                  <p>
-                    Threads helps your team do their best work by enabling thoughtful, focused and inclusive
-                    discussions. With Threads, you can easily inform, discuss, and make decisions. Your team will be
-                    empowered to share their knowledge and experience at their own pace.
-                  </p>
-                </Modal.Description>
-              </Modal.Content>
+
+              <StyledContent>
+                <Modal.Content>
+                  <h3>What is Pinely?</h3>
+                  <Modal.Description>
+                    <p>
+                      With Pinely your team will be able to participate in forum conversations where they can share
+                      news, content, or comment on other people’s threads. Make decision making simpler, more pleasant
+                      and more productive.
+                    </p>
+                  </Modal.Description>
+                </Modal.Content>
+              </StyledContent>
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckSecond}>
@@ -73,34 +76,38 @@ export default class RightSidebar extends React.Component {
               <ModalImg>
                 <Image src={mobileImg} size='medium' centered />
               </ModalImg>
-              <Modal.Header>What are spaces and how do I use them?</Modal.Header>
-              <Modal.Content>
-                <Modal.Description>
-                  <p>
-                    Spaces help you organize and discover threads. They help your team stay focused and find discussions
-                    that are relevant to them. Create spaces for topics, projects or teams. Start with a few spaces,
-                    invite your teammates and add more as needed.
-                  </p>
-                </Modal.Description>
-              </Modal.Content>
+              <StyledContent>
+                <Modal.Content>
+                  <h3>What are spaces and how do I use them?</h3>
+                  <Modal.Description>
+                    <p>
+                      You can create spaces for the different departments in your organisation, projects or topics to
+                      keep everything in its place. Spaces will help your team to stay focused and find discussions that
+                      are relevant to them. Start with a few spaces, invite your teammates and add more as needed.
+                    </p>
+                  </Modal.Description>
+                </Modal.Content>
+              </StyledContent>
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckThird}>
             <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check03' />
-            <Modal size='tiny' trigger={<Paragraph>What threads should I write?</Paragraph>}>
+            <Modal size='tiny' trigger={<Paragraph>How do I use threads?</Paragraph>}>
               <ModalImg>
                 <Image src={voiceImg} size='medium' centered />
               </ModalImg>
-              <Modal.Header>What threads should I write?</Modal.Header>
-              <Modal.Content>
-                <Modal.Description>
-                  <p>
-                    Threads enable you to share context and have effective discussions. You can write a thread to share
-                    an important update with your team, to discuss an important topic or to make an informed and
-                    collaborative decision.
-                  </p>
-                </Modal.Description>
-              </Modal.Content>
+              <StyledContent>
+                <Modal.Content>
+                  <h3>How do I use threads?</h3>
+                  <Modal.Description>
+                    <p>
+                      Anyone can create a thread inside a space they belong to. Using threads you can start a discussion
+                      about a particular topic and asks for your team's opinions to arrive to a final decision, and mark
+                      it as such so everyone can be informed.
+                    </p>
+                  </Modal.Description>
+                </Modal.Content>
+              </StyledContent>
             </Modal>
           </LearnTopic>
         </LearnMore>
@@ -164,10 +171,14 @@ const LearnTopic = styled.div`
   background-color: white;
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 20px;
   margin-top: 7px;
   -webkit-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
   -moz-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
   box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
 `;
-const ModalImg = styled.div`padding: 20px 0;`;
+const ModalImg = styled.div`padding: 25px 0;`;
+const StyledContent = styled.div`
+  background-color: #fff7f3;
+  padding: 35px;
+`;
