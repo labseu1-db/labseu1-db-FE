@@ -68,7 +68,7 @@ export default class LandingTeam extends React.Component {
               <img src={sean} alt="Sean" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/sean-attewell" target="_blank" rel="noopener noreferrer">
                 <h5>Sean Attewell</h5>
               </a>
               <div>Fullstack Developer</div>

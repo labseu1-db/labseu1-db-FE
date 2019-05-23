@@ -130,6 +130,7 @@ const StyledPricingCard = styled.div`
     font-weight: bold;
     text-align: center;
     align-self: center;
+    border: 2px solid #00bc981a;
     cursor: pointer;
     &:hover {
       color: #00bc98;
