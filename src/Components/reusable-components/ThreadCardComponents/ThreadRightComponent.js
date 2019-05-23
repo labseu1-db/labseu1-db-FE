@@ -12,10 +12,16 @@ export class ThreadRightComponent extends React.Component {
     e.stopPropagation();
 
     let threadRef = this.props.firestore.collection('threads').doc(this.props.threadId);
-    threadRef.update({
-      isFollowUp: true,
-      arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
-    });
+    if (this.props.isFollowUpDecided) {
+      threadRef.update({
+        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
+      });
+    } else {
+      threadRef.update({
+        isFollowUp: true,
+        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
+      });
+    }
   };
 
   render() {
@@ -25,14 +31,16 @@ export class ThreadRightComponent extends React.Component {
     return (
       <div>
         {!this.props.isFollowUpDecided && (
-          <StyledRightContainer value={'Follow up'} onClick={e => this.markAsFollowUp(e)}>
+          <StyledRightContainer onClick={e => this.markAsFollowUp(e)}>
             <StyledFollowUpButton>
               <img src={clipboardIcon} alt="home icon" />
-              {this.state.isFollowUpText}
+              Follow Up
             </StyledFollowUpButton>
           </StyledRightContainer>
         )}
-        {this.props.isFollowUpDecided && <StyledDecision onClick={stopPropagation}>Marked for followup</StyledDecision>}
+        {this.props.isFollowUpDecided && (
+          <StyledDecision onClick={e => this.markAsFollowUp(e)}>Marked for followup</StyledDecision>
+        )}
       </div>
     );
   }
