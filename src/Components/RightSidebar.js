@@ -87,17 +87,17 @@ export default class RightSidebar extends React.Component {
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckThird}>
             <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check03' />
-            <Modal size='tiny' trigger={<Paragraph>What threads should I write?</Paragraph>}>
+            <Modal size='tiny' trigger={<Paragraph>How do I use threads?</Paragraph>}>
               <ModalImg>
                 <Image src={voiceImg} size='medium' centered />
               </ModalImg>
-              <Modal.Header>What threads should I write?</Modal.Header>
+              <Modal.Header>How do I use threads?</Modal.Header>
               <Modal.Content>
                 <Modal.Description>
                   <p>
-                    Threads enable you to share context and have effective discussions. You can write a thread to share
-                    an important update with your team, to discuss an important topic or to make an informed and
-                    collaborative decision.
+                    Anyone can create a thread inside a space they belong to. Using threads you can start a discussion
+                    about a particular topic and asks for your team's opinions to arrive to a final decision, and mark
+                    it as such so everyone can be informed.
                   </p>
                 </Modal.Description>
               </Modal.Content>
