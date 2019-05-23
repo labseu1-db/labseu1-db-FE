@@ -17,10 +17,10 @@ class FollowUp extends React.Component {
     return (
       <StyledFollowUp>
         <StyledFirstRow>
-          <ScreenHeading heading="Follow Up" info="Get back to the things you've marked as follow up." />
+          <ScreenHeading heading='Follow Up' info='Get back to the things you&#39;ve marked as follow up.' />
         </StyledFirstRow>
         {this.props.threads.length > 0 &&
-          this.props.threads.map(t => {
+          this.props.threads.map((t) => {
             let dateInfo = new Date(t.threadCreatedAt);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${dateInfo.getMinutes()}`;
             return (
@@ -40,7 +40,7 @@ class FollowUp extends React.Component {
                   this.props.setActiveThread(t.id);
                   this.props.hideFollowUp();
                 }}
-                isFollowUpDecided="true"
+                isFollowUpDecided='true'
               />
             );
           })}
@@ -49,7 +49,7 @@ class FollowUp extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -58,20 +58,18 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ setActiveThread, hideFollowUp }, dispatch);
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  firestoreConnect(props => {
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => {
     return [
       {
         collection: 'threads',
-        where: [['isFollowUp', '==', true], ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]]
+        where: [ [ 'isFollowUp', '==', true ], [ 'arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid ] ],
+        orderBy: [ 'threadCreatedAt', 'desc' ]
       }
     ];
   })
