@@ -113,9 +113,11 @@ function SpaceThreads(props) {
               info={t.threadTopic}
               whenUserHasSeen={t.whenUserHasSeen}
               isFollowUpDecided={
-                t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(localStorage.getItem('uuid'))
-                  ? true
-                  : false
+                t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(localStorage.getItem('uuid')) ? (
+                  true
+                ) : (
+                  false
+                )
               }
               checked={
                 (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
@@ -197,7 +199,8 @@ export default compose(
     return [
       {
         collection: 'threads',
-        where: [ 'spaceId', '==', props.spaceId ]
+        where: [ 'spaceId', '==', props.spaceId ],
+        orderBy: [ 'threadCreatedAt', 'desc' ]
       },
       {
         collection: 'spaces',
