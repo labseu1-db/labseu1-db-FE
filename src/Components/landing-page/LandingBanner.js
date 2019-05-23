@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import landingPageBanner from '../../images/bulb-background.png';
+import landingPageBanner from '../../images/landing-banner-bulb.svg';
 
 //Import components
 

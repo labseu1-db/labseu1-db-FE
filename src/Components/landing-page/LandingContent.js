@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 //Import icons/images
 import productScreen from '../../images/product-image.png';
-import commentScreen from '../../images/communication-image.png';
+import commentScreen from '../../images/product-video.gif';
 
 //Import components
 
@@ -13,7 +13,7 @@ export default class LandingContent extends React.Component {
     return (
       <StyledContent>
         <StyledContentSection>
-          <img src={productScreen} alt="product" />
+          <img src={commentScreen} alt="product" />
         </StyledContentSection>
         <StyledContentSection>
           <StyledDescribtionCard>
@@ -31,8 +31,6 @@ export default class LandingContent extends React.Component {
               scheduling required. Perfect for all, but especially distributed teams.
             </div>
           </StyledDescribtionCard>
-        </StyledContentSection>
-        <StyledContentSection>
           <StyledDescribtionCard>
             <h3 className="blue">Start a thread</h3>
             <div className="content-div">
@@ -48,9 +46,6 @@ export default class LandingContent extends React.Component {
               same page. Make decision making simpler, more pleasant and more productive.
             </div>
           </StyledDescribtionCard>
-        </StyledContentSection>
-        <StyledContentSection>
-          <img src={commentScreen} alt="product" />
         </StyledContentSection>
       </StyledContent>
     );
@@ -96,21 +91,9 @@ const StyledContentSection = styled.div`
   @media screen and (max-width: 1000px) {
     width: 100%;
     margin: 3vh 0;
-    :nth-child(1) {
-      order: 2;
-    }
-    :nth-child(2) {
-      order: 1;
-    }
-    :nth-child(3) {
-      order: 3;
-    }
-    :nth-child(4) {
-      order: 4;
-    }
   }
   img {
-    max-width: 100%;
+    max-width: 90%;
   }
 `;
 
