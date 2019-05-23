@@ -28,6 +28,7 @@ import { Dropdown } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
+import AvatarFromLetter from './reusable-components/AvatarFromLetter';
 
 //Import icons
 import homeIcon from '../images/icon-home-lightgray.svg';
@@ -157,7 +158,7 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.profileUrl && <StyledImage src={this.props.user.profileUrl} alt="user" />}
+              {this.props.user.fullName && <AvatarFromLetter username={this.props.user.fullName} />}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -191,8 +192,7 @@ export class NavBar extends Component {
                   this.props.resetUpgradeScreen();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}
-              >
+                }}>
                 Home
               </RowDiv>
             </RowContainer>
@@ -206,8 +206,7 @@ export class NavBar extends Component {
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}
-              >
+                }}>
                 Follow up
               </RowDiv>
             </RowContainer>
@@ -219,8 +218,7 @@ export class NavBar extends Component {
                     this.props.resetSpace();
                     this.props.resetThread();
                     this.props.history.push('/users');
-                  }}
-                >
+                  }}>
                   Users
                 </RowDiv>
               </RowContainer>
@@ -263,8 +261,7 @@ export class NavBar extends Component {
                             this.props.showModal(null);
                             this.props.notRenderProfile();
                             this.props.hideFollowUp();
-                          }}
-                        >
+                          }}>
                           {space.spaceName}
                         </RowDiv>
                       ))}
@@ -488,11 +485,4 @@ const NavBarContainer = styled.div`
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
-`;
-
-const StyledImage = styled.img`
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  margin-right: 8px;
 `;
