@@ -65,6 +65,7 @@ const StyledContent = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: stretch;
+
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
   }
