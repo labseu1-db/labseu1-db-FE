@@ -32,12 +32,12 @@ class CreateThreadModal extends Component {
       let rawDraftContentState = convertToRaw(this.state.editorState.getCurrentContent());
       let threadTopic = rawDraftContentState.blocks[0].text;
       let words = threadTopic.split(' ');
-      let wordsWithSpecificLength = words.every(word => word.length < 60);
+      let wordsWithSpecificLength = words.every(word => word.length < 70);
       console.log(threadTopic.length);
       console.log(this.state.error2);
       if (
         contentState === oldContent ||
-        (threadTopic.length <= 600 && wordsWithSpecificLength) ||
+        (threadTopic.length <= 800 && wordsWithSpecificLength) ||
         window.event.which === 8
       ) {
         this.setState({ editorState });
@@ -53,7 +53,7 @@ class CreateThreadModal extends Component {
         );
         this.setState({ editorState });
       }
-      if (threadTopic.length > 600) {
+      if (threadTopic.length > 800) {
         this.setState({ error2: 'toManyThreadTopicCharacters' });
       }
       if (!wordsWithSpecificLength) {
@@ -226,13 +226,13 @@ class CreateThreadModal extends Component {
               />
               {this.state.error3 === 'wordIsTooLong' && (
                 <Message warning attached="bottom">
-                  <Icon name="warning" />A word can only be 60 characters long
+                  <Icon name="warning" />A word can only be 70 characters long
                 </Message>
               )}
               {this.state.error2 === 'toManyThreadTopicCharacters' && (
                 <Message warning attached="bottom">
                   <Icon name="warning" />
-                  Thread name can only have 1000 characters
+                  Thread topic can only have 800 characters
                 </Message>
               )}
             </StyledThreadInput>
