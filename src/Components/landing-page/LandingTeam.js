@@ -99,7 +99,7 @@ const StyledTeamContainer = styled.div`
   align-items: center;
   background: url(${backgroundTeam}) repeat-x 0 / 100% auto;
   min-height: 100%;
-  animation: ani 60s linear infinite;
+  animation: ani 90s linear infinite;
   @keyframes ani {
     0% {
       background-position: 0 0;
