@@ -51,17 +51,17 @@ export default class RightSidebar extends React.Component {
           <p>Learn about Threads</p>
           <LearnTopic onClick={this.toggleCheckFirst}>
             <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check01' />
-            <Modal size='tiny' trigger={<Paragraph>What is Threads?</Paragraph>}>
+            <Modal size='tiny' trigger={<Paragraph>What is Pinely?</Paragraph>}>
               <ModalImg>
                 <Image src={discussionImg} size='medium' centered />
               </ModalImg>
-              <Modal.Header>What is Threads?</Modal.Header>
+              <Modal.Header>What is Pinely?</Modal.Header>
               <Modal.Content>
                 <Modal.Description>
                   <p>
-                    Threads helps your team do their best work by enabling thoughtful, focused and inclusive
-                    discussions. With Threads, you can easily inform, discuss, and make decisions. Your team will be
-                    empowered to share their knowledge and experience at their own pace.
+                    With Pinely your team will be able to participate in forum conversations where they can share news,
+                    content, or comment on other people’s threads. Make decision making simpler, more pleasant and more
+                    productive.
                   </p>
                 </Modal.Description>
               </Modal.Content>
@@ -77,9 +77,9 @@ export default class RightSidebar extends React.Component {
               <Modal.Content>
                 <Modal.Description>
                   <p>
-                    Spaces help you organize and discover threads. They help your team stay focused and find discussions
-                    that are relevant to them. Create spaces for topics, projects or teams. Start with a few spaces,
-                    invite your teammates and add more as needed.
+                    You can create spaces for the different departments in your organisation, projects or topics to keep
+                    everything in its place. Spaces will help your team to stay focused and find discussions that are
+                    relevant to them. Start with a few spaces, invite your teammates and add more as needed.
                   </p>
                 </Modal.Description>
               </Modal.Content>
