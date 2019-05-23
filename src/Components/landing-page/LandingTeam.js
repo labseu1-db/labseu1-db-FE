@@ -99,7 +99,7 @@ const StyledTeamContainer = styled.div`
   align-items: center;
   background: url(${backgroundTeam}) repeat-x 0 / 100% auto;
   min-height: 100%;
-  animation: ani 90s linear infinite;
+  animation: ani 60s linear infinite;
   @keyframes ani {
     0% {
       background-position: 0 0;
@@ -115,7 +115,8 @@ const StyledTeamContainer = styled.div`
     margin: 3vh 0;
   }
   @media screen and (max-width: 800px) {
-    padding: 7vh 5vw;
+    padding: 2vh 5vw;
+    margin: 5vh 0;
   }
   @media screen and (max-width: 400px) {
     padding: 7vh 3vw;
@@ -123,6 +124,9 @@ const StyledTeamContainer = styled.div`
   h3 {
     font-size: 2.5rem;
     text-align: center;
+    @media screen and (max-width: 400px) {
+      font-size: 2rem;
+    }
   }
 `;
 

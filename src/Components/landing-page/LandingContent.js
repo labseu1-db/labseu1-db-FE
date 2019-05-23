@@ -56,7 +56,7 @@ const StyledContent = styled.div`
   margin-top: 10vh;
   padding: 0 15vw;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   justify-content: space-between;
   align-items: stretch;
 
@@ -74,6 +74,7 @@ const StyledContent = styled.div`
   }
   @media screen and (max-width: 400px) {
     padding: 3vw;
+    margin-top: 5vh;
   }
 `;
 
@@ -92,7 +93,7 @@ const StyledContentSection = styled.div`
     margin: 3vh 0;
   }
   img {
-    max-width: 90%;
+    max-width: 100%;
   }
 `;
 
@@ -118,6 +119,10 @@ const StyledDescribtionCard = styled.div`
   }
   h3 {
     font-size: 2rem;
+    @media screen and (max-width: 600px) {
+      text-align: center;
+      font-size: 1.7rem;
+    }
   }
   @media screen and (max-width: 1000px) {
     text-align: center;
@@ -134,6 +139,10 @@ const StyledDescribtionCard = styled.div`
     }
     @media screen and (max-width: 1000px) {
       text-align: center;
+    }
+    @media screen and (max-width: 600px) {
+      text-align: center;
+      font-size: 1.2rem;
     }
   }
 `;

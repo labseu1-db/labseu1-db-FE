@@ -60,6 +60,9 @@ const StyledContent = styled.div`
   }
   h2 {
     font-size: 2.5rem;
+    @media screen and (max-width: 400px) {
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -132,8 +135,6 @@ const StyledPricingCard = styled.div`
       color: #00bc98;
       background-color: white;
       border: 2px solid #00bc98;
-    }
-    
     }
   }
 `;
