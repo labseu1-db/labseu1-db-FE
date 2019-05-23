@@ -8,6 +8,7 @@ import samar from '../../images/samar.png';
 import sean from '../../images/sean.png';
 import novina from '../../images/novina.png';
 import thorben from '../../images/thorben.png';
+import backgroundTeam from '../../images/background-team.svg';
 
 //Import components
 
@@ -91,15 +92,24 @@ export default class LandingTeam extends React.Component {
 }
 
 const StyledTeamContainer = styled.div`
-  background-color: #fff7f3;
   width: 100%;
-  margin: 10vh 0;
-  padding: 7vh 15vw;
+  padding: 25vh 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: url(${backgroundTeam}) repeat-x 0 / 100% auto;
+  min-height: 100%;
+  animation: ani 90s linear infinite;
+  @keyframes ani {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100vw 0;
+    }
+  }
   @media screen and (max-width: 1500px) {
-    padding: 7vh 10vw;
+    padding: 30vh 10vw 35vh 10vw;
   }
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
@@ -111,14 +121,14 @@ const StyledTeamContainer = styled.div`
     padding: 7vh 3vw;
   }
   h3 {
-    font-size: 2.3rem;
+    font-size: 2.5rem;
     text-align: center;
   }
 `;
 
 const StyledPeopleConatiner = styled.div`
   width: 100%;
-  margin: 40px 0;
+  margin: 50px 0 0 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -146,7 +156,7 @@ const StyledCard = styled.div`
     cursor: pointer;
     font-size: 1.1rem;
     &:hover {
-      color: #00bc98;
+      color: #f64d4a;
     }
     a {
       text-decoration: none;
@@ -154,7 +164,7 @@ const StyledCard = styled.div`
     }
   }
     .image-div {
-    width: 40%;
+    width: 50%;
     text-align: center;
     margin-bottom: 10px;
     @media screen and (max-width: 800px) {

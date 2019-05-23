@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import productScreen from '../../images/product-screen.png';
-import commentScreen from '../../images/comment-screen.png';
+import commentScreen from '../../images/product-video.gif';
 
 //Import components
 
@@ -13,11 +12,11 @@ export default class LandingContent extends React.Component {
     return (
       <StyledContent>
         <StyledContentSection>
-          <img src={productScreen} alt="product" />
+          <img src={commentScreen} alt="product" />
         </StyledContentSection>
         <StyledContentSection>
           <StyledDescribtionCard>
-            <h3>Create an organisation</h3>
+            <h3 className="green">Create an organisation</h3>
             <div className="content-div">
               We believe that Pinely will help all teams, groups, organisations and companies with comunication,
               decision making and inclusion. As an idividual, you can be member of as many organisations, as you need.
@@ -25,16 +24,14 @@ export default class LandingContent extends React.Component {
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
-            <h3>Create a space</h3>
+            <h3 className="orange">Create a space</h3>
             <div className="content-div">
               Spaces are your team's meeting rooms. Once they are created, invite others and start the discussion. No
               scheduling required. Perfect for all, but especially distributed teams.
             </div>
           </StyledDescribtionCard>
-        </StyledContentSection>
-        <StyledContentSection>
           <StyledDescribtionCard>
-            <h3>Start a thread</h3>
+            <h3 className="blue">Start a thread</h3>
             <div className="content-div">
               Ask questions, get feedback and hash out ideas with your team. Make better decisions with all the context
               you need in one place. And you can say goodbye to situations, where people are being left off meeting
@@ -42,15 +39,12 @@ export default class LandingContent extends React.Component {
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
-            <h3>Mark the decision</h3>
+            <h3 className="red">Mark the decision</h3>
             <div className="content-div">
               When you're done hearing from everyone on a thread, highlight the final decision so everyone is on the
               same page. Make decision making simpler, more pleasant and more productive.
             </div>
           </StyledDescribtionCard>
-        </StyledContentSection>
-        <StyledContentSection>
-          <img src={commentScreen} alt="product" />
         </StyledContentSection>
       </StyledContent>
     );
@@ -59,12 +53,13 @@ export default class LandingContent extends React.Component {
 
 const StyledContent = styled.div`
   width: 100%;
-  margin-top: 15vh;
+  margin-top: 10vh;
   padding: 0 15vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
+
   @media screen and (max-width: 1500px) {
     padding: 0 10vw;
   }
@@ -83,7 +78,7 @@ const StyledContent = styled.div`
 `;
 
 const StyledContentSection = styled.div`
-  width: 40%;
+  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -95,21 +90,9 @@ const StyledContentSection = styled.div`
   @media screen and (max-width: 1000px) {
     width: 100%;
     margin: 3vh 0;
-    :nth-child(1) {
-      order: 1;
-    }
-    :nth-child(2) {
-      order: 1;
-    }
-    :nth-child(3) {
-      order: 4;
-    }
-    :nth-child(4) {
-      order: 3;
-    }
   }
   img {
-    max-width: 100%;
+    max-width: 90%;
   }
 `;
 
@@ -117,18 +100,32 @@ const StyledDescribtionCard = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
+  .blue {
+    color: #3670c6;
+  }
+  .red {
+    color: #f64e49;
+  }
+  .orange {
+    color: #ff8333;
+  }
+
+  .green {
+    color: #29c2a5;
+  }
   @media screen and (max-width: 1000px) {
     padding-bottom: 50px;
   }
   h3 {
-    font-size: 1.4rem;
-    @media screen and (max-width: 1000px) {
-      text-align: center;
-      font-size: 1.5rem;
-    }
+    font-size: 2rem;
   }
+  @media screen and (max-width: 1000px) {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
   div {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     padding-bottom: 30px;
     text-align: left;
     @media screen and (max-width: 1200px) {

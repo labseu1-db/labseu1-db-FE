@@ -11,7 +11,10 @@ export default class LandingMidBanner extends React.Component {
     return (
       <StyledMidBanner>
         <h1>Better discussions, better decisions.</h1>
-        <div>Get your team on Pinely today and start moving forward, together.</div>
+        <div>
+          We believe, that better discussions bring better decisions. Get your team on Pinely today and start moving
+          forward, together.
+        </div>
         {/* <div>
           <input placeholder="Enter your email" />
           <button>submit</button>
@@ -22,15 +25,19 @@ export default class LandingMidBanner extends React.Component {
 }
 
 const StyledMidBanner = styled.div`
-  margin: 10vh 0 3vh 0;
+<<<<<<< HEAD
+  margin: 0 0 3vh 0;
+=======
+  margin: 0vh 0 3vh 0;
+>>>>>>> 8e7324d8ceeb03efa1122b83125a1673c174e034
   width: 100%;
-  padding: 5vh 15vw;
-  background-color: #00bc981a;
+  padding: 10vh 15vw;
+  background-color: #3670c666;
   display: flex;
   flex-direction: column;
   justify-content: center;
   @media screen and (max-width: 1500px) {
-    padding: 5vh 10vw;
+    padding: 10vh 10vw;
   }
   h1 {
     font-size: 2.5rem;
