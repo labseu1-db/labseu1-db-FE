@@ -68,7 +68,7 @@ export default class LandingTeam extends React.Component {
               <img src={sean} alt="Sean" />
             </div>
             <div>
-              <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/sean-attewell" target="_blank" rel="noopener noreferrer">
                 <h5>Sean Attewell</h5>
               </a>
               <div>Fullstack Developer</div>
@@ -99,7 +99,7 @@ const StyledTeamContainer = styled.div`
   align-items: center;
   background: url(${backgroundTeam}) repeat-x 0 / 100% auto;
   min-height: 100%;
-  animation: ani 90s linear infinite;
+  animation: ani 60s linear infinite;
   @keyframes ani {
     0% {
       background-position: 0 0;
@@ -111,11 +111,18 @@ const StyledTeamContainer = styled.div`
   @media screen and (max-width: 1500px) {
     padding: 30vh 10vw 35vh 10vw;
   }
+  @media screen and (max-width: 1100px) {
+    background: url(${backgroundTeam});
+    animation: none;
+    background-size: 100%;
+  }
+
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
   }
   @media screen and (max-width: 800px) {
-    padding: 7vh 5vw;
+    padding: 2vh 5vw;
+    margin: 5vh 0;
   }
   @media screen and (max-width: 400px) {
     padding: 7vh 3vw;
@@ -123,6 +130,9 @@ const StyledTeamContainer = styled.div`
   h3 {
     font-size: 2.5rem;
     text-align: center;
+    @media screen and (max-width: 400px) {
+      font-size: 2rem;
+    }
   }
 `;
 

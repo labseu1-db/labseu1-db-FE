@@ -60,6 +60,9 @@ const StyledContent = styled.div`
   }
   h2 {
     font-size: 2.5rem;
+    @media screen and (max-width: 400px) {
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -73,7 +76,7 @@ const StyledPricingCards = styled.div`
 const StyledPricingCard = styled.div`
   padding: 40px 10px;
   width: 20%;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 12px 0px;
+  background-color: #00bc981a;
   margin: 20px;
   border-radius: 5px;
   display: flex;
@@ -127,13 +130,12 @@ const StyledPricingCard = styled.div`
     font-weight: bold;
     text-align: center;
     align-self: center;
+    border: 2px solid #00bc981a;
     cursor: pointer;
     &:hover {
       color: #00bc98;
       background-color: white;
       border: 2px solid #00bc98;
-    }
-    
     }
   }
 `;

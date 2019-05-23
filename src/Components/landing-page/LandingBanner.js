@@ -68,16 +68,16 @@ const StyledLandingBanner = styled.div`
     }
     @media screen and (max-width: 800px) {
       width: 80%;
+      height: 60%;
     }
+
     @media screen and (max-width: 700px) {
-      margin-left: 70px;
     }
     @media screen and (max-width: 600px) {
       width: 80%;
     }
     @media screen and (max-width: 400px) {
       width: 100%;
-      margin-left: 0;
     }
   }
 `;
@@ -92,16 +92,16 @@ const LandingHeader = styled.div`
 
   @media screen and (max-width: 800px) {
     margin-top: 5vh;
-    width: 62%;
+    width: 80%;
   }
   div {
     font-size: 1.2rem;
-    padding-top: 10px;
+    padding: 10px 0;
   }
   h1 {
     font-size: 2.5rem;
     @media screen and (max-width: 400px) {
-      font-size: 1.8rem;
+      font-size: 2rem;
     }
   }
 `;
