@@ -25,9 +25,6 @@ export class ThreadRightComponent extends React.Component {
   };
 
   render() {
-    const stopPropagation = e => {
-      e.stopPropagation();
-    };
     return (
       <div>
         {!this.props.isFollowUpDecided && (
