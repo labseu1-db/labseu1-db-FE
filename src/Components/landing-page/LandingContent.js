@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 //Import icons/images
-import commentScreen from '../../images/product-video.gif';
 import productVideo from '../../images/product-video.mp4';
 
 //Import components
