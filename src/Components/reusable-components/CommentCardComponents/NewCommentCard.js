@@ -27,7 +27,6 @@ export class NewCommentCard extends React.Component {
   handleInputChange = e => {
     let words = this.state.text.split(' ');
     let wordsWithSpecificLength = words.every(word => word.length <= 70);
-    console.log(window.event);
     if (wordsWithSpecificLength || e.target.name !== 'text' || window.event.inputType === 'deleteContentBackward') {
       this.setState({ [e.target.name]: e.target.value });
       this.setState({ error: '' });
@@ -82,7 +81,6 @@ export class NewCommentCard extends React.Component {
   };
 
   render() {
-    console.log(this.state.gif);
     const { img } = this.props;
     return (
       <StyledCommentContainer>

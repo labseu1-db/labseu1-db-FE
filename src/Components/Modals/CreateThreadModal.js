@@ -33,8 +33,6 @@ class CreateThreadModal extends Component {
       let threadTopic = rawDraftContentState.blocks[0].text;
       let words = threadTopic.split(' ');
       let wordsWithSpecificLength = words.every(word => word.length <= 70);
-      console.log(threadTopic.length);
-      console.log(this.state.error2);
       if (
         contentState === oldContent ||
         (threadTopic.length <= 800 && wordsWithSpecificLength) ||
