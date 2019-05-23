@@ -100,7 +100,7 @@ const StyledTeamContainer = styled.div`
   background-image: url(${backgroundImage});
   background-size: 60%;
   @media screen and (max-width: 1500px) {
-    padding: 30vh 10vw;
+    padding: 30vh 10vw 35vh 10vw;
   }
   @media screen and (max-width: 1000px) {
     margin: 3vh 0;
@@ -112,14 +112,14 @@ const StyledTeamContainer = styled.div`
     padding: 7vh 3vw;
   }
   h3 {
-    font-size: 2.3rem;
+    font-size: 2.5rem;
     text-align: center;
   }
 `;
 
 const StyledPeopleConatiner = styled.div`
   width: 100%;
-  margin: 40px 0;
+  margin: 50px 0 0 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
