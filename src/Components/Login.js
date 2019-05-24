@@ -62,7 +62,6 @@ class Login extends Component {
       error: null
     };
     e.preventDefault();
-    this.setState({ savinUsergInfoToDb: true });
     this.props.firebase
       .login({
         email: this.state.loginEmail,
@@ -70,6 +69,7 @@ class Login extends Component {
       })
       .then(res => {
         this.setUserIdInLocalStorage(res.user.user.email);
+        this.setState({ savinUsergInfoToDb: true });
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
@@ -120,7 +120,7 @@ class Login extends Component {
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
-      return null;
+      return <Spinner />;
     }
     return (
       <StyledLogin>
@@ -175,7 +175,8 @@ class Login extends Component {
                 })
                 .then(res => {
                   this.setUserIdInLocalStorage(res.profile.email);
-                })}
+                })
+            }
           >
             <Icon name='google plus' /> Sign in with Google
           </Button> */}
