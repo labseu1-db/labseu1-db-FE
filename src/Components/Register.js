@@ -22,8 +22,8 @@ import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 
 //Images/Icons
-import showPassword from '../images/icon-eye-green.svg';
-import hidePassword from '../images/icon-eye-gray.svg';
+import showPassword from '../images/icon-eye-gray.svg';
+import hidePassword from '../images/icon-eye-green.svg';
 
 class Register extends Component {
   static propTypes = {
