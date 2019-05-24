@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
-import { Button, Icon, Message } from 'semantic-ui-react';
+import { Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
 import { Redirect } from 'react-router-dom';
 
@@ -259,8 +259,8 @@ class Register extends Component {
               {this.state.error.message}
             </Message>
           )}
-          <Button
-            color="google plus"
+          {/* <Button
+            color='google plus'
             onClick={() => {
               this.props.firebase
                 .login({ provider: 'google', type: 'popup' })
@@ -272,8 +272,8 @@ class Register extends Component {
                 });
             }}
           >
-            <Icon name="google plus" /> Sign in with Google
-          </Button>
+            <Icon name='google plus' /> Sign in with Google
+          </Button> */}
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
