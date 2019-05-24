@@ -51,11 +51,11 @@ class Login extends Component {
     }
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleLogIn = (e) => {
+  handleLogIn = e => {
     const INITIAL_STATE = {
       loginEmail: '',
       loginPassword: '',
@@ -68,15 +68,15 @@ class Login extends Component {
         email: this.state.loginEmail,
         password: this.state.loginPassword
       })
-      .then((res) => {
+      .then(res => {
         this.setUserIdInLocalStorage(res.user.user.email);
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
       });
   };
 
-  setUserIdInLocalStorage = (email) => {
+  setUserIdInLocalStorage = email => {
     var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
     ref
       .get()
@@ -90,7 +90,7 @@ class Login extends Component {
           // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ error });
       });
   };
@@ -117,7 +117,6 @@ class Login extends Component {
       return <Spinner />;
     }
     if (this.state.savinUsergInfoToDb === true) {
-    
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
@@ -131,38 +130,38 @@ class Login extends Component {
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                id='typepass'
-                name='loginPassword'
+                id="typepass"
+                name="loginPassword"
                 value={this.state.loginPassword}
-                type='password'
+                type="password"
                 onChange={this.handleInputChange}
-                placeholder='········'
+                placeholder="········"
               />
-              <StyledIcon id='passwordIcon' src={showPassword} alt='showPassword' onClick={this.togglePassword} />
+              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
             </StyledLabel>
             <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>
               Forgot Password?
             </ForgotPasswordDiv>
             <StyledLowerSignIn>
-              <StyledLink to='/register'> Don't have an account? </StyledLink>
+              <StyledLink to="/register"> Don't have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
                 Sign In
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
@@ -174,7 +173,7 @@ class Login extends Component {
                   provider: 'google',
                   type: 'popup'
                 })
-                .then((res) => {
+                .then(res => {
                   this.setUserIdInLocalStorage(res.profile.email);
                 })}
           >
@@ -190,14 +189,14 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
@@ -206,4 +205,11 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firebaseConnect())(Login);
+export default compose(
+  withFirestore,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firebaseConnect()
+)(Login);

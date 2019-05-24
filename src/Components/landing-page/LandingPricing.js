@@ -44,22 +44,26 @@ export default class LandingPricing extends React.Component {
 const StyledContent = styled.div`
   width: 100%;
   min-height: 40vh;
-  margin: 10vh 0;
+  margin: 8vh 0 15vh 0;
   padding: 0 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 1500px) {
     padding: 5vh 10vw;
+    margin: 3vh 0 10vh 0;
   }
   @media screen and (max-width: 800px) {
     padding: 5vh 5vw;
+    margin: 10vh 0 10vh 0;
   }
   @media screen and (max-width: 400px) {
     padding: 5vh 3vw;
+    margin: 5vh 0 10vh 0;
   }
   h2 {
     font-size: 2.5rem;
+    padding-bottom: 20px;
     @media screen and (max-width: 400px) {
       font-size: 2rem;
     }

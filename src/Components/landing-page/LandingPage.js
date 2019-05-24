@@ -21,9 +21,9 @@ export default class LandingPage extends React.Component {
           <div className="circle" />
         </TopLandingContainer>
         <LandingContent />
+        <LandingPricing />
         <LandingTeam />
         <LandingMidBanner />
-        <LandingPricing />
         <LandingFooter />
       </StyledLandingContainer>
     );
