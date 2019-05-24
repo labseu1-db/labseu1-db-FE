@@ -128,7 +128,7 @@ class Login extends Component {
           <StyledH1>Sign in</StyledH1>
           <StyledForm onSubmit={this.handleLogIn}>
             <StyledLabel>
-              <StyledPLabel>Email Address</StyledPLabel>
+              <StyledPLabel>Email</StyledPLabel>
               <StyledInput
                 name="loginEmail"
                 value={this.state.loginEmail}

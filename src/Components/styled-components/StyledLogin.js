@@ -26,6 +26,10 @@ export const StyledForm = styled.form`
   -webkit-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
   -moz-box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
   box-shadow: 0px 15px 35px -34px rgba(92, 92, 91, 1);
+  @media screen and (max-width: 500px) {
+    max-width: 95vw;
+    font-size: 1rem;
+  }
 `;
 
 export const StyledInput = styled.input`

@@ -12,6 +12,10 @@ export const StyledButton = styled.button`
   &:disabled {
     background-color: lightgray;
   }
+  @media screen and (max-width: 500px) {
+    width: 90px;
+    font-size: 1rem;
+  }
 `;
 
 export const ForgotPasswordDiv = styled.div`
