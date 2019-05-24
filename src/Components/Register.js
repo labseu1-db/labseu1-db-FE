@@ -38,15 +38,8 @@ class Register extends Component {
     email: '',
     password: '',
     fullName: '',
-    error: null,
-    savinUsergInfoToDb: false
+    error: null
   };
-
-  componentWillUpdate() {
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-  }
 
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -128,7 +121,6 @@ class Register extends Component {
       error: null
     };
     e.preventDefault();
-    this.setState({ savinUsergInfoToDb: true });
     this.props.firebase
       .createUser({ email, password }, { fullName, email })
       .then(() => {
@@ -213,9 +205,6 @@ class Register extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
-    if (this.state.savinUsergInfoToDb === true) {
-      return <Spinner />;
-    }
     if (!isEmpty(this.props.auth)) {
       return <Redirect to="/homescreen" />;
     }
@@ -281,7 +270,8 @@ class Register extends Component {
                 .catch(error => {
                   console.log(error);
                 });
-            }}>
+            }}
+          >
             <Icon name="google plus" /> Sign in with Google
           </Button>
         </StyledLoginCon>
