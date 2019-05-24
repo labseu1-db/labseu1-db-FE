@@ -18,7 +18,8 @@ export default class LandingBanner extends React.Component {
             and make the right decisions.
           </div>
         </LandingHeader>
-        <img className="banner" src={landingPageBanner} alt="people using computer" />
+        <img className="banner" src={landingPageBanner} alt="bulb"  />
+        {/*Amazing illustration provided by https://absurd.design/ */}
       </StyledLandingBanner>
     );
   }
