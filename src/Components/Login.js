@@ -22,8 +22,8 @@ import {
 import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
 
 //Images/Icons
-import showPassword from '../images/icon-eye-green.svg';
-import hidePassword from '../images/icon-eye-gray.svg';
+import showPassword from '../images/icon-eye-gray.svg';
+import hidePassword from '../images/icon-eye-green.svg';
 
 //Animation
 import LoginAnimation from './animations/LoginAnimation';
