@@ -270,7 +270,7 @@ class Register extends Component {
               {this.state.error.message}
             </Message>
           )}
-          {/*<Button
+          <Button
             color="google plus"
             onClick={() => {
               this.props.firebase
@@ -283,7 +283,7 @@ class Register extends Component {
                 });
             }}>
             <Icon name="google plus" /> Sign in with Google
-          </Button>*/}
+          </Button>
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>

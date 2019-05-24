@@ -165,20 +165,20 @@ class Login extends Component {
               {this.state.error.message}
             </Message>
           )}
-          {/*<Button
-            color='google plus'
+          <Button
+            color="google plus"
             onClick={() =>
               this.props.firebase
                 .login({
                   provider: 'google',
                   type: 'popup'
                 })
-                .then((res) => {
+                .then(res => {
                   this.setUserIdInLocalStorage(res.profile.email);
-                })}
-          >
-            <Icon name='google plus' /> Sign in with Google
-              </Button>*/}
+                })
+            }>
+            <Icon name="google plus" /> Sign in with Google
+          </Button>
           <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
             Email Me a Link to Sign In
           </PasswordlessButton>
