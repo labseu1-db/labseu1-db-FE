@@ -52,6 +52,7 @@ Click [here](https://pinely.app) to visit the app, or click on the image below t
     - [Eslint](#eslint-1)
     - [Eslint-Config-Prettier](#eslint-config-prettier)
     - [React-Testing-Library](#react-testing-library)
+- [Illustrations](#illustrations)
 - [API Documentation](#api-documentation)
 
   - [Third-Party APIs](#third-party-apis)
@@ -183,6 +184,10 @@ This lets you use you favorite shareable config without letting its stylistic ch
 ### React-Testing-Library
 
 Lets you render and test your react-components. | [View Dependency](https://testing-library.com/docs/react-testing-library/api)
+
+# Illustrations
+
+Huge thanks to [absurd.design](https://absurd.design/) for the amazing illustration we used on our landing page.
 
 # API Documentation
 
