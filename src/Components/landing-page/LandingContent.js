@@ -93,7 +93,7 @@ const StyledContentSection = styled.div`
   }
   @media screen and (max-width: 1000px) {
     width: 100%;
-    margin: 3vh 0;
+    margin: 7vh 0 3vh 0;
   }
   video {
     max-width: 100%;
