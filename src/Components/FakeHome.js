@@ -14,7 +14,7 @@ import UpgradeAccount from './UpgradeAccount';
 
 import { showModal } from '../redux/actions/actionCreators';
 import UserProfile from './UserProfile';
-import FollowUp from './FollowUp';
+import FollowUp from './reusable-components/FollowUp';
 
 class FakeHome extends Component {
   render() {
@@ -31,7 +31,7 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            {this.props.spaceId && !this.props.threadId && <SpaceThreads />}
+            {this.props.spaceId && !this.props.threadId && <SpaceThreads {...this.props} />}
             {!this.props.spaceId &&
               !this.props.threadId &&
               !this.props.followUpStatus &&

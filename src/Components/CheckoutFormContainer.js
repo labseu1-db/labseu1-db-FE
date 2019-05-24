@@ -28,10 +28,10 @@ class CheckoutFormContainer extends Component {
           </div>
         }
         open={this.state.model_open}
-        size="tiny"
+        size='tiny'
       >
-        <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
-          <div className="example">
+        <StripeProvider apiKey='pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3'>
+          <div className='example'>
             <Elements>
               <CheckoutForm handleClose={this.handleClose} currentOrg={this.props.currentOrg} />
             </Elements>
@@ -55,7 +55,7 @@ const UpgradePlanButton = styled.button`
   border-radius: 15px;
   border: none;
   cursor: pointer;
-  background-color: #5c4df2;
+  background-color: #00bc98;
   color: white;
   border: none;
   &:focus {

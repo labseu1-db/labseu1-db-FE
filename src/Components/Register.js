@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
 import { Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
+import { Redirect } from 'react-router-dom';
 
 import { StyledButton } from './styled-components/StyledButton';
 import {
@@ -37,7 +38,8 @@ class Register extends Component {
     email: '',
     password: '',
     fullName: '',
-    error: null
+    error: null,
+    savinUsergInfoToDb: false
   };
 
   componentWillUpdate() {
@@ -125,8 +127,8 @@ class Register extends Component {
       fullName: '',
       error: null
     };
-
     e.preventDefault();
+    this.setState({ savinUsergInfoToDb: true });
     this.props.firebase
       .createUser({ email, password }, { fullName, email })
       .then(() => {
@@ -211,8 +213,11 @@ class Register extends Component {
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
+    if (this.state.savinUsergInfoToDb === true) {
+      return <Spinner />;
+    }
     if (!isEmpty(this.props.auth)) {
-      return null;
+      return <Redirect to='/homescreen' />;
     }
     return (
       <StyledLogin>
@@ -270,10 +275,10 @@ class Register extends Component {
             onClick={() => {
               this.props.firebase
                 .login({ provider: 'google', type: 'popup' })
-                .then((res) => {
+                .then(res => {
                   this.saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn(res);
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log(error);
                 });
             }}

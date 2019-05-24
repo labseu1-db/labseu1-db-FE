@@ -1,13 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isEmpty } from 'react-redux-firebase';
 
 function ScreenHeading(props) {
-  const { heading, info } = props;
+  const { heading, info, topic } = props;
+  if (isEmpty(topic)) {
+    return (
+      <div>
+        <StyledHeadingContainer>
+          <div className='heading'>{heading}</div>
+          <div className='info'>{info}</div>
+        </StyledHeadingContainer>
+      </div>
+    );
+  }
   return (
     <div>
       <StyledHeadingContainer>
-        <div className="heading">{heading}</div>
-        <div className="info">{info}</div>
+        <div className='heading'>{heading}</div>
+        <div className='topic'>{topic}</div>
       </StyledHeadingContainer>
     </div>
   );
