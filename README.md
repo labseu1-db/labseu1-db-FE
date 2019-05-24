@@ -4,7 +4,7 @@ Welcome to our Discussion Board.
 
 If you want to see our trello board and tickets that we made click [here](https://trello.com/b/KnHyQcVL/mango) and if you want to see our Technical Documents, User Stories and Key Features click [here](https://www.notion.so/lambdamango/git-flow-c8154d55b6f840e98df53a637811122f).
 
-Click [here](https://labseu1-db-test.firebaseapp.com) to visit the app, or click on the image below to view our video demo and tutorial:
+Click [here](https://pinely.app) to visit the app, or click on the image below to view our video demo and tutorial:
 
 [![Main Course App](https://firebasestorage.googleapis.com/v0/b/labseu1-db-test.appspot.com/o/Screenshot_23.png?alt=media&token=d4363fbb-033c-43b1-9f5c-319083f70030)](https://youtu.be/k5Zb9yh4GUQ)
 
