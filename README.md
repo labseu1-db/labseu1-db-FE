@@ -92,7 +92,7 @@ Firebase provides the tools and infrastructure you need to develop your app, gro
 
 ### Firebase Functions
 
-Runs Code in response of Http Request or firebase Features [View Dependency](https://firebase.google.com/docs/functions)
+Runs Code in response of Http Request or firebase Features | [View Dependency](https://firebase.google.com/docs/functions)
 
 ### Cors
 
@@ -112,9 +112,10 @@ A powerful, simple, and seamless payment commerce solution | [View Dependency](h
 
 Eslint is the dominant linting tool for NodeJS and it makes it possible to establish a clear coding convention for a team or project, as well as aiding in catching various bugs such as variables improperly scoped. | [View Dependency](https://eslint.org/)
 
-### Firebase-functions-test
+### Firebase-Functions-Test
 
-The firebase-functions-test is unit testing library for Cloud Functions for Firebase. It is a companion to firebase-functions. | [View Dependency](https://firebase.google.com/docs/functions/unit-testing)
+The firebase-functions-test is unit testing library for Cloud Functions for Firebase. It is a companion to firebase-functions.
+[View Dependency](https://firebase.google.com/docs/functions/unit-testing)
 
 ## Front-End Dependencies `(Production)`
 
@@ -128,7 +129,8 @@ A state management tool making it possible to store the entire state of the appl
 
 ### Firebase
 
-The full Firebase JavaScript client includes support for Firebase Authentication, the Firebase Realtime Database, Firebase Storage, and Firebase Cloud Messaging. Including code via the above snippets will pull in all of these features. | [View Dependency](https://firebase.google.com/docs/web/setup)
+The full Firebase JavaScript client includes support for Firebase Authentication, the Firebase Realtime Database, Firebase Storage, and Firebase Cloud Messaging. Including code via the above snippets will pull in all of these features.
+[View Dependency](https://firebase.google.com/docs/web/setup)
 
 ### Draft-JS
 
