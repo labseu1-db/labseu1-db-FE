@@ -9,7 +9,7 @@ export const StyledLogin = styled.div`
 `;
 
 export const StyledLoginCon = styled.div`
-  height: 70%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;

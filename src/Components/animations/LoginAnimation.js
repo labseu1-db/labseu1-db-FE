@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import backgroundImg from '../../images/login-background.svg';
+import backgroundImg from '../../images/background-login.svg';
 
 export default function loginAnimation() {
   return (
@@ -12,7 +12,7 @@ export default function loginAnimation() {
 
 const SDContainer = styled.div`
   width: 100%;
-  height: 30%;
+  height: 40%;
   position: relative;
   overflow: hidden;
   margin: 0;
