@@ -2,7 +2,7 @@
 
 Welcome to our Discussion Board.
 
-If you want to see our trello board and tickets that we made click on this icon [<img src="https://firebasestorage.googleapis.com/v0/b/labseu1-db-test.appspot.com/o/trello-mark-blue.svg?alt=media&token=c74d5ca2-1583-44b0-a4bc-6f43f821549e">](https://trello.com/b/KnHyQcVL/mango) and if you want to see our Technical Documents, User Stories and Key Features click on [<img src"https://assets.materialup.com/uploads/a3ad2034-ebc1-4bbe-bf9f-d47aa2fe7b22/preview.jpg">](https://www.notion.so/lambdamango/git-flow-c8154d55b6f840e98df53a637811122f)
+If you want to see our trello board and tickets that we made click [here](https://trello.com/b/KnHyQcVL/mango) and if you want to see our Technical Documents, User Stories and Key Features click [here](https://www.notion.so/lambdamango/git-flow-c8154d55b6f840e98df53a637811122f).
 
 Click [here](https://labseu1-db-test.firebaseapp.com) to visit the app, or click on the image below to view our video demo and tutorial:
 
