@@ -1,5 +1,14 @@
 {
-  "projects": {
-    "default": "labseu1-db-test"
+  "targets": {
+    "labseu1-db-test": {
+      "hosting": {
+        "staging": [
+          "pinely-staging"
+        ],
+        "production": [
+          "pinelynow"
+        ]
+      }
+    }
   }
 }

@@ -3,9 +3,9 @@ node_js: "10.10.0"
 install:
   - yarn
 script:
-  - npm ls babel-jest
   - yarn test
   - yarn run build
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then bash ./travis/run_on_pull_requests; fi'
 deploy:
   provider: firebase
   token: $FIREBASE_TOKEN
