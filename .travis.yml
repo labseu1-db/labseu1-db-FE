@@ -6,6 +6,7 @@ cache:
 install:
   - yarn install
 script:
+  - npm ls babel-jest
   - yarn test
   - yarn run build
 deploy:
