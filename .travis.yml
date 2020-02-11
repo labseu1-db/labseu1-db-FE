@@ -6,10 +6,19 @@ script:
   - yarn test
   - yarn run build
   - 'if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then bash ./travis/run_on_pull_requests; fi'
-deploy:
-  provider: firebase
-  token: $FIREBASE_TOKEN
-  skip-cleanup: true
-  local_dir: build
-  on:
-    branch: master
+staging:
+  deploy:
+    provider: firebase
+    project: pinely-staging
+    token: $FIREBASE_TOKEN_STAGING
+    skip-cleanup: true
+    local_dir: build
+production:
+  deploy:
+    provider: firebase
+    project: labseu1-db-test
+    token: $FIREBASE_TOKEN
+    skip-cleanup: true
+    local_dir: build
+    on:
+      branch: master

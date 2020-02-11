@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firebaseConnect } from "react-redux-firebase";
 import { Route } from "react-router-dom";
-
 import Register from "./Components/Register";
 import Login from "./Components/Login";
 import FakeHome from "./Components/FakeHome";
@@ -13,6 +12,9 @@ import ForgotPassword from "./Components/ForgotPassword";
 import CreateNewOrganisation from "./Components/CreateNewOrganisation";
 import UserManagement from "./Components/UserManagement";
 import LandingPage from "./Components/landing-page/LandingPage";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 class App extends Component {
   render() {
