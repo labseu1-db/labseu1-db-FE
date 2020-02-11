@@ -1,30 +1,35 @@
-import React from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { Dropdown } from 'semantic-ui-react';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { Dropdown } from "semantic-ui-react";
 
 //Import icons
-import penIconWhite from '../images/icon-pen-white.svg';
+import penIconWhite from "../images/icon-pen-white.svg";
 
 //Import actions
-import { showModal, setActiveThread, resetSpace } from '../redux/actions/actionCreators';
+import {
+  showModal,
+  setActiveThread,
+  resetSpace
+} from "../redux/actions/actionCreators";
 
 //Import components
-import ScreenHeading from './reusable-components/ScreenHeading';
-import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
-import ScreenButton from './reusable-components/ScreenButton';
-import ThreadCard from './reusable-components/ThreadCard';
+import ScreenHeading from "./reusable-components/ScreenHeading";
+import ScreenSectionHeading from "./reusable-components/ScreenSectionHeading";
+import ScreenButton from "./reusable-components/ScreenButton";
+import ThreadCard from "./reusable-components/ThreadCard";
 
 //Import Modals
-import CreateThreadModal from './Modals/CreateThreadModal';
-import EditSpaceModal from './Modals/EditSpaceModal';
-import DeleteSpaceModal from './Modals/DeleteSpaceModal';
-import LeaveSpaceModal from './Modals/LeaveSpaceModal';
+import CreateThreadModal from "./Modals/CreateThreadModal";
+import EditSpaceModal from "./Modals/EditSpaceModal";
+import DeleteSpaceModal from "./Modals/DeleteSpaceModal";
+import LeaveSpaceModal from "./Modals/LeaveSpaceModal";
 
 class SpaceThreads extends React.Component {
   render() {
+    console.log(this.props);
     if (!this.props.space) {
       return (
         <StyledErrorScreen>
@@ -42,7 +47,7 @@ class SpaceThreads extends React.Component {
     } else {
       return (
         <StyledMainScreen>
-          {this.props.activeModal === 'CreateThreadModal' && (
+          {this.props.activeModal === "CreateThreadModal" && (
             <CreateThreadModal
               shoudlBeOpen={true}
               showModal={this.props.showModal}
@@ -50,14 +55,26 @@ class SpaceThreads extends React.Component {
               setActiveThread={this.props.setActiveThread}
             />
           )}
-          {this.props.activeModal === 'EditSpaceModal' && (
-            <EditSpaceModal shoudlBeOpen={true} activeModal={this.props.activeModal} space={this.props.space} />
+          {this.props.activeModal === "EditSpaceModal" && (
+            <EditSpaceModal
+              shoudlBeOpen={true}
+              activeModal={this.props.activeModal}
+              space={this.props.space}
+            />
           )}
-          {this.props.activeModal === 'DeleteSpaceModal' && (
-            <DeleteSpaceModal shoudlBeOpen={true} activeModal={this.props.activeModal} space={this.props.space} />
+          {this.props.activeModal === "DeleteSpaceModal" && (
+            <DeleteSpaceModal
+              shoudlBeOpen={true}
+              activeModal={this.props.activeModal}
+              space={this.props.space}
+            />
           )}
-          {this.props.activeModal === 'LeaveSpaceModal' && (
-            <LeaveSpaceModal shoudlBeOpen={true} activeModal={this.props.activeModal} space={this.props.space} />
+          {this.props.activeModal === "LeaveSpaceModal" && (
+            <LeaveSpaceModal
+              shoudlBeOpen={true}
+              activeModal={this.props.activeModal}
+              space={this.props.space}
+            />
           )}
           <StyledFirstRow>
             <ScreenHeading
@@ -69,27 +86,30 @@ class SpaceThreads extends React.Component {
               <StyledDropdown>
                 <Dropdown icon="ellipsis horizontal">
                   <Dropdown.Menu>
-                    {localStorage.getItem('uuid') === this.props.space.spaceCreatedByUserId && (
+                    {localStorage.getItem("uuid") ===
+                      this.props.space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Edit space"
                         onClick={e => {
-                          this.props.showModal('EditSpaceModal');
+                          this.props.showModal("EditSpaceModal");
                         }}
                       />
                     )}
-                    {localStorage.getItem('uuid') === this.props.space.spaceCreatedByUserId && (
+                    {localStorage.getItem("uuid") ===
+                      this.props.space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Delete space"
                         onClick={e => {
-                          this.props.showModal('DeleteSpaceModal');
+                          this.props.showModal("DeleteSpaceModal");
                         }}
                       />
                     )}
-                    {localStorage.getItem('uuid') !== this.props.space.spaceCreatedByUserId && (
+                    {localStorage.getItem("uuid") !==
+                      this.props.space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Leave space"
                         onClick={e => {
-                          this.props.showModal('LeaveSpaceModal');
+                          this.props.showModal("LeaveSpaceModal");
                         }}
                       />
                     )}
@@ -104,7 +124,7 @@ class SpaceThreads extends React.Component {
                 color="white"
                 border="none"
                 onClick={e => {
-                  this.props.showModal('CreateThreadModal');
+                  this.props.showModal("CreateThreadModal");
                 }}
               />
             </StyledButtonsContainer>
@@ -116,7 +136,7 @@ class SpaceThreads extends React.Component {
             this.props.threads.map(t => {
               let dateInfo = new Date(t.threadCreatedAt);
               let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
-                '0' + dateInfo.getMinutes()
+                "0" + dateInfo.getMinutes()
               ).slice(-2)}`;
 
               return (
@@ -130,13 +150,20 @@ class SpaceThreads extends React.Component {
                   info={t.threadTopic}
                   whenUserHasSeen={t.whenUserHasSeen}
                   isFollowUpDecided={
-                    t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(localStorage.getItem('uuid'))
+                    t.arrayOfUserIdsWhoFollowUp &&
+                    t.arrayOfUserIdsWhoFollowUp.includes(
+                      localStorage.getItem("uuid")
+                    )
                       ? true
                       : false
                   }
                   checked={
-                    (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
-                    (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                    (!t.whenUserHasSeen[localStorage.getItem("uuid")] &&
+                      "false") ||
+                    (t.lastCommentCreatedAt >
+                    t.whenUserHasSeen[localStorage.getItem("uuid")]
+                      ? "false"
+                      : "true")
                   }
                   onClick={() => {
                     this.props.setActiveThread(t.id);
@@ -212,32 +239,36 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : [],
+    space: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces[0]
+      : [],
     spaceId: state.spaceId,
     activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal, setActiveThread, resetSpace }, dispatch);
+  return bindActionCreators(
+    { showModal, setActiveThread, resetSpace },
+    dispatch
+  );
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
-        collection: 'threads',
-        where: ['spaceId', '==', props.spaceId],
-        orderBy: ['threadCreatedAt', 'desc']
+        collection: "threads",
+        where: ["spaceId", "==", props.match.params.id],
+        orderBy: ["threadCreatedAt", "desc"]
       },
       {
-        collection: 'spaces',
+        collection: "spaces",
         doc: props.spaceId
       }
     ];

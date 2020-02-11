@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
-import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { firestoreConnect, isEmpty } from "react-redux-firebase";
+import styled from "styled-components";
+import { Redirect, Link } from "react-router-dom";
 
 //Import actions
 import {
@@ -19,30 +19,30 @@ import {
   renderProfile,
   showFollowUp,
   hideFollowUp
-} from '../redux/actions/actionCreators';
+} from "../redux/actions/actionCreators";
 
 //Import semantic components
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown } from "semantic-ui-react";
 
 //Import components
-import Spinner from './semantic-components/Spinner';
-import { NavBarOrgDropdown } from './NavBarOrgDropdown';
-import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
-import AvatarFromLetter from './reusable-components/AvatarFromLetter';
+import Spinner from "./semantic-components/Spinner";
+import { NavBarOrgDropdown } from "./NavBarOrgDropdown";
+import CreateNewSpaceModal from "./Modals/CreateNewSpaceModal";
+import AvatarFromLetter from "./reusable-components/AvatarFromLetter";
 
 //Import icons
-import homeIcon from '../images/icon-home-lightgray.svg';
+import homeIcon from "../images/icon-home-lightgray.svg";
 
-import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
-import discIcon from '../images/icon-disc-darkgray.svg';
-import peopleIcon from '../images/icon-people-lightgray.svg';
+import clipboardIcon from "../images/icon-clipboard-lightgray.svg";
+import discIcon from "../images/icon-disc-darkgray.svg";
+import peopleIcon from "../images/icon-people-lightgray.svg";
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: '',
+    profileDropdown: "",
     highlightedHome: false,
     highlightedFollowUp: false,
-    activeSpace: ''
+    activeSpace: ""
   };
 
   handleLogOut = () => {
@@ -56,22 +56,22 @@ export class NavBar extends Component {
       })
       .catch(err => console.log("something's wrong."));
 
-    this.props.history.push('/login');
+    this.props.history.push("/login");
   };
 
   handleDropDownChange = (e, { name, value }) => {
     this.setState({ [name]: value }, () => {
-      if (this.state.profileDropdown === 'Log out') {
+      if (this.state.profileDropdown === "Log out") {
         this.handleLogOut();
       }
-      if (this.state.profileDropdown === 'Upgrade Account') {
+      if (this.state.profileDropdown === "Upgrade Account") {
         this.props.resetThread();
         this.props.resetSpace();
         this.props.showUpgradeScreen();
-        if (this.state.profileDropdown === 'Profile') {
+        if (this.state.profileDropdown === "Profile") {
           this.props.renderProfile();
         }
-        if (this.state.profileDropdown !== 'Profile') {
+        if (this.state.profileDropdown !== "Profile") {
           this.props.showModal(null);
           this.props.notRenderProfile();
           this.props.editingProfileDone();
@@ -86,18 +86,28 @@ export class NavBar extends Component {
   setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    localStorage.setItem('activeOrg', value);
+    localStorage.setItem("activeOrg", value);
     this.props.resetSpace();
     this.props.notRenderProfile();
     this.props.hideFollowUp();
   };
 
   highlightHome = () => {
-    this.setState({ highlightedHome: true, highlightedFollowUp: false, highlightedSpace: false, activeSpace: '' });
+    this.setState({
+      highlightedHome: true,
+      highlightedFollowUp: false,
+      highlightedSpace: false,
+      activeSpace: ""
+    });
   };
 
   highlightFollowUp = () => {
-    this.setState({ highlightedHome: false, highlightedFollowUp: true, highlightedSpace: false, activeSpace: '' });
+    this.setState({
+      highlightedHome: false,
+      highlightedFollowUp: true,
+      highlightedSpace: false,
+      activeSpace: ""
+    });
   };
 
   clickedSpace = spaceName => {
@@ -117,7 +127,13 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
-    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
+    if (
+      isEmpty(
+        this.props.user ||
+          this.props.orgsFromArrayOfUsersIds ||
+          this.props.spacesForActiveOrg
+      )
+    ) {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
@@ -131,26 +147,26 @@ export class NavBar extends Component {
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
         {
-          key: 'Create Organisation',
-          text: 'Create Organisation',
-          value: 'Create Organisation'
+          key: "Create Organisation",
+          text: "Create Organisation",
+          value: "Create Organisation"
         },
         {
-          key: 'Upgrade Account',
-          text: 'Upgrade Account',
-          value: 'Upgrade Account'
+          key: "Upgrade Account",
+          text: "Upgrade Account",
+          value: "Upgrade Account"
         },
         {
-          key: 'Log out',
-          text: 'Log out',
-          value: 'Log out'
+          key: "Log out",
+          text: "Log out",
+          value: "Log out"
         }
       ];
-      if (this.state.profileDropdown === 'Create Organisation') {
+      if (this.state.profileDropdown === "Create Organisation") {
         return <Redirect to="/createneworganisation" />;
       }
 
-      if (this.state.profileDropdown === 'Create Organisation') {
+      if (this.state.profileDropdown === "Create Organisation") {
         return <Redirect to="/createneworganisation" />;
       }
 
@@ -158,13 +174,15 @@ export class NavBar extends Component {
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.fullName && <AvatarFromLetter username={this.props.user.fullName} />}
+              {this.props.user.fullName && (
+                <AvatarFromLetter username={this.props.user.fullName} />
+              )}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
                   <Dropdown
                     inline
-                    name={'profileDropdown'}
+                    name={"profileDropdown"}
                     basic={true}
                     options={userOptions}
                     text={this.props.user.fullName}
@@ -181,7 +199,11 @@ export class NavBar extends Component {
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+                style={
+                  this.state.highlightedHome
+                    ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
+                    : {}
+                }
                 className="text"
                 onClick={() => {
                   this.highlightHome();
@@ -192,33 +214,40 @@ export class NavBar extends Component {
                   this.props.resetUpgradeScreen();
                   this.props.notRenderProfile();
                   this.props.hideFollowUp();
-                }}>
+                }}
+              >
                 Home
               </RowDiv>
             </RowContainer>
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
+                style={
+                  this.state.highlightedFollowUp
+                    ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
+                    : {}
+                }
                 className="text"
                 onClick={() => {
                   this.highlightFollowUp();
                   this.props.showFollowUp();
                   this.props.resetSpace();
                   this.props.resetThread();
-                }}>
+                }}
+              >
                 Follow up
               </RowDiv>
             </RowContainer>
-            {localStorage.getItem('activeOrg') && (
+            {localStorage.getItem("activeOrg") && (
               <RowContainer>
                 <img src={peopleIcon} alt="users icon" />
                 <RowDiv
                   onClick={() => {
                     this.props.resetSpace();
                     this.props.resetThread();
-                    this.props.history.push('/users');
-                  }}>
+                    this.props.history.push("/users");
+                  }}
+                >
                   Users
                 </RowDiv>
               </RowContainer>
@@ -234,7 +263,9 @@ export class NavBar extends Component {
                         // setActiveOrg={this.props.setActiveOrg}
                         activeOrg={this.props.activeOrg}
                         orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
+                        setSelectedOrgToLocalStorage={
+                          this.setSelectedOrgToLocalStorage
+                        }
                       />
                     )}
                   </OrgContainer>
@@ -244,26 +275,7 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <RowDiv
-                          key={index}
-                          style={
-                            this.state.activeSpace === space.spaceName
-                              ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                              : {}
-                          }
-                          onClick={event => {
-                            event.preventDefault();
-                            this.clickedSpace(space.spaceName);
-                            this.props.editingProfileDone();
-                            this.props.resetUpgradeScreen();
-                            this.props.resetThread();
-                            this.props.switchSpaces(space.id);
-                            this.props.showModal(null);
-                            this.props.notRenderProfile();
-                            this.props.hideFollowUp();
-                          }}>
-                          {space.spaceName}
-                        </RowDiv>
+                        <RowDiv to={`/spaces/${space.id}`}>{space.name}</RowDiv>
                       ))}
                     </div>
                   )}
@@ -281,12 +293,20 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
+    user: state.firestore.ordered.filteredUser
+      ? state.firestore.ordered.filteredUser[0]
+      : "",
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
+      ? state.firestore.ordered.orgsInWhichUser
+      : [],
     // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
+      ? state.firestore.ordered.filteredSpaces
+      : [],
+    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    activeOrg: localStorage.getItem("activeOrg")
+      ? localStorage.getItem("activeOrg")
+      : "",
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
     activeModal: state.modal.activeModal,
     upgradeScreen: state.upgradeScreen
@@ -296,7 +316,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
+      clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" }),
       setActiveOrg,
       switchSpaces,
       resetSpace,
@@ -316,27 +336,27 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
-        collection: 'users',
+        collection: "users",
         doc: `${props.uuid}`,
-        storeAs: 'filteredUser'
+        storeAs: "filteredUser"
       },
       {
-        collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
-        storeAs: 'filteredSpaces'
+        collection: "spaces",
+        where: [
+          ["arrayOfUserIdsInSpace", "array-contains", props.uuid],
+          ["orgId", "==", props.activeOrg]
+        ],
+        storeAs: "filteredSpaces"
       },
       {
-        collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
-        storeAs: 'orgsInWhichUser'
+        collection: "organisations",
+        where: ["arrayOfUsersIds", "array-contains", props.uuid],
+        storeAs: "orgsInWhichUser"
       }
       // {
       //   collection: 'organisations',
@@ -418,7 +438,7 @@ const RowContainer = styled.div`
   }
 `;
 
-const RowDiv = styled.div`
+const RowDiv = styled(Link)`
   padding: 5px 12px;
   border-radius: 15px;
 `;
@@ -482,7 +502,7 @@ const NavBarContainer = styled.div`
   height: 100vh;
   width: 309px;
   padding-top: 32px;
-  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
+  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
   color: #9c9c9c;
   font-size: 13px;
 `;
