@@ -5,7 +5,6 @@ install:
 script:
   - yarn test
   - yarn run build
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then bash ./travis/run_on_pull_requests; fi'
 stages:
   - name: staging
     deploy:
