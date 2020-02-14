@@ -34,20 +34,20 @@ export default class RightSidebar extends React.Component {
         <SearchSpace />
         <GetStarted>
           <GetStartedTop>
-            <PlantImg src={plantImg} alt="plant" />
+            <PlantImg src={plantImg} alt='plant' />
             <p>Let's Get Started!</p>
           </GetStartedTop>
           <GetStartedCheckboxes>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOn" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOn' />
               <Paragraph>Create an organization</Paragraph>
             </GetStartedCheck>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOff" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOff' />
               <Paragraph>Create space</Paragraph>
             </GetStartedCheck>
             <GetStartedCheck>
-              <CheckImg src={checkMarkOn} alt="checkMarkOn" />
+              <CheckImg src={checkMarkOn} alt='checkMarkOn' />
               <Paragraph>Invite Team Members</Paragraph>
             </GetStartedCheck>
           </GetStartedCheckboxes>
@@ -56,10 +56,10 @@ export default class RightSidebar extends React.Component {
         <LearnMore>
           <p>Learn about Threads</p>
           <LearnTopic onClick={this.toggleCheckFirst}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check01" />
-            <Modal size="tiny" trigger={<Paragraph>What is Pinely?</Paragraph>}>
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check01' />
+            <Modal size='tiny' trigger={<Paragraph>What is Pinely?</Paragraph>}>
               <ModalImg>
-                <Image src={discussionImg} size="medium" centered />
+                <Image src={discussionImg} size='medium' centered />
               </ModalImg>
 
               <StyledContent>
@@ -78,15 +78,15 @@ export default class RightSidebar extends React.Component {
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckSecond}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check02" />
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check02' />
             <Modal
-              size="tiny"
+              size='tiny'
               trigger={
                 <Paragraph>What are spaces and how do I use them? </Paragraph>
               }
             >
               <ModalImg>
-                <Image src={mobileImg} size="medium" centered />
+                <Image src={mobileImg} size='medium' centered />
               </ModalImg>
               <StyledContent>
                 <Modal.Content>
@@ -106,13 +106,13 @@ export default class RightSidebar extends React.Component {
             </Modal>
           </LearnTopic>
           <LearnTopic onClick={this.toggleCheckThird}>
-            <CheckImg src={checkMarkOff} alt="checkMarkOff" id="check03" />
+            <CheckImg src={checkMarkOff} alt='checkMarkOff' id='check03' />
             <Modal
-              size="tiny"
+              size='tiny'
               trigger={<Paragraph>How do I use threads?</Paragraph>}
             >
               <ModalImg>
-                <Image src={voiceImg} size="medium" centered />
+                <Image src={voiceImg} size='medium' centered />
               </ModalImg>
               <StyledContent>
                 <Modal.Content>
@@ -152,8 +152,8 @@ const StyledContainer = styled.div`
   background-color: #fff7f3;
   color: #3d4856;
   height: 100vh;
-  padding-right: 5%;
   width: 30%;
+  padding: 10%;
   background-color: #fff7f3;
 `;
 const GetStarted = styled.div`

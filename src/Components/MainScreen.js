@@ -36,21 +36,21 @@ class MainScreen extends React.Component {
           )}
           <StyledFirstRow>
             <ScreenHeading
-              heading="Home"
-              info="Catch up on the most recent threads."
+              heading='Home'
+              info='Catch up on the most recent threads.'
             />
             <ScreenButton
-              content="Start a thread"
+              content='Start a thread'
               icon={penIconWhite}
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
+              backgroundColor='#00bc98'
+              color='white'
+              border='none'
               onClick={e => {
                 this.props.showModal("CreateThreadModal");
               }}
             />
           </StyledFirstRow>
-          <ScreenSectionHeading heading="Recent" />
+          <ScreenSectionHeading heading='Recent' />
 
           {/*Loop trough all the threads that are associated with the orgId*/}
           {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
@@ -104,7 +104,6 @@ const StyledMainScreen = styled.div`
 const StyledMain = styled.div`
   display: flex;
   width: 100vw;
-  background-color: #fff7f3;
 `;
 const StyledFirstRow = styled.div`
   display: flex;
@@ -136,6 +135,7 @@ const mapDispatchToProps = dispatch => {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
+    console.log("main", props);
     return [
       {
         collection: "threads",

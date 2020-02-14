@@ -329,6 +329,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
+    console.log(props);
     return [
       {
         collection: "users",

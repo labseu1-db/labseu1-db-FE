@@ -36,11 +36,11 @@ class SpaceThreads extends React.Component {
         <StyledErrorScreen>
           <StyleErrorMessage>Space doesn't exist: 404</StyleErrorMessage>
           <ScreenButton
-            content="Go back to Home"
+            content='Go back to Home'
             icon={penIconWhite}
-            backgroundColor="#00bc98"
-            color="white"
-            border="none"
+            backgroundColor='#00bc98'
+            color='white'
+            border='none'
             onClick={this.props.resetSpace}
           />
         </StyledErrorScreen>
@@ -87,12 +87,12 @@ class SpaceThreads extends React.Component {
               />
               <StyledButtonsContainer>
                 <StyledDropdown>
-                  <Dropdown icon="ellipsis horizontal">
+                  <Dropdown icon='ellipsis horizontal'>
                     <Dropdown.Menu>
                       {localStorage.getItem("uuid") ===
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
-                          text="Edit space"
+                          text='Edit space'
                           onClick={e => {
                             this.props.showModal("EditSpaceModal");
                           }}
@@ -101,7 +101,7 @@ class SpaceThreads extends React.Component {
                       {localStorage.getItem("uuid") ===
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
-                          text="Delete space"
+                          text='Delete space'
                           onClick={e => {
                             this.props.showModal("DeleteSpaceModal");
                           }}
@@ -110,7 +110,7 @@ class SpaceThreads extends React.Component {
                       {localStorage.getItem("uuid") !==
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
-                          text="Leave space"
+                          text='Leave space'
                           onClick={e => {
                             this.props.showModal("LeaveSpaceModal");
                           }}
@@ -121,18 +121,18 @@ class SpaceThreads extends React.Component {
                 </StyledDropdown>
 
                 <ScreenButton
-                  content="Start a thread"
+                  content='Start a thread'
                   icon={penIconWhite}
-                  backgroundColor="#00bc98"
-                  color="white"
-                  border="none"
+                  backgroundColor='#00bc98'
+                  color='white'
+                  border='none'
                   onClick={e => {
                     this.props.showModal("CreateThreadModal");
                   }}
                 />
               </StyledButtonsContainer>
             </StyledFirstRow>
-            <ScreenSectionHeading heading="Recent" />
+            <ScreenSectionHeading heading='Recent' />
 
             {/*Loop trough all the threads that are associated with the orgId*/}
             {this.props.threads.length > 0 &&
@@ -186,7 +186,6 @@ class SpaceThreads extends React.Component {
 const StyledMain = styled.div`
   display: flex;
   width: 100vw;
-  background-color: #fff7f3;
 `;
 
 const StyledMainScreen = styled.div`

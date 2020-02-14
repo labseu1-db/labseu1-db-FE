@@ -17,7 +17,6 @@ import MainScreen from "./Components/MainScreen";
 
 class App extends Component {
   render() {
-    this.props.clearFirestore();
     return (
       <div>
         <Route
