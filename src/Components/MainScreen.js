@@ -14,6 +14,7 @@ import ScreenButton from "./reusable-components/ScreenButton";
 import ThreadCard from "./reusable-components/ThreadCard";
 import CreateThreadModal from "./Modals/CreateThreadModal";
 import NavBar from "./NavBar";
+import RightSidebar from "./RightSidebar";
 
 //Actions
 import { showModal, setActiveThread } from "../redux/actions/actionCreators";
@@ -23,7 +24,7 @@ class MainScreen extends React.Component {
   render() {
     return (
       <StyledMain>
-        <NavBar />
+        <NavBar {...this.props} />
         <StyledMainScreen>
           {this.props.activeModal === "CreateThreadModal" && (
             <CreateThreadModal
@@ -87,6 +88,7 @@ class MainScreen extends React.Component {
               );
             })}
         </StyledMainScreen>
+        <RightSidebar />
       </StyledMain>
     );
   }
@@ -97,9 +99,12 @@ const StyledMainScreen = styled.div`
   background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 5%;
+  margin-left: 309px;
 `;
 const StyledMain = styled.div`
   display: flex;
+  width: 100vw;
+  background-color: #fff7f3;
 `;
 const StyledFirstRow = styled.div`
   display: flex;

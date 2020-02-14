@@ -30,6 +30,11 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
+            {!this.props.spaceId &&
+              !this.props.threadId &&
+              !this.props.followUpStatus &&
+              !this.props.profileRenderStatus &&
+              !this.props.upgradeScreen && <MainScreen />}
             {this.props.threadId && (
               <ThreadsScreen threadId={this.props.threadId} />
             )}

@@ -43,7 +43,7 @@ class App extends Component {
         />
         <Route
           exact
-          path="/spaces/:id"
+          path="/mainscreen/:id/:spaceId"
           render={props => <SpaceThreads {...props} />}
         />
         <Route

@@ -126,6 +126,10 @@ export class NavBar extends Component {
   };
 
   render() {
+    console.log(this.props);
+    console.log("user", this.props.user);
+    console.log("orgsfrom array", this.props.orgsFromArrayOfUsersIds);
+    console.log("spaces", this.props.spacesForActiveOrg);
     //Will load spinner if user doesn't exist
     if (
       isEmpty(
@@ -137,7 +141,11 @@ export class NavBar extends Component {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
-      const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
+      const {
+        spacesForActiveOrg,
+        orgsFromArrayOfUsersIds,
+        activeOrg
+      } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
       const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
         key: org.orgName,
@@ -169,7 +177,7 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === "Create Organisation") {
         return <Redirect to="/createneworganisation" />;
       }
-
+      console.log("spaces", spacesForActiveOrg);
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -204,17 +212,7 @@ export class NavBar extends Component {
                     ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
                     : {}
                 }
-                className="text"
-                onClick={() => {
-                  this.highlightHome();
-                  this.props.showModal(null);
-                  this.props.editingProfileDone();
-                  this.props.resetSpace();
-                  this.props.resetThread();
-                  this.props.resetUpgradeScreen();
-                  this.props.notRenderProfile();
-                  this.props.hideFollowUp();
-                }}
+                to={`/mainscreen/${this.props.match.params.id}`}
               >
                 Home
               </RowDiv>
@@ -227,13 +225,7 @@ export class NavBar extends Component {
                     ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
                     : {}
                 }
-                className="text"
-                onClick={() => {
-                  this.highlightFollowUp();
-                  this.props.showFollowUp();
-                  this.props.resetSpace();
-                  this.props.resetThread();
-                }}
+                to={`/follow-up`}
               >
                 Follow up
               </RowDiv>
@@ -241,15 +233,7 @@ export class NavBar extends Component {
             {localStorage.getItem("activeOrg") && (
               <RowContainer>
                 <img src={peopleIcon} alt="users icon" />
-                <RowDiv
-                  onClick={() => {
-                    this.props.resetSpace();
-                    this.props.resetThread();
-                    this.props.history.push("/users");
-                  }}
-                >
-                  Users
-                </RowDiv>
+                <RowDiv to="/users">Users</RowDiv>
               </RowContainer>
             )}
             <div>
@@ -258,7 +242,7 @@ export class NavBar extends Component {
                   <OrgContainer>
                     <img src={discIcon} alt="home icon" />
 
-                    {this.props.activeOrg && (
+                    {activeOrg && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
                         activeOrg={this.props.activeOrg}
@@ -275,7 +259,13 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <RowDiv to={`/spaces/${space.id}`}>{space.name}</RowDiv>
+                        <RowDiv
+                          key={index}
+                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
+                          replace={true}
+                        >
+                          {space.spaceName}
+                        </RowDiv>
                       ))}
                     </div>
                   )}
@@ -342,14 +332,14 @@ export default compose(
     return [
       {
         collection: "users",
-        doc: `${props.uuid}`,
+        doc: props.uuid,
         storeAs: "filteredUser"
       },
       {
         collection: "spaces",
         where: [
           ["arrayOfUserIdsInSpace", "array-contains", props.uuid],
-          ["orgId", "==", props.activeOrg]
+          ["orgId", "==", props.match.params.id]
         ],
         storeAs: "filteredSpaces"
       },
@@ -441,6 +431,7 @@ const RowContainer = styled.div`
 const RowDiv = styled(Link)`
   padding: 5px 12px;
   border-radius: 15px;
+  color: black;
 `;
 
 const OrgContainer = styled.div`
@@ -505,4 +496,7 @@ const NavBarContainer = styled.div`
   font-family: "Open Sans", Helvetica, Arial, "sans-serif";
   color: #9c9c9c;
   font-size: 13px;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;
