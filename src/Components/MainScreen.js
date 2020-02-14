@@ -100,6 +100,7 @@ const StyledMainScreen = styled.div`
   min-height: 100vh;
   padding: 10vh 5%;
   margin-left: 309px;
+  width: 70%;
 `;
 const StyledMain = styled.div`
   display: flex;
@@ -111,7 +112,10 @@ const StyledFirstRow = styled.div`
   align-items: flex-start;
   margin-bottom: 5vh;
 `;
-
+const MidRightContainer = styled.div`
+  width: 100vw;
+  display: flex;
+`;
 //Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {

@@ -153,7 +153,7 @@ const StyledContainer = styled.div`
   color: #3d4856;
   height: 100vh;
   width: 30%;
-  padding: 10%;
+  padding-right: 5%;
   background-color: #fff7f3;
 `;
 const GetStarted = styled.div`

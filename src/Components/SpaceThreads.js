@@ -193,6 +193,7 @@ const StyledMainScreen = styled.div`
   min-height: 100vh;
   padding: 10vh 5%;
   margin-left: 309px;
+  width: 70%;
 `;
 
 const StyledFirstRow = styled.div`
