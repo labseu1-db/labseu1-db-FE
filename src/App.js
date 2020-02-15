@@ -14,6 +14,7 @@ import UserManagement from "./Components/UserManagement";
 import LandingPage from "./Components/landing-page/LandingPage";
 import SpaceThreads from "./Components/SpaceThreads";
 import MainScreen from "./Components/MainScreen";
+import ThreadsScreen from "./Components/ThreadsScreen";
 
 class App extends Component {
   render() {
@@ -21,29 +22,34 @@ class App extends Component {
       <div>
         <Route
           exact
-          path="/register"
+          path='/register'
           render={props => <Register {...props} />}
         />
         <Route
           exact
-          path="/mainscreen/:id"
+          path='/mainscreen/:id'
           render={props => <MainScreen {...props} />}
         />
-        <Route exact path="/login" render={props => <Login {...props} />} />
+        <Route exact path='/login' render={props => <Login {...props} />} />
         <Route
           exact
-          path="/passwordlesssubmit"
+          path='/passwordlesssubmit'
           render={props => <PasswordlessSubmit {...props} />}
         />
         <Route
           exact
-          path="/passwordlesscheck"
+          path='/passwordlesscheck'
           render={props => <PasswordlessCheck {...props} />}
         />
         <Route
           exact
-          path="/mainscreen/:id/:spaceId"
+          path='/mainscreen/:id/:spaceId'
           render={props => <SpaceThreads {...props} />}
+        />
+        <Route
+          exact
+          path='/mainscreen/:id/:spaceId/:threadId'
+          render={props => <ThreadsScreen {...props} />}
         />
         <Route
           exact
@@ -56,15 +62,15 @@ class App extends Component {
         />
         <Route
           exact
-          path="/createneworganisation"
+          path='/createneworganisation'
           render={props => <CreateNewOrganisation {...props} />}
         />
         <Route
           exact
-          path="/users"
+          path='/users'
           render={props => <UserManagement {...props} />}
         />
-        <Route exact path="/" render={props => <LandingPage {...props} />} />
+        <Route exact path='/' render={props => <LandingPage {...props} />} />
       </div>
     );
   }

@@ -1,33 +1,34 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 //Import icons
-import arrowIcon from '../../images/icon-arrow-left-white.svg';
+import arrowIcon from "../../images/icon-arrow-left-white.svg";
 
 function BackToButton(props) {
-  const { onClick } = props;
+  const { path } = props;
 
   return (
     <div>
-      <StyledBackToButton onClick={onClick}>
-        <div className="rounded-end">
-          <img src={arrowIcon} alt="arrow icon" />
+      <StyledBackToButton to={path}>
+        <div className='rounded-end'>
+          <img src={arrowIcon} alt='arrow icon' />
         </div>
-        <div className="content">Back to space</div>
+        <div className='content'>Back to space</div>
       </StyledBackToButton>
     </div>
   );
 }
 
 //Stylin
-const StyledBackToButton = styled.button`
+const StyledBackToButton = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  padding: 8px 20px 8px 40px;
+  padding: 5px 20px 5px 40px;
   border-radius: 15px;
   border: none;
   position: relative;

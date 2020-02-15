@@ -169,7 +169,9 @@ class SpaceThreads extends React.Component {
                         : "true")
                     }
                     onClick={() => {
-                      this.props.setActiveThread(t.id);
+                      this.props.history.push(
+                        `/mainscreen/${this.props.match.params.id}/${this.props.match.params.spaceId}/${t.id}`
+                      );
                     }}
                     currentSpace={this.props.space.spaceName}
                   />

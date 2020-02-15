@@ -1,54 +1,58 @@
-import React from 'react';
-import styled from 'styled-components';
-import uuid from 'uuid';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import React from "react";
+import styled from "styled-components";
+import uuid from "uuid";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
-import { Message, Icon } from 'semantic-ui-react';
+import { Message, Icon } from "semantic-ui-react";
 
 //Import components
-import ScreenButton from '../ScreenButton';
-import GifComponent from '../GifComponent';
-import AvatarFromLetter from '../AvatarFromLetter';
+import ScreenButton from "../ScreenButton";
+import GifComponent from "../GifComponent";
+import AvatarFromLetter from "../AvatarFromLetter";
 
 //Import icons
-import IconPenWhite from '../../../images/icon-pen-white.svg';
-import IconCheckWhite from '../../../images/icon-check-white.svg';
+import IconPenWhite from "../../../images/icon-pen-white.svg";
+import IconCheckWhite from "../../../images/icon-check-white.svg";
 
 //Main component
 export class NewCommentCard extends React.Component {
   state = {
-    text: '',
-    display: 'none',
-    gif: ''
+    text: "",
+    display: "none",
+    gif: ""
   };
 
   handleInputChange = e => {
-    let words = this.state.text.split(' ');
+    let words = this.state.text.split(" ");
     let wordsWithSpecificLength = words.every(word => word.length <= 70);
-    if (wordsWithSpecificLength || e.target.name !== 'text' || window.event.inputType === 'deleteContentBackward') {
+    if (
+      wordsWithSpecificLength ||
+      e.target.name !== "text" ||
+      window.event.inputType === "deleteContentBackward"
+    ) {
       this.setState({ [e.target.name]: e.target.value });
-      this.setState({ error: '' });
+      this.setState({ error: "" });
     }
     if (!wordsWithSpecificLength) {
-      this.setState({ error: 'wordIsTooLong' });
+      this.setState({ error: "wordIsTooLong" });
     }
   };
 
   clearInput = () => {
-    this.setState({ text: '' });
+    this.setState({ text: "" });
   };
 
   toggleDisplay = () => {
-    if (this.state.display === 'none') {
+    if (this.state.display === "none") {
       this.setState({
-        display: 'block'
+        display: "block"
       });
     }
-    if (this.state.display === 'block') {
+    if (this.state.display === "block") {
       this.setState({
-        display: 'none'
+        display: "none"
       });
     }
   };
@@ -57,12 +61,12 @@ export class NewCommentCard extends React.Component {
     e.preventDefault();
     let commentId = uuid();
     this.props.firestore.set(
-      { collection: 'comments', doc: commentId },
+      { collection: "comments", doc: commentId },
       {
         arrayOfUserIdsWhoLiked: [],
         commentBody: this.state.text,
         commentCreatedAt: Date.now(),
-        commentCreatedByUserId: localStorage.getItem('uuid'),
+        commentCreatedByUserId: localStorage.getItem("uuid"),
         commentCreatedByUserName: this.props.profile.fullName,
         isCommentDecided: false,
         isCommentUpdated: false,
@@ -73,7 +77,7 @@ export class NewCommentCard extends React.Component {
       }
     );
     this.props.firestore.update(
-      { collection: 'threads', doc: this.props.thread.id },
+      { collection: "threads", doc: this.props.thread.id },
       {
         lastCommentCreatedAt: Date.now()
       }
@@ -83,16 +87,20 @@ export class NewCommentCard extends React.Component {
   render() {
     return (
       <StyledCommentContainer>
-        {this.state.error === 'wordIsTooLong' && (
-          <Message warning attached="bottom">
-            <Icon name="warning" />A word can only be 70 characters long
+        {this.state.error === "wordIsTooLong" && (
+          <Message warning attached='bottom'>
+            <Icon name='warning' />A word can only be 70 characters long
           </Message>
         )}
         <StyledTopContainer>
-          <AvatarFromLetter username={this.props.profile.fullName} height="32px" width="32px" />
+          <AvatarFromLetter
+            username={this.props.profile.fullName}
+            height='32px'
+            width='32px'
+          />
           <StyledRightInput
-            placeholder="Comment on the thread"
-            name="text"
+            placeholder='Comment on the thread'
+            name='text'
             value={this.state.text}
             onChange={this.handleInputChange}
           />
@@ -100,10 +108,10 @@ export class NewCommentCard extends React.Component {
         <StyledGifAndButtons>
           <StyledButtonContainer>
             <ScreenButton
-              content="GIF"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
+              content='GIF'
+              backgroundColor='#00bc98'
+              color='white'
+              border='none'
               icon={IconCheckWhite}
               onClick={e => {
                 e.preventDefault();
@@ -111,22 +119,22 @@ export class NewCommentCard extends React.Component {
               }}
             />
             <ScreenButton
-              content="Submit"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
+              content='Submit'
+              backgroundColor='#00bc98'
+              color='white'
+              border='none'
               icon={IconPenWhite}
               onClick={e => {
                 this.createNewComment(e);
                 this.clearInput();
-                this.setState({ gif: '' });
+                this.setState({ gif: "" });
               }}
             />
           </StyledButtonContainer>
-          {this.state.gif !== '' && (
+          {this.state.gif !== "" && (
             <StyledGifImage>
-              <img src={this.state.gif} alt="gif" />
-              <div onClick={() => this.setState({ gif: '' })}>x</div>
+              <img src={this.state.gif} alt='gif' />
+              <div onClick={() => this.setState({ gif: "" })}>x</div>
             </StyledGifImage>
           )}
         </StyledGifAndButtons>
@@ -234,9 +242,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {};
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(NewCommentCard);
