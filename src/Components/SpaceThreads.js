@@ -281,7 +281,7 @@ export default compose(
       },
       {
         collection: "spaces",
-        doc: props.spaceId
+        doc: props.match.params.spaceId
       }
     ];
   })

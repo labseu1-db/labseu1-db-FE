@@ -126,10 +126,6 @@ export class NavBar extends Component {
   };
 
   render() {
-    console.log(this.props);
-    console.log("user", this.props.user);
-    console.log("orgsfrom array", this.props.orgsFromArrayOfUsersIds);
-    console.log("spaces", this.props.spacesForActiveOrg);
     //Will load spinner if user doesn't exist
     if (
       isEmpty(
@@ -171,13 +167,12 @@ export class NavBar extends Component {
         }
       ];
       if (this.state.profileDropdown === "Create Organisation") {
-        return <Redirect to="/createneworganisation" />;
+        return <Redirect to='/createneworganisation' />;
       }
 
       if (this.state.profileDropdown === "Create Organisation") {
-        return <Redirect to="/createneworganisation" />;
+        return <Redirect to='/createneworganisation' />;
       }
-      console.log("spaces", spacesForActiveOrg);
       return (
         <NavBarContainer>
           <HeaderContainer>
@@ -205,7 +200,7 @@ export class NavBar extends Component {
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
-              <img src={homeIcon} alt="home icon" />
+              <img src={homeIcon} alt='home icon' />
               <RowDiv
                 style={
                   this.state.highlightedHome
@@ -218,7 +213,7 @@ export class NavBar extends Component {
               </RowDiv>
             </RowContainer>
             <RowContainer>
-              <img src={clipboardIcon} alt="home icon" />
+              <img src={clipboardIcon} alt='home icon' />
               <RowDiv
                 style={
                   this.state.highlightedFollowUp
@@ -232,15 +227,15 @@ export class NavBar extends Component {
             </RowContainer>
             {localStorage.getItem("activeOrg") && (
               <RowContainer>
-                <img src={peopleIcon} alt="users icon" />
-                <RowDiv to="/users">Users</RowDiv>
+                <img src={peopleIcon} alt='users icon' />
+                <RowDiv to='/users'>Users</RowDiv>
               </RowContainer>
             )}
             <div>
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <img src={discIcon} alt="home icon" />
+                    <img src={discIcon} alt='home icon' />
 
                     {activeOrg && (
                       <NavBarOrgDropdown
@@ -261,6 +256,14 @@ export class NavBar extends Component {
                       {spacesForActiveOrg.map((space, index) => (
                         <RowDiv
                           key={index}
+                          style={
+                            this.props.match.params.spaceId === space.id
+                              ? {
+                                  backgroundColor: "#fff0ea",
+                                  color: "rgb(55, 71, 80)"
+                                }
+                              : {}
+                          }
                           to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
                           replace={true}
                         >
@@ -329,7 +332,6 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
-    console.log(props);
     return [
       {
         collection: "users",

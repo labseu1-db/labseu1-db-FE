@@ -112,10 +112,7 @@ const StyledFirstRow = styled.div`
   align-items: flex-start;
   margin-bottom: 5vh;
 `;
-const MidRightContainer = styled.div`
-  width: 100vw;
-  display: flex;
-`;
+
 //Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {
@@ -139,7 +136,6 @@ const mapDispatchToProps = dispatch => {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
-    console.log("main", props);
     return [
       {
         collection: "threads",
