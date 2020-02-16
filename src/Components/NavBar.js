@@ -45,6 +45,15 @@ export class NavBar extends Component {
     activeSpace: ""
   };
 
+  componentDidMount() {
+    let result = this.props.spacesForActiveOrg.every(space => {
+      return space.orgId === this.props.match.params.id;
+    });
+    if (!result) {
+      window.location.reload();
+    }
+  }
+
   handleLogOut = () => {
     this.props.firebase
       .logout()
@@ -73,7 +82,6 @@ export class NavBar extends Component {
 
   setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    console.log("data", data.value);
     return this.props.history.push(`/mainscreen/${data.value}`);
   };
 
@@ -112,7 +120,6 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
-    console.log(this.props.spacesForActiveOrg);
     if (
       isEmpty(
         this.props.user ||
@@ -281,12 +288,8 @@ const mapStateToProps = state => {
       ? state.firestore.ordered.filteredSpaces
       : [],
     uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
-    activeOrg: localStorage.getItem("activeOrg")
-      ? localStorage.getItem("activeOrg")
-      : "",
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal,
-    upgradeScreen: state.upgradeScreen
+    activeModal: state.modal.activeModal
   };
 };
 
@@ -316,7 +319,6 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
-    // console.log("id", props.match.params.id);
     return [
       {
         collection: "users",
