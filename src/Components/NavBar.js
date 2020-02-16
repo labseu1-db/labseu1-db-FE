@@ -193,7 +193,7 @@ export class NavBar extends Component {
               <img src={homeIcon} alt='home icon' />
               <RowDiv
                 style={
-                  this.state.highlightedHome
+                  this.props.match.path === "/mainscreen/:id"
                     ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
                     : {}
                 }
@@ -206,7 +206,7 @@ export class NavBar extends Component {
               <img src={clipboardIcon} alt='home icon' />
               <RowDiv
                 style={
-                  this.state.highlightedFollowUp
+                  this.props.match.path === "/follow-up/:id"
                     ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
                     : {}
                 }
