@@ -17,11 +17,7 @@ import {
 
 //Main component
 class FollowUp extends React.Component {
-  compoonentDidUnmount() {
-    console.log("unmount");
-  }
   render() {
-    console.log(this.props);
     return (
       <StyledMain>
         <NavBar {...this.props} />
