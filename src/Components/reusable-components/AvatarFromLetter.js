@@ -8,7 +8,6 @@ export default function AvatarFromLetter(props) {
     marginBottom: props.marginBottom,
     color: "white"
   };
-  console.log("username", props.username);
   if (props.username === undefined) {
     return <Spinner />;
   }

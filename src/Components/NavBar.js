@@ -63,33 +63,17 @@ export class NavBar extends Component {
     this.setState({ [name]: value }, () => {
       if (this.state.profileDropdown === "Log out") {
         this.handleLogOut();
-      }
-      if (this.state.profileDropdown === "Upgrade Account") {
-        this.props.resetThread();
-        this.props.resetSpace();
-        this.props.showUpgradeScreen();
-        if (this.state.profileDropdown === "Profile") {
-          this.props.renderProfile();
-        }
-        if (this.state.profileDropdown !== "Profile") {
-          this.props.showModal(null);
-          this.props.notRenderProfile();
-          this.props.editingProfileDone();
-        }
+      } else if (this.state.profileDropdown === "Upgrade Account") {
+        this.props.history.push(`/upgrade/${this.props.match.params.id}`);
+      } else if (this.state.profileDropdown === "Profile") {
+        this.props.history.push("/profile");
       }
     });
-    this.props.hideFollowUp();
-    this.props.resetSpace();
-    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    const { value } = data;
-    localStorage.setItem("activeOrg", value);
-    this.props.resetSpace();
-    this.props.notRenderProfile();
-    this.props.hideFollowUp();
+    this.props.history.push(`/mainscreen/${data.value}`);
   };
 
   highlightHome = () => {
@@ -127,6 +111,7 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
+    console.log(this.props.spacesForActiveOrg);
     if (
       isEmpty(
         this.props.user ||
@@ -137,11 +122,7 @@ export class NavBar extends Component {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
-      const {
-        spacesForActiveOrg,
-        orgsFromArrayOfUsersIds,
-        activeOrg
-      } = this.props;
+      const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
       // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
       const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
         key: org.orgName,
@@ -150,6 +131,11 @@ export class NavBar extends Component {
       }));
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
+        {
+          key: "Profile",
+          text: "Profile",
+          value: "Profile"
+        },
         {
           key: "Create Organisation",
           text: "Create Organisation",
@@ -166,10 +152,6 @@ export class NavBar extends Component {
           value: "Log out"
         }
       ];
-      if (this.state.profileDropdown === "Create Organisation") {
-        return <Redirect to='/createneworganisation' />;
-      }
-
       if (this.state.profileDropdown === "Create Organisation") {
         return <Redirect to='/createneworganisation' />;
       }
@@ -220,7 +202,7 @@ export class NavBar extends Component {
                     ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
                     : {}
                 }
-                to={`/follow-up`}
+                to={`/follow-up/${this.props.match.params.id}`}
               >
                 Follow up
               </RowDiv>
@@ -228,7 +210,9 @@ export class NavBar extends Component {
             {localStorage.getItem("activeOrg") && (
               <RowContainer>
                 <img src={peopleIcon} alt='users icon' />
-                <RowDiv to='/users'>Users</RowDiv>
+                <RowDiv to={`/users/${this.props.match.params.id}`}>
+                  Users
+                </RowDiv>
               </RowContainer>
             )}
             <div>
@@ -237,10 +221,10 @@ export class NavBar extends Component {
                   <OrgContainer>
                     <img src={discIcon} alt='home icon' />
 
-                    {activeOrg && (
+                    {this.props.match.params.id && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
-                        activeOrg={this.props.activeOrg}
+                        activeOrg={this.props.match.params.id}
                         orgOptions={orgOptions}
                         setSelectedOrgToLocalStorage={
                           this.setSelectedOrgToLocalStorage
@@ -265,7 +249,6 @@ export class NavBar extends Component {
                               : {}
                           }
                           to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
-                          replace={true}
                         >
                           {space.spaceName}
                         </RowDiv>
@@ -332,6 +315,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
+    // console.log("id", props.match.params.id);
     return [
       {
         collection: "users",
@@ -494,6 +478,7 @@ const SpaceContainer = styled.div`
 
 const NavBarContainer = styled.div`
   height: 100vh;
+  background-color: white;
   width: 309px;
   padding-top: 32px;
   font-family: "Open Sans", Helvetica, Arial, "sans-serif";

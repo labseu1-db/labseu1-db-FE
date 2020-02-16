@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import { Header, Modal, Dropdown } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore, isEmpty } from 'react-redux-firebase';
-import Spinner from '../semantic-components/Spinner';
-import uuid from 'uuid';
-import plusIcon from '../../images/icon-plus-lightgray.svg';
+import React, { Component } from "react";
+import { Header, Modal, Dropdown } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { firestoreConnect, withFirestore, isEmpty } from "react-redux-firebase";
+import Spinner from "../semantic-components/Spinner";
+import uuid from "uuid";
+import plusIcon from "../../images/icon-plus-lightgray.svg";
 
 //Redux action
-import { showModal } from '../../redux/actions/actionCreators';
+import { showModal } from "../../redux/actions/actionCreators";
 
 //Styled components
-import styled from 'styled-components';
+import styled from "styled-components";
 
 class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spaceName: '',
-      spaceTopic: '',
+      spaceName: "",
+      spaceTopic: "",
       idsInSpace: [this.props.uuid]
     };
   }
@@ -37,8 +37,8 @@ class CreateNewSpaceModal extends Component {
 
   cleanInputs = () => {
     this.setState({
-      spaceName: '',
-      spaceTopic: '',
+      spaceName: "",
+      spaceTopic: "",
       idsInSpace: [this.props.uuid]
     });
   };
@@ -47,26 +47,33 @@ class CreateNewSpaceModal extends Component {
     const spaceId = uuid();
     this.props.firestore
       .set(
-        { collection: 'spaces', doc: spaceId },
+        { collection: "spaces", doc: spaceId },
         {
           spaceName: this.state.spaceName,
-          spaceCreatedByUserId: window.localStorage.getItem('uuid'),
+          spaceCreatedByUserId: window.localStorage.getItem("uuid"),
           spaceTopic: this.state.spaceTopic,
-          orgId: this.props.activeOrg,
+          orgId: this.props.match.params.id,
           arrayOfUserIdsInSpace: this.state.idsInSpace
         }
       )
       .then(res => this.addSpaceToUsers(spaceId))
-      .then(res => this.cleanInputs());
+      .then(res => this.cleanInputs())
+      .then(res =>
+        this.props.history.push(
+          `/mainscreen/${this.props.match.params.id}/${spaceId}`
+        )
+      );
   };
 
   addSpaceToUsers = spaceId => {
     this.state.idsInSpace.map(id => {
       return this.props.firestore.update(
-        { collection: 'users', doc: id },
+        { collection: "users", doc: id },
         {
           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
+          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
+            this.state.spaceName
+          )
         }
       );
     });
@@ -75,7 +82,9 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, ...value] }));
+    this.setState(prState => ({
+      idsInSpace: [...prState.idsInSpace, ...value]
+    }));
   };
   render() {
     const { organisation } = this.props;
@@ -96,44 +105,45 @@ class CreateNewSpaceModal extends Component {
             <div>
               <img
                 src={plusIcon}
-                alt="plus icon"
+                alt='plus icon'
                 onClick={this.handleOpen}
-                disabled={isEmpty(localStorage.getItem('activeOrg'))}
+                disabled={isEmpty(localStorage.getItem("activeOrg"))}
               />
             </div>
           }
           open={this.state.model_open}
-          size="tiny">
+          size='tiny'
+        >
           <StyledContainer>
             <Modal.Header>
               <div>
                 <StyledMainHeader>Create a new space</StyledMainHeader>
               </div>
               <div>
-                <Header as="h5">Space name</Header>
+                <Header as='h5'>Space name</Header>
                 <StyledInput
-                  name="spaceName"
-                  placeholder="Product Design"
-                  type="text"
+                  name='spaceName'
+                  placeholder='Product Design'
+                  type='text'
                   required
                   value={this.state.spaceName}
                   onChange={this.handleInputChange}
                 />
-                <Header as="h5">
+                <Header as='h5'>
                   What types of discussions happen here?
                   <StyledOptional>(Optional)</StyledOptional>
                 </Header>
                 <StyledInput
-                  name="spaceTopic"
-                  placeholder="Questions and thoughts about proposals"
-                  type="text"
+                  name='spaceTopic'
+                  placeholder='Questions and thoughts about proposals'
+                  type='text'
                   value={this.state.spaceTopic}
                   onChange={this.handleInputChange}
                 />
-                <Header as="h5">Members</Header>
+                <Header as='h5'>Members</Header>
                 <StyledDropdown>
                   <Dropdown
-                    placeholder="Choose people to add"
+                    placeholder='Choose people to add'
                     fluid
                     multiple
                     search
@@ -144,10 +154,12 @@ class CreateNewSpaceModal extends Component {
                 </StyledDropdown>
                 <Modal.Actions>
                   <StyledActions>
-                    <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
+                    <StyledButtonCancel onClick={this.handleClose}>
+                      Cancel
+                    </StyledButtonCancel>
 
                     <StyledButtonCreateSpace
-                      type="submit"
+                      type='submit'
                       disabled={
                         !this.state.spaceName.length > 0 ||
                         !this.state.spaceTopic.length > 0 ||
@@ -157,7 +169,8 @@ class CreateNewSpaceModal extends Component {
                         this.addSpaceToDatabase();
                         this.props.showModal(null);
                         this.handleClose();
-                      }}>
+                      }}
+                    >
                       Create Space
                     </StyledButtonCreateSpace>
                   </StyledActions>
@@ -177,11 +190,17 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
-    organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
+    activeOrg: localStorage.getItem("activeOrg")
+      ? localStorage.getItem("activeOrg")
+      : "",
+    organisation: state.firestore.ordered.activeOrgFromDatabase
+      ? state.firestore.ordered.activeOrgFromDatabase
+      : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
+    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
+      ? state.firestore.ordered.usersWithinTheOrg
+      : []
   };
 };
 
@@ -191,25 +210,22 @@ const mapDispatchToProps = dispatch => {
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
-        collection: 'organisations',
-        doc: `${props.activeOrg}`,
-        storeAs: 'activeOrgFromDatabase'
+        collection: "organisations",
+        doc: props.match.params.id,
+        storeAs: "activeOrgFromDatabase"
       },
       {
-        collection: 'users',
+        collection: "users",
         doc: `${props.uuid}`
       },
       {
-        collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', `${props.activeOrg}`]],
-        storeAs: 'usersWithinTheOrg'
+        collection: "users",
+        where: [["arrayOfOrgsIds", "array-contains", props.match.params.id]],
+        storeAs: "usersWithinTheOrg"
       }
     ];
   }),
@@ -266,7 +282,7 @@ const StyledDropdown = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   height: 32px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #374750;
@@ -282,12 +298,12 @@ const StyledInput = styled.input`
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   padding-bottom: 30px;
 `;
 const StyledOptional = styled.div`
   font-size: 11px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   color: #374750;
   margin-left: 257px;
   margin-top: -19px;

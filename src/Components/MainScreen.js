@@ -32,6 +32,7 @@ class MainScreen extends React.Component {
               showModal={this.props.showModal}
               setActiveThread={this.props.setActiveThread}
               activeModal={this.props.activeModal}
+              {...this.props}
             />
           )}
           <StyledFirstRow>

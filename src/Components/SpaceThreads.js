@@ -41,7 +41,11 @@ class SpaceThreads extends React.Component {
             backgroundColor='#00bc98'
             color='white'
             border='none'
-            onClick={this.props.resetSpace}
+            onClick={() =>
+              this.props.history.push(
+                `/mainscreen/${this.props.match.params.id}`
+              )
+            }
           />
         </StyledErrorScreen>
       );
@@ -56,6 +60,7 @@ class SpaceThreads extends React.Component {
                 showModal={this.props.showModal}
                 activeModal={this.props.activeModal}
                 setActiveThread={this.props.setActiveThread}
+                {...this.props}
               />
             )}
             {this.props.activeModal === "EditSpaceModal" && (
@@ -70,6 +75,7 @@ class SpaceThreads extends React.Component {
                 shoudlBeOpen={true}
                 activeModal={this.props.activeModal}
                 space={this.props.space}
+                {...this.props}
               />
             )}
             {this.props.activeModal === "LeaveSpaceModal" && (

@@ -45,9 +45,7 @@ export class ThreadsScreen extends React.Component {
         <NavBar {...this.props} />
         <MidRightContainer>
           <StyledThreadContent>
-            <BackToButton
-              path={`/mainscreen/${this.props.match.params.id}/${this.props.match.params.spaceId}`}
-            />
+            <BackToButton onClick={this.props.history.goBack} />
             {this.props.activeThread && this.props.activeThread.threadName && (
               <StyledHeadingContainer>
                 <ScreenHeading heading={this.props.activeThread.threadName} />
