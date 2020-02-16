@@ -17,7 +17,7 @@ import MainScreen from "./Components/MainScreen";
 import ThreadsScreen from "./Components/ThreadsScreen";
 import FollowUp from "./Components/reusable-components/FollowUp";
 import UpgradeAccount from "./Components/UpgradeAccount";
-import Profile from "./Components/UserProfile";
+import UserProfile from "./Components/UserProfile";
 
 class App extends Component {
   render() {
@@ -58,7 +58,7 @@ class App extends Component {
           exact
           path={
             this.props.resetPasswordStatus
-              ? "/changePassword"
+              ? "/changePassword/:id"
               : "/forgotPassword"
           }
           render={props => <ForgotPassword {...props} />}
@@ -83,7 +83,11 @@ class App extends Component {
           path='/upgrade/:id'
           render={props => <UpgradeAccount {...props} />}
         />
-        <Route exact path='/profile' render={props => <Profile {...props} />} />
+        <Route
+          exact
+          path='/profile/:id'
+          render={props => <UserProfile {...props} />}
+        />
         <Route exact path='/' render={props => <LandingPage {...props} />} />
       </div>
     );

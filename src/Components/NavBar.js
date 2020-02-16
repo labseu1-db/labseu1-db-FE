@@ -66,14 +66,15 @@ export class NavBar extends Component {
       } else if (this.state.profileDropdown === "Upgrade Account") {
         this.props.history.push(`/upgrade/${this.props.match.params.id}`);
       } else if (this.state.profileDropdown === "Profile") {
-        this.props.history.push("/profile");
+        this.props.history.push(`/profile/${this.props.match.params.id}`);
       }
     });
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    this.props.history.push(`/mainscreen/${data.value}`);
+    console.log("data", data.value);
+    return this.props.history.push(`/mainscreen/${data.value}`);
   };
 
   highlightHome = () => {

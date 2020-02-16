@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
-import { resetPasswordDone } from '../redux/actions/actionCreators';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { firestoreConnect, isEmpty } from "react-redux-firebase";
+import { resetPasswordDone } from "../redux/actions/actionCreators";
 
-import { StyledSendEmailButton } from './styled-components/StyledButton';
+import { StyledSendEmailButton } from "./styled-components/StyledButton";
 import {
   StyledLogin,
   StyledForm,
@@ -13,10 +13,14 @@ import {
   StyledLabel,
   StyledLoginCon,
   StyledLowerSignInPasswordless
-} from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
-import LoginAnimation from './animations/LoginAnimation';
-import { Icon, Message } from 'semantic-ui-react';
+} from "./styled-components/StyledLogin";
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from "./styled-components/StyledText";
+import LoginAnimation from "./animations/LoginAnimation";
+import { Icon, Message } from "semantic-ui-react";
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -26,12 +30,12 @@ class ForgotPassword extends Component {
   };
 
   state = {
-    loginEmail: '',
+    loginEmail: "",
     error: null
   };
 
   INITIAL_STATE = {
-    loginEmail: '',
+    loginEmail: "",
     error: null
   };
 
@@ -42,14 +46,14 @@ class ForgotPassword extends Component {
       .then(() => {
         if (this.props.resetPasswordStatus) {
           this.props.resetPasswordDone();
-          this.props.history.push('/homescreen');
+          this.props.history.push(`/profile/${this.props.match.params.id}`);
         } else {
-          this.props.history.push('/login');
+          this.props.history.push("/login");
         }
       })
       .catch(error => {
         const INITIAL_STATE = {
-          loginEmail: '',
+          loginEmail: "",
           error: null
         };
         this.setState({ ...INITIAL_STATE, error });
@@ -58,7 +62,7 @@ class ForgotPassword extends Component {
 
   componentWillUpdate() {
     if (!isEmpty(this.props.auth) && !this.props.resetPasswordStatus) {
-      this.props.history.push('/homescreen');
+      this.props.history.push("/homescreen");
     }
   }
 
@@ -68,7 +72,7 @@ class ForgotPassword extends Component {
 
   render() {
     const { loginEmail } = this.state;
-    const isInvalid = loginEmail === '';
+    const isInvalid = loginEmail === "";
     return (
       <StyledLogin>
         <StyledLoginCon>
@@ -76,15 +80,16 @@ class ForgotPassword extends Component {
           <StyledForm
             onSubmit={event => {
               this.submitHandler(this.state.loginEmail, event);
-            }}>
+            }}
+          >
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name="loginEmail"
+                name='loginEmail'
                 value={this.state.loginEmail}
-                type="email"
+                type='email'
                 onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
+                placeholder='tonystark@example.com'
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
@@ -92,24 +97,30 @@ class ForgotPassword extends Component {
                 disabled={isInvalid}
                 onClick={event => {
                   this.submitHandler(this.state.loginEmail, event);
-                }}>
+                }}
+              >
                 Send Email &#62;
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
               {this.state.error.message}
             </Message>
           )}
-          {!this.props.resetPasswordStatus && <StyledLink to="/login">Back to Log In</StyledLink>}
+          {!this.props.resetPasswordStatus && (
+            <StyledLink to='/login'>Back to Log In</StyledLink>
+          )}
           {this.props.resetPasswordStatus && (
             <StyledSendEmailButton
               onClick={() => {
-                this.props.history.push('/homescreen');
+                this.props.history.push(
+                  `/profile/${this.props.match.params.id}`
+                );
                 this.props.resetPasswordDone();
-              }}>
+              }}
+            >
               Cancel
             </StyledSendEmailButton>
           )}
@@ -138,9 +149,6 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(ForgotPassword);
