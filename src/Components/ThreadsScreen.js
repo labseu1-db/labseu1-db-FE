@@ -112,8 +112,7 @@ const StyledThreadContent = styled.div`
   background-color: #fff7f3;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const StyledHeadingContainer = styled.div`

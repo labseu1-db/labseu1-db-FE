@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
-import { Icon, Message } from 'semantic-ui-react';
-import uuid from 'uuid';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import {
+  firebaseConnect,
+  isLoaded,
+  isEmpty,
+  withFirestore
+} from "react-redux-firebase";
+import { Icon, Message } from "semantic-ui-react";
+import uuid from "uuid";
+import { Redirect } from "react-router-dom";
 
-import { StyledButton } from './styled-components/StyledButton';
+import { StyledButton } from "./styled-components/StyledButton";
 import {
   StyledLogin,
   StyledForm,
@@ -16,14 +21,18 @@ import {
   StyledLoginCon,
   StyledLowerSignIn,
   StyledIcon
-} from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
-import Spinner from './semantic-components/Spinner';
-import LoginAnimation from './animations/LoginAnimation';
+} from "./styled-components/StyledLogin";
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from "./styled-components/StyledText";
+import Spinner from "./semantic-components/Spinner";
+import LoginAnimation from "./animations/LoginAnimation";
 
 //Images/Icons
-import showPassword from '../images/icon-eye-gray.svg';
-import hidePassword from '../images/icon-eye-green.svg';
+import showPassword from "../images/icon-eye-gray.svg";
+import hidePassword from "../images/icon-eye-green.svg";
 
 class Register extends Component {
   static propTypes = {
@@ -35,9 +44,9 @@ class Register extends Component {
   };
 
   state = {
-    email: '',
-    password: '',
-    fullName: '',
+    email: "",
+    password: "",
+    fullName: "",
     error: null
   };
 
@@ -48,7 +57,7 @@ class Register extends Component {
   saveUserToDatabaseAndToLocalStorageWhenUsingGoogleSignIn = res => {
     let userId = uuid();
     this.props.firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .set({
         fullName: res.profile.displayName,
@@ -60,11 +69,11 @@ class Register extends Component {
         arrayOfSpaceNames: []
       })
       .then(() => {
-        localStorage.setItem('uuid', userId);
-        localStorage.setItem('userEmail', res.profile.email);
+        localStorage.setItem("uuid", userId);
+        localStorage.setItem("userEmail", res.profile.email);
       })
       .catch(function(error) {
-        console.log('Error getting documents: ', error);
+        console.log("Error getting documents: ", error);
         this.setState({ error });
       });
   };
@@ -73,41 +82,45 @@ class Register extends Component {
     let userId = uuid();
 
     this.props.firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .set({
         fullName: this.state.fullName,
         userEmail: res.user.user.email,
-        profileUrl: 'http://lorempixel.com/640/480',
+        profileUrl: "http://lorempixel.com/640/480",
         arrayOfOrgsNames: [],
         arrayOfOrgsIds: [],
         arrayOfSpaceIds: [],
         arrayOfSpaceNames: []
       })
       .then(() => {
-        localStorage.setItem('uuid', userId);
-        localStorage.setItem('userEmail', this.state.email);
+        localStorage.setItem("uuid", userId);
+        localStorage.setItem("userEmail", this.state.email);
       })
       .then(res => {
         const orgRef = this.props.firestore
-          .collection('organisations')
-          .where('arrayOfUsersEmails', 'array-contains', this.state.email);
+          .collection("organisations")
+          .where("arrayOfUsersEmails", "array-contains", this.state.email);
         orgRef
           .get()
           .then(qs => {
             qs.forEach(doc => {
               this.saveUserIdInOrg(doc.id, userId);
-              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+              this.saveOrgNameAndOrgIdInUser(
+                doc.id,
+                doc.data().orgName,
+                userId
+              );
 
-              localStorage.setItem('activeOrg', doc.id);
+              localStorage.setItem("activeOrg", doc.id);
             });
           })
           .catch(function(error) {
-            console.log('Error getting documents: ', error);
+            console.log("Error getting documents: ", error);
           });
       })
       .catch(function(error) {
-        console.log('Error getting documents: ', error);
+        console.log("Error getting documents: ", error);
         this.setState({ error });
       });
   };
@@ -115,9 +128,9 @@ class Register extends Component {
   createAndLogInNewUser = e => {
     const { email, password, fullName } = this.state;
     const INITIAL_STATE = {
-      email: '',
-      password: '',
-      fullName: '',
+      email: "",
+      password: "",
+      fullName: "",
       error: null
     };
     e.preventDefault();
@@ -134,7 +147,7 @@ class Register extends Component {
           });
       })
       .then(() => {
-        this.props.history.push('/createneworganisation');
+        this.props.history.push("/createneworganisation");
       })
       .catch(error => {
         this.setState({ ...INITIAL_STATE, error });
@@ -144,7 +157,7 @@ class Register extends Component {
 
   saveUserIdInOrg = (orgId, userId) => {
     this.props.firestore
-      .collection('organisations')
+      .collection("organisations")
       .doc(orgId)
       .update({
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
@@ -154,7 +167,7 @@ class Register extends Component {
 
   saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
     this.props.firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .update({
         arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
@@ -165,7 +178,7 @@ class Register extends Component {
 
   saveUserIdInOrg = (orgId, userId) => {
     this.props.firestore
-      .collection('organisations')
+      .collection("organisations")
       .doc(orgId)
       .update({
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayUnion(userId)
@@ -175,7 +188,7 @@ class Register extends Component {
 
   saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
     this.props.firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .update({
         arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(orgName),
@@ -185,28 +198,36 @@ class Register extends Component {
   };
 
   togglePassword = () => {
-    let temp = document.getElementById('typepass');
-    let passwordIcon = document.getElementById('passwordIcon');
-    if (temp.type === 'password') {
-      temp.type = 'text';
+    let temp = document.getElementById("typepass");
+    let passwordIcon = document.getElementById("passwordIcon");
+    if (temp.type === "password") {
+      temp.type = "text";
       passwordIcon.src = hidePassword;
-      passwordIcon.alt = 'hidePassword';
+      passwordIcon.alt = "hidePassword";
     } else {
-      temp.type = 'password';
+      temp.type = "password";
       passwordIcon.src = showPassword;
-      passwordIcon.alt = 'showPassword';
+      passwordIcon.alt = "showPassword";
     }
   };
 
   render() {
     const { email, password, fullName } = this.state;
-    const isInvalid = email === '' || password === '' || fullName === '';
+    const isInvalid = email === "" || password === "" || fullName === "";
 
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
-      return <Redirect to="/homescreen" />;
+      return (
+        <Redirect
+          to={
+            localStorage.getItem("activeOrg")
+              ? `/mainscreen/${localStorage.getItem("activeOrg")}`
+              : "createneworganisation"
+          }
+        />
+      );
     }
     return (
       <StyledLogin>
@@ -216,46 +237,54 @@ class Register extends Component {
             <StyledLabel>
               <StyledPLabel>Full Name</StyledPLabel>
               <StyledInput
-                name="fullName"
+                name='fullName'
                 value={this.state.fullName}
-                type="text"
+                type='text'
                 onChange={this.handleInputChange}
-                placeholder="Tony Stark"
+                placeholder='Tony Stark'
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
               <StyledInput
-                name="email"
+                name='email'
                 value={this.state.email}
-                type="email"
+                type='email'
                 onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
+                placeholder='tonystark@example.com'
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                id="typepass"
-                name="password"
+                id='typepass'
+                name='password'
                 value={this.state.password}
-                type="password"
+                type='password'
                 onChange={this.handleInputChange}
-                placeholder="········"
+                placeholder='········'
               />
-              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
+              <StyledIcon
+                id='passwordIcon'
+                src={showPassword}
+                alt='showPassword'
+                onClick={this.togglePassword}
+              />
             </StyledLabel>
 
             <StyledLowerSignIn>
-              <StyledLink to="/login"> Already have an account? </StyledLink>
-              <StyledButton disabled={isInvalid} onClick={this.createAndLogInNewUser}>
+              <StyledLink to='/login'> Already have an account? </StyledLink>
+              <StyledButton
+                disabled={isInvalid}
+                onClick={this.createAndLogInNewUser}
+              >
                 Register
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
+            <Message warning attached='bottom'>
+              <Icon name='warning' />
               {this.state.error.message}
             </Message>
           )}
@@ -290,15 +319,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
+    clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" })
   };
 };
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(Register);

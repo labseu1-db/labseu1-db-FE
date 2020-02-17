@@ -62,10 +62,11 @@ export class NavBar extends Component {
       })
       .then(() => {
         localStorage.clear();
+        this.props.history.push("/login");
       })
       .catch(err => console.log("something's wrong."));
 
-    this.props.history.push("/login");
+    // this.props.history.push("/login");
   };
 
   handleDropDownChange = (e, { name, value }) => {
