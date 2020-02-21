@@ -246,20 +246,22 @@ export class NavBar extends Component {
                   {spacesForActiveOrg && (
                     <div>
                       {spacesForActiveOrg.map((space, index) => (
-                        <RowDiv
-                          key={index}
-                          style={
-                            this.props.match.params.spaceId === space.id
-                              ? {
-                                  backgroundColor: "#fff0ea",
-                                  color: "rgb(55, 71, 80)"
-                                }
-                              : {}
-                          }
-                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
-                        >
-                          {space.spaceName}
-                        </RowDiv>
+                        <StyledSpaceContainer>
+                          <RowDiv
+                            key={index}
+                            style={
+                              this.props.match.params.spaceId === space.id
+                                ? {
+                                    backgroundColor: "#fff0ea",
+                                    color: "rgb(55, 71, 80)"
+                                  }
+                                : {}
+                            }
+                            to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
+                          >
+                            {space.spaceName}
+                          </RowDiv>
+                        </StyledSpaceContainer>
                       ))}
                     </div>
                   )}
@@ -359,6 +361,10 @@ const HeaderContainer = styled.div`
       cursor: pointer;
     }
   }
+`;
+
+const StyledSpaceContainer = styled.div`
+  display: flex;
 `;
 
 const StyledDropdown = styled.div`
