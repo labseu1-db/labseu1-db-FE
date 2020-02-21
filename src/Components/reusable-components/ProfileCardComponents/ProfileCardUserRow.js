@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import ProfileCardButton from './ProfileCardButton';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { withFirestore } from 'react-redux-firebase';
+import React from "react";
+import styled from "styled-components";
+import ProfileCardButton from "./ProfileCardButton";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { withFirestore } from "react-redux-firebase";
 
 class ProfileCardUserRow extends React.Component {
   constructor(props) {
@@ -14,10 +14,10 @@ class ProfileCardUserRow extends React.Component {
     };
   }
   componentDidMount() {
-    document.addEventListener('keydown', this.escFunction, false);
+    document.addEventListener("keydown", this.escFunction, false);
   }
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.escFunction, false);
+    document.removeEventListener("keydown", this.escFunction, false);
   }
   onChangeHandler = e => {
     this.setState({ fullName: e.target.value });
@@ -25,7 +25,7 @@ class ProfileCardUserRow extends React.Component {
   onSubmitHandler = event => {
     if (event.which === 13 || event.keyCode === 13) {
       event.preventDefault();
-      let ref = this.props.firestore.collection('users').doc(this.props.uuid);
+      let ref = this.props.firestore.collection("users").doc(this.props.uuid);
       ref
         .update({
           fullName: this.state.fullName
@@ -47,30 +47,38 @@ class ProfileCardUserRow extends React.Component {
     const { onClick, secondOnClick } = this.props;
     return (
       <StyledFirstRow>
-        <img src={this.props.user.profileUrl} alt="user" />
-        {!this.props.editingProfileStatus && <StyledNameSpan>{this.props.user.fullName}</StyledNameSpan>}
+        {/* <StyledImg src={this.props.user.profileUrl} alt='user' /> */}
+        {!this.props.editingProfileStatus && (
+          <StyledNameSpan>{this.props.user.fullName}</StyledNameSpan>
+        )}
         {this.props.editingProfileStatus && (
           <StyledNameSubmitForm
             onKeyPress={event => {
               this.onSubmitHandler(event);
-            }}>
-            <StyledNameInput value={this.state.fullName} onChange={this.onChangeHandler} />
-            <StyledCancel>Press Enter to Submit{'\n'} and Escape to cancel</StyledCancel>
+            }}
+          >
+            <StyledNameInput
+              value={this.state.fullName}
+              onChange={this.onChangeHandler}
+            />
+            <StyledCancel>
+              Press Enter to Submit{"\n"} and Escape to cancel
+            </StyledCancel>
           </StyledNameSubmitForm>
         )}
         <ProfileCardButton
-          content="Change Password"
-          border="solid 0.5px #37475026"
-          top="0px"
-          right="0px"
-          margin="6.5vw"
+          content='Change Password'
+          border='solid 0.5px #37475026'
+          top='0px'
+          right='0px'
+          margin='6.5vw'
           onClick={onClick}
         />
         <ProfileCardButton
-          content="Edit Profile"
-          border="solid 0.5px #37475026"
-          top="0px"
-          right="0px"
+          content='Edit Profile'
+          border='solid 0.5px #37475026'
+          top='0px'
+          right='0px'
           onClick={secondOnClick}
         />
       </StyledFirstRow>
@@ -86,10 +94,7 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(ProfileCardUserRow);
 
 const StyledCancel = styled.span`
@@ -99,6 +104,9 @@ const StyledCancel = styled.span`
   color: rgb(125, 135, 141);
 `;
 
+// const StyledImg = styled.img`
+//   margin-bottom: 1%;
+// `;
 const StyledNameInput = styled.input`
   font-size: 2.4rem;
   max-width: 14vw;
@@ -120,6 +128,8 @@ const StyledNameSubmitForm = styled.form`
   display: flex;
   flex-direction: column;
   margin-top: 3%;
+  position: absolute;
+  left: 2%;
 `;
 
 const StyledFirstRow = styled.div`
@@ -144,4 +154,6 @@ const StyledNameSpan = styled.span`
   padding-top: 10px;
   overflow-wrap: break-word;
   margin-top: 40px;
+  position: absolute;
+  left: 2%;
 `;

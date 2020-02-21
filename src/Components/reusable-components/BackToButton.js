@@ -1,19 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 //Import icons
-import arrowIcon from '../../images/icon-arrow-left-white.svg';
+import arrowIcon from "../../images/icon-arrow-left-white.svg";
 
-function BackToButton(props) {
-  const { onClick } = props;
-
+function BackToButton({ onClick }) {
   return (
     <div>
       <StyledBackToButton onClick={onClick}>
-        <div className="rounded-end">
-          <img src={arrowIcon} alt="arrow icon" />
+        <div className='rounded-end'>
+          <img src={arrowIcon} alt='arrow icon' />
         </div>
-        <div className="content">Back to space</div>
+        <div className='content'>Back to space</div>
       </StyledBackToButton>
     </div>
   );

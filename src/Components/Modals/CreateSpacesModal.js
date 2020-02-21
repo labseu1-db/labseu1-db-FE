@@ -1,56 +1,59 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 //Import dependencies
-import styled from 'styled-components';
-import uuid from 'uuid';
+import styled from "styled-components";
+import uuid from "uuid";
 
 //Import semantic components
-import { Modal } from 'semantic-ui-react';
+import { Modal } from "semantic-ui-react";
 
 //Import components
-import ProgressBar from '../reusable-components/ProgressBar';
+import ProgressBar from "../reusable-components/ProgressBar";
 
 //Default export
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
-    { name: 'Product', color: 'eggplant' },
-    { name: 'Engineering', color: 'darkgreen' },
-    { name: 'Recruiting', color: 'violet' },
-    { name: 'Design', color: 'darkolive' },
-    { name: 'Marketing', color: 'yellow' },
-    { name: 'Reviews', color: 'red' },
-    { name: 'Announcements', color: 'lightblue' },
-    { name: 'Research', color: 'green' }
+    { name: "Product", color: "eggplant" },
+    { name: "Engineering", color: "darkgreen" },
+    { name: "Recruiting", color: "violet" },
+    { name: "Design", color: "darkolive" },
+    { name: "Marketing", color: "yellow" },
+    { name: "Reviews", color: "red" },
+    { name: "Announcements", color: "lightblue" },
+    { name: "Research", color: "green" }
   ];
 
   //Render component
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
+      <Modal open={this.props.shoudlBeOpen} basic size='tiny'>
         <ProgressBar activeDots={3} bulletpoints={3} />
         <StyledModalH1>
-          <Modal.Header content="Create few spaces" />
+          <Modal.Header content='Create few spaces' />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
             <StyledModalForm>
               <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
               <StyledModalTextInForm>
-                Spaces are your team's virtual meeting rooms. Use them to have discussions about specific projects and
-                broader team topics.
+                Spaces are your team's virtual meeting rooms. Use them to have
+                discussions about specific projects and broader team topics.
               </StyledModalTextInForm>
               <StyledModalLabel>
-                Choose a few spaces <span>{`${this.props.createdSpaces.length} selected`}</span>
+                Choose a few spaces{" "}
+                <span>{`${this.props.createdSpaces.length} selected`}</span>
               </StyledModalLabel>
               <StyledModalSpacesContainer>
                 {this.spacesExamples.map(s => {
                   return (
                     <StyledSpacesModalCard
-                      className={`${this.props.createdSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
+                      className={`${this.props.createdSpaces.indexOf(s.name) >
+                        -1 && "borderclass"} ${s.color}`}
                       key={s.name}
                       onClick={() => {
                         this.props.addSpace(s.name);
-                      }}>
+                      }}
+                    >
                       {s.name}
                     </StyledSpacesModalCard>
                   );
@@ -58,18 +61,18 @@ export default class CreateSpacesModal extends Component {
               </StyledModalSpacesContainer>
               <StyledModalLabel>Create a few spaces</StyledModalLabel>
               <StyledModalTextInForm>
-                Start with current projects, ongoning discussion topics, or anything else you would have a meeting
-                about.
+                Start with current projects, ongoning discussion topics, or
+                anything else you would have a meeting about.
               </StyledModalTextInForm>
               <StyledModalInput
-                placeholder="ie. Products Proposals"
-                name="addedSpace1"
+                placeholder='ie. Products Proposals'
+                name='addedSpace1'
                 onChange={this.props.handleInputChange}
                 value={this.props.addedSpace1}
               />
               <StyledModalInput
-                placeholder="ie. Design Review"
-                name="addedSpace2"
+                placeholder='ie. Design Review'
+                name='addedSpace2'
                 onChange={this.props.handleInputChange}
                 value={this.props.addedSpace2}
               />
@@ -82,7 +85,7 @@ export default class CreateSpacesModal extends Component {
                   let orgId = uuid();
                   e.preventDefault();
                   Promise.all([
-                    this.props.showModal('null'),
+                    this.props.showModal("null"),
                     this.props.addOrganisationToUsers(orgId),
                     this.props.addSpacesToSpacesAndUsers(orgId),
                     this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId),
@@ -90,18 +93,20 @@ export default class CreateSpacesModal extends Component {
                     this.props.clearState(),
                     this.props.addOrganisationToDatabase(orgId)
                   ]).then(values => {
-                    this.props.props.history.push('/homescreen');
+                    this.props.props.history.push(`/mainscreen/${orgId}`);
                   });
-                }}>
+                }}
+              >
                 Finish
               </StyledModalButton>
               <StyledModalMainButtonContainer>
                 <StyledModalButton
-                  className="cancel-button"
+                  className='cancel-button'
                   onClick={e => {
                     e.preventDefault();
-                    this.props.showModal('InviteYourTeamModal');
-                  }}>
+                    this.props.showModal("InviteYourTeamModal");
+                  }}
+                >
                   Back
                 </StyledModalButton>
               </StyledModalMainButtonContainer>
@@ -114,7 +119,7 @@ export default class CreateSpacesModal extends Component {
 }
 
 const StyledModalH1 = styled.h1`
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   text-align: center;
   font-weight: 300;
 `;
@@ -137,7 +142,7 @@ const StyledModalForm = styled.form`
 `;
 
 const StyledModalLabel = styled.div`
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 1rem;
   font-weight: 700;
   padding-bottom: 10px;

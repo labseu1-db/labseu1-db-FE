@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import ProfileCardUserRow from './ProfileCardComponents/ProfileCardUserRow';
-import ProfileCardOrgsField from './ProfileCardComponents/ProfileCardOrgsField';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+import ProfileCardUserRow from "./ProfileCardComponents/ProfileCardUserRow";
+import ProfileCardOrgsField from "./ProfileCardComponents/ProfileCardOrgsField";
 import {
   resetPassword,
   resetPasswordDone,
   editingProfile,
   editingProfileDone
-} from '../../redux/actions/actionCreators';
+} from "../../redux/actions/actionCreators";
 
 function ProfileCard(props) {
   return (
@@ -42,9 +42,11 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
-    orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : '',
+    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    user: state.firestore.ordered.filteredUser
+      ? state.firestore.ordered.filteredUser[0]
+      : "",
+    orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : "",
     editingProfileStatus: state.editingProfileStatus
   };
 };
@@ -62,20 +64,17 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
-        collection: 'users',
+        collection: "users",
         doc: `${props.uuid}`
       },
       {
-        collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
-        storeAs: 'orgs'
+        collection: "organisations",
+        where: ["arrayOfUsersIds", "array-contains", props.uuid],
+        storeAs: "orgs"
       }
     ];
   })
