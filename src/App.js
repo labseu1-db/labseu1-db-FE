@@ -12,7 +12,7 @@ import ForgotPassword from "./Components/ForgotPassword";
 import CreateNewOrganisation from "./Components/CreateNewOrganisation";
 import UserManagement from "./Components/UserManagement";
 import LandingPage from "./Components/landing-page/LandingPage";
-import VideoChat from "./Components/voice-chat/VideoChat";
+import VideoChat from "./Components/VideoChat";
 import SpaceThreads from "./Components/SpaceThreads";
 import MainScreen from "./Components/MainScreen";
 import ThreadsScreen from "./Components/ThreadsScreen";
@@ -72,10 +72,11 @@ class App extends Component {
         <Route exact path='/' render={props => <LandingPage {...props} />} />
         <Route
           exact
-          path='/mainscreen/:id/:spaceId/video'
+          path='/video/:id/:spaceId/:type'
           render={props => <VideoChat {...props} />}
         />
         <Route
+          exact
           path='/users/:id'
           render={props => <UserManagement {...props} />}
         />

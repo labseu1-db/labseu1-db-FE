@@ -32,6 +32,7 @@ import AvatarFromLetter from "./reusable-components/AvatarFromLetter";
 
 //Import icons
 import homeIcon from "../images/icon-home-lightgray.svg";
+import phoneIcon from "../images/phone.svg";
 
 import clipboardIcon from "../images/icon-clipboard-lightgray.svg";
 import discIcon from "../images/icon-disc-darkgray.svg";
@@ -242,30 +243,32 @@ export class NavBar extends Component {
                   </OrgContainer>
                   <CreateNewSpaceModal {...this.props} />
                 </OuterOrgContainer>
-                <SpaceContainer>
-                  {spacesForActiveOrg && (
-                    <div>
-                      {spacesForActiveOrg.map((space, index) => (
-                        <StyledSpaceContainer>
-                          <RowDiv
-                            key={index}
-                            style={
-                              this.props.match.params.spaceId === space.id
-                                ? {
-                                    backgroundColor: "#fff0ea",
-                                    color: "rgb(55, 71, 80)"
-                                  }
-                                : {}
-                            }
-                            to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
-                          >
-                            {space.spaceName}
-                          </RowDiv>
-                        </StyledSpaceContainer>
-                      ))}
-                    </div>
-                  )}
-                </SpaceContainer>
+                {spacesForActiveOrg && (
+                  <SpaceContainer>
+                    {spacesForActiveOrg.map((space, index) => (
+                      <StyledSpaceContainer key={index}>
+                        <RowDiv
+                          style={
+                            this.props.match.params.spaceId === space.id
+                              ? {
+                                  backgroundColor: "#fff0ea",
+                                  color: "rgb(55, 71, 80)"
+                                }
+                              : {}
+                          }
+                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
+                        >
+                          {space.spaceName}
+                        </RowDiv>
+                        <RowDiv
+                          to={`/video/${this.props.match.params.id}/${space.id}/createCall`}
+                        >
+                          <StyledPhoneIcon src={phoneIcon} />
+                        </RowDiv>
+                      </StyledSpaceContainer>
+                    ))}
+                  </SpaceContainer>
+                )}
               </div>
             </div>
           </InnerContainer>
@@ -365,6 +368,13 @@ const HeaderContainer = styled.div`
 
 const StyledSpaceContainer = styled.div`
   display: flex;
+  height: 10%;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const StyledPhoneIcon = styled.img`
+  height: 16px;
 `;
 
 const StyledDropdown = styled.div`
@@ -428,6 +438,7 @@ const RowDiv = styled(Link)`
   padding: 5px 12px;
   border-radius: 15px;
   color: black;
+  align-items: baseline;
 `;
 
 const OrgContainer = styled.div`
@@ -472,17 +483,9 @@ const OuterOrgContainer = styled.div`
 const SpaceContainer = styled.div`
   line-height: 30px;
   margin-left: 40px;
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    div {
-      &:hover {
-        color: #f64e49;
-        cursor: pointer;
-      }
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const NavBarContainer = styled.div`
