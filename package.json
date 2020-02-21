@@ -18,7 +18,8 @@
     "redux-firestore": "0.7.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.1",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "twilio-video": "2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
