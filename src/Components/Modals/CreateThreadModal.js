@@ -1,36 +1,36 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
-import { Modal, Dropdown, Message, Icon } from "semantic-ui-react";
+import { Modal, Dropdown, Message, Icon } from 'semantic-ui-react';
 import {
   Editor,
   EditorState,
   RichUtils,
   convertToRaw,
   ContentState
-} from "draft-js";
-import uuid from "uuid";
-import "draft-js/dist/Draft.css";
-import styled from "styled-components";
+} from 'draft-js';
+import uuid from 'uuid';
+import 'draft-js/dist/Draft.css';
+import styled from 'styled-components';
 
-import textCursor from "../../images/icon-cursor-purple.svg";
-import boldIcon from "../../images/icon-bold-white.svg";
-import codeIcon from "../../images/icon-code-white.svg";
-import italicIcon from "../../images/icon-italic-white.svg";
-import underlineIcon from "../../images/icon-underline-white.svg";
+import textCursor from '../../images/icon-cursor-purple.svg';
+import boldIcon from '../../images/icon-bold-white.svg';
+import codeIcon from '../../images/icon-code-white.svg';
+import italicIcon from '../../images/icon-italic-white.svg';
+import underlineIcon from '../../images/icon-underline-white.svg';
 
 class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
-      threadName: "",
-      threadTopic: "",
-      spaceId: "",
-      threadCreatedByUserName: "",
-      display: "none"
+      threadName: '',
+      threadTopic: '',
+      spaceId: '',
+      threadCreatedByUserName: '',
+      display: 'none'
     };
     this.onChange = editorState => {
       const contentState = editorState.getCurrentContent();
@@ -39,7 +39,7 @@ class CreateThreadModal extends Component {
         this.state.editorState.getCurrentContent()
       );
       let threadTopic = rawDraftContentState.blocks[0].text;
-      let words = threadTopic.split(" ");
+      let words = threadTopic.split(' ');
       let wordsWithSpecificLength = words.every(word => word.length <= 70);
       if (
         contentState === oldContent ||
@@ -47,24 +47,24 @@ class CreateThreadModal extends Component {
         window.event.which === 8
       ) {
         this.setState({ editorState });
-        this.setState({ error2: "" });
-        this.setState({ error3: "" });
+        this.setState({ error2: '' });
+        this.setState({ error3: '' });
       } else {
         const editorState = EditorState.undo(
           EditorState.push(
             this.state.editorState,
             ContentState.createFromText(oldContent.getPlainText()),
-            "delete-character"
+            'delete-character'
           )
         );
         this.setState({ editorState });
       }
       if (threadTopic.length > 800) {
-        this.setState({ error2: "toManyThreadTopicCharacters" });
+        this.setState({ error2: 'toManyThreadTopicCharacters' });
       }
       if (!wordsWithSpecificLength) {
         editorState = EditorState.undo(editorState);
-        this.setState({ error3: "wordIsTooLong" });
+        this.setState({ error3: 'wordIsTooLong' });
       }
       this.focus = () => this.refs.editor.focus();
     };
@@ -90,25 +90,25 @@ class CreateThreadModal extends Component {
   handleInputChange = event => {
     if (
       this.state.threadName.length <= 40 ||
-      event.target.name !== "threadName" ||
-      window.event.inputType === "deleteContentBackward"
+      event.target.name !== 'threadName' ||
+      window.event.inputType === 'deleteContentBackward'
     ) {
       this.setState({ [event.target.name]: event.target.value });
-      this.setState({ error: "" });
+      this.setState({ error: '' });
     } else if (
       this.state.threadName.length > 40 &&
-      event.target.name === "threadName"
+      event.target.name === 'threadName'
     ) {
-      this.setState({ error: "toManyCharactersInThreadName" });
+      this.setState({ error: 'toManyCharactersInThreadName' });
     }
   };
 
   toggleMiniMondal = () => {
-    let miniModal = document.getElementById("miniModal");
-    if (miniModal.style.display === "none") {
-      miniModal.style.display = "flex";
+    let miniModal = document.getElementById('miniModal');
+    if (miniModal.style.display === 'none') {
+      miniModal.style.display = 'flex';
     } else {
-      miniModal.style.display = "none";
+      miniModal.style.display = 'none';
     }
   };
 
@@ -119,55 +119,55 @@ class CreateThreadModal extends Component {
     );
     if (newState) {
       this.onChange(newState);
-      return "handled";
+      return 'handled';
     }
-    return "not-handled";
+    return 'not-handled';
   };
 
   onUnderlineClick = () => {
     this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
+      RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE')
     );
   };
 
   onBoldClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, "BOLD"));
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   };
 
   onItalicClick = () => {
     this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
+      RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC')
     );
   };
 
   onCodeClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, "CODE"));
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CODE'));
   };
 
   threadId = uuid();
   addNewThread = () => {
     this.props.firestore
       .set(
-        { collection: "threads", doc: this.threadId },
+        { collection: 'threads', doc: this.threadId },
         {
           threadName: this.state.threadName,
           threadTopic: this.state.threadTopic,
-          threadCreatedByUserId: window.localStorage.getItem("uuid"),
+          threadCreatedByUserId: window.localStorage.getItem('uuid'),
           threadCreatedByUserName: this.props.user.fullName,
           threadCreatedAt: Date.now(),
           spaceId: this.props.match.params.spaceId,
           orgId: this.props.match.params.id,
           lastCommentCreatedAt: Date.now(),
-          whenUserHasSeen: { [localStorage.getItem("uuid")]: Date.now() }
+          whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
         }
       )
       .then(() => {
         let threadRef = this.props.firestore
-          .collection("threads")
+          .collection('threads')
           .doc(this.threadId);
         let whenUserHasSeen = {};
         whenUserHasSeen[
-          `whenUserHasSeen.${localStorage.getItem("uuid")}`
+          `whenUserHasSeen.${localStorage.getItem('uuid')}`
         ] = Date.now();
         threadRef.update(whenUserHasSeen);
       })
@@ -235,7 +235,7 @@ class CreateThreadModal extends Component {
               value={this.state.threadName}
               onChange={event => this.handleInputChange(event)}
             />
-            {this.state.error === "toManyCharactersInThreadName" && (
+            {this.state.error === 'toManyCharactersInThreadName' && (
               <Message warning attached='bottom'>
                 <Icon name='warning' />
                 Thread name can only have 40 characters
@@ -252,12 +252,12 @@ class CreateThreadModal extends Component {
                 handleKeyCommand={this.handleKeyCommand}
                 ref='editor'
               />
-              {this.state.error3 === "wordIsTooLong" && (
+              {this.state.error3 === 'wordIsTooLong' && (
                 <Message warning attached='bottom'>
                   <Icon name='warning' />A word can only be 70 characters long
                 </Message>
               )}
-              {this.state.error2 === "toManyThreadTopicCharacters" && (
+              {this.state.error2 === 'toManyThreadTopicCharacters' && (
                 <Message warning attached='bottom'>
                   <Icon name='warning' />
                   Thread topic can only have 800 characters
@@ -308,16 +308,16 @@ const mapStateToProps = state => {
       ? state.firestore.ordered.spacesUserIsIn
       : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    activeOrg: localStorage.getItem("activeOrg")
-      ? localStorage.getItem("activeOrg")
-      : "",
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" })
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 
@@ -326,15 +326,15 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "spaces",
+        collection: 'spaces',
         where: [
-          ["arrayOfUserIdsInSpace", "array-contains", props.uuid],
-          ["orgId", "==", props.match.params.id]
+          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
+          ['orgId', '==', props.match.params.id]
         ],
-        storeAs: "spacesUserIsIn"
+        storeAs: 'spacesUserIsIn'
       },
       {
-        collection: "users",
+        collection: 'users',
         doc: `${props.uuid}`
       }
     ];
@@ -427,7 +427,7 @@ const StyledTitleInput = styled.input`
   outline: none;
   width: 100%;
   height: 56px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 36px;
   font-weight: 300;
   line-height: 1.11;

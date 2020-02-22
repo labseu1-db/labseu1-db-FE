@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import ProfileCardButton from "./ProfileCardButton";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { withFirestore } from "react-redux-firebase";
+import React from 'react';
+import styled from 'styled-components';
+import ProfileCardButton from './ProfileCardButton';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withFirestore } from 'react-redux-firebase';
 
 class ProfileCardUserRow extends React.Component {
   constructor(props) {
@@ -14,10 +14,10 @@ class ProfileCardUserRow extends React.Component {
     };
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.escFunction, false);
+    document.addEventListener('keydown', this.escFunction, false);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.escFunction, false);
+    document.removeEventListener('keydown', this.escFunction, false);
   }
   onChangeHandler = e => {
     this.setState({ fullName: e.target.value });
@@ -25,7 +25,7 @@ class ProfileCardUserRow extends React.Component {
   onSubmitHandler = event => {
     if (event.which === 13 || event.keyCode === 13) {
       event.preventDefault();
-      let ref = this.props.firestore.collection("users").doc(this.props.uuid);
+      let ref = this.props.firestore.collection('users').doc(this.props.uuid);
       ref
         .update({
           fullName: this.state.fullName
@@ -62,7 +62,7 @@ class ProfileCardUserRow extends React.Component {
               onChange={this.onChangeHandler}
             />
             <StyledCancel>
-              Press Enter to Submit{"\n"} and Escape to cancel
+              Press Enter to Submit{'\n'} and Escape to cancel
             </StyledCancel>
           </StyledNameSubmitForm>
         )}

@@ -1,16 +1,16 @@
-import { createStore, compose } from "redux";
-import { reactReduxFirebase } from "react-redux-firebase";
-import { reduxFirestore } from "redux-firestore";
+import { createStore, compose } from 'redux';
+import { reactReduxFirebase } from 'react-redux-firebase';
+import { reduxFirestore } from 'redux-firestore';
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
 //Import the firebase configuration - currently test database
-import firebaseConfig from "../firebase/firebaseConfig.js";
+import firebaseConfig from '../firebase/firebaseConfig.js';
 
 //Import reducers
-import { initialState, rootReducer } from "./reducers/reducer";
+import { initialState, rootReducer } from './reducers/reducer';
 
 //Initialize database
 firebase.initializeApp(firebaseConfig);
@@ -21,7 +21,7 @@ const enhancers = [
   reduxFirestore(firebase),
   //This will be used for authenticaton - users are going to be stored in the firestore database
   reactReduxFirebase(firebase, {
-    userProfile: "authedUsers",
+    userProfile: 'authedUsers',
     useFirestoreForProfile: true
   }),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

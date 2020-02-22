@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firebaseConnect } from "react-redux-firebase";
-import { Route } from "react-router-dom";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firebaseConnect } from 'react-redux-firebase';
+import { Route } from 'react-router-dom';
 
-import Register from "./Components/Register";
-import Login from "./Components/Login";
-import PasswordlessSubmit from "./Components/PasswordlessSubmit";
-import PasswordlessCheck from "./Components/PasswordlessCheck";
-import ForgotPassword from "./Components/ForgotPassword";
-import CreateNewOrganisation from "./Components/CreateNewOrganisation";
-import UserManagement from "./Components/UserManagement";
-import LandingPage from "./Components/landing-page/LandingPage";
-import SpaceThreads from "./Components/SpaceThreads";
-import MainScreen from "./Components/MainScreen";
-import ThreadsScreen from "./Components/ThreadsScreen";
-import FollowUp from "./Components/reusable-components/FollowUp";
-import UpgradeAccount from "./Components/UpgradeAccount";
-import UserProfile from "./Components/UserProfile";
+import Register from './Components/Register';
+import Login from './Components/Login';
+import PasswordlessSubmit from './Components/PasswordlessSubmit';
+import PasswordlessCheck from './Components/PasswordlessCheck';
+import ForgotPassword from './Components/ForgotPassword';
+import CreateNewOrganisation from './Components/CreateNewOrganisation';
+import UserManagement from './Components/UserManagement';
+import LandingPage from './Components/landing-page/LandingPage';
+import SpaceThreads from './Components/SpaceThreads';
+import MainScreen from './Components/MainScreen';
+import ThreadsScreen from './Components/ThreadsScreen';
+import FollowUp from './Components/reusable-components/FollowUp';
+import UpgradeAccount from './Components/UpgradeAccount';
+import UserProfile from './Components/UserProfile';
 
 class App extends Component {
   render() {
@@ -58,8 +58,8 @@ class App extends Component {
           exact
           path={
             this.props.resetPasswordStatus
-              ? "/changePassword/:id"
-              : "/forgotPassword"
+              ? '/changePassword/:id'
+              : '/forgotPassword'
           }
           render={props => <ForgotPassword {...props} />}
         />
@@ -104,7 +104,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" })
+    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
   };
 };
 

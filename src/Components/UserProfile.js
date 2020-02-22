@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { showModal } from "../redux/actions/actionCreators";
-import { compose, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
-import styled from "styled-components";
-import ProfileCard from "./reusable-components/ProfileCard";
-import { Redirect } from "react-router-dom";
-import Navbar from "./NavBar";
-import RightSidebar from "./RightSidebar";
+import React, { Component } from 'react';
+import { showModal } from '../redux/actions/actionCreators';
+import { compose, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import styled from 'styled-components';
+import ProfileCard from './reusable-components/ProfileCard';
+import { Redirect } from 'react-router-dom';
+import Navbar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 class UserProfile extends Component {
   render() {
@@ -52,11 +52,11 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
-        where: ["spaceId", "==", props.spaceId]
+        collection: 'threads',
+        where: ['spaceId', '==', props.spaceId]
       },
       {
-        collection: "spaces",
+        collection: 'spaces',
         doc: props.spaceId
       }
     ];

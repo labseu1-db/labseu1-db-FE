@@ -1,17 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
-import styled from "styled-components";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 //Import components
-import ScreenHeading from "./reusable-components/ScreenHeading";
-import ScreenSectionHeading from "./reusable-components/ScreenSectionHeading";
-import CheckoutFormContainer from "./CheckoutFormContainer";
-import Navbar from "./NavBar";
-import RightSidebar from "./RightSidebar";
+import ScreenHeading from './reusable-components/ScreenHeading';
+import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
+import CheckoutFormContainer from './CheckoutFormContainer';
+import Navbar from './NavBar';
+import RightSidebar from './RightSidebar';
 
-import { showModal } from "../redux/actions/actionCreators";
+import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
@@ -77,12 +77,12 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem("activeOrg")
-      ? localStorage.getItem("activeOrg")
-      : "",
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     currentOrg: state.firestore.ordered.currentOrg
       ? state.firestore.ordered.currentOrg[0]
-      : ""
+      : ''
   };
 };
 
@@ -95,9 +95,9 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "organisations",
+        collection: 'organisations',
         doc: `${props.match.params.id}`,
-        storeAs: "currentOrg"
+        storeAs: 'currentOrg'
       }
     ];
   })
@@ -135,7 +135,7 @@ const StyledThreadContainer = styled.div`
   margin: 25px 0;
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
-  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
 `;
 
 const StyledThreadContainerPremium = styled.div`
@@ -149,5 +149,5 @@ const StyledThreadContainerPremium = styled.div`
   margin: 25px 0;
   border-radius: 10px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.06);
-  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
 `;

@@ -1,26 +1,26 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 //Import dependencies
-import styled from "styled-components";
-import uuid from "uuid";
+import styled from 'styled-components';
+import uuid from 'uuid';
 
 //Import semantic components
-import { Modal } from "semantic-ui-react";
+import { Modal } from 'semantic-ui-react';
 
 //Import components
-import ProgressBar from "../reusable-components/ProgressBar";
+import ProgressBar from '../reusable-components/ProgressBar';
 
 //Default export
 export default class CreateSpacesModal extends Component {
   spacesExamples = [
-    { name: "Product", color: "eggplant" },
-    { name: "Engineering", color: "darkgreen" },
-    { name: "Recruiting", color: "violet" },
-    { name: "Design", color: "darkolive" },
-    { name: "Marketing", color: "yellow" },
-    { name: "Reviews", color: "red" },
-    { name: "Announcements", color: "lightblue" },
-    { name: "Research", color: "green" }
+    { name: 'Product', color: 'eggplant' },
+    { name: 'Engineering', color: 'darkgreen' },
+    { name: 'Recruiting', color: 'violet' },
+    { name: 'Design', color: 'darkolive' },
+    { name: 'Marketing', color: 'yellow' },
+    { name: 'Reviews', color: 'red' },
+    { name: 'Announcements', color: 'lightblue' },
+    { name: 'Research', color: 'green' }
   ];
 
   //Render component
@@ -40,7 +40,7 @@ export default class CreateSpacesModal extends Component {
                 discussions about specific projects and broader team topics.
               </StyledModalTextInForm>
               <StyledModalLabel>
-                Choose a few spaces{" "}
+                Choose a few spaces{' '}
                 <span>{`${this.props.createdSpaces.length} selected`}</span>
               </StyledModalLabel>
               <StyledModalSpacesContainer>
@@ -48,7 +48,7 @@ export default class CreateSpacesModal extends Component {
                   return (
                     <StyledSpacesModalCard
                       className={`${this.props.createdSpaces.indexOf(s.name) >
-                        -1 && "borderclass"} ${s.color}`}
+                        -1 && 'borderclass'} ${s.color}`}
                       key={s.name}
                       onClick={() => {
                         this.props.addSpace(s.name);
@@ -85,7 +85,7 @@ export default class CreateSpacesModal extends Component {
                   let orgId = uuid();
                   e.preventDefault();
                   Promise.all([
-                    this.props.showModal("null"),
+                    this.props.showModal('null'),
                     this.props.addOrganisationToUsers(orgId),
                     this.props.addSpacesToSpacesAndUsers(orgId),
                     this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId),
@@ -104,7 +104,7 @@ export default class CreateSpacesModal extends Component {
                   className='cancel-button'
                   onClick={e => {
                     e.preventDefault();
-                    this.props.showModal("InviteYourTeamModal");
+                    this.props.showModal('InviteYourTeamModal');
                   }}
                 >
                   Back
@@ -119,7 +119,7 @@ export default class CreateSpacesModal extends Component {
 }
 
 const StyledModalH1 = styled.h1`
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   text-align: center;
   font-weight: 300;
 `;
@@ -142,7 +142,7 @@ const StyledModalForm = styled.form`
 `;
 
 const StyledModalLabel = styled.div`
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   padding-bottom: 10px;

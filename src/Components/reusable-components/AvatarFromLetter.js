@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import Spinner from "../semantic-components/Spinner";
+import React from 'react';
+import styled from 'styled-components';
+import Spinner from '../semantic-components/Spinner';
 
 export default function AvatarFromLetter(props) {
   const style = {
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    color: "white"
+    color: 'white'
   };
   if (props.username === undefined) {
     return <Spinner />;
@@ -15,15 +15,15 @@ export default function AvatarFromLetter(props) {
     <StyledImageContainer style={style}>
       <div
         className={
-          props.username[0].toUpperCase() < "E"
-            ? "first"
-            : props.username[0].toUpperCase() < "J"
-            ? "second"
-            : props.username[0].toUpperCase() < "O"
-            ? "third"
-            : props.username[0].toUpperCase() < "T"
-            ? "fourth"
-            : "fifth"
+          props.username[0].toUpperCase() < 'E'
+            ? 'first'
+            : props.username[0].toUpperCase() < 'J'
+            ? 'second'
+            : props.username[0].toUpperCase() < 'O'
+            ? 'third'
+            : props.username[0].toUpperCase() < 'T'
+            ? 'fourth'
+            : 'fifth'
         }
       >
         {props.username[0].toUpperCase()}

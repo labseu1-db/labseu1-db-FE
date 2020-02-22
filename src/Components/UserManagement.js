@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
-import { Header, Modal, Message } from "semantic-ui-react";
+import { Header, Modal, Message } from 'semantic-ui-react';
 
 class UserManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamEmailAddress: ["", "", "", ""],
+      teamEmailAddress: ['', '', '', ''],
 
       alert: false
     };
@@ -25,7 +25,7 @@ class UserManagement extends Component {
   //Add email input when clicked on email
   appendInput = () => {
     this.setState(prevState => ({
-      teamEmailAddress: prevState.teamEmailAddress.concat([""])
+      teamEmailAddress: prevState.teamEmailAddress.concat([''])
     }));
   };
 
@@ -48,7 +48,7 @@ class UserManagement extends Component {
 
   removeOrgFromUser = id => {
     this.props.firestore.update(
-      { collection: "users", doc: id },
+      { collection: 'users', doc: id },
       {
         arrayOfOrgsIds: this.props.firestore.FieldValue.arrayRemove(
           this.props.organisation.id
@@ -62,7 +62,7 @@ class UserManagement extends Component {
 
   removeUserFromOrg = (id, email) => {
     this.props.firestore.update(
-      { collection: "organisations", doc: this.props.organisation.id },
+      { collection: 'organisations', doc: this.props.organisation.id },
       {
         arrayOfUsersEmails: this.props.firestore.FieldValue.arrayRemove(email),
         arrayOfUsersIds: this.props.firestore.FieldValue.arrayRemove(id)
@@ -75,7 +75,7 @@ class UserManagement extends Component {
       this.props.firestore
         .update(
           {
-            collection: "spaces",
+            collection: 'spaces',
             doc: space.id
           },
           {
@@ -87,7 +87,7 @@ class UserManagement extends Component {
         .then(res =>
           this.props.firestore.update(
             {
-              collection: "users",
+              collection: 'users',
               doc: id
             },
             {
@@ -112,7 +112,7 @@ class UserManagement extends Component {
     usersEmailsWithoutEmptyStrings.forEach(email => {
       this.props.firestore.update(
         {
-          collection: "organisations",
+          collection: 'organisations',
           doc: this.props.organisation.id
         },
         {
@@ -124,7 +124,7 @@ class UserManagement extends Component {
 
   render() {
     if (
-      this.props.organisation.createdByUserId === localStorage.getItem("uuid")
+      this.props.organisation.createdByUserId === localStorage.getItem('uuid')
     ) {
       return (
         <Modal open={true} size='tiny'>
@@ -197,11 +197,11 @@ class UserManagement extends Component {
                             19 &&
                           this.props.organisation.isPremium === false
                         ) {
-                          this.setState({ alert: "subscription" });
+                          this.setState({ alert: 'subscription' });
                         } else if (
                           !this.state.teamEmailAddress.every(this.checkIfEmail)
                         ) {
-                          this.setState({ alert: "email" });
+                          this.setState({ alert: 'email' });
                         } else {
                           this.addUserEmailsToOrgDatabase();
                           this.props.history.goBack();
@@ -224,14 +224,14 @@ class UserManagement extends Component {
                   </StyledActionButtonsContainer>
                 </Modal.Actions>
               </StyledModalCard>
-              {this.state.alert === "email" && (
+              {this.state.alert === 'email' && (
                 <StyledAlertMessage>
                   <Message color='red'>
                     Please make sure that you are using valid email address.
                   </Message>
                 </StyledAlertMessage>
               )}
-              {this.state.alert === "subscription" && (
+              {this.state.alert === 'subscription' && (
                 <StyledAlertMessage>
                   <Message color='red'>
                     With free version you can invite up to 20 users. If you want
@@ -245,7 +245,7 @@ class UserManagement extends Component {
       );
     }
     if (
-      this.props.organisation.createdByUserId !== localStorage.getItem("uuid")
+      this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
     ) {
       return (
         <Modal open={true} size='tiny'>
@@ -292,7 +292,7 @@ const mapStateToProps = state => {
     spaces: state.firestore.ordered.spaces
       ? state.firestore.ordered.spaces
       : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
       ? state.firestore.ordered.usersWithinTheOrg
       : []
@@ -307,21 +307,21 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "users",
+        collection: 'users',
         doc: `${props.uuid}`
       },
       {
-        collection: "users",
-        where: [["arrayOfOrgsIds", "array-contains", props.match.params.id]],
-        storeAs: "usersWithinTheOrg"
+        collection: 'users',
+        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
+        storeAs: 'usersWithinTheOrg'
       },
       {
-        collection: "organisations",
+        collection: 'organisations',
         doc: props.match.params.id
       },
       {
-        collection: "spaces",
-        where: [["orgId", "==", props.match.params.id]]
+        collection: 'spaces',
+        where: [['orgId', '==', props.match.params.id]]
       }
     ];
   }),
@@ -352,7 +352,7 @@ const Subheader = styled.div`
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   text-align: center;
 `;
 
@@ -438,7 +438,7 @@ const StyledModalMainButtonContainer = styled.div`
 `;
 
 const StyledModalAdder = styled.div`
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: #00bc98;

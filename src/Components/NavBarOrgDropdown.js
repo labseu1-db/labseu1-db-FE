@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Dropdown } from "semantic-ui-react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { Dropdown } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 export class NavBarOrgDropdown extends Component {
   // handleInput = e => {
@@ -11,7 +11,7 @@ export class NavBarOrgDropdown extends Component {
   render() {
     return (
       <StyledDropdown>
-        {" "}
+        {' '}
         <Dropdown
           inline
           options={this.props.orgOptions}

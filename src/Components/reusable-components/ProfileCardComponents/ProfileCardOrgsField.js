@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import ProfileOrgField from "./ProfileOrgField";
+import React from 'react';
+import styled from 'styled-components';
+import ProfileOrgField from './ProfileOrgField';
 
 function ProfileCardOrgsField(props) {
   return (

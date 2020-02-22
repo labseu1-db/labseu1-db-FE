@@ -1,29 +1,29 @@
-import React from "react";
-import styled from "styled-components";
-import { Modal, Image } from "semantic-ui-react";
-import checkMarkOff from "../images/icon-check-darkgray.svg";
-import checkMarkOn from "../images/icon-check-purple.svg";
+import React from 'react';
+import styled from 'styled-components';
+import { Modal, Image } from 'semantic-ui-react';
+import checkMarkOff from '../images/icon-check-darkgray.svg';
+import checkMarkOn from '../images/icon-check-purple.svg';
 //import plantImg from '../images/img-bg-plant.png';
-import plantImg from "../images/tulip.svg";
-import discussionImg from "../images/img-modal-discussion.svg";
-import mobileImg from "../images/img-modal-mobile.svg";
-import voiceImg from "../images/img-modal-voice.svg";
+import plantImg from '../images/tulip.svg';
+import discussionImg from '../images/img-modal-discussion.svg';
+import mobileImg from '../images/img-modal-mobile.svg';
+import voiceImg from '../images/img-modal-voice.svg';
 
 export default class RightSidebar extends React.Component {
   toggleCheckFirst = () => {
-    let check = document.getElementById("check01");
+    let check = document.getElementById('check01');
     check.src === checkMarkOn
       ? (check.src = checkMarkOn)
       : (check.src = checkMarkOn);
   };
   toggleCheckSecond = () => {
-    let check = document.getElementById("check02");
+    let check = document.getElementById('check02');
     check.src === checkMarkOn
       ? (check.src = checkMarkOn)
       : (check.src = checkMarkOn);
   };
   toggleCheckThird = () => {
-    let check = document.getElementById("check03");
+    let check = document.getElementById('check03');
     check.src === checkMarkOn
       ? (check.src = checkMarkOn)
       : (check.src = checkMarkOn);
