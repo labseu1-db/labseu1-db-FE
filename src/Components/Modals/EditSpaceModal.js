@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Header, Modal, Dropdown } from "semantic-ui-react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
+import React, { Component } from 'react';
+import { Header, Modal, Dropdown } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Redux action
-import { showModal } from "../../redux/actions/actionCreators";
+import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
-import styled from "styled-components";
+import styled from 'styled-components';
 
 class EditSpaceModal extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class EditSpaceModal extends Component {
 
   updateSpaceToDatabase = () => {
     this.props.firestore.update(
-      { collection: "spaces", doc: this.props.space.id },
+      { collection: 'spaces', doc: this.props.space.id },
       {
         spaceName: this.state.spaceName,
         spaceTopic: this.state.spaceTopic,
@@ -45,7 +45,7 @@ class EditSpaceModal extends Component {
   addSpaceToUsers = () => {
     this.state.idsInSpace.map(id => {
       return this.props.firestore.update(
-        { collection: "users", doc: id },
+        { collection: 'users', doc: id },
         {
           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(
             this.props.space.id
@@ -63,7 +63,7 @@ class EditSpaceModal extends Component {
       .filter(id => this.state.idsInSpace.indexOf(id) === -1)
       .map(id => {
         return this.props.firestore.update(
-          { collection: "users", doc: id },
+          { collection: 'users', doc: id },
           {
             arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
               this.props.space.id
@@ -175,7 +175,7 @@ const mapStateToProps = state => {
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
       ? state.firestore.ordered.usersWithinTheOrg
       : []
@@ -192,15 +192,15 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "users",
+        collection: 'users',
         doc: `${props.uuid}`
       },
       {
-        collection: "users",
+        collection: 'users',
         where: [
-          ["arrayOfOrgsIds", "array-contains", `${props.match.params.id}`]
+          ['arrayOfOrgsIds', 'array-contains', `${props.match.params.id}`]
         ],
-        storeAs: "usersWithinTheOrg"
+        storeAs: 'usersWithinTheOrg'
       }
     ];
   }),
@@ -237,7 +237,7 @@ const StyledButtonCreateSpace = styled.button`
 const StyledInput = styled.input`
   width: 100%;
   height: 32px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #374750;
@@ -253,12 +253,12 @@ const StyledInput = styled.input`
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding-bottom: 30px;
 `;
 const StyledOptional = styled.div`
   font-size: 11px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #374750;
   margin-left: 257px;
   margin-top: -19px;

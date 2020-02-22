@@ -1,41 +1,41 @@
-import React from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
-import BackToButton from "./reusable-components/BackToButton";
-import ScreenHeading from "./reusable-components/ScreenHeading";
-import ThreadInformationCard from "./reusable-components/ThreadInformationCard";
-import CommentCard from "./reusable-components/CommentCardComponents/CommentCard";
-import NewCommentCard from "./reusable-components/CommentCardComponents/NewCommentCard";
-import NavBar from "./NavBar";
-import RightSidebar from "./RightSidebar";
+import BackToButton from './reusable-components/BackToButton';
+import ScreenHeading from './reusable-components/ScreenHeading';
+import ThreadInformationCard from './reusable-components/ThreadInformationCard';
+import CommentCard from './reusable-components/CommentCardComponents/CommentCard';
+import NewCommentCard from './reusable-components/CommentCardComponents/NewCommentCard';
+import NavBar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 //Import actions
-import { resetThread } from "../redux/actions/actionCreators";
+import { resetThread } from '../redux/actions/actionCreators';
 
 //Main component
 export class ThreadsScreen extends React.Component {
   componentDidMount() {
     let threadRef = this.props.firestore
-      .collection("threads")
+      .collection('threads')
       .doc(this.props.match.params.threadId);
     let whenUserHasSeen = {};
     whenUserHasSeen[
-      `whenUserHasSeen.${localStorage.getItem("uuid")}`
+      `whenUserHasSeen.${localStorage.getItem('uuid')}`
     ] = Date.now();
     threadRef.update(whenUserHasSeen);
   }
 
   componentWillUnmount() {
     let threadRef = this.props.firestore
-      .collection("threads")
+      .collection('threads')
       .doc(this.props.match.params.threadId);
     let whenUserHasSeen = {};
     whenUserHasSeen[
-      `whenUserHasSeen.${localStorage.getItem("uuid")}`
+      `whenUserHasSeen.${localStorage.getItem('uuid')}`
     ] = Date.now();
     threadRef.update(whenUserHasSeen);
   }
@@ -82,7 +82,7 @@ export class ThreadsScreen extends React.Component {
 
             <NewCommentCard
               img='http://lorempixel.com/480/480'
-              createdByUserId={localStorage.getItem("uuid")}
+              createdByUserId={localStorage.getItem('uuid')}
               thread={this.props.activeThread}
             />
           </StyledThreadContent>
@@ -112,8 +112,7 @@ const StyledThreadContent = styled.div`
   background-color: #fff7f3;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const StyledHeadingContainer = styled.div`
@@ -144,13 +143,13 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
+        collection: 'threads',
         doc: props.match.params.threadId
       },
       {
-        collection: "comments",
-        where: [["threadId", "==", props.match.params.threadId]],
-        orderBy: ["commentCreatedAt", "asc"]
+        collection: 'comments',
+        where: [['threadId', '==', props.match.params.threadId]],
+        orderBy: ['commentCreatedAt', 'asc']
       }
     ];
   })

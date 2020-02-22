@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 //Import icons
-import arrowIcon from "../../images/icon-arrow-left-white.svg";
+import arrowIcon from '../../images/icon-arrow-left-white.svg';
 
 function BackToButton({ onClick }) {
   return (

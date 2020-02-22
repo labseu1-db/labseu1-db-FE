@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { Header, Modal, Dropdown } from "semantic-ui-react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, withFirestore, isEmpty } from "react-redux-firebase";
-import Spinner from "../semantic-components/Spinner";
-import uuid from "uuid";
-import plusIcon from "../../images/icon-plus-lightgray.svg";
+import React, { Component } from 'react';
+import { Header, Modal, Dropdown } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, withFirestore, isEmpty } from 'react-redux-firebase';
+import Spinner from '../semantic-components/Spinner';
+import uuid from 'uuid';
+import plusIcon from '../../images/icon-plus-lightgray.svg';
 
 //Redux action
-import { showModal } from "../../redux/actions/actionCreators";
+import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
-import styled from "styled-components";
+import styled from 'styled-components';
 
 class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spaceName: "",
-      spaceTopic: "",
+      spaceName: '',
+      spaceTopic: '',
       idsInSpace: [this.props.uuid]
     };
   }
@@ -37,8 +37,8 @@ class CreateNewSpaceModal extends Component {
 
   cleanInputs = () => {
     this.setState({
-      spaceName: "",
-      spaceTopic: "",
+      spaceName: '',
+      spaceTopic: '',
       idsInSpace: [this.props.uuid]
     });
   };
@@ -47,10 +47,10 @@ class CreateNewSpaceModal extends Component {
     const spaceId = uuid();
     this.props.firestore
       .set(
-        { collection: "spaces", doc: spaceId },
+        { collection: 'spaces', doc: spaceId },
         {
           spaceName: this.state.spaceName,
-          spaceCreatedByUserId: window.localStorage.getItem("uuid"),
+          spaceCreatedByUserId: window.localStorage.getItem('uuid'),
           spaceTopic: this.state.spaceTopic,
           orgId: this.props.match.params.id,
           arrayOfUserIdsInSpace: this.state.idsInSpace
@@ -68,7 +68,7 @@ class CreateNewSpaceModal extends Component {
   addSpaceToUsers = spaceId => {
     this.state.idsInSpace.map(id => {
       return this.props.firestore.update(
-        { collection: "users", doc: id },
+        { collection: 'users', doc: id },
         {
           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
           arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
@@ -107,7 +107,7 @@ class CreateNewSpaceModal extends Component {
                 src={plusIcon}
                 alt='plus icon'
                 onClick={this.handleOpen}
-                disabled={isEmpty(localStorage.getItem("activeOrg"))}
+                disabled={isEmpty(localStorage.getItem('activeOrg'))}
               />
             </div>
           }
@@ -190,14 +190,14 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem("activeOrg")
-      ? localStorage.getItem("activeOrg")
-      : "",
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     organisation: state.firestore.ordered.activeOrgFromDatabase
       ? state.firestore.ordered.activeOrgFromDatabase
       : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
       ? state.firestore.ordered.usersWithinTheOrg
       : []
@@ -214,18 +214,18 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "organisations",
+        collection: 'organisations',
         doc: props.match.params.id,
-        storeAs: "activeOrgFromDatabase"
+        storeAs: 'activeOrgFromDatabase'
       },
       {
-        collection: "users",
+        collection: 'users',
         doc: `${props.uuid}`
       },
       {
-        collection: "users",
-        where: [["arrayOfOrgsIds", "array-contains", props.match.params.id]],
-        storeAs: "usersWithinTheOrg"
+        collection: 'users',
+        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
+        storeAs: 'usersWithinTheOrg'
       }
     ];
   }),
@@ -282,7 +282,7 @@ const StyledDropdown = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   height: 32px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #374750;
@@ -298,12 +298,12 @@ const StyledInput = styled.input`
 const StyledMainHeader = styled.div`
   font-size: 24px;
   color: rgb(55, 71, 80);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding-bottom: 30px;
 `;
 const StyledOptional = styled.div`
   font-size: 11px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #374750;
   margin-left: 257px;
   margin-top: -19px;

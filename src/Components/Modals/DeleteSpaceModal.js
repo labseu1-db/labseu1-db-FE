@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Modal } from "semantic-ui-react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
+import React, { Component } from 'react';
+import { Modal } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Redux action
-import { showModal, resetSpace } from "../../redux/actions/actionCreators";
+import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 
 //Styled components
-import styled from "styled-components";
+import styled from 'styled-components';
 
 class DeleteSpaceModal extends Component {
   handleOpen = () => {
@@ -23,7 +23,7 @@ class DeleteSpaceModal extends Component {
     this.props.space.arrayOfUserIdsInSpace.forEach(id => {
       this.props.firestore
         .update(
-          { collection: "users", doc: id },
+          { collection: 'users', doc: id },
           {
             arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
               this.props.space.id
@@ -36,13 +36,13 @@ class DeleteSpaceModal extends Component {
         .then(res => {
           this.props.threads.forEach(t => {
             this.props.firestore
-              .collection("threads")
+              .collection('threads')
               .doc(t.id)
               .delete()
               .then(res => {
                 const ref = this.props.firestore
-                  .collection("comments")
-                  .where("threadId", "==", t.id);
+                  .collection('comments')
+                  .where('threadId', '==', t.id);
                 ref.get().then(function(querySnapshot) {
                   querySnapshot.forEach(function(doc) {
                     doc.ref.delete();
@@ -53,7 +53,7 @@ class DeleteSpaceModal extends Component {
         })
         .then(res => {
           this.props.firestore
-            .collection("spaces")
+            .collection('spaces')
             .doc(this.props.space.id)
             .delete();
         })
@@ -70,7 +70,7 @@ class DeleteSpaceModal extends Component {
           <Modal.Header>
             <div>
               <StyledMainHeader>
-                Are you really really sure that you want to delete space{" "}
+                Are you really really sure that you want to delete space{' '}
                 <strong>{this.props.space.spaceName}</strong>?
               </StyledMainHeader>
             </div>
@@ -129,8 +129,8 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
-        where: [["spaceId", "==", props.space.id]]
+        collection: 'threads',
+        where: [['spaceId', '==', props.space.id]]
       }
     ];
   }),
@@ -169,7 +169,7 @@ const StyledMainHeader = styled.div`
   font-size: 16px;
   line-height: 1.5;
   color: rgb(55, 71, 80);
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding-bottom: 30px;
 `;
 

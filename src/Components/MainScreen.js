@@ -1,23 +1,23 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
-import styled from "styled-components";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 //Import icons/images
-import penIconWhite from "../images/icon-pen-white.svg";
+import penIconWhite from '../images/icon-pen-white.svg';
 
 //Import components
-import ScreenHeading from "./reusable-components/ScreenHeading";
-import ScreenSectionHeading from "./reusable-components/ScreenSectionHeading";
-import ScreenButton from "./reusable-components/ScreenButton";
-import ThreadCard from "./reusable-components/ThreadCard";
-import CreateThreadModal from "./Modals/CreateThreadModal";
-import NavBar from "./NavBar";
-import RightSidebar from "./RightSidebar";
+import ScreenHeading from './reusable-components/ScreenHeading';
+import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
+import ScreenButton from './reusable-components/ScreenButton';
+import ThreadCard from './reusable-components/ThreadCard';
+import CreateThreadModal from './Modals/CreateThreadModal';
+import NavBar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 //Actions
-import { showModal, setActiveThread } from "../redux/actions/actionCreators";
+import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
 //Main component
 class MainScreen extends React.Component {
@@ -26,7 +26,7 @@ class MainScreen extends React.Component {
       <StyledMain>
         <NavBar {...this.props} />
         <StyledMainScreen>
-          {this.props.activeModal === "CreateThreadModal" && (
+          {this.props.activeModal === 'CreateThreadModal' && (
             <CreateThreadModal
               shoudlBeOpen={true}
               showModal={this.props.showModal}
@@ -47,7 +47,7 @@ class MainScreen extends React.Component {
               color='white'
               border='none'
               onClick={e => {
-                this.props.showModal("CreateThreadModal");
+                this.props.showModal('CreateThreadModal');
               }}
             />
           </StyledFirstRow>
@@ -59,7 +59,7 @@ class MainScreen extends React.Component {
             this.props.threads.map((t, i) => {
               let dateInfo = new Date(t.threadCreatedAt);
               let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
-                "0" + dateInfo.getMinutes()
+                '0' + dateInfo.getMinutes()
               ).slice(-2)}`;
               return (
                 <ThreadCard
@@ -77,12 +77,12 @@ class MainScreen extends React.Component {
                       : false
                   }
                   checked={
-                    (!t.whenUserHasSeen[localStorage.getItem("uuid")] &&
-                      "false") ||
+                    (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                      'false') ||
                     (t.lastCommentCreatedAt >
-                    t.whenUserHasSeen[localStorage.getItem("uuid")]
-                      ? "false"
-                      : "true")
+                    t.whenUserHasSeen[localStorage.getItem('uuid')]
+                      ? 'false'
+                      : 'true')
                   }
                   onClick={() => this.props.setActiveThread(t.id)}
                 />
@@ -122,11 +122,11 @@ const mapStateToProps = state => {
     threads: state.firestore.ordered.mainScreenThreads
       ? state.firestore.ordered.mainScreenThreads
       : [],
-    activeOrg: localStorage.getItem("activeOrg")
-      ? localStorage.getItem("activeOrg")
-      : "",
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -139,10 +139,10 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
-        where: [["orgId", "==", props.match.params.id]],
-        orderBy: ["threadCreatedAt", "desc"],
-        storeAs: "mainScreenThreads"
+        collection: 'threads',
+        where: [['orgId', '==', props.match.params.id]],
+        orderBy: ['threadCreatedAt', 'desc'],
+        storeAs: 'mainScreenThreads'
       }
     ];
   })

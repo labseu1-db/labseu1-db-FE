@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firebaseConnect, isLoaded } from "react-redux-firebase";
-import NavBar from "./NavBar";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import NavBar from './NavBar';
+import styled from 'styled-components';
 
-import Spinner from "./semantic-components/Spinner";
-import RightSidebar from "./RightSidebar";
-import MainScreen from "./MainScreen";
-import ThreadsScreen from "./ThreadsScreen";
-import UpgradeAccount from "./UpgradeAccount";
+import Spinner from './semantic-components/Spinner';
+import RightSidebar from './RightSidebar';
+import MainScreen from './MainScreen';
+import ThreadsScreen from './ThreadsScreen';
+import UpgradeAccount from './UpgradeAccount';
 
-import { showModal } from "../redux/actions/actionCreators";
-import UserProfile from "./UserProfile";
-import FollowUp from "./reusable-components/FollowUp";
+import { showModal } from '../redux/actions/actionCreators';
+import UserProfile from './UserProfile';
+import FollowUp from './reusable-components/FollowUp';
 
 class FakeHome extends Component {
   render() {
-    if (!localStorage.getItem("uuid")) {
-      this.props.history.push("/login");
+    if (!localStorage.getItem('uuid')) {
+      this.props.history.push('/login');
     }
     if (!isLoaded(this.props.auth)) {
       return <Spinner />;
@@ -70,7 +70,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" }),
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
       showModal
     },
     dispatch

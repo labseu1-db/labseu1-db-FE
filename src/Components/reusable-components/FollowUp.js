@@ -1,19 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
-import styled from "styled-components";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 //Import components
-import ScreenHeading from "./ScreenHeading";
-import ThreadCard from "./ThreadCard";
-import NavBar from "../NavBar";
+import ScreenHeading from './ScreenHeading';
+import ThreadCard from './ThreadCard';
+import NavBar from '../NavBar';
 
 //Import action creators
 import {
   setActiveThread,
   hideFollowUp
-} from "../../redux/actions/actionCreators";
+} from '../../redux/actions/actionCreators';
 
 //Main component
 class FollowUp extends React.Component {
@@ -42,12 +42,12 @@ class FollowUp extends React.Component {
                   heading={t.threadName}
                   info={t.threadTopic}
                   checked={
-                    (!t.whenUserHasSeen[localStorage.getItem("uuid")] &&
-                      "false") ||
+                    (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                      'false') ||
                     (t.lastCommentCreatedAt >
-                    t.whenUserHasSeen[localStorage.getItem("uuid")]
-                      ? "false"
-                      : "true")
+                    t.whenUserHasSeen[localStorage.getItem('uuid')]
+                      ? 'false'
+                      : 'true')
                   }
                   onClick={() => {
                     this.props.history.push(
@@ -71,7 +71,7 @@ const mapStateToProps = state => {
     threads: state.firestore.ordered.threads
       ? state.firestore.ordered.threads
       : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -84,12 +84,12 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
+        collection: 'threads',
         where: [
-          ["isFollowUp", "==", true],
-          ["arrayOfUserIdsWhoFollowUp", "array-contains", props.uuid]
+          ['isFollowUp', '==', true],
+          ['arrayOfUserIdsWhoFollowUp', 'array-contains', props.uuid]
         ],
-        orderBy: ["threadCreatedAt", "desc"]
+        orderBy: ['threadCreatedAt', 'desc']
       }
     ];
   })

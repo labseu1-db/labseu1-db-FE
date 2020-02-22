@@ -1,33 +1,33 @@
-import React from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
-import { Dropdown } from "semantic-ui-react";
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { Dropdown } from 'semantic-ui-react';
 
 //Import icons
-import penIconWhite from "../images/icon-pen-white.svg";
+import penIconWhite from '../images/icon-pen-white.svg';
 
 //Import actions
 import {
   showModal,
   setActiveThread,
   resetSpace
-} from "../redux/actions/actionCreators";
+} from '../redux/actions/actionCreators';
 
 //Import components
-import ScreenHeading from "./reusable-components/ScreenHeading";
-import ScreenSectionHeading from "./reusable-components/ScreenSectionHeading";
-import ScreenButton from "./reusable-components/ScreenButton";
-import ThreadCard from "./reusable-components/ThreadCard";
-import NavBar from "./NavBar";
-import RightSidebar from "./RightSidebar";
+import ScreenHeading from './reusable-components/ScreenHeading';
+import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
+import ScreenButton from './reusable-components/ScreenButton';
+import ThreadCard from './reusable-components/ThreadCard';
+import NavBar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 //Import Modals
-import CreateThreadModal from "./Modals/CreateThreadModal";
-import EditSpaceModal from "./Modals/EditSpaceModal";
-import DeleteSpaceModal from "./Modals/DeleteSpaceModal";
-import LeaveSpaceModal from "./Modals/LeaveSpaceModal";
+import CreateThreadModal from './Modals/CreateThreadModal';
+import EditSpaceModal from './Modals/EditSpaceModal';
+import DeleteSpaceModal from './Modals/DeleteSpaceModal';
+import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
 class SpaceThreads extends React.Component {
   render() {
@@ -54,7 +54,7 @@ class SpaceThreads extends React.Component {
         <StyledMain>
           <NavBar {...this.props} />
           <StyledMainScreen>
-            {this.props.activeModal === "CreateThreadModal" && (
+            {this.props.activeModal === 'CreateThreadModal' && (
               <CreateThreadModal
                 shoudlBeOpen={true}
                 showModal={this.props.showModal}
@@ -63,14 +63,14 @@ class SpaceThreads extends React.Component {
                 {...this.props}
               />
             )}
-            {this.props.activeModal === "EditSpaceModal" && (
+            {this.props.activeModal === 'EditSpaceModal' && (
               <EditSpaceModal
                 shoudlBeOpen={true}
                 activeModal={this.props.activeModal}
                 space={this.props.space}
               />
             )}
-            {this.props.activeModal === "DeleteSpaceModal" && (
+            {this.props.activeModal === 'DeleteSpaceModal' && (
               <DeleteSpaceModal
                 shoudlBeOpen={true}
                 activeModal={this.props.activeModal}
@@ -78,7 +78,7 @@ class SpaceThreads extends React.Component {
                 {...this.props}
               />
             )}
-            {this.props.activeModal === "LeaveSpaceModal" && (
+            {this.props.activeModal === 'LeaveSpaceModal' && (
               <LeaveSpaceModal
                 shoudlBeOpen={true}
                 activeModal={this.props.activeModal}
@@ -95,30 +95,30 @@ class SpaceThreads extends React.Component {
                 <StyledDropdown>
                   <Dropdown icon='ellipsis horizontal'>
                     <Dropdown.Menu>
-                      {localStorage.getItem("uuid") ===
+                      {localStorage.getItem('uuid') ===
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text='Edit space'
                           onClick={e => {
-                            this.props.showModal("EditSpaceModal");
+                            this.props.showModal('EditSpaceModal');
                           }}
                         />
                       )}
-                      {localStorage.getItem("uuid") ===
+                      {localStorage.getItem('uuid') ===
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text='Delete space'
                           onClick={e => {
-                            this.props.showModal("DeleteSpaceModal");
+                            this.props.showModal('DeleteSpaceModal');
                           }}
                         />
                       )}
-                      {localStorage.getItem("uuid") !==
+                      {localStorage.getItem('uuid') !==
                         this.props.space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text='Leave space'
                           onClick={e => {
-                            this.props.showModal("LeaveSpaceModal");
+                            this.props.showModal('LeaveSpaceModal');
                           }}
                         />
                       )}
@@ -133,7 +133,7 @@ class SpaceThreads extends React.Component {
                   color='white'
                   border='none'
                   onClick={e => {
-                    this.props.showModal("CreateThreadModal");
+                    this.props.showModal('CreateThreadModal');
                   }}
                 />
               </StyledButtonsContainer>
@@ -145,7 +145,7 @@ class SpaceThreads extends React.Component {
               this.props.threads.map(t => {
                 let dateInfo = new Date(t.threadCreatedAt);
                 let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
-                  "0" + dateInfo.getMinutes()
+                  '0' + dateInfo.getMinutes()
                 ).slice(-2)}`;
 
                 return (
@@ -161,18 +161,18 @@ class SpaceThreads extends React.Component {
                     isFollowUpDecided={
                       t.arrayOfUserIdsWhoFollowUp &&
                       t.arrayOfUserIdsWhoFollowUp.includes(
-                        localStorage.getItem("uuid")
+                        localStorage.getItem('uuid')
                       )
                         ? true
                         : false
                     }
                     checked={
-                      (!t.whenUserHasSeen[localStorage.getItem("uuid")] &&
-                        "false") ||
+                      (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                        'false') ||
                       (t.lastCommentCreatedAt >
-                      t.whenUserHasSeen[localStorage.getItem("uuid")]
-                        ? "false"
-                        : "true")
+                      t.whenUserHasSeen[localStorage.getItem('uuid')]
+                        ? 'false'
+                        : 'true')
                     }
                     onClick={() => {
                       this.props.history.push(
@@ -267,7 +267,7 @@ const mapStateToProps = state => {
       : [],
     spaceId: state.spaceId,
     activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
@@ -283,12 +283,12 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "threads",
-        where: ["spaceId", "==", props.match.params.spaceId],
-        orderBy: ["threadCreatedAt", "desc"]
+        collection: 'threads',
+        where: ['spaceId', '==', props.match.params.spaceId],
+        orderBy: ['threadCreatedAt', 'desc']
       },
       {
-        collection: "spaces",
+        collection: 'spaces',
         doc: props.match.params.spaceId
       }
     ];

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, isEmpty } from "react-redux-firebase";
-import { resetPasswordDone } from "../redux/actions/actionCreators";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import { resetPasswordDone } from '../redux/actions/actionCreators';
 
-import { StyledSendEmailButton } from "./styled-components/StyledButton";
+import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
@@ -13,14 +13,14 @@ import {
   StyledLabel,
   StyledLoginCon,
   StyledLowerSignInPasswordless
-} from "./styled-components/StyledLogin";
+} from './styled-components/StyledLogin';
 import {
   StyledH1,
   StyledLink,
   StyledPLabel
-} from "./styled-components/StyledText";
-import LoginAnimation from "./animations/LoginAnimation";
-import { Icon, Message } from "semantic-ui-react";
+} from './styled-components/StyledText';
+import LoginAnimation from './animations/LoginAnimation';
+import { Icon, Message } from 'semantic-ui-react';
 
 class ForgotPassword extends Component {
   static propTypes = {
@@ -30,12 +30,12 @@ class ForgotPassword extends Component {
   };
 
   state = {
-    loginEmail: "",
+    loginEmail: '',
     error: null
   };
 
   INITIAL_STATE = {
-    loginEmail: "",
+    loginEmail: '',
     error: null
   };
 
@@ -48,12 +48,12 @@ class ForgotPassword extends Component {
           this.props.resetPasswordDone();
           this.props.history.push(`/profile/${this.props.match.params.id}`);
         } else {
-          this.props.history.push("/login");
+          this.props.history.push('/login');
         }
       })
       .catch(error => {
         const INITIAL_STATE = {
-          loginEmail: "",
+          loginEmail: '',
           error: null
         };
         this.setState({ ...INITIAL_STATE, error });
@@ -62,7 +62,7 @@ class ForgotPassword extends Component {
 
   componentWillUpdate() {
     if (!isEmpty(this.props.auth) && !this.props.resetPasswordStatus) {
-      this.props.history.push("/homescreen");
+      this.props.history.push('/homescreen');
     }
   }
 
@@ -72,7 +72,7 @@ class ForgotPassword extends Component {
 
   render() {
     const { loginEmail } = this.state;
-    const isInvalid = loginEmail === "";
+    const isInvalid = loginEmail === '';
     return (
       <StyledLogin>
         <StyledLoginCon>
