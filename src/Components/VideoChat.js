@@ -1,21 +1,23 @@
-import React, { Component } from "react";
-import { connect, createLocalVideoTrack } from "twilio-video";
-import NavBar from "./NavBar";
-import RightSidebar from "./RightSidebar";
-import styled from "styled-components";
-import axios from "axios";
-import * as redux from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
-import { Header, Modal, Dropdown } from "semantic-ui-react";
+import React, { Component } from 'react';
+import { connect, createLocalVideoTrack } from 'twilio-video';
+import NavBar from './NavBar';
+import RightSidebar from './RightSidebar';
+import styled from 'styled-components';
+import axios from 'axios';
+import * as redux from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { Header, Modal, Dropdown } from 'semantic-ui-react';
+import uuid from 'uuid';
 
-import ScreenHeading from "./reusable-components/ScreenHeading";
+import ScreenHeading from './reusable-components/ScreenHeading';
 
 class VideoChat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      idsInCall: [this.props.uuid]
+      idsInCall: [this.props.uuid],
+      roomName: ''
     };
   }
   setIdsToState = (e, data) => {
@@ -25,23 +27,34 @@ class VideoChat extends Component {
       idsInCall: [...prState.idsInCall, ...value]
     }));
   };
+  setRoomName = e => {
+    e.preventDefault();
+
+    const { value } = e.target;
+    this.setState({ roomName: value });
+  };
   createCall = e => {
     e.preventDefault();
+    let roomId = uuid();
     let objectOfCallIds = {};
     this.state.idsInCall.forEach(id => {
       objectOfCallIds[id] = false;
     });
     this.props.firestore
-      .update(
-        { collection: "calls", doc: this.props.match.params.spaceId },
+      .set(
+        { collection: 'calls', doc: roomId },
         {
           creatorId: this.props.uuid,
           ended: false,
-          invitedUsersIds: objectOfCallIds
+          invitedUsersIds: objectOfCallIds,
+          roomName: this.state.roomName,
+          spaceId: this.props.match.params.spaceId
         }
       )
-      .then(res => {
-        console.log(res);
+      .then(() => {
+        this.props.history.push(
+          `/video/${this.props.params.id}/${this.props.match.params.spaceId}/${this.props.match.params.videoId}`
+        );
       });
   };
   startRecording = () => {
@@ -49,13 +62,13 @@ class VideoChat extends Component {
       audio: true,
       video: { width: 1280, height: 720 }
     }).then(localTracks => {
-      let video = document.getElementById("recording");
+      let video = document.getElementById('recording');
       video.appendChild(localTracks.attach());
     });
   };
   render() {
     console.log(this.props.match.params.spaceId);
-    if (this.props.match.params.type === "createCall") {
+    if (this.props.match.params.roomId === 'createCall') {
       const userIdsOptions = this.props.users
         .filter(user => user.id !== this.props.uuid)
         .map(user => ({
@@ -68,41 +81,48 @@ class VideoChat extends Component {
         <StyledMain>
           <NavBar {...this.props} />
           <StyledCreateVoiceChat>
-            <ScreenHeading heading={"Create a Call"} />
+            <ScreenHeading heading={'Create a Call'} />
             <StyledCreateCallContainer>
-              <div>
-                <Header as='h5'>Members</Header>
-                <StyledDropdown>
-                  {
-                    <Dropdown
-                      placeholder='Choose people to add'
-                      fluid
-                      multiple
-                      search
-                      selection
-                      options={userIdsOptions}
-                      onChange={this.setIdsToState}
-                    />
-                  }
-                </StyledDropdown>
-                <Modal.Actions>
-                  <StyledActions>
-                    <StyledButtonCancel onClick={this.props.history.goBack}>
-                      Cancel
-                    </StyledButtonCancel>
+              <Header as='h5'>Room name</Header>
+              <StyledInput
+                name='spaceName'
+                placeholder='Product Design'
+                type='text'
+                required
+                value={this.state.roomName}
+                onChange={this.setRoomName}
+              />
+              <Header as='h5'>Members</Header>
+              <StyledDropdown>
+                {
+                  <Dropdown
+                    placeholder='Choose people to add'
+                    fluid
+                    multiple
+                    search
+                    selection
+                    options={userIdsOptions}
+                    onChange={this.setIdsToState}
+                  />
+                }
+              </StyledDropdown>
+              <Modal.Actions>
+                <StyledActions>
+                  <StyledButtonCancel onClick={this.props.history.goBack}>
+                    Cancel
+                  </StyledButtonCancel>
 
-                    <StyledButtonCreateSpace
-                      type='submit'
-                      disabled={!this.state.idsInCall.length > 0}
-                      onClick={e => {
-                        this.createCall(e);
-                      }}
-                    >
-                      Create Call
-                    </StyledButtonCreateSpace>
-                  </StyledActions>
-                </Modal.Actions>
-              </div>
+                  <StyledButtonCreateSpace
+                    type='submit'
+                    disabled={!this.state.idsInCall.length > 0}
+                    onClick={e => {
+                      this.createCall(e);
+                    }}
+                  >
+                    Create Call
+                  </StyledButtonCreateSpace>
+                </StyledActions>
+              </Modal.Actions>
             </StyledCreateCallContainer>
           </StyledCreateVoiceChat>
           <RightSidebar />
@@ -110,9 +130,9 @@ class VideoChat extends Component {
       );
     } else {
       axios
-        .post("http://localhost:3000/createToken", {
-          user: "Thorben",
-          room: "test-space"
+        .post('http://localhost:3000/createToken', {
+          user: 'Thorben',
+          room: 'test-space'
         })
         .then(res => {
           console.log(res.data);
@@ -131,14 +151,14 @@ const mapStateToProps = state => {
     users: state.firestore.ordered.usersWithinTheOrg
       ? state.firestore.ordered.usersWithinTheOrg
       : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : ""
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" })
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
     },
     dispatch
   );
@@ -150,9 +170,14 @@ export default compose(
   firestoreConnect(props => {
     return [
       {
-        collection: "users",
-        where: ["arrayOfOrgsIds", "array-contains", props.match.params.id],
-        storeAs: "usersWithinTheOrg"
+        collection: 'users',
+        where: ['arrayOfOrgsIds', 'array-contains', props.match.params.id],
+        storeAs: 'usersWithinTheOrg'
+      },
+      {
+        collection: 'rooms',
+        doc: props.match.params.roomId,
+        storeAs: 'createdRoom'
       }
     ];
   })
@@ -179,6 +204,8 @@ const StyledCreateCallContainer = styled.div`
   padding: 40px;
   border-radius: 6px;
   position: relative;
+  align-self: center;
+  width: 100%;
 `;
 
 const StyledButtonCancel = styled.button`
@@ -227,4 +254,22 @@ const StyledActions = styled.div`
   display: flex;
   justify-content: flex-end;
   padding-top: 30px;
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  height: 32px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #374750;
+  background-color: #fff7f3;
+  border: none;
+  border-bottom: 2px solid lightgray;
+  padding: 5px 0;
+  margin-bottom: 10px;
+  &:focus {
+    border-bottom: 2px solid #00bc98;
+    outline: none;
+  }
 `;

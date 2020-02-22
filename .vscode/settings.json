@@ -2,5 +2,6 @@
   "editor.formatOnSave": true,
   "eslint.autoFixOnSave": true,
   "editor.tabSize": 2,
-  "prettier.jsxSingleQuote": true
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true
 }

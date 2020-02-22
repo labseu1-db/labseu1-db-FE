@@ -72,7 +72,7 @@ class App extends Component {
         <Route exact path='/' render={props => <LandingPage {...props} />} />
         <Route
           exact
-          path='/video/:id/:spaceId/:type'
+          path='/video/:id/:spaceId/:roomId'
           render={props => <VideoChat {...props} />}
         />
         <Route
