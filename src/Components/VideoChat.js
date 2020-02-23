@@ -6,11 +6,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 import * as redux from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import uuid from 'uuid';
+import Spinner from './semantic-components/Spinner.js';
 
 import ScreenHeading from './reusable-components/ScreenHeading';
+import UserSideBar from './UserSideBar';
 
 class VideoChat extends Component {
   constructor(props) {
@@ -29,7 +31,6 @@ class VideoChat extends Component {
   };
   setRoomName = e => {
     e.preventDefault();
-
     const { value } = e.target;
     this.setState({ roomName: value });
   };
@@ -42,7 +43,7 @@ class VideoChat extends Component {
     });
     this.props.firestore
       .set(
-        { collection: 'calls', doc: roomId },
+        { collection: 'rooms', doc: roomId },
         {
           creatorId: this.props.uuid,
           ended: false,
@@ -53,30 +54,19 @@ class VideoChat extends Component {
       )
       .then(() => {
         this.props.history.push(
-          `/video/${this.props.params.id}/${this.props.match.params.spaceId}/${this.props.match.params.videoId}`
+          `/video/${this.props.match.params.id}/${this.props.match.params.spaceId}/${roomId}`
         );
       });
   };
-  startRecording = () => {
-    createLocalVideoTrack({
-      audio: true,
-      video: { width: 1280, height: 720 }
-    }).then(localTracks => {
-      let video = document.getElementById('recording');
-      video.appendChild(localTracks.attach());
-    });
-  };
   render() {
-    console.log(this.props.match.params.spaceId);
+    const userIdsOptions = this.props.users
+      .filter(user => user.id !== this.props.uuid)
+      .map(user => ({
+        key: user.id,
+        text: user.fullName,
+        value: user.id
+      }));
     if (this.props.match.params.roomId === 'createCall') {
-      const userIdsOptions = this.props.users
-        .filter(user => user.id !== this.props.uuid)
-        .map(user => ({
-          key: user.id,
-          text: user.fullName,
-          value: user.id
-        }));
-      console.log(userIdsOptions);
       return (
         <StyledMain>
           <NavBar {...this.props} />
@@ -128,20 +118,52 @@ class VideoChat extends Component {
           <RightSidebar />
         </StyledMain>
       );
-    } else {
+    } else if (!isEmpty(this.props.currentRoom)) {
+      const users = Object.keys(this.props.currentRoom.invitedUsersIds);
+
+      const userForSideBar = userIdsOptions.filter(user => {
+        return users.includes(user.key);
+      });
       axios
         .post('http://localhost:3000/createToken', {
           user: 'Thorben',
-          room: 'test-space'
+          room: this.props.profile.fullName
         })
         .then(res => {
-          console.log(res.data);
+          connect(res.data.jwt, { name: this.props.currentRoom.roomName }).then(
+            room => {
+              startRecording();
+              room.on('participantConnected', participant => {
+                console.log(participant);
+                participant.tracks.forEach(publication => {
+                  if (publication.isSubscribed) {
+                    const track = publication.track;
+                    document
+                      .getElementById('remote-media-div')
+                      .appendChild(track.attach());
+                  }
+                });
+              });
+            }
+          );
         });
+      let startRecording = () => {
+        const localMediaContainer = document.getElementById('remote-media-div');
+        if (localMediaContainer.children.length === 0) {
+          createLocalVideoTrack().then(track => {
+            localMediaContainer.appendChild(track.attach());
+          });
+        }
+      };
       return (
-        <div>
-          <p>this</p>
-        </div>
+        <StyledMain>
+          <NavBar {...this.props} />
+          <StyledVoiceCall id='remote-media-div'></StyledVoiceCall>
+          <UserSideBar userForSideBar={userForSideBar} {...this.props} />
+        </StyledMain>
       );
+    } else {
+      return <Spinner />;
     }
   }
 }
@@ -151,7 +173,10 @@ const mapStateToProps = state => {
     users: state.firestore.ordered.usersWithinTheOrg
       ? state.firestore.ordered.usersWithinTheOrg
       : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
+    currentRoom: state.firestore.ordered.createdRoom
+      ? state.firestore.ordered.createdRoom[0]
+      : []
   };
 };
 
@@ -186,6 +211,18 @@ export default compose(
 const StyledMain = styled.div`
   display: flex;
   width: 100vw;
+`;
+
+const StyledVoiceCall = styled.div`
+  width: 70%;
+  min-height: 100vh;
+  padding: 10vh 5%;
+  margin-left: 309px;
+  background-color: #fff7f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 const StyledCreateVoiceChat = styled.div`
