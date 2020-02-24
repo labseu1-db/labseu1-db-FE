@@ -22,7 +22,7 @@ import UserProfile from './Components/UserProfile';
 class App extends Component {
   render() {
     return (
-      <div>
+      <div id="routes">
         <Route
           exact
           path="/register"
