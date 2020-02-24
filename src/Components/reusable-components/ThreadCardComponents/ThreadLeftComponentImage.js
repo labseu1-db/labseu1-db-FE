@@ -11,7 +11,7 @@ import AvatarFromLetter from '../AvatarFromLetter';
 function ThreadLeftComponentImage(props) {
   const { createdBy, checked } = props;
   return (
-    <StyledImagesContainer>
+    <StyledImagesContainer aria-label="Thread Left Image">
       <AvatarFromLetter username={createdBy} />
       <div className="line" />
       {checked === 'true' && (
