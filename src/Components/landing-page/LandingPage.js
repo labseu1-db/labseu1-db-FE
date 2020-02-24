@@ -14,7 +14,7 @@ import LandingFooter from './LandingFooter';
 export default class LandingPage extends React.Component {
   render() {
     return (
-      <StyledLandingContainer>
+      <StyledLandingContainer aria-label="Landing Page">
         <TopLandingContainer>
           <LandingNavbar />
           <LandingBanner />
