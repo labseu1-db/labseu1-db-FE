@@ -1,7 +1,5 @@
 {
   "projects": {
-    "default": "labseu1-db-test",
-    "staging": "pinely-staging",
-    "production": "pinelynow"
+    "default": "labseu1-db-test"
   }
 }
