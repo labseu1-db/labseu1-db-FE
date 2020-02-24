@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import ThreadLeftComponentImage from '../../../Components/reusable-components/ThreadCardComponents/ThreadLeftComponentImage';
-import { heading, info } from '../../../__mocks__/index';
+import ThreadLeftComponentImage from '../../../../Components/reusable-components/ThreadCardComponents/ThreadLeftComponentImage';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('<ThreadLeftComponentImage />', () => {

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { CommentDropdown } from '../../../Components/reusable-components/CommentCardComponents/CommentDropdown';
+import { CommentDropdown } from '../../../../Components/reusable-components/CommentCardComponents/CommentDropdown';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('CommentDropdown />', () => {

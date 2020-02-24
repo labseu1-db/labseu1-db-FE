@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { ProfileOrgField } from '../../../Components/reusable-components/ProfileCardComponents/ProfileOrgField';
-import { user, org } from '../../../__mocks__/index';
+import { ProfileOrgField } from '../../../../Components/reusable-components/ProfileCardComponents/ProfileOrgField';
+import { user, org } from '../../../../__mocks__/index';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('<ProfileOrgField />', () => {
