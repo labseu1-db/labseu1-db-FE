@@ -14,3 +14,4 @@ export const commentIsUpdated = true;
 export const orgId = 2435;
 export const threadId = 284895;
 export const threadName = 'Test Thread';
+export const fullName = 'Test';

@@ -86,7 +86,7 @@ export class NewCommentCard extends React.Component {
 
   render() {
     return (
-      <StyledCommentContainer>
+      <StyledCommentContainer aria-label="Comment New">
         {this.state.error === 'wordIsTooLong' && (
           <Message warning attached="bottom">
             <Icon name="warning" />A word can only be 70 characters long
