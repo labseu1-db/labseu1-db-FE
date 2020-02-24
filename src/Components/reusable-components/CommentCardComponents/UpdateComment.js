@@ -43,6 +43,7 @@ export class UpdateComment extends React.Component {
           this.updateComment(e);
           this.clearInput();
         }}
+        aria-label="Comment Update"
       >
         <StyledTopContainer>
           <StyledInput
