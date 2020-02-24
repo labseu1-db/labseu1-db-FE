@@ -53,7 +53,7 @@ export class ThreadsScreen extends React.Component {
             )}
             {this.props.activeThread && this.props.activeThread.threadName && (
               <ThreadInformationCard
-                img='http://lorempixel.com/480/480'
+                img="http://lorempixel.com/480/480"
                 createdBy={this.props.activeThread.threadCreatedByUserName}
                 createdAt={this.props.activeThread.threadCreatedAt}
                 spaceId={this.props.activeThread.spaceId}
@@ -65,7 +65,7 @@ export class ThreadsScreen extends React.Component {
                 return (
                   <CommentCard
                     key={c.id}
-                    img='http://lorempixel.com/480/480'
+                    img="http://lorempixel.com/480/480"
                     commentId={c.id}
                     createdBy={c.commentCreatedByUserName}
                     createdByUserId={c.commentCreatedByUserId}
@@ -81,7 +81,7 @@ export class ThreadsScreen extends React.Component {
               })}
 
             <NewCommentCard
-              img='http://lorempixel.com/480/480'
+              img="http://lorempixel.com/480/480"
               createdByUserId={localStorage.getItem('uuid')}
               thread={this.props.activeThread}
             />

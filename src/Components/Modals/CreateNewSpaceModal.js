@@ -105,14 +105,14 @@ class CreateNewSpaceModal extends Component {
             <div>
               <img
                 src={plusIcon}
-                alt='plus icon'
+                alt="plus icon"
                 onClick={this.handleOpen}
                 disabled={isEmpty(localStorage.getItem('activeOrg'))}
               />
             </div>
           }
           open={this.state.model_open}
-          size='tiny'
+          size="tiny"
         >
           <StyledContainer>
             <Modal.Header>
@@ -120,30 +120,30 @@ class CreateNewSpaceModal extends Component {
                 <StyledMainHeader>Create a new space</StyledMainHeader>
               </div>
               <div>
-                <Header as='h5'>Space name</Header>
+                <Header as="h5">Space name</Header>
                 <StyledInput
-                  name='spaceName'
-                  placeholder='Product Design'
-                  type='text'
+                  name="spaceName"
+                  placeholder="Product Design"
+                  type="text"
                   required
                   value={this.state.spaceName}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>
+                <Header as="h5">
                   What types of discussions happen here?
                   <StyledOptional>(Optional)</StyledOptional>
                 </Header>
                 <StyledInput
-                  name='spaceTopic'
-                  placeholder='Questions and thoughts about proposals'
-                  type='text'
+                  name="spaceTopic"
+                  placeholder="Questions and thoughts about proposals"
+                  type="text"
                   value={this.state.spaceTopic}
                   onChange={this.handleInputChange}
                 />
-                <Header as='h5'>Members</Header>
+                <Header as="h5">Members</Header>
                 <StyledDropdown>
                   <Dropdown
-                    placeholder='Choose people to add'
+                    placeholder="Choose people to add"
                     fluid
                     multiple
                     search
@@ -159,7 +159,7 @@ class CreateNewSpaceModal extends Component {
                     </StyledButtonCancel>
 
                     <StyledButtonCreateSpace
-                      type='submit'
+                      type="submit"
                       disabled={
                         !this.state.spaceName.length > 0 ||
                         !this.state.spaceTopic.length > 0 ||

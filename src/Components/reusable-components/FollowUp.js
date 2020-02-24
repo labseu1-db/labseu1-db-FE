@@ -24,8 +24,8 @@ class FollowUp extends React.Component {
         <StyledFollowUp>
           <StyledFirstRow>
             <ScreenHeading
-              heading='Follow Up'
-              info='Get back to the things you&#39;ve marked as follow up.'
+              heading="Follow Up"
+              info="Get back to the things you&#39;ve marked as follow up."
             />
           </StyledFirstRow>
           {this.props.threads.length > 0 &&
@@ -54,7 +54,7 @@ class FollowUp extends React.Component {
                       `/mainscreen/${this.props.match.params.id}/${t.spaceId}/${t.id}`
                     );
                   }}
-                  isFollowUpDecided='true'
+                  isFollowUpDecided="true"
                 />
               );
             })}

@@ -34,7 +34,6 @@ const StyledOrgName = styled.p`
   font-size: 13px;
   width: 130px;
   color: rgb(125, 135, 141);
-}
 `;
 
 const StyledProfileUserRole = styled.p`

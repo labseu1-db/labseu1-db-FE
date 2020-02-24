@@ -190,24 +190,24 @@ class CreateThreadModal extends Component {
     }));
 
     return (
-      <Modal open={this.props.shoudlBeOpen} size='small'>
-        <MiniModalLeft id='miniModal'>
+      <Modal open={this.props.shoudlBeOpen} size="small">
+        <MiniModalLeft id="miniModal">
           <StyledContainerTitles>Text Styling</StyledContainerTitles>
           <TextStylingContainer>
             <TextStylingButtons onClick={this.onBoldClick}>
-              <TextStylingIcon src={boldIcon} alt='bold' />
+              <TextStylingIcon src={boldIcon} alt="bold" />
               <p>Bold</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onItalicClick}>
-              <TextStylingIcon src={italicIcon} alt='italic' />
+              <TextStylingIcon src={italicIcon} alt="italic" />
               <p>Italic</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onUnderlineClick}>
-              <TextStylingIcon src={underlineIcon} alt='underline' />
+              <TextStylingIcon src={underlineIcon} alt="underline" />
               <p>Underline</p>
             </TextStylingButtons>
             <TextStylingButtons onClick={this.onCodeClick}>
-              <TextStylingIcon src={codeIcon} alt='code' />
+              <TextStylingIcon src={codeIcon} alt="code" />
               <p>Code</p>
             </TextStylingButtons>
           </TextStylingContainer>
@@ -215,7 +215,7 @@ class CreateThreadModal extends Component {
         <MiniModalRight>
           <StyledDropdown>
             <Dropdown
-              placeholder='Add a Space'
+              placeholder="Add a Space"
               fluid
               search
               selection
@@ -228,38 +228,38 @@ class CreateThreadModal extends Component {
         <Modal.Content>
           <StyledInputsContainer>
             <StyledTitleInput
-              name='threadName'
-              type='text'
-              placeholder='Create a title'
+              name="threadName"
+              type="text"
+              placeholder="Create a title"
               required
               value={this.state.threadName}
               onChange={event => this.handleInputChange(event)}
             />
             {this.state.error === 'toManyCharactersInThreadName' && (
-              <Message warning attached='bottom'>
-                <Icon name='warning' />
+              <Message warning attached="bottom">
+                <Icon name="warning" />
                 Thread name can only have 40 characters
               </Message>
             )}
             <StyledThreadInput onClick={this.focus}>
               <Editor
-                name='threadTopic'
-                type='text'
-                placeholder='What would you like to discuss with your teammates?'
+                name="threadTopic"
+                type="text"
+                placeholder="What would you like to discuss with your teammates?"
                 required
                 onChange={this.onChange}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
-                ref='editor'
+                ref="editor"
               />
               {this.state.error3 === 'wordIsTooLong' && (
-                <Message warning attached='bottom'>
-                  <Icon name='warning' />A word can only be 70 characters long
+                <Message warning attached="bottom">
+                  <Icon name="warning" />A word can only be 70 characters long
                 </Message>
               )}
               {this.state.error2 === 'toManyThreadTopicCharacters' && (
-                <Message warning attached='bottom'>
-                  <Icon name='warning' />
+                <Message warning attached="bottom">
+                  <Icon name="warning" />
                   Thread topic can only have 800 characters
                 </Message>
               )}
@@ -270,7 +270,7 @@ class CreateThreadModal extends Component {
         <Modal.Actions>
           <StyledActions>
             <StyledIconButton onClick={this.toggleMiniMondal}>
-              <CursonImg src={textCursor} alt='cursor' />
+              <CursonImg src={textCursor} alt="cursor" />
             </StyledIconButton>
             <div>
               <StyledBackButton

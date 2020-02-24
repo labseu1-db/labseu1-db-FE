@@ -9,7 +9,10 @@ export default class GifComponent extends Component {
   render() {
     return (
       <div>
-        <Picker onSelected={this.addGif} apiKey="ve8cXwfS3byLJzq27IQP23LyFHAGshPZ" />
+        <Picker
+          onSelected={this.addGif}
+          apiKey="ve8cXwfS3byLJzq27IQP23LyFHAGshPZ"
+        />
       </div>
     );
   }

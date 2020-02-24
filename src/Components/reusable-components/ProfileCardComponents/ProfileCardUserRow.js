@@ -67,18 +67,18 @@ class ProfileCardUserRow extends React.Component {
           </StyledNameSubmitForm>
         )}
         <ProfileCardButton
-          content='Change Password'
-          border='solid 0.5px #37475026'
-          top='0px'
-          right='0px'
-          margin='6.5vw'
+          content="Change Password"
+          border="solid 0.5px #37475026"
+          top="0px"
+          right="0px"
+          margin="6.5vw"
           onClick={onClick}
         />
         <ProfileCardButton
-          content='Edit Profile'
-          border='solid 0.5px #37475026'
-          top='0px'
-          right='0px'
+          content="Edit Profile"
+          border="solid 0.5px #37475026"
+          top="0px"
+          right="0px"
           onClick={secondOnClick}
         />
       </StyledFirstRow>

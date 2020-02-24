@@ -147,27 +147,27 @@ class Login extends Component {
             <StyledLabel>
               <StyledPLabel>Email</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLabel>
               <StyledPLabel>Password</StyledPLabel>
               <StyledInput
-                id='typepass'
-                name='loginPassword'
+                id="typepass"
+                name="loginPassword"
                 value={this.state.loginPassword}
-                type='password'
+                type="password"
                 onChange={this.handleInputChange}
-                placeholder='········'
+                placeholder="········"
               />
               <StyledIcon
-                id='passwordIcon'
+                id="passwordIcon"
                 src={showPassword}
-                alt='showPassword'
+                alt="showPassword"
                 onClick={this.togglePassword}
               />
             </StyledLabel>
@@ -177,15 +177,15 @@ class Login extends Component {
               Forgot Password?
             </ForgotPasswordDiv>
             <StyledLowerSignIn>
-              <StyledLink to='/register'> Don't have an account? </StyledLink>
+              <StyledLink to="/register"> Don't have an account? </StyledLink>
               <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
                 Sign In
               </StyledButton>
             </StyledLowerSignIn>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}

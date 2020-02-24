@@ -85,11 +85,11 @@ class ForgotPassword extends Component {
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
-                name='loginEmail'
+                name="loginEmail"
                 value={this.state.loginEmail}
-                type='email'
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
@@ -104,13 +104,13 @@ class ForgotPassword extends Component {
             </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
           {!this.props.resetPasswordStatus && (
-            <StyledLink to='/login'>Back to Log In</StyledLink>
+            <StyledLink to="/login">Back to Log In</StyledLink>
           )}
           {this.props.resetPasswordStatus && (
             <StyledSendEmailButton

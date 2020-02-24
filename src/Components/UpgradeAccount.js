@@ -26,12 +26,12 @@ class UpgradeAccount extends React.Component {
               {this.props.activeOrg && this.props.currentOrg && (
                 <ScreenHeading
                   heading={this.props.currentOrg.orgName}
-                  info='Organization billing overview'
+                  info="Organization billing overview"
                 />
               )}
             </StyledFirstRow>
             <StyledThreadContainerPremium>
-              <ScreenSectionHeading heading='This organisation is on the PREMIUM plan' />
+              <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
               <div>
                 We hope you are enjoying the full benefits of your premium plan.
                 Please contact customer service for any further special
@@ -51,12 +51,12 @@ class UpgradeAccount extends React.Component {
             {this.props.activeOrg && this.props.currentOrg && (
               <ScreenHeading
                 heading={this.props.currentOrg.orgName}
-                info='Organization billing overview'
+                info="Organization billing overview"
               />
             )}
           </StyledFirstRow>
           <StyledThreadContainer>
-            <ScreenSectionHeading heading='Currently on the FREE plan' />
+            <ScreenSectionHeading heading="Currently on the FREE plan" />
             <ul>
               <li>Store more than the most recent 150 threads</li>
               <li>Invite more employees to your organisation</li>

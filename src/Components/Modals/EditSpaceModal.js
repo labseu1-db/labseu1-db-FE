@@ -92,7 +92,7 @@ class EditSpaceModal extends Component {
       }));
 
     return (
-      <Modal open={this.props.shoudlBeOpen} size='tiny'>
+      <Modal open={this.props.shoudlBeOpen} size="tiny">
         <StyledContainer>
           <Modal.Header>
             <div>
@@ -101,27 +101,27 @@ class EditSpaceModal extends Component {
               </StyledMainHeader>
             </div>
             <div>
-              <Header as='h5'>Space name</Header>
+              <Header as="h5">Space name</Header>
               <StyledInput
-                name='spaceName'
-                type='text'
+                name="spaceName"
+                type="text"
                 required
                 value={this.state.spaceName}
                 onChange={this.handleInputChange}
               />
-              <Header as='h5'>
+              <Header as="h5">
                 What types of discussions happen here?
                 <StyledOptional>(Optional)</StyledOptional>
               </Header>
               <StyledInput
-                name='spaceTopic'
-                type='text'
+                name="spaceTopic"
+                type="text"
                 value={this.state.spaceTopic}
                 onChange={this.handleInputChange}
               />
-              <Header as='h5'>Members</Header>
+              <Header as="h5">Members</Header>
               <Dropdown
-                placeholder='Choose people to add'
+                placeholder="Choose people to add"
                 fluid
                 multiple
                 search
@@ -142,7 +142,7 @@ class EditSpaceModal extends Component {
                   </StyledButtonCancel>
 
                   <StyledButtonCreateSpace
-                    type='submit'
+                    type="submit"
                     disabled={
                       !this.state.spaceName.length > 0 ||
                       !this.state.idsInSpace.length > 0

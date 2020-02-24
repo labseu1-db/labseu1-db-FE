@@ -25,33 +25,33 @@ class App extends Component {
       <div>
         <Route
           exact
-          path='/register'
+          path="/register"
           render={props => <Register {...props} />}
         />
         <Route
           exact
-          path='/mainscreen/:id'
+          path="/mainscreen/:id"
           render={props => <MainScreen {...props} />}
         />
-        <Route exact path='/login' render={props => <Login {...props} />} />
+        <Route exact path="/login" render={props => <Login {...props} />} />
         <Route
           exact
-          path='/passwordlesssubmit'
+          path="/passwordlesssubmit"
           render={props => <PasswordlessSubmit {...props} />}
         />
         <Route
           exact
-          path='/passwordlesscheck'
+          path="/passwordlesscheck"
           render={props => <PasswordlessCheck {...props} />}
         />
         <Route
           exact
-          path='/mainscreen/:id/:spaceId'
+          path="/mainscreen/:id/:spaceId"
           render={props => <SpaceThreads {...props} />}
         />
         <Route
           exact
-          path='/mainscreen/:id/:spaceId/:threadId'
+          path="/mainscreen/:id/:spaceId/:threadId"
           render={props => <ThreadsScreen {...props} />}
         />
         <Route
@@ -65,30 +65,30 @@ class App extends Component {
         />
         <Route
           exact
-          path='/createneworganisation'
+          path="/createneworganisation"
           render={props => <CreateNewOrganisation {...props} />}
         />
         <Route
           exact
-          path='/users/:id'
+          path="/users/:id"
           render={props => <UserManagement {...props} />}
         />
         <Route
           exact
-          path='/follow-up/:id'
+          path="/follow-up/:id"
           render={props => <FollowUp {...props} />}
         />
         <Route
           exact
-          path='/upgrade/:id'
+          path="/upgrade/:id"
           render={props => <UpgradeAccount {...props} />}
         />
         <Route
           exact
-          path='/profile/:id'
+          path="/profile/:id"
           render={props => <UserProfile {...props} />}
         />
-        <Route exact path='/' render={props => <LandingPage {...props} />} />
+        <Route exact path="/" render={props => <LandingPage {...props} />} />
       </div>
     );
   }

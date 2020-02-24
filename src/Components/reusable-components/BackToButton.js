@@ -8,10 +8,10 @@ function BackToButton({ onClick }) {
   return (
     <div>
       <StyledBackToButton onClick={onClick}>
-        <div className='rounded-end'>
-          <img src={arrowIcon} alt='arrow icon' />
+        <div className="rounded-end">
+          <img src={arrowIcon} alt="arrow icon" />
         </div>
-        <div className='content'>Back to space</div>
+        <div className="content">Back to space</div>
       </StyledBackToButton>
     </div>
   );

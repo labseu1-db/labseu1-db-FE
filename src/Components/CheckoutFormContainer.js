@@ -28,12 +28,15 @@ class CheckoutFormContainer extends Component {
           </div>
         }
         open={this.state.model_open}
-        size='tiny'
+        size="tiny"
       >
-        <StripeProvider apiKey='pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3'>
-          <div className='example'>
+        <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
+          <div className="example">
             <Elements>
-              <CheckoutForm handleClose={this.handleClose} currentOrg={this.props.currentOrg} />
+              <CheckoutForm
+                handleClose={this.handleClose}
+                currentOrg={this.props.currentOrg}
+              />
             </Elements>
           </div>
         </StripeProvider>

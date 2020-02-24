@@ -65,7 +65,7 @@ class DeleteSpaceModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} size='small'>
+      <Modal open={this.props.shoudlBeOpen} size="small">
         <StyledContainer>
           <Modal.Header>
             <div>
@@ -87,7 +87,7 @@ class DeleteSpaceModal extends Component {
                 </StyledButtonCancel>
 
                 <StyledButtonCreateSpace
-                  type='submit'
+                  type="submit"
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal(null);

@@ -18,10 +18,10 @@ export default class CreateCompanyModal extends Component {
   //Render component
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} basic size='tiny'>
+      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
         <ProgressBar activeDots={1} bulletpoints={3} />
         <StyledModalH1>
-          <Modal.Header content='Create an organisation' />
+          <Modal.Header content="Create an organisation" />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
@@ -33,15 +33,15 @@ export default class CreateCompanyModal extends Component {
             <StyledModalForm>
               <StyledModalLabel>
                 Organisation name{' '}
-                <span className='ligther-font'>
+                <span className="ligther-font">
                   (Company, nonprofit, school, team)
                 </span>
               </StyledModalLabel>
               <StyledLableContainer>
                 <StyledModalInput
-                  name='orgName'
-                  maxLength='20'
-                  type='text'
+                  name="orgName"
+                  maxLength="20"
+                  type="text"
                   required
                   onChange={this.handleInputChange}
                   value={this.state.orgName}
@@ -64,7 +64,7 @@ export default class CreateCompanyModal extends Component {
               </StyledModalButton>
               <StyledModalMainButtonContainer>
                 <StyledModalButton
-                  className='cancel-button'
+                  className="cancel-button"
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal(null);

@@ -127,14 +127,14 @@ class UserManagement extends Component {
       this.props.organisation.createdByUserId === localStorage.getItem('uuid')
     ) {
       return (
-        <Modal open={true} size='tiny'>
+        <Modal open={true} size="tiny">
           <StyledContainer>
             <StyledMainHeader>Your Team</StyledMainHeader>
 
             <div>
               {this.props.listOfUsersWithinTheOrg.length > 1 && (
                 <StyledHeaderContainer>
-                  <Header as='h5' className='first-heading'>
+                  <Header as="h5" className="first-heading">
                     Active Members
                   </Header>
                   <Subheader>
@@ -165,13 +165,13 @@ class UserManagement extends Component {
               <StyledModalCard>
                 <Modal.Content>
                   <StyledModalForm>
-                    <Header as='h5'>Invite more users</Header>
+                    <Header as="h5">Invite more users</Header>
 
-                    <div id='dynamicInput'>
+                    <div id="dynamicInput">
                       {this.state.teamEmailAddress.map((input, i) => (
                         <StyledModalInput
-                          placeholder='Email address'
-                          type='email'
+                          placeholder="Email address"
+                          type="email"
                           value={this.state.teamEmailAddress[i]}
                           onChange={e => {
                             this.addEmail(e.target.value, i);
@@ -212,7 +212,7 @@ class UserManagement extends Component {
                     </StyledModalButton>
                     <StyledModalMainButtonContainer>
                       <StyledModalButton
-                        className='cancel-button'
+                        className="cancel-button"
                         onClick={e => {
                           e.preventDefault();
                           this.props.history.goBack();
@@ -226,14 +226,14 @@ class UserManagement extends Component {
               </StyledModalCard>
               {this.state.alert === 'email' && (
                 <StyledAlertMessage>
-                  <Message color='red'>
+                  <Message color="red">
                     Please make sure that you are using valid email address.
                   </Message>
                 </StyledAlertMessage>
               )}
               {this.state.alert === 'subscription' && (
                 <StyledAlertMessage>
-                  <Message color='red'>
+                  <Message color="red">
                     With free version you can invite up to 20 users. If you want
                     to invite more, please upgrade your account.
                   </Message>
@@ -248,7 +248,7 @@ class UserManagement extends Component {
       this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
     ) {
       return (
-        <Modal open={true} size='tiny'>
+        <Modal open={true} size="tiny">
           <StyledContainer>
             <StyledMainHeader>Your team</StyledMainHeader>
 
@@ -265,7 +265,7 @@ class UserManagement extends Component {
           </StyledContainer>
           <StyledModalMainButtonContainer>
             <StyledModalButton
-              className='cancel-button'
+              className="cancel-button"
               onClick={e => {
                 e.preventDefault();
                 this.props.history.goBack();

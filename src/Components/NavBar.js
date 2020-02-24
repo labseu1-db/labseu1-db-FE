@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { firestoreConnect, isEmpty } from "react-redux-firebase";
-import styled from "styled-components";
-import { Redirect, Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose, bindActionCreators } from 'redux';
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import styled from 'styled-components';
+import { Redirect, Link } from 'react-router-dom';
 
 //Import actions
 import {
@@ -19,30 +19,30 @@ import {
   renderProfile,
   showFollowUp,
   hideFollowUp
-} from "../redux/actions/actionCreators";
+} from '../redux/actions/actionCreators';
 
 //Import semantic components
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown } from 'semantic-ui-react';
 
 //Import components
-import Spinner from "./semantic-components/Spinner";
-import { NavBarOrgDropdown } from "./NavBarOrgDropdown";
-import CreateNewSpaceModal from "./Modals/CreateNewSpaceModal";
-import AvatarFromLetter from "./reusable-components/AvatarFromLetter";
+import Spinner from './semantic-components/Spinner';
+import { NavBarOrgDropdown } from './NavBarOrgDropdown';
+import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
+import AvatarFromLetter from './reusable-components/AvatarFromLetter';
 
 //Import icons
-import homeIcon from "../images/icon-home-lightgray.svg";
+import homeIcon from '../images/icon-home-lightgray.svg';
 
-import clipboardIcon from "../images/icon-clipboard-lightgray.svg";
-import discIcon from "../images/icon-disc-darkgray.svg";
-import peopleIcon from "../images/icon-people-lightgray.svg";
+import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
+import discIcon from '../images/icon-disc-darkgray.svg';
+import peopleIcon from '../images/icon-people-lightgray.svg';
 
 export class NavBar extends Component {
   state = {
-    profileDropdown: "",
+    profileDropdown: '',
     highlightedHome: false,
     highlightedFollowUp: false,
-    activeSpace: ""
+    activeSpace: ''
   };
 
   componentDidMount() {
@@ -62,7 +62,7 @@ export class NavBar extends Component {
       })
       .then(() => {
         localStorage.clear();
-        this.props.history.push("/login");
+        this.props.history.push('/login');
       })
       .catch(err => console.log("something's wrong."));
 
@@ -71,11 +71,11 @@ export class NavBar extends Component {
 
   handleDropDownChange = (e, { name, value }) => {
     this.setState({ [name]: value }, () => {
-      if (this.state.profileDropdown === "Log out") {
+      if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
-      } else if (this.state.profileDropdown === "Upgrade Account") {
+      } else if (this.state.profileDropdown === 'Upgrade Account') {
         this.props.history.push(`/upgrade/${this.props.match.params.id}`);
-      } else if (this.state.profileDropdown === "Profile") {
+      } else if (this.state.profileDropdown === 'Profile') {
         this.props.history.push(`/profile/${this.props.match.params.id}`);
       }
     });
@@ -91,7 +91,7 @@ export class NavBar extends Component {
       highlightedHome: true,
       highlightedFollowUp: false,
       highlightedSpace: false,
-      activeSpace: ""
+      activeSpace: ''
     });
   };
 
@@ -100,7 +100,7 @@ export class NavBar extends Component {
       highlightedHome: false,
       highlightedFollowUp: true,
       highlightedSpace: false,
-      activeSpace: ""
+      activeSpace: ''
     });
   };
 
@@ -141,28 +141,28 @@ export class NavBar extends Component {
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
         {
-          key: "Profile",
-          text: "Profile",
-          value: "Profile"
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
         },
         {
-          key: "Create Organisation",
-          text: "Create Organisation",
-          value: "Create Organisation"
+          key: 'Create Organisation',
+          text: 'Create Organisation',
+          value: 'Create Organisation'
         },
         {
-          key: "Upgrade Account",
-          text: "Upgrade Account",
-          value: "Upgrade Account"
+          key: 'Upgrade Account',
+          text: 'Upgrade Account',
+          value: 'Upgrade Account'
         },
         {
-          key: "Log out",
-          text: "Log out",
-          value: "Log out"
+          key: 'Log out',
+          text: 'Log out',
+          value: 'Log out'
         }
       ];
-      if (this.state.profileDropdown === "Create Organisation") {
-        return <Redirect to='/createneworganisation' />;
+      if (this.state.profileDropdown === 'Create Organisation') {
+        return <Redirect to="/createneworganisation" />;
       }
       return (
         <NavBarContainer>
@@ -176,7 +176,7 @@ export class NavBar extends Component {
                 <StyledDropdown>
                   <Dropdown
                     inline
-                    name={"profileDropdown"}
+                    name={'profileDropdown'}
                     basic={true}
                     options={userOptions}
                     text={this.props.user.fullName}
@@ -191,11 +191,11 @@ export class NavBar extends Component {
           </HeaderContainer>
           <InnerContainer>
             <RowContainer>
-              <img src={homeIcon} alt='home icon' />
+              <img src={homeIcon} alt="home icon" />
               <RowDiv
                 style={
-                  this.props.match.path === "/mainscreen/:id"
-                    ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
+                  this.props.match.path === '/mainscreen/:id'
+                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
                     : {}
                 }
                 to={`/mainscreen/${this.props.match.params.id}`}
@@ -204,11 +204,11 @@ export class NavBar extends Component {
               </RowDiv>
             </RowContainer>
             <RowContainer>
-              <img src={clipboardIcon} alt='home icon' />
+              <img src={clipboardIcon} alt="home icon" />
               <RowDiv
                 style={
-                  this.props.match.path === "/follow-up/:id"
-                    ? { backgroundColor: "#fff0ea", color: "rgb(55, 71, 80)" }
+                  this.props.match.path === '/follow-up/:id'
+                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
                     : {}
                 }
                 to={`/follow-up/${this.props.match.params.id}`}
@@ -216,9 +216,9 @@ export class NavBar extends Component {
                 Follow up
               </RowDiv>
             </RowContainer>
-            {localStorage.getItem("activeOrg") && (
+            {localStorage.getItem('activeOrg') && (
               <RowContainer>
-                <img src={peopleIcon} alt='users icon' />
+                <img src={peopleIcon} alt="users icon" />
                 <RowDiv to={`/users/${this.props.match.params.id}`}>
                   Users
                 </RowDiv>
@@ -228,7 +228,7 @@ export class NavBar extends Component {
               <div>
                 <OuterOrgContainer>
                   <OrgContainer>
-                    <img src={discIcon} alt='home icon' />
+                    <img src={discIcon} alt="home icon" />
 
                     {this.props.match.params.id && (
                       <NavBarOrgDropdown
@@ -252,8 +252,8 @@ export class NavBar extends Component {
                           style={
                             this.props.match.params.spaceId === space.id
                               ? {
-                                  backgroundColor: "#fff0ea",
-                                  color: "rgb(55, 71, 80)"
+                                  backgroundColor: '#fff0ea',
+                                  color: 'rgb(55, 71, 80)'
                                 }
                               : {}
                           }
@@ -280,7 +280,7 @@ const mapStateToProps = state => {
   return {
     user: state.firestore.ordered.filteredUser
       ? state.firestore.ordered.filteredUser[0]
-      : "",
+      : '',
     orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
       ? state.firestore.ordered.orgsInWhichUser
       : [],
@@ -288,7 +288,7 @@ const mapStateToProps = state => {
     spacesForActiveOrg: state.firestore.ordered.filteredSpaces
       ? state.firestore.ordered.filteredSpaces
       : [],
-    uuid: localStorage.getItem("uuid") ? localStorage.getItem("uuid") : "",
+    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
     activeModal: state.modal.activeModal
   };
@@ -297,7 +297,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      clearFirestore: () => dispatch({ type: "@@reduxFirestore/CLEAR_DATA" }),
+      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
       setActiveOrg,
       switchSpaces,
       resetSpace,
@@ -322,22 +322,22 @@ export default compose(
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
-        collection: "users",
+        collection: 'users',
         doc: props.uuid,
-        storeAs: "filteredUser"
+        storeAs: 'filteredUser'
       },
       {
-        collection: "spaces",
+        collection: 'spaces',
         where: [
-          ["arrayOfUserIdsInSpace", "array-contains", props.uuid],
-          ["orgId", "==", props.match.params.id]
+          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
+          ['orgId', '==', props.match.params.id]
         ],
-        storeAs: "filteredSpaces"
+        storeAs: 'filteredSpaces'
       },
       {
-        collection: "organisations",
-        where: ["arrayOfUsersIds", "array-contains", props.uuid],
-        storeAs: "orgsInWhichUser"
+        collection: 'organisations',
+        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
+        storeAs: 'orgsInWhichUser'
       }
       // {
       //   collection: 'organisations',
@@ -485,7 +485,7 @@ const NavBarContainer = styled.div`
   background-color: white;
   width: 309px;
   padding-top: 32px;
-  font-family: "Open Sans", Helvetica, Arial, "sans-serif";
+  font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
   position: fixed;

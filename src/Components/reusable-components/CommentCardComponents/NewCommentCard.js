@@ -88,19 +88,19 @@ export class NewCommentCard extends React.Component {
     return (
       <StyledCommentContainer>
         {this.state.error === 'wordIsTooLong' && (
-          <Message warning attached='bottom'>
-            <Icon name='warning' />A word can only be 70 characters long
+          <Message warning attached="bottom">
+            <Icon name="warning" />A word can only be 70 characters long
           </Message>
         )}
         <StyledTopContainer>
           <AvatarFromLetter
             username={this.props.profile.fullName}
-            height='32px'
-            width='32px'
+            height="32px"
+            width="32px"
           />
           <StyledRightInput
-            placeholder='Comment on the thread'
-            name='text'
+            placeholder="Comment on the thread"
+            name="text"
             value={this.state.text}
             onChange={this.handleInputChange}
           />
@@ -108,10 +108,10 @@ export class NewCommentCard extends React.Component {
         <StyledGifAndButtons>
           <StyledButtonContainer>
             <ScreenButton
-              content='GIF'
-              backgroundColor='#00bc98'
-              color='white'
-              border='none'
+              content="GIF"
+              backgroundColor="#00bc98"
+              color="white"
+              border="none"
               icon={IconCheckWhite}
               onClick={e => {
                 e.preventDefault();
@@ -119,10 +119,10 @@ export class NewCommentCard extends React.Component {
               }}
             />
             <ScreenButton
-              content='Submit'
-              backgroundColor='#00bc98'
-              color='white'
-              border='none'
+              content="Submit"
+              backgroundColor="#00bc98"
+              color="white"
+              border="none"
               icon={IconPenWhite}
               onClick={e => {
                 this.createNewComment(e);
@@ -133,7 +133,7 @@ export class NewCommentCard extends React.Component {
           </StyledButtonContainer>
           {this.state.gif !== '' && (
             <StyledGifImage>
-              <img src={this.state.gif} alt='gif' />
+              <img src={this.state.gif} alt="gif" />
               <div onClick={() => this.setState({ gif: '' })}>x</div>
             </StyledGifImage>
           )}

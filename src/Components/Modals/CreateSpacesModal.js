@@ -26,10 +26,10 @@ export default class CreateSpacesModal extends Component {
   //Render component
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} basic size='tiny'>
+      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
         <ProgressBar activeDots={3} bulletpoints={3} />
         <StyledModalH1>
-          <Modal.Header content='Create few spaces' />
+          <Modal.Header content="Create few spaces" />
         </StyledModalH1>
         <StyledModalCard>
           <Modal.Content>
@@ -65,14 +65,14 @@ export default class CreateSpacesModal extends Component {
                 anything else you would have a meeting about.
               </StyledModalTextInForm>
               <StyledModalInput
-                placeholder='ie. Products Proposals'
-                name='addedSpace1'
+                placeholder="ie. Products Proposals"
+                name="addedSpace1"
                 onChange={this.props.handleInputChange}
                 value={this.props.addedSpace1}
               />
               <StyledModalInput
-                placeholder='ie. Design Review'
-                name='addedSpace2'
+                placeholder="ie. Design Review"
+                name="addedSpace2"
                 onChange={this.props.handleInputChange}
                 value={this.props.addedSpace2}
               />
@@ -101,7 +101,7 @@ export default class CreateSpacesModal extends Component {
               </StyledModalButton>
               <StyledModalMainButtonContainer>
                 <StyledModalButton
-                  className='cancel-button'
+                  className="cancel-button"
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal('InviteYourTeamModal');

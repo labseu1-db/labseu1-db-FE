@@ -21,31 +21,37 @@ export default class LandingContent extends React.Component {
           <StyledDescribtionCard>
             <h3 className="green">Create an organisation</h3>
             <div className="content-div">
-              We believe that Pinely will help all teams, groups, organisations and companies with comunication,
-              decision making and inclusion. As an idividual, you can be member of as many organisations, as you need.
-              Because every team deserves a place where you can go to get caught up on your most important discussions.
+              We believe that Pinely will help all teams, groups, organisations
+              and companies with comunication, decision making and inclusion. As
+              an idividual, you can be member of as many organisations, as you
+              need. Because every team deserves a place where you can go to get
+              caught up on your most important discussions.
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
             <h3 className="orange">Create a space</h3>
             <div className="content-div">
-              Spaces are your team's meeting rooms. Once they are created, invite others and start the discussion. No
-              scheduling required. Perfect for all, but especially distributed teams.
+              Spaces are your team's meeting rooms. Once they are created,
+              invite others and start the discussion. No scheduling required.
+              Perfect for all, but especially distributed teams.
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
             <h3 className="blue">Start a thread</h3>
             <div className="content-div">
-              Ask questions, get feedback and hash out ideas with your team. Make better decisions with all the context
-              you need in one place. And you can say goodbye to situations, where people are being left off meeting
-              invites and group chats happenning in private with fewer people than before.
+              Ask questions, get feedback and hash out ideas with your team.
+              Make better decisions with all the context you need in one place.
+              And you can say goodbye to situations, where people are being left
+              off meeting invites and group chats happenning in private with
+              fewer people than before.
             </div>
           </StyledDescribtionCard>
           <StyledDescribtionCard>
             <h3 className="red">Mark the decision</h3>
             <div className="content-div">
-              When you're done hearing from everyone on a thread, highlight the final decision so everyone is on the
-              same page. Make decision making simpler, more pleasant and more productive.
+              When you're done hearing from everyone on a thread, highlight the
+              final decision so everyone is on the same page. Make decision
+              making simpler, more pleasant and more productive.
             </div>
           </StyledDescribtionCard>
         </StyledContentSection>
