@@ -5,7 +5,7 @@ import styled from 'styled-components';
 function ThreadLeftComponentText(props) {
   const { createdBy, createdAt, space, checked } = props;
   return (
-    <StyledLeftContainer>
+    <StyledLeftContainer aria-label="Thread Left Text">
       <div className="top">
         <div className="bold">{createdBy} started a thread</div>
         <div className="lighter-color">
