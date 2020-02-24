@@ -8,7 +8,7 @@ import iconLineGreen from '../../images/icon-line-green.svg';
 export default class LandingPricing extends React.Component {
   render() {
     return (
-      <StyledContent id="pricing">
+      <StyledContent id="pricing" aria-label="Landing Pricing">
         <h2>Pricing</h2>
         <StyledPricingCards>
           <StyledPricingCard>
