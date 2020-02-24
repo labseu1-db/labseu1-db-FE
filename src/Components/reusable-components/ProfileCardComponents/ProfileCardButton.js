@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function ProfileCardButton(props) {
+export function ProfileCardButton(props) {
   const { content, border, onClick, top, right, margin } = props;
   const style = {
     border: border,
@@ -10,7 +10,11 @@ function ProfileCardButton(props) {
     marginRight: margin
   };
   return (
-    <ProfileCardButtonStyled style={style} onClick={onClick}>
+    <ProfileCardButtonStyled
+      style={style}
+      onClick={onClick}
+      aria-label="profile button"
+    >
       {content}
     </ProfileCardButtonStyled>
   );
