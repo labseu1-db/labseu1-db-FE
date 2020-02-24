@@ -31,7 +31,7 @@ export class CommentDropdown extends React.Component {
 
   render() {
     return (
-      <StyledDropdown>
+      <StyledDropdown aria-label="Comment Drop">
         <Dropdown>
           <Dropdown.Menu>
             {!this.props.isCommentDecided && (
