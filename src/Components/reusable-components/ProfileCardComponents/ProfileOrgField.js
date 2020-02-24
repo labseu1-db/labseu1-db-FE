@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function ProfileOrgField(props) {
+export function ProfileOrgField(props) {
   return (
-    <StyledProfileOrgField>
+    <StyledProfileOrgField aria-label="Org Field">
       <StyledOrgName>{props.org.orgName}</StyledOrgName>
       <div>
         <StyledProfileUserRole>User</StyledProfileUserRole>

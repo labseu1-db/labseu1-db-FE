@@ -7,7 +7,7 @@ import arrowIcon from '../../images/icon-arrow-left-white.svg';
 function BackToButton({ onClick }) {
   return (
     <div>
-      <StyledBackToButton onClick={onClick}>
+      <StyledBackToButton onClick={onClick} id="back-to-button">
         <div className="rounded-end">
           <img src={arrowIcon} alt="arrow icon" />
         </div>

@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withFirestore } from 'react-redux-firebase';
 
-class ProfileCardUserRow extends React.Component {
+export class ProfileCardUserRow extends React.Component {
   constructor(props) {
     super(props);
     this.escFunction = this.escFunction.bind(this);
@@ -49,7 +49,9 @@ class ProfileCardUserRow extends React.Component {
       <StyledFirstRow>
         {/* <StyledImg src={this.props.user.profileUrl} alt='user' /> */}
         {!this.props.editingProfileStatus && (
-          <StyledNameSpan>{this.props.user.fullName}</StyledNameSpan>
+          <StyledNameSpan aria-label="full name">
+            {this.props.user.fullName}
+          </StyledNameSpan>
         )}
         {this.props.editingProfileStatus && (
           <StyledNameSubmitForm

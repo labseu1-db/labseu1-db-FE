@@ -19,10 +19,10 @@ import FollowUp from './Components/reusable-components/FollowUp';
 import UpgradeAccount from './Components/UpgradeAccount';
 import UserProfile from './Components/UserProfile';
 
-class App extends Component {
+export class App extends Component {
   render() {
     return (
-      <div>
+      <div aria-label="Routes">
         <Route
           exact
           path="/register"
