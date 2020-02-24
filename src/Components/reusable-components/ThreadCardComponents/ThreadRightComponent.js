@@ -32,7 +32,7 @@ export class ThreadRightComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div aria-label="Thread Right">
         {!this.props.isFollowUpDecided && (
           <StyledRightContainer onClick={e => this.markAsFollowUp(e)}>
             <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
