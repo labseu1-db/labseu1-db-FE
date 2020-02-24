@@ -72,7 +72,7 @@ export class CommentCard extends React.Component {
       '0' + dateInfo.getMinutes()
     ).slice(-2)}`;
     return (
-      <StyledContainer>
+      <StyledContainer aria-label="Comment Card">
         <StyledCommentContainer
           className={`${isCommentDecided && 'paddingTop'}`}
           onMouseEnter={() => this.setIsHovering(true)}
