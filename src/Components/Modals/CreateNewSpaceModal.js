@@ -13,7 +13,7 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class CreateNewSpaceModal extends Component {
+export class CreateNewSpaceModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,7 +102,7 @@ class CreateNewSpaceModal extends Component {
       return (
         <Modal
           trigger={
-            <div>
+            <div aria-label="New Space Modal">
               <img
                 src={plusIcon}
                 alt="plus icon"

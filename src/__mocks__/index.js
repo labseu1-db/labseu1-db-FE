@@ -16,3 +16,7 @@ export const threadId = 284895;
 export const threadName = 'Test Thread';
 export const fullName = 'Test';
 export const text = 'This is a test text';
+export const users = [
+  { fullName: 'Test', id: 383 },
+  { fullName: 'test 2', id: 38 }
+];
