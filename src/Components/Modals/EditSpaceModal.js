@@ -47,8 +47,12 @@ class EditSpaceModal extends Component {
       return this.props.firestore.update(
         { collection: 'users', doc: id },
         {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(this.props.space.id),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
+          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(
+            this.props.space.id
+          ),
+          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
+            this.state.spaceName
+          )
         }
       );
     });
@@ -61,8 +65,12 @@ class EditSpaceModal extends Component {
         return this.props.firestore.update(
           { collection: 'users', doc: id },
           {
-            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.state.spaceName)
+            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
+              this.props.space.id
+            ),
+            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
+              this.state.spaceName
+            )
           }
         );
       });
@@ -88,7 +96,9 @@ class EditSpaceModal extends Component {
         <StyledContainer>
           <Modal.Header>
             <div>
-              <StyledMainHeader>Edit {this.props.space.spaceName}</StyledMainHeader>
+              <StyledMainHeader>
+                Edit {this.props.space.spaceName}
+              </StyledMainHeader>
             </div>
             <div>
               <Header as="h5">Space name</Header>
@@ -126,13 +136,17 @@ class EditSpaceModal extends Component {
                     onClick={() => {
                       this.handleClose();
                       this.props.showModal(null);
-                    }}>
+                    }}
+                  >
                     Cancel
                   </StyledButtonCancel>
 
                   <StyledButtonCreateSpace
                     type="submit"
-                    disabled={!this.state.spaceName.length > 0 || !this.state.idsInSpace.length > 0}
+                    disabled={
+                      !this.state.spaceName.length > 0 ||
+                      !this.state.idsInSpace.length > 0
+                    }
                     onClick={e => {
                       e.preventDefault();
                       this.props.showModal(null);
@@ -140,7 +154,8 @@ class EditSpaceModal extends Component {
                       this.addSpaceToUsers();
                       this.removeSpaceFromUsers();
                       this.handleClose();
-                    }}>
+                    }}
+                  >
                     Edit Space
                   </StyledButtonCreateSpace>
                 </StyledActions>
@@ -161,7 +176,9 @@ const mapStateToProps = state => {
     activeModal: state.modal.activeModal,
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
+    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
+      ? state.firestore.ordered.usersWithinTheOrg
+      : []
   };
 };
 
@@ -171,10 +188,7 @@ const mapDispatchToProps = dispatch => {
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
@@ -183,7 +197,9 @@ export default compose(
       },
       {
         collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', `${props.activeOrg}`]],
+        where: [
+          ['arrayOfOrgsIds', 'array-contains', `${props.match.params.id}`]
+        ],
         storeAs: 'usersWithinTheOrg'
       }
     ];

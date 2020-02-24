@@ -27,7 +27,11 @@ export class NewCommentCard extends React.Component {
   handleInputChange = e => {
     let words = this.state.text.split(' ');
     let wordsWithSpecificLength = words.every(word => word.length <= 70);
-    if (wordsWithSpecificLength || e.target.name !== 'text' || window.event.inputType === 'deleteContentBackward') {
+    if (
+      wordsWithSpecificLength ||
+      e.target.name !== 'text' ||
+      window.event.inputType === 'deleteContentBackward'
+    ) {
       this.setState({ [e.target.name]: e.target.value });
       this.setState({ error: '' });
     }
@@ -89,7 +93,11 @@ export class NewCommentCard extends React.Component {
           </Message>
         )}
         <StyledTopContainer>
-          <AvatarFromLetter username={this.props.profile.fullName} height="32px" width="32px" />
+          <AvatarFromLetter
+            username={this.props.profile.fullName}
+            height="32px"
+            width="32px"
+          />
           <StyledRightInput
             placeholder="Comment on the thread"
             name="text"
@@ -234,9 +242,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {};
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(NewCommentCard);

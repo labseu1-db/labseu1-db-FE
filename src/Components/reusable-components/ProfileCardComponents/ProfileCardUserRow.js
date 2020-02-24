@@ -47,15 +47,23 @@ class ProfileCardUserRow extends React.Component {
     const { onClick, secondOnClick } = this.props;
     return (
       <StyledFirstRow>
-        <img src={this.props.user.profileUrl} alt="user" />
-        {!this.props.editingProfileStatus && <StyledNameSpan>{this.props.user.fullName}</StyledNameSpan>}
+        {/* <StyledImg src={this.props.user.profileUrl} alt='user' /> */}
+        {!this.props.editingProfileStatus && (
+          <StyledNameSpan>{this.props.user.fullName}</StyledNameSpan>
+        )}
         {this.props.editingProfileStatus && (
           <StyledNameSubmitForm
             onKeyPress={event => {
               this.onSubmitHandler(event);
-            }}>
-            <StyledNameInput value={this.state.fullName} onChange={this.onChangeHandler} />
-            <StyledCancel>Press Enter to Submit{'\n'} and Escape to cancel</StyledCancel>
+            }}
+          >
+            <StyledNameInput
+              value={this.state.fullName}
+              onChange={this.onChangeHandler}
+            />
+            <StyledCancel>
+              Press Enter to Submit{'\n'} and Escape to cancel
+            </StyledCancel>
           </StyledNameSubmitForm>
         )}
         <ProfileCardButton
@@ -86,10 +94,7 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(ProfileCardUserRow);
 
 const StyledCancel = styled.span`
@@ -99,6 +104,9 @@ const StyledCancel = styled.span`
   color: rgb(125, 135, 141);
 `;
 
+// const StyledImg = styled.img`
+//   margin-bottom: 1%;
+// `;
 const StyledNameInput = styled.input`
   font-size: 2.4rem;
   max-width: 14vw;
@@ -120,6 +128,8 @@ const StyledNameSubmitForm = styled.form`
   display: flex;
   flex-direction: column;
   margin-top: 3%;
+  position: absolute;
+  left: 2%;
 `;
 
 const StyledFirstRow = styled.div`
@@ -144,4 +154,6 @@ const StyledNameSpan = styled.span`
   padding-top: 10px;
   overflow-wrap: break-word;
   margin-top: 40px;
+  position: absolute;
+  left: 2%;
 `;

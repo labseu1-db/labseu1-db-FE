@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
+import {
+  firebaseConnect,
+  isLoaded,
+  isEmpty,
+  withFirestore
+} from 'react-redux-firebase';
 import { Icon, Message } from 'semantic-ui-react';
 import uuid from 'uuid';
 import { Redirect } from 'react-router-dom';
@@ -17,7 +22,11 @@ import {
   StyledLowerSignIn,
   StyledIcon
 } from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 
@@ -97,7 +106,11 @@ class Register extends Component {
           .then(qs => {
             qs.forEach(doc => {
               this.saveUserIdInOrg(doc.id, userId);
-              this.saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
+              this.saveOrgNameAndOrgIdInUser(
+                doc.id,
+                doc.data().orgName,
+                userId
+              );
 
               localStorage.setItem('activeOrg', doc.id);
             });
@@ -206,7 +219,15 @@ class Register extends Component {
       return <Spinner />;
     }
     if (!isEmpty(this.props.auth)) {
-      return <Redirect to="/homescreen" />;
+      return (
+        <Redirect
+          to={
+            localStorage.getItem('activeOrg')
+              ? `/mainscreen/${localStorage.getItem('activeOrg')}`
+              : 'createneworganisation'
+          }
+        />
+      );
     }
     return (
       <StyledLogin>
@@ -243,12 +264,20 @@ class Register extends Component {
                 onChange={this.handleInputChange}
                 placeholder="········"
               />
-              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
+              <StyledIcon
+                id="passwordIcon"
+                src={showPassword}
+                alt="showPassword"
+                onClick={this.togglePassword}
+              />
             </StyledLabel>
 
             <StyledLowerSignIn>
               <StyledLink to="/login"> Already have an account? </StyledLink>
-              <StyledButton disabled={isInvalid} onClick={this.createAndLogInNewUser}>
+              <StyledButton
+                disabled={isInvalid}
+                onClick={this.createAndLogInNewUser}
+              >
                 Register
               </StyledButton>
             </StyledLowerSignIn>
@@ -296,9 +325,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(Register);

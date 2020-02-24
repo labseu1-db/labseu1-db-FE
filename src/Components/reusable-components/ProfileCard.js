@@ -43,7 +43,9 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
+    user: state.firestore.ordered.filteredUser
+      ? state.firestore.ordered.filteredUser[0]
+      : '',
     orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : '',
     editingProfileStatus: state.editingProfileStatus
   };
@@ -62,10 +64,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {

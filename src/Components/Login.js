@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
+import {
+  firebaseConnect,
+  isLoaded,
+  isEmpty,
+  withFirestore
+} from 'react-redux-firebase';
 
 //Import semantic components
 import { Icon, Message } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 
 //Import styling
-import { StyledButton, ForgotPasswordDiv } from './styled-components/StyledButton';
+import {
+  StyledButton,
+  ForgotPasswordDiv
+} from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
@@ -19,7 +27,11 @@ import {
   StyledLowerSignIn,
   StyledIcon
 } from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 
 //Images/Icons
 import showPassword from '../images/icon-eye-gray.svg';
@@ -42,12 +54,15 @@ class Login extends Component {
     loginEmail: '',
     loginPassword: '',
     error: null,
-    savinUsergInfoToDb: false
+    savinUsergInfoToDb: false,
+    activeOrg: null
   };
 
   componentWillUpdate() {
     if (!isEmpty(this.props.auth)) {
-      this.props.history.push('/homescreen');
+      this.props.history.push(
+        `/mainscreen/${localStorage.getItem('activeOrg')}`
+      );
     }
   }
 
@@ -77,7 +92,9 @@ class Login extends Component {
   };
 
   setUserIdInLocalStorage = email => {
-    var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
+    var ref = this.props.firestore
+      .collection('users')
+      .where('userEmail', '==', email);
     ref
       .get()
       .then(function(querySnapshot) {
@@ -147,9 +164,16 @@ class Login extends Component {
                 onChange={this.handleInputChange}
                 placeholder="········"
               />
-              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
+              <StyledIcon
+                id="passwordIcon"
+                src={showPassword}
+                alt="showPassword"
+                onClick={this.togglePassword}
+              />
             </StyledLabel>
-            <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>
+            <ForgotPasswordDiv
+              onClick={() => this.props.history.push('/forgotPassword')}
+            >
               Forgot Password?
             </ForgotPasswordDiv>
             <StyledLowerSignIn>
@@ -208,9 +232,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(Login);

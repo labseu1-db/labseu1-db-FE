@@ -12,15 +12,33 @@ import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
 function ThreadCard(props) {
-  const { createdBy, createdAt, heading, info, checked, threadId, onClick, currentSpace, isFollowUpDecided } = props;
+  const {
+    createdBy,
+    createdAt,
+    heading,
+    info,
+    checked,
+    threadId,
+    onClick,
+    currentSpace,
+    isFollowUpDecided
+  } = props;
 
   return (
     <div>
       <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
-        <ThreadLeftComponentText createdBy={createdBy} createdAt={createdAt} space={currentSpace} checked={checked} />
+        <ThreadLeftComponentText
+          createdBy={createdBy}
+          createdAt={createdAt}
+          space={currentSpace}
+          checked={checked}
+        />
         <ThreadMiddleComponent heading={heading} info={info} />
-        <ThreadRightComponent isFollowUpDecided={isFollowUpDecided} threadId={threadId} />
+        <ThreadRightComponent
+          isFollowUpDecided={isFollowUpDecided}
+          threadId={threadId}
+        />
       </StyledThreadContainer>
     </div>
   );
@@ -48,17 +66,16 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    activeSpace: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
+    activeSpace: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces[0]
+      : []
   };
 };
 
 const mapDispatchToProps = {};
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {

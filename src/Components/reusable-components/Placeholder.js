@@ -14,7 +14,10 @@ export class Placeholder extends React.Component {
           <StyledPlaceholderContainer>
             <StyledPlaceholderHeading>
               <div>{heading}</div>
-              <div className="dismiss" onClick={() => this.setState({ isPlaceholderActive: false })}>
+              <div
+                className="dismiss"
+                onClick={() => this.setState({ isPlaceholderActive: false })}
+              >
                 Dismiss
               </div>
             </StyledPlaceholderHeading>

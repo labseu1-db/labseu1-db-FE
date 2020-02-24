@@ -52,12 +52,17 @@ class CreateNewSpaceModal extends Component {
           spaceName: this.state.spaceName,
           spaceCreatedByUserId: window.localStorage.getItem('uuid'),
           spaceTopic: this.state.spaceTopic,
-          orgId: this.props.activeOrg,
+          orgId: this.props.match.params.id,
           arrayOfUserIdsInSpace: this.state.idsInSpace
         }
       )
       .then(res => this.addSpaceToUsers(spaceId))
-      .then(res => this.cleanInputs());
+      .then(res => this.cleanInputs())
+      .then(res =>
+        this.props.history.push(
+          `/mainscreen/${this.props.match.params.id}/${spaceId}`
+        )
+      );
   };
 
   addSpaceToUsers = spaceId => {
@@ -66,7 +71,9 @@ class CreateNewSpaceModal extends Component {
         { collection: 'users', doc: id },
         {
           arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.spaceName)
+          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
+            this.state.spaceName
+          )
         }
       );
     });
@@ -75,7 +82,9 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState(prState => ({ idsInSpace: [...prState.idsInSpace, ...value] }));
+    this.setState(prState => ({
+      idsInSpace: [...prState.idsInSpace, ...value]
+    }));
   };
   render() {
     const { organisation } = this.props;
@@ -103,7 +112,8 @@ class CreateNewSpaceModal extends Component {
             </div>
           }
           open={this.state.model_open}
-          size="tiny">
+          size="tiny"
+        >
           <StyledContainer>
             <Modal.Header>
               <div>
@@ -144,7 +154,9 @@ class CreateNewSpaceModal extends Component {
                 </StyledDropdown>
                 <Modal.Actions>
                   <StyledActions>
-                    <StyledButtonCancel onClick={this.handleClose}>Cancel</StyledButtonCancel>
+                    <StyledButtonCancel onClick={this.handleClose}>
+                      Cancel
+                    </StyledButtonCancel>
 
                     <StyledButtonCreateSpace
                       type="submit"
@@ -157,7 +169,8 @@ class CreateNewSpaceModal extends Component {
                         this.addSpaceToDatabase();
                         this.props.showModal(null);
                         this.handleClose();
-                      }}>
+                      }}
+                    >
                       Create Space
                     </StyledButtonCreateSpace>
                   </StyledActions>
@@ -177,11 +190,17 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
-    organisation: state.firestore.ordered.activeOrgFromDatabase ? state.firestore.ordered.activeOrgFromDatabase : [],
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
+    organisation: state.firestore.ordered.activeOrgFromDatabase
+      ? state.firestore.ordered.activeOrgFromDatabase
+      : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
+    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
+      ? state.firestore.ordered.usersWithinTheOrg
+      : []
   };
 };
 
@@ -191,15 +210,12 @@ const mapDispatchToProps = dispatch => {
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
         collection: 'organisations',
-        doc: `${props.activeOrg}`,
+        doc: props.match.params.id,
         storeAs: 'activeOrgFromDatabase'
       },
       {
@@ -208,7 +224,7 @@ export default compose(
       },
       {
         collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', `${props.activeOrg}`]],
+        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
         storeAs: 'usersWithinTheOrg'
       }
     ];

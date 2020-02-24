@@ -25,7 +25,9 @@ export class UpdateComment extends React.Component {
   };
   updateComment = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
+    let commentRef = this.props.firestore
+      .collection('comments')
+      .doc(this.props.commentId);
     commentRef.update({
       commentBody: this.state.text,
       isCommentUpdated: true,
@@ -40,9 +42,14 @@ export class UpdateComment extends React.Component {
           this.props.setIsUpdating(false);
           this.updateComment(e);
           this.clearInput();
-        }}>
+        }}
+      >
         <StyledTopContainer>
-          <StyledInput name="text" value={this.state.text} onChange={this.handleInputChange} />
+          <StyledInput
+            name="text"
+            value={this.state.text}
+            onChange={this.handleInputChange}
+          />
         </StyledTopContainer>
         <StyledButtonContainer>
           {this.state.text.length > 0 && (
@@ -110,9 +117,6 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(UpdateComment);

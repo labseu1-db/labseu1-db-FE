@@ -20,7 +20,7 @@ class CreateNewOrganisation extends Component {
 
     this.state = {
       orgName: null,
-      teamEmailAddress: [ '', '', '', '' ],
+      teamEmailAddress: ['', '', '', ''],
       createdSpaces: [],
       addedSpace1: '',
       addedSpace2: '',
@@ -28,33 +28,33 @@ class CreateNewOrganisation extends Component {
     };
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   //========= FUNCTIONS TO GET DATA FROM MODALS TO THIS COMPONENT =========//
   //no passing information to database, only getting information from modals
-  addOrgName = (name) => {
+  addOrgName = name => {
     this.setState({ orgName: name });
   };
 
-  addTeamEmailAddress = (emails) => {
+  addTeamEmailAddress = emails => {
     this.setState({ teamEmailAddress: emails });
   };
 
   //add space plus following functionality:
   // - make sure, that each space is there only once
   // - toggle adding/removing of space
-  addSpace = (space) => {
+  addSpace = space => {
     const indexOfSpace = this.state.createdSpaces.indexOf(space);
     if (indexOfSpace > -1) {
-      const arrayWithoutSpace = this.state.createdSpaces.filter((s) => {
+      const arrayWithoutSpace = this.state.createdSpaces.filter(s => {
         return s !== space;
       });
       this.setState({ createdSpaces: arrayWithoutSpace });
     } else {
-      this.setState((pr) => ({
-        createdSpaces: [ ...pr.createdSpaces, space ]
+      this.setState(pr => ({
+        createdSpaces: [...pr.createdSpaces, space]
       }));
     }
   };
@@ -63,7 +63,7 @@ class CreateNewOrganisation extends Component {
   clearState = () => {
     this.setState({
       orgName: null,
-      teamEmailAddress: [ '', '', '', '' ],
+      teamEmailAddress: ['', '', '', ''],
       createdSpaces: [],
       addedSpace1: '',
       addedSpace2: ''
@@ -73,12 +73,16 @@ class CreateNewOrganisation extends Component {
 
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   //1. ADD DATA ABOUT ORGANISATION AND USERS TO ORGANISATIONS COLLECTION
-  addOrganisationToDatabase = (orgId) => {
-    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map((e) => {
-      return e;
-    });
+  addOrganisationToDatabase = orgId => {
+    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress
+      .filter(Boolean)
+      .map(e => {
+        return e;
+      });
     //add creators/admins email to the array of users
-    let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(localStorage.getItem('userEmail'));
+    let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(
+      localStorage.getItem('userEmail')
+    );
 
     //aave all collected data about organisation in firestore
     return this.props.firestore
@@ -89,9 +93,9 @@ class CreateNewOrganisation extends Component {
           isPremium: false,
           createdByUserId: localStorage.getItem('uuid'),
           arrayOfUsersEmails: usersAndAdminsEmails,
-          arrayOfUsersIds: [ localStorage.getItem('uuid') ],
-          arrayOfAdminsEmails: [ localStorage.getItem('userEmail') ],
-          arrayOfAdminsIds: [ localStorage.getItem('uuid') ]
+          arrayOfUsersIds: [localStorage.getItem('uuid')],
+          arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
+          arrayOfAdminsIds: [localStorage.getItem('uuid')]
         }
       )
       .then(() => {
@@ -100,19 +104,23 @@ class CreateNewOrganisation extends Component {
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
-  addOrganisationToUsers = (orgId) => {
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+  addOrganisationToUsers = orgId => {
+    let userRef = this.props.firestore
+      .collection('users')
+      .doc(localStorage.getItem('uuid'));
     userRef.update({
       arrayOfOrgsIds: this.props.firestore.FieldValue.arrayUnion(orgId),
-      arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(this.state.orgName)
+      arrayOfOrgsNames: this.props.firestore.FieldValue.arrayUnion(
+        this.state.orgName
+      )
     });
     this.setState({ savingInfoToDb: true });
   };
 
   //3. ADD DATA ABOUT CREATED SPACED TO SPACES COLLECTION AND USER COLLECTION
-  addSpacesToSpacesAndUsers = (orgId) => {
+  addSpacesToSpacesAndUsers = orgId => {
     //map trough populated spaces (we will save each space separately)
-    this.state.createdSpaces.filter(Boolean).forEach((space) => {
+    this.state.createdSpaces.filter(Boolean).forEach(space => {
       let spaceId = uuid();
       //save each space in spaces collection
       this.props.firestore.set(
@@ -121,12 +129,14 @@ class CreateNewOrganisation extends Component {
           spaceName: space,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: [ localStorage.getItem('uuid') ]
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 
       //add each space in users collection in array (therefore we need to use update instead of add/set)
-      let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+      let userRef = this.props.firestore
+        .collection('users')
+        .doc(localStorage.getItem('uuid'));
       return userRef.update({
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
         arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(space)
@@ -134,7 +144,7 @@ class CreateNewOrganisation extends Component {
     });
   };
 
-  addSpaceFromInput1ToOrganisationsAndUsers = (orgId) => {
+  addSpaceFromInput1ToOrganisationsAndUsers = orgId => {
     let spaceId = uuid();
     //save each space in spaces collection
     this.state.addedSpace1 !== '' &&
@@ -144,20 +154,24 @@ class CreateNewOrganisation extends Component {
           spaceName: this.state.addedSpace1,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: [ localStorage.getItem('uuid') ]
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 
     //save each space in users collection
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+    let userRef = this.props.firestore
+      .collection('users')
+      .doc(localStorage.getItem('uuid'));
     this.state.addedSpace1 !== '' &&
       userRef.update({
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace1)
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
+          this.state.addedSpace1
+        )
       });
   };
 
-  addSpaceFromInput2ToOrganisationsAndUsers = (orgId) => {
+  addSpaceFromInput2ToOrganisationsAndUsers = orgId => {
     //save each space in spaces collection
     let spaceId = uuid();
     this.state.addedSpace2 !== '' &&
@@ -167,16 +181,20 @@ class CreateNewOrganisation extends Component {
           spaceName: this.state.addedSpace2,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: [ localStorage.getItem('uuid') ]
+          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
       );
 
     //save each space in users collection
-    let userRef = this.props.firestore.collection('users').doc(localStorage.getItem('uuid'));
+    let userRef = this.props.firestore
+      .collection('users')
+      .doc(localStorage.getItem('uuid'));
     this.state.addedSpace2 !== '' &&
       userRef.update({
         arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(this.state.addedSpace2)
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
+          this.state.addedSpace2
+        )
       });
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
@@ -218,8 +236,12 @@ class CreateNewOrganisation extends Component {
             addOrganisationToDatabase={this.addOrganisationToDatabase}
             addOrganisationToUsers={this.addOrganisationToUsers}
             addSpacesToSpacesAndUsers={this.addSpacesToSpacesAndUsers}
-            addSpaceFromInput1ToOrganisationsAndUsers={this.addSpaceFromInput1ToOrganisationsAndUsers}
-            addSpaceFromInput2ToOrganisationsAndUsers={this.addSpaceFromInput2ToOrganisationsAndUsers}
+            addSpaceFromInput1ToOrganisationsAndUsers={
+              this.addSpaceFromInput1ToOrganisationsAndUsers
+            }
+            addSpaceFromInput2ToOrganisationsAndUsers={
+              this.addSpaceFromInput2ToOrganisationsAndUsers
+            }
             handleInputChange={this.handleInputChange}
             clearState={this.clearState}
             props={this.props}
@@ -231,7 +253,7 @@ class CreateNewOrganisation extends Component {
 }
 
 //Export component wrapped in redux actions and store and firestore
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -240,10 +262,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({ showModal }, dispatch);
 };
 
-export default compose(withFirestore, connect(mapStateToProps, mapDispatchToProps), firestoreConnect())(
-  CreateNewOrganisation
-);
+export default compose(
+  withFirestore,
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect()
+)(CreateNewOrganisation);

@@ -11,15 +11,21 @@ export class ThreadRightComponent extends React.Component {
   markAsFollowUp = e => {
     e.stopPropagation();
 
-    let threadRef = this.props.firestore.collection('threads').doc(this.props.threadId);
+    let threadRef = this.props.firestore
+      .collection('threads')
+      .doc(this.props.threadId);
     if (this.props.isFollowUpDecided) {
       threadRef.update({
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
+        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayRemove(
+          localStorage.getItem('uuid')
+        )
       });
     } else {
       threadRef.update({
         isFollowUp: true,
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
+        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
+          localStorage.getItem('uuid')
+        )
       });
     }
   };
@@ -120,9 +126,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {};
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(ThreadRightComponent);

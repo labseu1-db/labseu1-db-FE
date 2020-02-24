@@ -98,10 +98,10 @@ class PasswordlessSubmit extends Component {
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
                 value={this.state.loginEmail}
-                name='loginEmail'
-                type='email'
+                name="loginEmail"
+                type="email"
                 onChange={this.handleInputChange}
-                placeholder='tonystark@example.com'
+                placeholder="tonystark@example.com"
               />
             </StyledLabel>
             <StyledLowerSignInPasswordless>
@@ -116,12 +116,12 @@ class PasswordlessSubmit extends Component {
             </StyledLowerSignInPasswordless>
           </StyledForm>
           {this.state.error && (
-            <Message warning attached='bottom'>
-              <Icon name='warning' />
+            <Message warning attached="bottom">
+              <Icon name="warning" />
               {this.state.error.message}
             </Message>
           )}
-          <StyledLink to='/login'>Back to Log In with Password</StyledLink>
+          <StyledLink to="/login">Back to Log In with Password</StyledLink>
         </StyledLoginCon>
         <LoginAnimation />
       </StyledLogin>
@@ -143,9 +143,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(PasswordlessSubmit);

@@ -11,9 +11,9 @@ import AvatarFromLetter from '../reusable-components/AvatarFromLetter';
 export function ThreadInformationCard(props) {
   const { createdBy, createdAt, info, space } = props;
   let dateInfo = new Date(createdAt);
-  let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${('0' + dateInfo.getMinutes()).slice(
-    -2
-  )}`;
+  let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+    '0' + dateInfo.getMinutes()
+  ).slice(-2)}`;
   return (
     <StyledThreadContainer>
       <StyledTopContent>
@@ -21,7 +21,9 @@ export function ThreadInformationCard(props) {
         <StyledRightSideOfContainer>
           <StyledAuthorContainer>{createdBy}</StyledAuthorContainer>
           <StyledThreadInformation>
-            started this thread in <span className="space">{space.spaceName}</span> · <span>{date}</span>
+            started this thread in{' '}
+            <span className="space">{space.spaceName}</span> ·{' '}
+            <span>{date}</span>
           </StyledThreadInformation>
         </StyledRightSideOfContainer>
       </StyledTopContent>
@@ -78,17 +80,16 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : []
+    space: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces[0]
+      : []
   };
 };
 
 const mapDispatchToProps = {};
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {

@@ -19,6 +19,7 @@ const StyledProfileCardOrgsField = styled.div`
   flex: 1 1 0%;
   display: flex;
   padding: 16px 0px 16px 16px;
+  margin-top: 15%;
 `;
 
 export default ProfileCardOrgsField;

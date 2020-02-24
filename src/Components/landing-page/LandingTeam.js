@@ -24,7 +24,11 @@ export default class LandingTeam extends React.Component {
               <img src={elisa} alt="Elisa" />
             </div>
             <div>
-              <a href="https://www.linkedin.com/in/martin-elisa/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/martin-elisa/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Elisa Martin</h5>
               </a>
               <div>Fullstack Developer</div>
@@ -35,7 +39,11 @@ export default class LandingTeam extends React.Component {
               <img src={ivana} alt="Ivana" />
             </div>
             <div>
-              <a href="https://www.linkedin.com/in/ivana-huckova/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/ivana-huckova/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Ivana Huckova</h5>
               </a>
               <div>Fullstack Developer</div>
@@ -46,7 +54,11 @@ export default class LandingTeam extends React.Component {
               <img src={novina} alt="Novina" />
             </div>
             <div>
-              <a href="https://www.linkedin.com/in/novina-pun-7688a267/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/novina-pun-7688a267/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Novina Pun</h5>
               </a>
               <div>Fullstack Developer</div>
@@ -57,7 +69,11 @@ export default class LandingTeam extends React.Component {
               <img src={samar} alt="Samar" />
             </div>
             <div>
-              <a href="https://www.linkedin.com/in/samar-vir/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/samar-vir/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Samar Vir</h5>
               </a>
               <div>Project Manager</div>
@@ -68,7 +84,11 @@ export default class LandingTeam extends React.Component {
               <img src={sean} alt="Sean" />
             </div>
             <div>
-              <a href="https://github.com/sean-attewell" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://github.com/sean-attewell"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Sean Attewell</h5>
               </a>
               <div>Fullstack Developer</div>
@@ -79,7 +99,11 @@ export default class LandingTeam extends React.Component {
               <img src={thorben} alt="Thorben" />
             </div>
             <div>
-              <a href="https://www.linkedin.com/in/thorben-bender-05aa5617a/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/in/thorben-bender-05aa5617a/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h5>Thorben Bender</h5>
               </a>
               <div>Fullstack Developer</div>

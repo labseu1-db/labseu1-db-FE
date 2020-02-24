@@ -16,7 +16,9 @@ import AvatarFromLetter from '../AvatarFromLetter';
 //Main component
 export class CommentCard extends React.Component {
   state = {
-    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid')),
+    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(
+      localStorage.getItem('uuid')
+    ),
     isUpdating: false,
     isHovering: false,
     text: this.props.content
@@ -74,8 +76,11 @@ export class CommentCard extends React.Component {
         <StyledCommentContainer
           className={`${isCommentDecided && 'paddingTop'}`}
           onMouseEnter={() => this.setIsHovering(true)}
-          onMouseLeave={() => this.setIsHovering(false)}>
-          {isCommentDecided && <StyledDecision>Marked as Decision</StyledDecision>}
+          onMouseLeave={() => this.setIsHovering(false)}
+        >
+          {isCommentDecided && (
+            <StyledDecision>Marked as Decision</StyledDecision>
+          )}
           {this.state.isHovering && (
             <CommentDropdown
               setIsUpdating={this.setIsUpdating}
@@ -93,12 +98,16 @@ export class CommentCard extends React.Component {
               setIsCommentUpdated={this.setIsCommentUpdated}
             />
           )}
-          {!this.state.isUpdating && <AvatarFromLetter marginTop="4px" username={createdBy} />}
+          {!this.state.isUpdating && (
+            <AvatarFromLetter marginTop="4px" username={createdBy} />
+          )}
           {!this.state.isUpdating && (
             <StyledRightContainer>
               <StyledAuthorsName>{createdBy}</StyledAuthorsName>
               <StyledContent>{content}</StyledContent>
-              {isCommentUpdated && <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>}
+              {isCommentUpdated && (
+                <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>
+              )}
               {gifUrl && <GifInComment src={gifUrl} alt="gif" />}
               <StyledLikesContainer>
                 {!this.state.didUserLikeComment && (
@@ -107,21 +116,29 @@ export class CommentCard extends React.Component {
                     alt="heart icon"
                     onClick={() => {
                       this.toggleLikePhoto();
-                      let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                      let commentRef = this.props.firestore
+                        .collection('comments')
+                        .doc(commentId);
                       commentRef.update({
-                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(localStorage.getItem('uuid'))
+                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(
+                          localStorage.getItem('uuid')
+                        )
                       });
                     }}
                   />
                 )}
-                {!this.state.didUserLikeComment && likes !== 0 && <div className="black-likes">{likes}</div>}
+                {!this.state.didUserLikeComment && likes !== 0 && (
+                  <div className="black-likes">{likes}</div>
+                )}
                 {this.state.didUserLikeComment && (
                   <img
                     src={heartIconRed}
                     alt="heart icon"
                     onClick={() => {
                       this.toggleLikePhoto();
-                      let commentRef = this.props.firestore.collection('comments').doc(commentId);
+                      let commentRef = this.props.firestore
+                        .collection('comments')
+                        .doc(commentId);
                       commentRef.update({
                         arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(
                           localStorage.getItem('uuid')
@@ -130,7 +147,9 @@ export class CommentCard extends React.Component {
                     }}
                   />
                 )}
-                {this.state.didUserLikeComment && <div className="red-likes">{likes}</div>}
+                {this.state.didUserLikeComment && (
+                  <div className="red-likes">{likes}</div>
+                )}
               </StyledLikesContainer>
             </StyledRightContainer>
           )}
@@ -241,9 +260,6 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(CommentCard);

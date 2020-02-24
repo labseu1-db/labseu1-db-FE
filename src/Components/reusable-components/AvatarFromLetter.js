@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Spinner from '../semantic-components/Spinner';
 
 export default function AvatarFromLetter(props) {
   const style = {
@@ -7,7 +8,9 @@ export default function AvatarFromLetter(props) {
     marginBottom: props.marginBottom,
     color: 'white'
   };
-
+  if (props.username === undefined) {
+    return <Spinner />;
+  }
   return (
     <StyledImageContainer style={style}>
       <div
@@ -21,7 +24,8 @@ export default function AvatarFromLetter(props) {
             : props.username[0].toUpperCase() < 'T'
             ? 'fourth'
             : 'fifth'
-        }>
+        }
+      >
         {props.username[0].toUpperCase()}
       </div>
     </StyledImageContainer>

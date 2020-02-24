@@ -12,13 +12,19 @@ export default class LandingBanner extends React.Component {
     return (
       <StyledLandingBanner>
         <LandingHeader>
-          <h1>Making decision making simpler, more pleasant and more productive</h1>
+          <h1>
+            Making decision making simpler, more pleasant and more productive
+          </h1>
           <div>
-            Pinely is a carefully designed platform for growing teams to stay on the same page, have broad discussions,
-            and make the right decisions.
+            Pinely is a carefully designed platform for growing teams to stay on
+            the same page, have broad discussions, and make the right decisions.
           </div>
         </LandingHeader>
-        <img className="banner" src={landingPageBanner} alt="people using computer" />
+        <img
+          className="banner"
+          src={landingPageBanner}
+          alt="people using computer"
+        />
       </StyledLandingBanner>
     );
   }

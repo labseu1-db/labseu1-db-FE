@@ -54,7 +54,9 @@ export default class InviteYourTeamModal extends Component {
         <StyledModalCard>
           <Modal.Content>
             <StyledModalForm>
-              <StyledModalLabel className="heading">Email addresses</StyledModalLabel>
+              <StyledModalLabel className="heading">
+                Email addresses
+              </StyledModalLabel>
               <div id="dynamicInput">
                 {this.state.inputs.map((input, i) => (
                   <StyledModalInput
@@ -69,7 +71,9 @@ export default class InviteYourTeamModal extends Component {
                 ))}
               </div>
             </StyledModalForm>
-            <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
+            <StyledModalAdder onClick={() => this.appendInput()}>
+              Add more emails
+            </StyledModalAdder>
           </Modal.Content>
           <Modal.Actions>
             <StyledActionButtonsContainer>
@@ -83,7 +87,8 @@ export default class InviteYourTeamModal extends Component {
                   } else {
                     this.setState({ alert: true });
                   }
-                }}>
+                }}
+              >
                 Next
               </StyledModalButton>
               <StyledModalMainButtonContainer>
@@ -92,7 +97,8 @@ export default class InviteYourTeamModal extends Component {
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal('CreateSpacesModal');
-                  }}>
+                  }}
+                >
                   Skip
                 </StyledModalButton>
               </StyledModalMainButtonContainer>
@@ -102,7 +108,9 @@ export default class InviteYourTeamModal extends Component {
 
         {this.state.alert && (
           <StyledAlertMessage>
-            <Message color="red">Please make sure that you are using valid email address.</Message>
+            <Message color="red">
+              Please make sure that you are using valid email address.
+            </Message>
           </StyledAlertMessage>
         )}
       </Modal>

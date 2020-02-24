@@ -12,8 +12,8 @@ export default class LandingMidBanner extends React.Component {
       <StyledMidBanner>
         <h1>Better discussions, better decisions.</h1>
         <div>
-          We believe, that better discussions bring better decisions. Get your team on Pinely today and start moving
-          forward, together.
+          We believe, that better discussions bring better decisions. Get your
+          team on Pinely today and start moving forward, together.
         </div>
         {/* <div>
           <input placeholder="Enter your email" />
