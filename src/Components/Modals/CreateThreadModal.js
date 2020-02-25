@@ -21,7 +21,7 @@ import codeIcon from '../../images/icon-code-white.svg';
 import italicIcon from '../../images/icon-italic-white.svg';
 import underlineIcon from '../../images/icon-underline-white.svg';
 
-class CreateThreadModal extends Component {
+export class CreateThreadModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -190,7 +190,11 @@ class CreateThreadModal extends Component {
     }));
 
     return (
-      <Modal open={this.props.shoudlBeOpen} size="small">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        size="small"
+        aria-label="Create Thread Modal"
+      >
         <MiniModalLeft id="miniModal">
           <StyledContainerTitles>Text Styling</StyledContainerTitles>
           <TextStylingContainer>
