@@ -34,7 +34,7 @@ import LoginAnimation from './animations/LoginAnimation';
 import showPassword from '../images/icon-eye-gray.svg';
 import hidePassword from '../images/icon-eye-green.svg';
 
-class Register extends Component {
+export class Register extends Component {
   static propTypes = {
     auth: PropTypes.object,
     firebase: PropTypes.shape({
@@ -230,7 +230,7 @@ class Register extends Component {
       );
     }
     return (
-      <StyledLogin>
+      <StyledLogin aria-label="Register">
         <StyledLoginCon>
           <StyledH1>Register</StyledH1>
           <StyledForm onSubmit={this.createAndLogInNewUser}>
