@@ -22,7 +22,7 @@ import UserProfile from './Components/UserProfile';
 export class App extends Component {
   render() {
     return (
-      <div aria-label="Routes">
+      <div aria-label="App">
         <Route
           exact
           path="/register"
