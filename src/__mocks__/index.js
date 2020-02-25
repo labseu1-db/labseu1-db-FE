@@ -24,3 +24,9 @@ export const userArray = [385, 8549684, 48956486, 945849];
 export const shoudlBeOpen = true;
 export const spaces = [2, 4598, 3859, 84594];
 export const space = { arrayOfUserIdsInSpace: userArray, spaceName: fullName };
+export const teamEmailAddress = [
+  'test1@gmail.com',
+  'test2@gmail.com',
+  'test3@gmail.com',
+  'test4@gmail.com'
+];
