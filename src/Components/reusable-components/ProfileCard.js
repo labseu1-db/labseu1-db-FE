@@ -14,7 +14,7 @@ import {
 
 export function ProfileCard(props) {
   return (
-    <StyledProfileContainer>
+    <StyledProfileContainer aria-label="Profile Card">
       <ProfileCardUserRow
         user={props.user}
         onClick={props.resetPassword}
