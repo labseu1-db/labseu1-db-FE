@@ -10,7 +10,7 @@ import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class LeaveSpaceModal extends Component {
+export class LeaveSpaceModal extends Component {
   handleOpen = () => {
     this.setState({ model_open: true });
   };
@@ -46,7 +46,11 @@ class LeaveSpaceModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} size="small">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        size="small"
+        aria-label="Leave Space Modal"
+      >
         <StyledContainer>
           <Modal.Header>
             <div>
