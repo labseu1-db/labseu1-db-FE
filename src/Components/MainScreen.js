@@ -20,10 +20,10 @@ import RightSidebar from './RightSidebar';
 import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
 //Main component
-class MainScreen extends React.Component {
+export class MainScreen extends React.Component {
   render() {
     return (
-      <StyledMain>
+      <StyledMain aria-label="Main Screen">
         <NavBar {...this.props} />
         <StyledMainScreen>
           {this.props.activeModal === 'CreateThreadModal' && (
