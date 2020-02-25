@@ -122,6 +122,7 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
+    console.log(this.props.invitedRooms);
     if (
       isEmpty(
         this.props.user ||
@@ -350,7 +351,10 @@ export default compose(
       },
       {
         collection: 'rooms',
-        where: [`invitedUsersIds`, '==', props.uuid],
+        where: [
+          ['userWhoHaventSeen', 'array-contains', props.uuid],
+          ['ended', '==', false]
+        ],
         storeAs: 'invitedRooms'
       }
       // {
