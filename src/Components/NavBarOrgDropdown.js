@@ -10,7 +10,7 @@ export class NavBarOrgDropdown extends Component {
   // };
   render() {
     return (
-      <StyledDropdown>
+      <StyledDropdown aria-label="Nav Org Drop">
         {' '}
         <Dropdown
           inline
