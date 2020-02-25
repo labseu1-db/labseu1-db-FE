@@ -54,3 +54,12 @@ export const firestore = {
   }
 };
 export const auth = {};
+export const firebase = {
+  auth: function() {
+    return {
+      isSignInWithEmailLink: function() {
+        console.log('Test');
+      }
+    };
+  }
+};

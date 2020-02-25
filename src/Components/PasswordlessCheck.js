@@ -5,7 +5,7 @@ import { firebaseConnect, isEmpty } from 'react-redux-firebase';
 
 import { StyledH1 } from './styled-components/StyledText';
 
-class PasswordlessCheck extends Component {
+export class PasswordlessCheck extends Component {
   componentDidMount() {
     if (
       this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
@@ -32,7 +32,7 @@ class PasswordlessCheck extends Component {
 
   render() {
     return (
-      <div>
+      <div aria-label="Passwordless Check">
         <StyledH1>Verifying User...</StyledH1>
       </div>
     );
