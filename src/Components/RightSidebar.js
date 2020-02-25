@@ -30,7 +30,7 @@ export default class RightSidebar extends React.Component {
   };
   render() {
     return (
-      <StyledContainer>
+      <StyledContainer aria-label="Right Sidebar">
         <SearchSpace />
         <GetStarted>
           <GetStartedTop>
