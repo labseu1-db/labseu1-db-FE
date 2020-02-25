@@ -22,7 +22,7 @@ import {
 import LoginAnimation from './animations/LoginAnimation';
 import { Icon, Message } from 'semantic-ui-react';
 
-class ForgotPassword extends Component {
+export class ForgotPassword extends Component {
   static propTypes = {
     firestore: PropTypes.shape({
       add: PropTypes.func.isRequired
@@ -74,7 +74,7 @@ class ForgotPassword extends Component {
     const { loginEmail } = this.state;
     const isInvalid = loginEmail === '';
     return (
-      <StyledLogin>
+      <StyledLogin aria-label="Forgot Password">
         <StyledLoginCon>
           <StyledH1>Reset Password</StyledH1>
           <StyledForm

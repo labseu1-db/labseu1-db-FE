@@ -45,3 +45,8 @@ export const match = { params: { id: 2349 } };
 export const showModal = function() {
   console.log('Test');
 };
+export const firestore = {
+  add: function() {
+    console.log('Test run');
+  }
+};
