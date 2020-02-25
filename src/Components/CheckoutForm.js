@@ -8,7 +8,7 @@ import { compose } from 'redux';
 
 import { paymentEndPoint } from '../firebase/firebaseConfig';
 
-class CheckoutForm extends Component {
+export class CheckoutForm extends Component {
   constructor(props) {
     super(props);
     this.state = { complete: false };

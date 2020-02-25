@@ -21,7 +21,7 @@ class CheckoutFormContainer extends Component {
     return (
       <Modal
         trigger={
-          <div>
+          <div aria-label="Checkout Form Container">
             <UpgradePlanButton onClick={this.handleOpen}>
               <div>Upgrade Plan</div>
             </UpgradePlanButton>
