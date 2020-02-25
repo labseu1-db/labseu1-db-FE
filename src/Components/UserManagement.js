@@ -8,7 +8,7 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 //Import semantic components
 import { Header, Modal, Message } from 'semantic-ui-react';
 
-class UserManagement extends Component {
+export class UserManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -248,7 +248,7 @@ class UserManagement extends Component {
       this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
     ) {
       return (
-        <Modal open={true} size="tiny">
+        <Modal open={true} size="tiny" aria-label="User Management">
           <StyledContainer>
             <StyledMainHeader>Your team</StyledMainHeader>
 
