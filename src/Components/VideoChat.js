@@ -37,17 +37,14 @@ class VideoChat extends Component {
   createCall = e => {
     e.preventDefault();
     let roomId = uuid();
-    let objectOfCallIds = {};
-    this.state.idsInCall.forEach(id => {
-      objectOfCallIds[id] = false;
-    });
     this.props.firestore
       .set(
         { collection: 'rooms', doc: roomId },
         {
           creatorId: this.props.uuid,
           ended: false,
-          invitedUsersIds: objectOfCallIds,
+          userWhoHaventSeen: this.state.idsInCall,
+          userWhoHaveSeen: [],
           roomName: this.state.roomName,
           spaceId: this.props.match.params.spaceId
         }
