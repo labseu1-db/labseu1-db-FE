@@ -9,13 +9,13 @@ import { Redirect } from 'react-router-dom';
 import Navbar from './NavBar';
 import RightSidebar from './RightSidebar';
 
-class UserProfile extends Component {
+export class UserProfile extends Component {
   render() {
     if (this.props.resetPasswordStatus) {
       return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
     }
     return (
-      <StyledMain>
+      <StyledMain aria-label="User Profile">
         <Navbar {...this.props} />
         <StyledMainScreen>
           <ProfileCard />

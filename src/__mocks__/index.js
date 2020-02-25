@@ -84,3 +84,4 @@ export const history = {
   }
 };
 export const comments = [{ arrayOfUserIdsWhoLiked: userArray, id: '22' }];
+export const resetPasswordStatus = false;
