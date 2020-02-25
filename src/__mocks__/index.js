@@ -1,6 +1,6 @@
 export const user = { fullName: 'Thorben', userEmail: 'thorben@gmail.com' };
 export const orgs = [{ id: 2 }, { id: 284 }];
-export const org = { orgName: 'test org' };
+export const org = { orgName: 'test org', isPremium: false };
 export const heading = 'Test';
 export const info = 'This is a test';
 export const commentBody = 'This is a test comment';

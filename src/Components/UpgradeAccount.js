@@ -15,7 +15,7 @@ import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
-class UpgradeAccount extends React.Component {
+export class UpgradeAccount extends React.Component {
   render() {
     if (this.props.currentOrg.isPremium) {
       return (
@@ -44,7 +44,7 @@ class UpgradeAccount extends React.Component {
       );
     }
     return (
-      <StyledMain>
+      <StyledMain aria-label="Free Plan">
         <Navbar {...this.props} />
         <StyledMainScreen>
           <StyledFirstRow>
