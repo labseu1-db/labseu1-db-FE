@@ -20,3 +20,4 @@ export const users = [
   { fullName: 'Test', id: 383 },
   { fullName: 'test 2', id: 38 }
 ];
+export const shoudlBeOpen = true;

@@ -18,7 +18,12 @@ export default class CreateCompanyModal extends Component {
   //Render component
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        basic
+        size="tiny"
+        aria-label="Create Org"
+      >
         <ProgressBar activeDots={1} bulletpoints={3} />
         <StyledModalH1>
           <Modal.Header content="Create an organisation" />
