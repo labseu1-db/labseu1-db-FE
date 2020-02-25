@@ -165,7 +165,7 @@ export class NavBar extends Component {
         return <Redirect to="/createneworganisation" />;
       }
       return (
-        <NavBarContainer>
+        <NavBarContainer aria-label="Nav Bar">
           <HeaderContainer>
             <InnerContainerHorizontal>
               {this.props.user.fullName && (

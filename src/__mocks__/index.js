@@ -22,7 +22,7 @@ export const users = [
 ];
 export const userArray = [385, 8549684, 48956486, 945849];
 export const shoudlBeOpen = true;
-export const spaces = [2, 4598, 3859, 84594];
+export const spaces = [{ orgId: '22' }, { orgId: '22' }, { orgId: '22' }];
 export const space = { arrayOfUserIdsInSpace: userArray, spaceName: fullName };
 export const teamEmailAddress = [
   'test1@gmail.com',
@@ -41,7 +41,10 @@ export const threads = [
   }
 ];
 export const topic = 'Testing';
-export const match = { params: { id: 2349 } };
+export const match = {
+  params: { id: '22' },
+  path: '/mainscreen/:id'
+};
 export const showModal = function() {
   console.log('Test');
 };
