@@ -10,7 +10,7 @@ import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class DeleteSpaceModal extends Component {
+export class DeleteSpaceModal extends Component {
   handleOpen = () => {
     this.setState({ model_open: true });
   };
@@ -65,7 +65,11 @@ class DeleteSpaceModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} size="small">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        size="small"
+        aria-label="Delete Space Modal"
+      >
         <StyledContainer>
           <Modal.Header>
             <div>

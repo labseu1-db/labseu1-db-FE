@@ -22,3 +22,4 @@ export const users = [
 ];
 export const shoudlBeOpen = true;
 export const spaces = [2, 4598, 3859, 84594];
+export const space = { spaceName: 'test space' };
