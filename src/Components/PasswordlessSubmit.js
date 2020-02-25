@@ -22,7 +22,7 @@ import {
 import Spinner from './semantic-components/Spinner';
 import LoginAnimation from './animations/LoginAnimation';
 
-class PasswordlessSubmit extends Component {
+export class PasswordlessSubmit extends Component {
   static propTypes = {
     auth: PropTypes.object,
     firebase: PropTypes.shape({
@@ -86,7 +86,7 @@ class PasswordlessSubmit extends Component {
       return null;
     }
     return (
-      <StyledLogin>
+      <StyledLogin aria-label="Passwordless Submit">
         <StyledLoginCon>
           <StyledH1>Passwordless Sign In</StyledH1>
           <StyledForm
