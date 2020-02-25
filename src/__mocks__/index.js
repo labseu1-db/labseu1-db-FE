@@ -21,3 +21,4 @@ export const users = [
   { fullName: 'test 2', id: 38 }
 ];
 export const shoudlBeOpen = true;
+export const spaces = [2, 4598, 3859, 84594];

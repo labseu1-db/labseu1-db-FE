@@ -10,6 +10,5 @@ describe('<CreateOrganisationModal />', () => {
       <CreateOrganisationModal shoudlBeOpen={shoudlBeOpen} />
     );
     expect(getByLabelText(/Create Org/i)).toBeInTheDocument();
-    // expect(getByLabelText(/New Space Modal/i)).toBeInTheDocument();
   });
 });

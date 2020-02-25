@@ -26,7 +26,12 @@ export default class CreateSpacesModal extends Component {
   //Render component
   render() {
     return (
-      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        basic
+        size="tiny"
+        aria-label="Create Spaces Modal"
+      >
         <ProgressBar activeDots={3} bulletpoints={3} />
         <StyledModalH1>
           <Modal.Header content="Create few spaces" />
