@@ -12,7 +12,7 @@ import {
   editingProfileDone
 } from '../../redux/actions/actionCreators';
 
-function ProfileCard(props) {
+export function ProfileCard(props) {
   return (
     <StyledProfileContainer>
       <ProfileCardUserRow

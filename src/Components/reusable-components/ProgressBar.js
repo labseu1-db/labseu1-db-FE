@@ -6,7 +6,7 @@ function ProgressBar(props) {
 
   return (
     <div>
-      <StyledProgressContainer>
+      <StyledProgressContainer aria-label="Progress Bar">
         <StyledProgressDot
           className={`${activeDots > 0 && 'active'} ${bulletpoints < 1 &&
             'display-no'}`}
