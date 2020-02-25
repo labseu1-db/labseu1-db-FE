@@ -30,3 +30,13 @@ export const teamEmailAddress = [
   'test3@gmail.com',
   'test4@gmail.com'
 ];
+export const threads = [
+  {
+    id: 22,
+    threadName: 'test',
+    whenUserHasSeen: 30545894,
+    threadTopic: 'Testing',
+    lastCommentCreatedAt: 30548594,
+    spaceId: 389548594594
+  }
+];

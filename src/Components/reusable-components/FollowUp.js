@@ -16,10 +16,10 @@ import {
 } from '../../redux/actions/actionCreators';
 
 //Main component
-class FollowUp extends React.Component {
+export class FollowUp extends React.Component {
   render() {
     return (
-      <StyledMain>
+      <StyledMain aria-label="Follow Up">
         <NavBar {...this.props} />
         <StyledFollowUp>
           <StyledFirstRow>
