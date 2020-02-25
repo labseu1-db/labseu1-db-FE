@@ -41,7 +41,7 @@ import hidePassword from '../images/icon-eye-green.svg';
 import LoginAnimation from './animations/LoginAnimation';
 // import { PasswordlessButton } from './styled-components/StyledButton';
 
-class Login extends Component {
+export class Login extends Component {
   static propTypes = {
     auth: PropTypes.object,
     firebase: PropTypes.shape({
@@ -140,7 +140,7 @@ class Login extends Component {
       return <Spinner />;
     }
     return (
-      <StyledLogin>
+      <StyledLogin aria-label="Login">
         <StyledLoginCon>
           <StyledH1>Sign in</StyledH1>
           <StyledForm onSubmit={this.handleLogIn}>

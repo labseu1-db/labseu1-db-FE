@@ -50,3 +50,4 @@ export const firestore = {
     console.log('Test run');
   }
 };
+export const auth = {};
