@@ -51,6 +51,17 @@ export const showModal = function() {
 export const firestore = {
   add: function() {
     console.log('Test run');
+  },
+  collection: function(data) {
+    return {
+      doc: function() {
+        return {
+          update: function() {
+            console.log('Should update');
+          }
+        };
+      }
+    };
   }
 };
 export const auth = {};
@@ -63,3 +74,9 @@ export const firebase = {
     };
   }
 };
+export const history = {
+  goBack: function() {
+    console.log('Go Back test');
+  }
+};
+export const comments = [{ arrayOfUserIdsWhoLiked: userArray, id: '22' }];

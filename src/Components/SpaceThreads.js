@@ -29,7 +29,7 @@ import EditSpaceModal from './Modals/EditSpaceModal';
 import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
-class SpaceThreads extends React.Component {
+export class SpaceThreads extends React.Component {
   render() {
     if (!this.props.space) {
       return (
@@ -51,7 +51,7 @@ class SpaceThreads extends React.Component {
       );
     } else {
       return (
-        <StyledMain>
+        <StyledMain aria-label="Space Thread">
           <NavBar {...this.props} />
           <StyledMainScreen>
             {this.props.activeModal === 'CreateThreadModal' && (

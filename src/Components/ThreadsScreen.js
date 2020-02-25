@@ -41,7 +41,7 @@ export class ThreadsScreen extends React.Component {
   }
   render() {
     return (
-      <StyledMain>
+      <StyledMain aria-label="Thread Screen">
         <NavBar {...this.props} />
         <MidRightContainer>
           <StyledThreadContent>
