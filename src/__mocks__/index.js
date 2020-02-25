@@ -20,6 +20,7 @@ export const users = [
   { fullName: 'Test', id: 383 },
   { fullName: 'test 2', id: 38 }
 ];
+export const userArray = [385, 8549684, 48956486, 945849];
 export const shoudlBeOpen = true;
 export const spaces = [2, 4598, 3859, 84594];
-export const space = { spaceName: 'test space' };
+export const space = { arrayOfUserIdsInSpace: userArray, spaceName: fullName };

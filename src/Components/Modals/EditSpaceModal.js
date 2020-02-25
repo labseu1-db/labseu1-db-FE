@@ -10,7 +10,7 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class EditSpaceModal extends Component {
+export class EditSpaceModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +92,11 @@ class EditSpaceModal extends Component {
       }));
 
     return (
-      <Modal open={this.props.shoudlBeOpen} size="tiny">
+      <Modal
+        open={this.props.shoudlBeOpen}
+        size="tiny"
+        aria-label="Edit Space Modal"
+      >
         <StyledContainer>
           <Modal.Header>
             <div>
