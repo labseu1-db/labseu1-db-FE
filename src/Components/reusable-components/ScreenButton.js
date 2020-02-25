@@ -10,7 +10,11 @@ function ScreenButton(props) {
   };
   return (
     <div>
-      <StyledScrenButton style={style} onClick={onClick}>
+      <StyledScrenButton
+        style={style}
+        onClick={onClick}
+        aria-label="Screen Button"
+      >
         {icon && <img src={icon} alt="pen icon" />}
         <div>{content}</div>
       </StyledScrenButton>
