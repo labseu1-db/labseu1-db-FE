@@ -14,7 +14,7 @@ import InviteYourTeamModal from './Modals/InviteYourTeamModal';
 import CreateSpacesModal from './Modals/CreateSpacesModal';
 
 //Main component
-class CreateNewOrganisation extends Component {
+export class CreateNewOrganisation extends Component {
   constructor(props) {
     super(props);
 
@@ -207,7 +207,7 @@ class CreateNewOrganisation extends Component {
       return <Spinner />;
     }
     return (
-      <div>
+      <div aria-label="Create New Org">
         {this.props.activeModal === 'CreateOrganisationModal' && (
           <CreateOrganisationModal
             shoudlBeOpen={true}
