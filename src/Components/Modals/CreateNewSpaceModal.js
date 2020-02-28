@@ -82,6 +82,7 @@ class CreateNewSpaceModal extends Component {
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
+    console.log(value);
     this.setState(prState => ({
       idsInSpace: [...prState.idsInSpace, ...value]
     }));

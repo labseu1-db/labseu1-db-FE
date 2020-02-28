@@ -18,17 +18,37 @@ class VideoChat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      idsInCall: [this.props.uuid],
+      idsInCall: [],
       roomName: ''
     };
   }
   setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
+
     this.setState(prState => ({
       idsInCall: [...prState.idsInCall, ...value]
     }));
   };
+
+  find_duplicate_in_array = arra1 => {
+    var object = {};
+    var result = [];
+
+    arra1.forEach(function(item) {
+      if (!object[item]) object[item] = 0;
+      object[item] += 1;
+    });
+
+    for (var prop in object) {
+      if (object[prop] >= 2) {
+        result.push(prop);
+      }
+    }
+
+    return result;
+  };
+
   setRoomName = e => {
     e.preventDefault();
     const { value } = e.target;
@@ -37,13 +57,14 @@ class VideoChat extends Component {
   createCall = e => {
     e.preventDefault();
     let roomId = uuid();
+    let idsInCall = this.find_duplicate_in_array(this.state.idsInCall);
     this.props.firestore
       .set(
         { collection: 'rooms', doc: roomId },
         {
           creatorId: this.props.uuid,
           ended: false,
-          userWhoHaventSeen: this.state.idsInCall,
+          userWhoHaventSeen: idsInCall,
           userWhoHaveSeen: [],
           roomName: this.state.roomName,
           spaceId: this.props.match.params.spaceId
@@ -90,6 +111,7 @@ class VideoChat extends Component {
                     selection
                     options={userIdsOptions}
                     onChange={this.setIdsToState}
+                    onClick={this.deleteFromState}
                   />
                 }
               </StyledDropdown>
@@ -116,13 +138,12 @@ class VideoChat extends Component {
         </StyledMain>
       );
     } else if (!isEmpty(this.props.currentRoom)) {
-      const users = Object.keys(this.props.currentRoom.invitedUsersIds);
-
-      const userForSideBar = userIdsOptions.filter(user => {
-        return users.includes(user.key);
-      });
+      const users = [
+        ...this.props.currentRoom.userWhoHaventSeen,
+        ...this.props.currentRoom.userWhoHaveSeen
+      ];
       axios
-        .post('http://localhost:3000/createToken', {
+        .post('http://localhost:4000/createToken', {
           user: 'Thorben',
           room: this.props.profile.fullName
         })
@@ -131,7 +152,7 @@ class VideoChat extends Component {
             room => {
               startRecording();
               room.on('participantConnected', participant => {
-                console.log(participant);
+                console.log('participant connected', participant);
                 participant.tracks.forEach(publication => {
                   if (publication.isSubscribed) {
                     const track = publication.track;
@@ -145,18 +166,22 @@ class VideoChat extends Component {
           );
         });
       let startRecording = () => {
-        const localMediaContainer = document.getElementById('remote-media-div');
-        if (localMediaContainer.children.length === 0) {
-          createLocalVideoTrack().then(track => {
+        const localMediaContainer = document.getElementById('local-media-div');
+
+        createLocalVideoTrack().then(track => {
+          if (localMediaContainer.children.length === 0) {
             localMediaContainer.appendChild(track.attach());
-          });
-        }
+          }
+        });
       };
       return (
         <StyledMain>
           <NavBar {...this.props} />
+          <StyledVoiceCall id='local-media-div'></StyledVoiceCall>
           <StyledVoiceCall id='remote-media-div'></StyledVoiceCall>
-          <UserSideBar userForSideBar={userForSideBar} {...this.props} />
+          {users.map(user => (
+            <UserSideBar key={user} userForSideBar={user} {...this.props} />
+          ))}
         </StyledMain>
       );
     } else {

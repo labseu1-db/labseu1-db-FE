@@ -4,6 +4,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect, Link } from 'react-router-dom';
+import JoinRoomsModal from './Modals/JoinRoomsModal';
 
 //Import actions
 import {
@@ -122,7 +123,7 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
-    console.log(this.props.invitedRooms);
+    console.log(this.props.rooms);
     if (
       isEmpty(
         this.props.user ||
@@ -166,9 +167,11 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to='/createneworganisation' />;
       }
-      console.log(this.props.rooms);
       return (
         <NavBarContainer>
+          {!isEmpty(this.props.rooms) && (
+            <JoinRoomsModal rooms={this.props.rooms} {...this.props} />
+          )}
           <HeaderContainer>
             <InnerContainerHorizontal>
               {this.props.user.fullName && (
