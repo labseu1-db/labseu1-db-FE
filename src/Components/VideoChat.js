@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect, createLocalVideoTrack } from 'twilio-video';
 import NavBar from './NavBar';
 import RightSidebar from './RightSidebar';
 import styled from 'styled-components';
@@ -64,7 +63,7 @@ class VideoChat extends Component {
         {
           creatorId: this.props.uuid,
           ended: false,
-          userWhoHaventSeen: idsInCall,
+          userWhoHaventSeen: this.state.idsInCall,
           userWhoHaveSeen: [],
           roomName: this.state.roomName,
           spaceId: this.props.match.params.spaceId
@@ -147,38 +146,62 @@ class VideoChat extends Component {
           user: 'Thorben',
           room: this.props.profile.fullName
         })
-        .then(res => {
-          connect(res.data.jwt, { name: this.props.currentRoom.roomName }).then(
-            room => {
-              startRecording();
-              room.on('participantConnected', participant => {
-                console.log('participant connected', participant);
-                participant.tracks.forEach(publication => {
-                  if (publication.isSubscribed) {
-                    const track = publication.track;
-                    document
-                      .getElementById('remote-media-div')
-                      .appendChild(track.attach());
-                  }
-                });
-              });
-            }
-          );
+        .then(() => {
+          startRecording();
         });
-      let startRecording = () => {
-        const localMediaContainer = document.getElementById('local-media-div');
-
-        createLocalVideoTrack().then(track => {
-          if (localMediaContainer.children.length === 0) {
-            localMediaContainer.appendChild(track.attach());
+      let startRecording = async () => {
+        const constraints = { video: true, audio: false };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const mediaRef = document.getElementById('local-video');
+        mediaRef.srcObject = stream;
+      };
+      let makeCall = async () => {
+        const SignalingChannel = new SignalingChannel(
+          this.props.currentRoom.id
+        );
+        SignalingChannel.addEventListener('message', message => {
+          // New message from remote client received
+        });
+        const configuration = {
+          iceServers: [{ urls: `stun:stun.l.google.com:${this.prop.roomId}` }]
+        };
+        const peerConnection = new RTCPeerConnection(configuration);
+        SignalingChannel.addEventListener('message', async message => {
+          if (message.answer) {
+            const remoteDesc = new RTCSessionDescription(message.answer);
+            await peerConnection.setRemoteDescription(remoteDesc);
           }
         });
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        SignalingChannel.send({ offer: offer });
       };
+      // .then(res => {
+      //   connect(res.data.jwt, { name: this.props.currentRoom.roomName }).then(
+      //     room => {
+      //       startRecording();
+      //       room.on('participantConnected', participant => {
+      //         console.log('participant connected', participant);
+      //         participant.tracks.forEach(publication => {
+      //           if (publication.isSubscribed) {
+      //             const track = publication.track;
+      //             document
+      //               .getElementById('remote-media-div')
+      //               .appendChild(track.attach());
+      //           }
+      //         });
+      //       });
+      //     }
+      //   );
+      // });
+      console.log(this.props.currentRoom);
       return (
         <StyledMain>
           <NavBar {...this.props} />
-          <StyledVoiceCall id='local-media-div'></StyledVoiceCall>
-          <StyledVoiceCall id='remote-media-div'></StyledVoiceCall>
+          <StyledVoiceCall>
+            <video autoPlay inline='true' id='local-video'></video>
+          </StyledVoiceCall>
+
           {users.map(user => (
             <UserSideBar key={user} userForSideBar={user} {...this.props} />
           ))}

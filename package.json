@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@andyet/simplewebrtc": "^1.16.0",
     "axios": "^0.19.2",
     "dotenv": "^7.0.0",
     "draft-js": "^0.10.5",

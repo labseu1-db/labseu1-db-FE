@@ -9,12 +9,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 ReactDOM.render(
-	<Provider store={store}>
-		<Router>
-			<Route path="/" component={App} />
-		</Router>
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <Router>
+      <Route path='/' component={App} />
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
