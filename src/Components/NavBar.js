@@ -123,7 +123,6 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
-    console.log(this.props.rooms);
     if (
       isEmpty(
         this.props.user ||

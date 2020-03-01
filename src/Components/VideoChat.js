@@ -148,6 +148,7 @@ class VideoChat extends Component {
         })
         .then(() => {
           startRecording();
+          makeCall();
         });
       let startRecording = async () => {
         const constraints = { video: true, audio: false };
@@ -194,7 +195,6 @@ class VideoChat extends Component {
       //     }
       //   );
       // });
-      console.log(this.props.currentRoom);
       return (
         <StyledMain>
           <NavBar {...this.props} />
