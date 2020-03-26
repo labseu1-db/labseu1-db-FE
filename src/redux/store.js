@@ -14,7 +14,6 @@ import { initialState, rootReducer } from './reducers/reducer';
 
 //Initialize database
 firebase.initializeApp(firebaseConfig);
-firebase.firestore();
 
 //Connecting firestore to redux
 const enhancers = [

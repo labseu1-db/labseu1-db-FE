@@ -141,15 +141,15 @@ class VideoChat extends Component {
         ...this.props.currentRoom.userWhoHaventSeen,
         ...this.props.currentRoom.userWhoHaveSeen
       ];
-      axios
-        .post('http://localhost:4000/createToken', {
-          user: 'Thorben',
-          room: this.props.profile.fullName
-        })
-        .then(() => {
-          startRecording();
-          makeCall();
-        });
+      // axios
+      //   .post('http://localhost:4000/createToken', {
+      //     user: 'Thorben',
+      //     room: this.props.profile.fullName
+      //   })
+      //   .then(() => {
+      //     startRecording();
+      //     makeCall();
+      //   });
       let startRecording = async () => {
         const constraints = { video: true, audio: false };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -157,17 +157,17 @@ class VideoChat extends Component {
         mediaRef.srcObject = stream;
       };
       let makeCall = async () => {
-        const SignalingChannel = new SignalingChannel(
+        const signalingChannel = new SignalingChannel(
           this.props.currentRoom.id
         );
-        SignalingChannel.addEventListener('message', message => {
+        signalingChannel.addEventListener('message', message => {
           // New message from remote client received
         });
         const configuration = {
           iceServers: [{ urls: `stun:stun.l.google.com:${this.prop.roomId}` }]
         };
         const peerConnection = new RTCPeerConnection(configuration);
-        SignalingChannel.addEventListener('message', async message => {
+        signalingChannel.addEventListener('message', async message => {
           if (message.answer) {
             const remoteDesc = new RTCSessionDescription(message.answer);
             await peerConnection.setRemoteDescription(remoteDesc);
@@ -175,7 +175,7 @@ class VideoChat extends Component {
         });
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
-        SignalingChannel.send({ offer: offer });
+        signalingChannel.send({ offer: offer });
       };
       // .then(res => {
       //   connect(res.data.jwt, { name: this.props.currentRoom.roomName }).then(
@@ -195,6 +195,7 @@ class VideoChat extends Component {
       //     }
       //   );
       // });
+      makeCall();
       return (
         <StyledMain>
           <NavBar {...this.props} />
