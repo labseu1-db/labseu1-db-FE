@@ -35,7 +35,9 @@ import LoginAnimation from './animations/LoginAnimation';
 
 const Login = props => {
   // function from context api
-  const { setError, isLoggedIn } = useContext(Context);
+  const { setError, isLoggedIn, firebase, getDataWithWhere } = useContext(
+    Context
+  );
 
   const [loginEmail, setEmail] = useState('');
   const [loginPassword, setPassword] = useState('');
@@ -61,41 +63,25 @@ const Login = props => {
     }
   };
 
-  const handleLogIn = e => {
-    e.preventDefault();
-    props.firebase
-      .login({
+  const handleLogIn = async e => {
+    try {
+      e.preventDefault();
+      let data = await firebase.login({
         email: loginEmail,
         password: loginPassword
-      })
-      .then(res => {
-        setUserIdInLocalStorage(res.user.user.email);
-        setSavingUserInfoToDb(true);
-      })
-      .catch(error => {
-        setError(error);
       });
-  };
-
-  const setUserIdInLocalStorage = email => {
-    var ref = props.firestore
-      .collection('users')
-      .where('userEmail', '==', email);
-    ref
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          // doc.data() is never undefined for query doc snapshots
-          localStorage.setItem('uuid', doc.id);
-          localStorage.setItem('userEmail', doc.data().userEmail);
-          localStorage.setItem('userData', JSON.stringify(doc.data()));
-          localStorage.setItem('activeOrg', doc.data().arrayOfOrgsIds[0]);
-          // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
-        });
-      })
-      .catch(error => {
-        setError(error);
-      });
+      let { user } = data.user;
+      let request = {
+        collection: 'users',
+        key: 'userEmail',
+        term: '==',
+        value: user.email,
+        type: 'redirect_to_active_org'
+      };
+      getDataWithWhere(request);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   const togglePassword = () => {

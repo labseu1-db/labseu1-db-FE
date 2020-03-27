@@ -20,6 +20,7 @@ import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 //Main component
 class MainScreen extends React.Component {
   render() {
+    console.log('mainscreeen');
     return (
       <StyledMainScreen>
         {this.props.activeModal === 'CreateThreadModal' && (

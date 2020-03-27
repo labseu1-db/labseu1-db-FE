@@ -18,7 +18,7 @@ import ContextProvider from './Components/ContextProvider/ContextProvider';
 class App extends Component {
   render() {
     return (
-      <ContextProvider>
+      <ContextProvider {...this.props}>
         <Route
           exact
           path="/register"
