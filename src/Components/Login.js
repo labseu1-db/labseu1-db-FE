@@ -1,15 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty, withFirestore } from 'react-redux-firebase';
+import {
+  firebaseConnect,
+  isLoaded,
+  isEmpty,
+  withFirestore
+} from 'react-redux-firebase';
+
+import Context from './ContextProvider/Context';
 
 //Import semantic components
-import { Icon, Message } from 'semantic-ui-react';
 import Spinner from './semantic-components/Spinner';
 
 //Import styling
-import { StyledButton, ForgotPasswordDiv } from './styled-components/StyledButton';
+import {
+  StyledButton,
+  ForgotPasswordDiv
+} from './styled-components/StyledButton';
 import {
   StyledLogin,
   StyledForm,
@@ -19,7 +28,11 @@ import {
   StyledLowerSignIn,
   StyledIcon
 } from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 
 //Images/Icons
 import showPassword from '../images/icon-eye-gray.svg';
@@ -29,55 +42,58 @@ import hidePassword from '../images/icon-eye-green.svg';
 import LoginAnimation from './animations/LoginAnimation';
 // import { PasswordlessButton } from './styled-components/StyledButton';
 
-class Login extends Component {
-  static propTypes = {
-    auth: PropTypes.object,
-    firebase: PropTypes.shape({
-      login: PropTypes.func.isRequired,
-      logout: PropTypes.func.isRequired
-    })
-  };
+const Login = props => {
+  // function from context api
+  const { setError } = useContext(Context);
 
-  state = {
-    loginEmail: '',
-    loginPassword: '',
-    error: null,
-    savinUsergInfoToDb: false
-  };
+  const [loginEmail, setEmail] = useState('');
+  const [loginPassword, setPassword] = useState('');
+  const [savinUsergInfoToDb, setSavingUserInfoToDb] = useState(false);
 
-  componentWillUpdate() {
-    if (!isEmpty(this.props.auth)) {
-      this.props.history.push('/homescreen');
+  useEffect(() => {
+    if (!isEmpty(props.auth)) {
+      props.history.push('/homescreen');
     }
-  }
+  }, [props.auth]);
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleInputChange = e => {
+    switch (e.target.name) {
+      case 'loginEmail':
+        setEmail(e.target.value);
+        break;
+      case 'loginPassword':
+        setPassword(e.target.value);
+        break;
+      case 'setSavingUserInfoToDb':
+        setSavingUserInfoToDb(st => !st);
+    }
   };
 
-  handleLogIn = e => {
+  const handleLogIn = e => {
     const INITIAL_STATE = {
       loginEmail: '',
       loginPassword: '',
       error: null
     };
     e.preventDefault();
-    this.props.firebase
+    props.firebase
       .login({
-        email: this.state.loginEmail,
-        password: this.state.loginPassword
+        email: loginEmail,
+        password: loginPassword
       })
       .then(res => {
-        this.setUserIdInLocalStorage(res.user.user.email);
-        this.setState({ savinUsergInfoToDb: true });
+        setUserIdInLocalStorage(res.user.user.email);
+        setSavingUserInfoToDb(true);
       })
       .catch(error => {
-        this.setState({ ...INITIAL_STATE, error });
+        setError(error);
       });
   };
 
-  setUserIdInLocalStorage = email => {
-    var ref = this.props.firestore.collection('users').where('userEmail', '==', email);
+  const setUserIdInLocalStorage = email => {
+    var ref = props.firestore
+      .collection('users')
+      .where('userEmail', '==', email);
     ref
       .get()
       .then(function(querySnapshot) {
@@ -91,11 +107,11 @@ class Login extends Component {
         });
       })
       .catch(error => {
-        this.setState({ error });
+        setError(error);
       });
   };
 
-  togglePassword = () => {
+  const togglePassword = () => {
     let temp = document.getElementById('typepass');
     let passwordIcon = document.getElementById('passwordIcon');
     if (temp.type === 'password') {
@@ -109,86 +125,84 @@ class Login extends Component {
     }
   };
 
-  render() {
-    const { loginEmail, loginPassword } = this.state;
-    const isInvalid = loginPassword === '' || loginEmail === '';
+  const isInvalid = loginPassword === '' || loginEmail === '';
 
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-    if (this.state.savinUsergInfoToDb === true) {
-      return <Spinner />;
-    }
-    if (!isEmpty(this.props.auth)) {
-      return <Spinner />;
-    }
-    return (
-      <StyledLogin>
-        <StyledLoginCon>
-          <StyledH1>Sign in</StyledH1>
-          <StyledForm onSubmit={this.handleLogIn}>
-            <StyledLabel>
-              <StyledPLabel>Email</StyledPLabel>
-              <StyledInput
-                name="loginEmail"
-                value={this.state.loginEmail}
-                type="email"
-                onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
-              />
-            </StyledLabel>
-            <StyledLabel>
-              <StyledPLabel>Password</StyledPLabel>
-              <StyledInput
-                id="typepass"
-                name="loginPassword"
-                value={this.state.loginPassword}
-                type="password"
-                onChange={this.handleInputChange}
-                placeholder="········"
-              />
-              <StyledIcon id="passwordIcon" src={showPassword} alt="showPassword" onClick={this.togglePassword} />
-            </StyledLabel>
-            <ForgotPasswordDiv onClick={() => this.props.history.push('/forgotPassword')}>
-              Forgot Password?
-            </ForgotPasswordDiv>
-            <StyledLowerSignIn>
-              <StyledLink to="/register"> Don't have an account? </StyledLink>
-              <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
-                Sign In
-              </StyledButton>
-            </StyledLowerSignIn>
-          </StyledForm>
-          {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
-              {this.state.error.message}
-            </Message>
-          )}
-          {/* <Button
+  if (!isLoaded(props.auth)) {
+    return <Spinner />;
+  }
+  if (savinUsergInfoToDb === true) {
+    return <Spinner />;
+  }
+  if (!isEmpty(props.auth)) {
+    return <Spinner />;
+  }
+  return (
+    <StyledLogin>
+      <StyledLoginCon>
+        <StyledH1>Sign in</StyledH1>
+        <StyledForm onSubmit={handleLogIn}>
+          <StyledLabel>
+            <StyledPLabel>Email</StyledPLabel>
+            <StyledInput
+              name="loginEmail"
+              value={loginEmail}
+              type="email"
+              onChange={handleInputChange}
+              placeholder="tonystark@example.com"
+            />
+          </StyledLabel>
+          <StyledLabel>
+            <StyledPLabel>Password</StyledPLabel>
+            <StyledInput
+              id="typepass"
+              name="loginPassword"
+              value={loginPassword}
+              type="password"
+              onChange={handleInputChange}
+              placeholder="········"
+            />
+            <StyledIcon
+              id="passwordIcon"
+              src={showPassword}
+              alt="showPassword"
+              onClick={togglePassword}
+            />
+          </StyledLabel>
+          <ForgotPasswordDiv
+            onClick={() => props.history.push('/forgotPassword')}
+          >
+            Forgot Password?
+          </ForgotPasswordDiv>
+          <StyledLowerSignIn>
+            <StyledLink to="/register"> Don't have an account? </StyledLink>
+            <StyledButton disabled={isInvalid} onClick={handleLogIn}>
+              Sign In
+            </StyledButton>
+          </StyledLowerSignIn>
+        </StyledForm>
+        {/* <Button
             color='google plus'
             onClick={() =>
-              this.props.firebase
+              props.firebase
                 .login({
                   provider: 'google',
                   type: 'popup'
                 })
                 .then(res => {
-                  this.setUserIdInLocalStorage(res.profile.email);
+                  setUserIdInLocalStorage(res.profile.email);
                 })
             }
           >
             <Icon name='google plus' /> Sign in with Google
           </Button> */}
-          {/* <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
+        {/* <PasswordlessButton onClick={() => props.history.push('/passwordlesssubmit')}>
             Email Me a Link to Sign In
           </PasswordlessButton> */}
-        </StyledLoginCon>
-        <LoginAnimation />
-      </StyledLogin>
-    );
-  }
-}
+      </StyledLoginCon>
+      <LoginAnimation />
+    </StyledLogin>
+  );
+};
 
 const mapStateToProps = state => {
   return {
@@ -208,9 +222,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(Login);
