@@ -10,6 +10,9 @@ import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import uuid from 'uuid';
 import Spinner from './semantic-components/Spinner.js';
 
+// socket
+import io from 'socket.io-client';
+
 import ScreenHeading from './reusable-components/ScreenHeading';
 import UserSideBar from './UserSideBar';
 
@@ -157,17 +160,14 @@ class VideoChat extends Component {
         mediaRef.srcObject = stream;
       };
       let makeCall = async () => {
-        const signalingChannel = new SignalingChannel(
-          this.props.currentRoom.id
-        );
-        signalingChannel.addEventListener('message', message => {
-          // New message from remote client received
+        let socket = io.connect('http://localhost:80', {
+          query: 'room=22'
         });
         const configuration = {
-          iceServers: [{ urls: `stun:stun.l.google.com:${this.prop.roomId}` }]
+          iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
         };
         const peerConnection = new RTCPeerConnection(configuration);
-        signalingChannel.addEventListener('message', async message => {
+        socket.on('message', async message => {
           if (message.answer) {
             const remoteDesc = new RTCSessionDescription(message.answer);
             await peerConnection.setRemoteDescription(remoteDesc);
@@ -175,26 +175,8 @@ class VideoChat extends Component {
         });
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
-        signalingChannel.send({ offer: offer });
+        socket.to('22').emit('offer', offer);
       };
-      // .then(res => {
-      //   connect(res.data.jwt, { name: this.props.currentRoom.roomName }).then(
-      //     room => {
-      //       startRecording();
-      //       room.on('participantConnected', participant => {
-      //         console.log('participant connected', participant);
-      //         participant.tracks.forEach(publication => {
-      //           if (publication.isSubscribed) {
-      //             const track = publication.track;
-      //             document
-      //               .getElementById('remote-media-div')
-      //               .appendChild(track.attach());
-      //           }
-      //         });
-      //       });
-      //     }
-      //   );
-      // });
       makeCall();
       return (
         <StyledMain>
