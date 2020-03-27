@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import ScreenHeading from './reusable-components/ScreenHeading';
 import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import CheckoutFormContainer from './CheckoutFormContainer';
+import Navbar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
@@ -17,39 +19,54 @@ class UpgradeAccount extends React.Component {
   render() {
     if (this.props.currentOrg.isPremium) {
       return (
-        <StyledMainScreen>
-          <StyledFirstRow>
-            {this.props.activeOrg && this.props.currentOrg && (
-              <ScreenHeading heading={this.props.currentOrg.orgName} info="Organization billing overview" />
-            )}
-          </StyledFirstRow>
-          <StyledThreadContainerPremium>
-            <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
-            <div>
-              We hope you are enjoying the full benefits of your premium plan. Please contact customer service for any
-              further special requirements.
-            </div>
-          </StyledThreadContainerPremium>
-        </StyledMainScreen>
+        <StyledMain>
+          <Navbar {...this.props} />
+          <StyledMainScreen>
+            <StyledFirstRow>
+              {this.props.activeOrg && this.props.currentOrg && (
+                <ScreenHeading
+                  heading={this.props.currentOrg.orgName}
+                  info="Organization billing overview"
+                />
+              )}
+            </StyledFirstRow>
+            <StyledThreadContainerPremium>
+              <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
+              <div>
+                We hope you are enjoying the full benefits of your premium plan.
+                Please contact customer service for any further special
+                requirements.
+              </div>
+            </StyledThreadContainerPremium>
+          </StyledMainScreen>
+          <RightSidebar />
+        </StyledMain>
       );
     }
     return (
-      <StyledMainScreen>
-        <StyledFirstRow>
-          {this.props.activeOrg && this.props.currentOrg && (
-            <ScreenHeading heading={this.props.currentOrg.orgName} info="Organization billing overview" />
-          )}
-        </StyledFirstRow>
-        <StyledThreadContainer>
-          <ScreenSectionHeading heading="Currently on the FREE plan" />
-          <ul>
-            <li>Store more than the most recent 150 threads</li>
-            <li>Invite more employees to your organisation</li>
-            <li>used 0GB of space -- 5.00GB remaining</li>
-          </ul>
-          <CheckoutFormContainer currentOrg={this.props.currentOrg} />
-        </StyledThreadContainer>
-      </StyledMainScreen>
+      <StyledMain>
+        <Navbar {...this.props} />
+        <StyledMainScreen>
+          <StyledFirstRow>
+            {this.props.activeOrg && this.props.currentOrg && (
+              <ScreenHeading
+                heading={this.props.currentOrg.orgName}
+                info="Organization billing overview"
+              />
+            )}
+          </StyledFirstRow>
+          <StyledThreadContainer>
+            <ScreenSectionHeading heading="Currently on the FREE plan" />
+            <ul>
+              <li>Store more than the most recent 150 threads</li>
+              <li>Invite more employees to your organisation</li>
+              <li>used 0GB of space -- 5.00GB remaining</li>
+            </ul>
+            <CheckoutFormContainer currentOrg={this.props.currentOrg} />
+          </StyledThreadContainer>
+        </StyledMainScreen>
+        <RightSidebar />
+      </StyledMain>
     );
   }
 }
@@ -60,8 +77,12 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
-    currentOrg: state.firestore.ordered.currentOrg ? state.firestore.ordered.currentOrg[0] : ''
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
+    currentOrg: state.firestore.ordered.currentOrg
+      ? state.firestore.ordered.currentOrg[0]
+      : ''
   };
 };
 
@@ -70,15 +91,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
         collection: 'organisations',
-        doc: `${props.activeOrg}`,
+        doc: `${props.match.params.id}`,
         storeAs: 'currentOrg'
       }
     ];
@@ -86,10 +104,17 @@ export default compose(
 )(UpgradeAccount);
 
 //Styling
+const StyledMain = styled.div`
+  display: flex;
+  width: 100vw;
+`;
+
 const StyledMainScreen = styled.div`
   background-color: #faf9f7;
   min-height: 100vh;
+  width: 70%;
   padding: 10vh 5%;
+  margin-left: 309px;
 `;
 
 const StyledFirstRow = styled.div`

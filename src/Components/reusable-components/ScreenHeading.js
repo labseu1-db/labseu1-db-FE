@@ -8,8 +8,8 @@ function ScreenHeading(props) {
     return (
       <div>
         <StyledHeadingContainer>
-          <div className='heading'>{heading}</div>
-          <div className='info'>{info}</div>
+          <div className="heading">{heading}</div>
+          <div className="info">{info}</div>
         </StyledHeadingContainer>
       </div>
     );
@@ -17,8 +17,8 @@ function ScreenHeading(props) {
   return (
     <div>
       <StyledHeadingContainer>
-        <div className='heading'>{heading}</div>
-        <div className='topic'>{topic}</div>
+        <div className="heading">{heading}</div>
+        <div className="topic">{topic}</div>
       </StyledHeadingContainer>
     </div>
   );

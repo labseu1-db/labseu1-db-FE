@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 //Import actions
 import {
@@ -45,6 +45,15 @@ export class NavBar extends Component {
     activeSpace: ''
   };
 
+  componentDidMount() {
+    let result = this.props.spacesForActiveOrg.every(space => {
+      return space.orgId === this.props.match.params.id;
+    });
+    if (!result) {
+      window.location.reload();
+    }
+  }
+
   handleLogOut = () => {
     this.props.firebase
       .logout()
@@ -53,51 +62,46 @@ export class NavBar extends Component {
       })
       .then(() => {
         localStorage.clear();
+        this.props.history.push('/login');
       })
       .catch(err => console.log("something's wrong."));
 
-    this.props.history.push('/login');
+    // this.props.history.push("/login");
   };
 
   handleDropDownChange = (e, { name, value }) => {
     this.setState({ [name]: value }, () => {
       if (this.state.profileDropdown === 'Log out') {
         this.handleLogOut();
-      }
-      if (this.state.profileDropdown === 'Upgrade Account') {
-        this.props.resetThread();
-        this.props.resetSpace();
-        this.props.showUpgradeScreen();
-        if (this.state.profileDropdown === 'Profile') {
-          this.props.renderProfile();
-        }
-        if (this.state.profileDropdown !== 'Profile') {
-          this.props.showModal(null);
-          this.props.notRenderProfile();
-          this.props.editingProfileDone();
-        }
+      } else if (this.state.profileDropdown === 'Upgrade Account') {
+        this.props.history.push(`/upgrade/${this.props.match.params.id}`);
+      } else if (this.state.profileDropdown === 'Profile') {
+        this.props.history.push(`/profile/${this.props.match.params.id}`);
       }
     });
-    this.props.hideFollowUp();
-    this.props.resetSpace();
-    this.props.resetThread();
   };
 
   setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    const { value } = data;
-    localStorage.setItem('activeOrg', value);
-    this.props.resetSpace();
-    this.props.notRenderProfile();
-    this.props.hideFollowUp();
+    return this.props.history.push(`/mainscreen/${data.value}`);
   };
 
   highlightHome = () => {
-    this.setState({ highlightedHome: true, highlightedFollowUp: false, highlightedSpace: false, activeSpace: '' });
+    this.setState({
+      highlightedHome: true,
+      highlightedFollowUp: false,
+      highlightedSpace: false,
+      activeSpace: ''
+    });
   };
 
   highlightFollowUp = () => {
-    this.setState({ highlightedHome: false, highlightedFollowUp: true, highlightedSpace: false, activeSpace: '' });
+    this.setState({
+      highlightedHome: false,
+      highlightedFollowUp: true,
+      highlightedSpace: false,
+      activeSpace: ''
+    });
   };
 
   clickedSpace = spaceName => {
@@ -117,7 +121,13 @@ export class NavBar extends Component {
 
   render() {
     //Will load spinner if user doesn't exist
-    if (isEmpty(this.props.user || this.props.orgsFromArrayOfUsersIds || this.props.spacesForActiveOrg)) {
+    if (
+      isEmpty(
+        this.props.user ||
+          this.props.orgsFromArrayOfUsersIds ||
+          this.props.spacesForActiveOrg
+      )
+    ) {
       return <Spinner />;
     }
     if (this.props.user.id === this.props.uuid) {
@@ -130,6 +140,11 @@ export class NavBar extends Component {
       }));
       // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
       const userOptions = [
+        {
+          key: 'Profile',
+          text: 'Profile',
+          value: 'Profile'
+        },
         {
           key: 'Create Organisation',
           text: 'Create Organisation',
@@ -149,16 +164,13 @@ export class NavBar extends Component {
       if (this.state.profileDropdown === 'Create Organisation') {
         return <Redirect to="/createneworganisation" />;
       }
-
-      if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
-      }
-
       return (
         <NavBarContainer>
           <HeaderContainer>
             <InnerContainerHorizontal>
-              {this.props.user.fullName && <AvatarFromLetter username={this.props.user.fullName} />}
+              {this.props.user.fullName && (
+                <AvatarFromLetter username={this.props.user.fullName} />
+              )}
               {orgOptions && (
                 //this.props.user.fullName
                 <StyledDropdown>
@@ -181,44 +193,33 @@ export class NavBar extends Component {
             <RowContainer>
               <img src={homeIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedHome ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
-                className="text"
-                onClick={() => {
-                  this.highlightHome();
-                  this.props.showModal(null);
-                  this.props.editingProfileDone();
-                  this.props.resetSpace();
-                  this.props.resetThread();
-                  this.props.resetUpgradeScreen();
-                  this.props.notRenderProfile();
-                  this.props.hideFollowUp();
-                }}>
+                style={
+                  this.props.match.path === '/mainscreen/:id'
+                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                    : {}
+                }
+                to={`/mainscreen/${this.props.match.params.id}`}
+              >
                 Home
               </RowDiv>
             </RowContainer>
             <RowContainer>
               <img src={clipboardIcon} alt="home icon" />
               <RowDiv
-                style={this.state.highlightedFollowUp ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' } : {}}
-                className="text"
-                onClick={() => {
-                  this.highlightFollowUp();
-                  this.props.showFollowUp();
-                  this.props.resetSpace();
-                  this.props.resetThread();
-                }}>
+                style={
+                  this.props.match.path === '/follow-up/:id'
+                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                    : {}
+                }
+                to={`/follow-up/${this.props.match.params.id}`}
+              >
                 Follow up
               </RowDiv>
             </RowContainer>
             {localStorage.getItem('activeOrg') && (
               <RowContainer>
                 <img src={peopleIcon} alt="users icon" />
-                <RowDiv
-                  onClick={() => {
-                    this.props.resetSpace();
-                    this.props.resetThread();
-                    this.props.history.push('/users');
-                  }}>
+                <RowDiv to={`/users/${this.props.match.params.id}`}>
                   Users
                 </RowDiv>
               </RowContainer>
@@ -229,12 +230,14 @@ export class NavBar extends Component {
                   <OrgContainer>
                     <img src={discIcon} alt="home icon" />
 
-                    {this.props.activeOrg && (
+                    {this.props.match.params.id && (
                       <NavBarOrgDropdown
                         // setActiveOrg={this.props.setActiveOrg}
-                        activeOrg={this.props.activeOrg}
+                        activeOrg={this.props.match.params.id}
                         orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={this.setSelectedOrgToLocalStorage}
+                        setSelectedOrgToLocalStorage={
+                          this.setSelectedOrgToLocalStorage
+                        }
                       />
                     )}
                   </OrgContainer>
@@ -247,21 +250,15 @@ export class NavBar extends Component {
                         <RowDiv
                           key={index}
                           style={
-                            this.state.activeSpace === space.spaceName
-                              ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                            this.props.match.params.spaceId === space.id
+                              ? {
+                                  backgroundColor: '#fff0ea',
+                                  color: 'rgb(55, 71, 80)'
+                                }
                               : {}
                           }
-                          onClick={event => {
-                            event.preventDefault();
-                            this.clickedSpace(space.spaceName);
-                            this.props.editingProfileDone();
-                            this.props.resetUpgradeScreen();
-                            this.props.resetThread();
-                            this.props.switchSpaces(space.id);
-                            this.props.showModal(null);
-                            this.props.notRenderProfile();
-                            this.props.hideFollowUp();
-                          }}>
+                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
+                        >
                           {space.spaceName}
                         </RowDiv>
                       ))}
@@ -281,15 +278,19 @@ export class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.firestore.ordered.filteredUser ? state.firestore.ordered.filteredUser[0] : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser ? state.firestore.ordered.orgsInWhichUser : [],
+    user: state.firestore.ordered.filteredUser
+      ? state.firestore.ordered.filteredUser[0]
+      : '',
+    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
+      ? state.firestore.ordered.orgsInWhichUser
+      : [],
     // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces ? state.firestore.ordered.filteredSpaces : [],
+    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
+      ? state.firestore.ordered.filteredSpaces
+      : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
     // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal,
-    upgradeScreen: state.upgradeScreen
+    activeModal: state.modal.activeModal
   };
 };
 
@@ -316,21 +317,21 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // if (!userDoc) return []; <-- empty array if no userDoc in local storage
     return [
       {
         collection: 'users',
-        doc: `${props.uuid}`,
+        doc: props.uuid,
         storeAs: 'filteredUser'
       },
       {
         collection: 'spaces',
-        where: [['arrayOfUserIdsInSpace', 'array-contains', props.uuid], ['orgId', '==', props.activeOrg]],
+        where: [
+          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
+          ['orgId', '==', props.match.params.id]
+        ],
         storeAs: 'filteredSpaces'
       },
       {
@@ -418,9 +419,10 @@ const RowContainer = styled.div`
   }
 `;
 
-const RowDiv = styled.div`
+const RowDiv = styled(Link)`
   padding: 5px 12px;
   border-radius: 15px;
+  color: black;
 `;
 
 const OrgContainer = styled.div`
@@ -480,9 +482,13 @@ const SpaceContainer = styled.div`
 
 const NavBarContainer = styled.div`
   height: 100vh;
+  background-color: white;
   width: 309px;
   padding-top: 32px;
   font-family: 'Open Sans', Helvetica, Arial, 'sans-serif';
   color: #9c9c9c;
   font-size: 13px;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;

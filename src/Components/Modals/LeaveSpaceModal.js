@@ -23,7 +23,9 @@ class LeaveSpaceModal extends Component {
     this.props.firestore.update(
       { collection: 'spaces', doc: this.props.space.id },
       {
-        arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(localStorage.getItem('uuid'))
+        arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(
+          localStorage.getItem('uuid')
+        )
       }
     );
   };
@@ -32,8 +34,12 @@ class LeaveSpaceModal extends Component {
     this.props.firestore.update(
       { collection: 'users', doc: localStorage.getItem('uuid') },
       {
-        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.props.space.spaceName)
+        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
+          this.props.space.id
+        ),
+        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
+          this.props.space.spaceName
+        )
       }
     );
   };
@@ -45,7 +51,8 @@ class LeaveSpaceModal extends Component {
           <Modal.Header>
             <div>
               <StyledMainHeader>
-                Are you really really sure that you want to leave space <strong>{this.props.space.spaceName}</strong>?
+                Are you really really sure that you want to leave space{' '}
+                <strong>{this.props.space.spaceName}</strong>?
               </StyledMainHeader>
             </div>
 
@@ -55,7 +62,8 @@ class LeaveSpaceModal extends Component {
                   onClick={() => {
                     this.handleClose();
                     this.props.showModal(null);
-                  }}>
+                  }}
+                >
                   Cancel
                 </StyledButtonCancel>
 
@@ -68,7 +76,8 @@ class LeaveSpaceModal extends Component {
                     this.removeUserFromSpace();
                     this.handleClose();
                     this.props.resetSpace();
-                  }}>
+                  }}
+                >
                   Leave Space
                 </StyledButtonCreateSpace>
               </StyledActions>
@@ -86,7 +95,9 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : []
   };
 };
 
@@ -96,10 +107,7 @@ const mapDispatchToProps = dispatch => {
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(),
   withFirestore
 )(LeaveSpaceModal);

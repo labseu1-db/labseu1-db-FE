@@ -4,12 +4,10 @@ import styled from 'styled-components';
 //Import icons
 import arrowIcon from '../../images/icon-arrow-left-white.svg';
 
-function BackToButton(props) {
-  const { onClick } = props;
-
+function BackToButton({ onClick }) {
   return (
     <div>
-      <StyledBackToButton onClick={onClick}>
+      <StyledBackToButton onClick={onClick} id="back-to-button">
         <div className="rounded-end">
           <img src={arrowIcon} alt="arrow icon" />
         </div>

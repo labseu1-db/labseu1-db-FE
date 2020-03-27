@@ -56,7 +56,9 @@ class CheckoutForm extends Component {
           </StyledModalH1>
 
           <StyledModalMainButtonContainerOk>
-            <StyledModalButtonUpgrade onClick={this.completeUpgrade}>Upgrade Account</StyledModalButtonUpgrade>
+            <StyledModalButtonUpgrade onClick={this.completeUpgrade}>
+              Upgrade Account
+            </StyledModalButtonUpgrade>
           </StyledModalMainButtonContainerOk>
         </div>
       );
@@ -69,13 +71,16 @@ class CheckoutForm extends Component {
         <StyledModalCard>
           <Modal.Content>
             <StyledModalText>
-              If you wish to upgrade your account please make a one off payment of $20. This is non-refundable and will
-              appear on your bank statement as sailor co.
+              If you wish to upgrade your account please make a one off payment
+              of $20. This is non-refundable and will appear on your bank
+              statement as sailor co.
             </StyledModalText>
             <StyledModalForm>
               <StyledModalLabel>
                 Please enter your card details below{' '}
-                <span className="ligther-font">(Card number, expiry date and CVC)</span>
+                <span className="ligther-font">
+                  (Card number, expiry date and CVC)
+                </span>
               </StyledModalLabel>
             </StyledModalForm>
           </Modal.Content>
@@ -88,10 +93,15 @@ class CheckoutForm extends Component {
 
           <Modal.Actions>
             <StyledActionButtonsContainer>
-              <StyledModalButton onClick={this.submit}>Pay now</StyledModalButton>
+              <StyledModalButton onClick={this.submit}>
+                Pay now
+              </StyledModalButton>
 
               <StyledModalMainButtonContainer>
-                <StyledModalButton className="cancel-button" onClick={this.props.handleClose}>
+                <StyledModalButton
+                  className="cancel-button"
+                  onClick={this.props.handleClose}
+                >
                   Cancel
                 </StyledModalButton>
               </StyledModalMainButtonContainer>
@@ -112,10 +122,7 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(injectStripe(CheckoutForm));
 

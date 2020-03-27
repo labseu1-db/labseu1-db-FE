@@ -25,8 +25,12 @@ class DeleteSpaceModal extends Component {
         .update(
           { collection: 'users', doc: id },
           {
-            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(this.props.space.id),
-            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(this.props.space.spaceName)
+            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
+              this.props.space.id
+            ),
+            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
+              this.props.space.spaceName
+            )
           }
         )
         .then(res => {
@@ -36,7 +40,9 @@ class DeleteSpaceModal extends Component {
               .doc(t.id)
               .delete()
               .then(res => {
-                const ref = this.props.firestore.collection('comments').where('threadId', '==', t.id);
+                const ref = this.props.firestore
+                  .collection('comments')
+                  .where('threadId', '==', t.id);
                 ref.get().then(function(querySnapshot) {
                   querySnapshot.forEach(function(doc) {
                     doc.ref.delete();
@@ -50,6 +56,9 @@ class DeleteSpaceModal extends Component {
             .collection('spaces')
             .doc(this.props.space.id)
             .delete();
+        })
+        .then(() => {
+          this.props.history.push(`/mainscreen/${this.props.match.params.id}`);
         });
     });
   };
@@ -61,7 +70,8 @@ class DeleteSpaceModal extends Component {
           <Modal.Header>
             <div>
               <StyledMainHeader>
-                Are you really really sure that you want to delete space <strong>{this.props.space.spaceName}</strong>?
+                Are you really really sure that you want to delete space{' '}
+                <strong>{this.props.space.spaceName}</strong>?
               </StyledMainHeader>
             </div>
 
@@ -71,7 +81,8 @@ class DeleteSpaceModal extends Component {
                   onClick={() => {
                     this.handleClose();
                     this.props.showModal(null);
-                  }}>
+                  }}
+                >
                   Cancel
                 </StyledButtonCancel>
 
@@ -83,7 +94,8 @@ class DeleteSpaceModal extends Component {
                     this.removeSpaceFromUsersAndDeleteSpace();
                     this.handleClose();
                     this.props.resetSpace();
-                  }}>
+                  }}
+                >
                   Delete Space
                 </StyledButtonCreateSpace>
               </StyledActions>
@@ -101,7 +113,9 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     activeModal: state.modal.activeModal,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : []
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : []
   };
 };
 
@@ -111,10 +125,7 @@ const mapDispatchToProps = dispatch => {
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {

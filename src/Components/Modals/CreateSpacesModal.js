@@ -36,21 +36,24 @@ export default class CreateSpacesModal extends Component {
             <StyledModalForm>
               <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
               <StyledModalTextInForm>
-                Spaces are your team's virtual meeting rooms. Use them to have discussions about specific projects and
-                broader team topics.
+                Spaces are your team's virtual meeting rooms. Use them to have
+                discussions about specific projects and broader team topics.
               </StyledModalTextInForm>
               <StyledModalLabel>
-                Choose a few spaces <span>{`${this.props.createdSpaces.length} selected`}</span>
+                Choose a few spaces{' '}
+                <span>{`${this.props.createdSpaces.length} selected`}</span>
               </StyledModalLabel>
               <StyledModalSpacesContainer>
                 {this.spacesExamples.map(s => {
                   return (
                     <StyledSpacesModalCard
-                      className={`${this.props.createdSpaces.indexOf(s.name) > -1 && 'borderclass'} ${s.color}`}
+                      className={`${this.props.createdSpaces.indexOf(s.name) >
+                        -1 && 'borderclass'} ${s.color}`}
                       key={s.name}
                       onClick={() => {
                         this.props.addSpace(s.name);
-                      }}>
+                      }}
+                    >
                       {s.name}
                     </StyledSpacesModalCard>
                   );
@@ -58,8 +61,8 @@ export default class CreateSpacesModal extends Component {
               </StyledModalSpacesContainer>
               <StyledModalLabel>Create a few spaces</StyledModalLabel>
               <StyledModalTextInForm>
-                Start with current projects, ongoning discussion topics, or anything else you would have a meeting
-                about.
+                Start with current projects, ongoning discussion topics, or
+                anything else you would have a meeting about.
               </StyledModalTextInForm>
               <StyledModalInput
                 placeholder="ie. Products Proposals"
@@ -90,9 +93,10 @@ export default class CreateSpacesModal extends Component {
                     this.props.clearState(),
                     this.props.addOrganisationToDatabase(orgId)
                   ]).then(values => {
-                    this.props.props.history.push('/homescreen');
+                    this.props.props.history.push(`/mainscreen/${orgId}`);
                   });
-                }}>
+                }}
+              >
                 Finish
               </StyledModalButton>
               <StyledModalMainButtonContainer>
@@ -101,7 +105,8 @@ export default class CreateSpacesModal extends Component {
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal('InviteYourTeamModal');
-                  }}>
+                  }}
+                >
                   Back
                 </StyledModalButton>
               </StyledModalMainButtonContainer>

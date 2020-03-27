@@ -14,7 +14,11 @@ import {
   StyledLoginCon,
   StyledLowerSignInPasswordless
 } from './styled-components/StyledLogin';
-import { StyledH1, StyledLink, StyledPLabel } from './styled-components/StyledText';
+import {
+  StyledH1,
+  StyledLink,
+  StyledPLabel
+} from './styled-components/StyledText';
 import LoginAnimation from './animations/LoginAnimation';
 import { Icon, Message } from 'semantic-ui-react';
 
@@ -42,7 +46,7 @@ class ForgotPassword extends Component {
       .then(() => {
         if (this.props.resetPasswordStatus) {
           this.props.resetPasswordDone();
-          this.props.history.push('/homescreen');
+          this.props.history.push(`/profile/${this.props.match.params.id}`);
         } else {
           this.props.history.push('/login');
         }
@@ -76,7 +80,8 @@ class ForgotPassword extends Component {
           <StyledForm
             onSubmit={event => {
               this.submitHandler(this.state.loginEmail, event);
-            }}>
+            }}
+          >
             <StyledLabel>
               <StyledPLabel>Email Address</StyledPLabel>
               <StyledInput
@@ -92,7 +97,8 @@ class ForgotPassword extends Component {
                 disabled={isInvalid}
                 onClick={event => {
                   this.submitHandler(this.state.loginEmail, event);
-                }}>
+                }}
+              >
                 Send Email &#62;
               </StyledSendEmailButton>
             </StyledLowerSignInPasswordless>
@@ -103,13 +109,18 @@ class ForgotPassword extends Component {
               {this.state.error.message}
             </Message>
           )}
-          {!this.props.resetPasswordStatus && <StyledLink to="/login">Back to Log In</StyledLink>}
+          {!this.props.resetPasswordStatus && (
+            <StyledLink to="/login">Back to Log In</StyledLink>
+          )}
           {this.props.resetPasswordStatus && (
             <StyledSendEmailButton
               onClick={() => {
-                this.props.history.push('/homescreen');
+                this.props.history.push(
+                  `/profile/${this.props.match.params.id}`
+                );
                 this.props.resetPasswordDone();
-              }}>
+              }}
+            >
               Cancel
             </StyledSendEmailButton>
           )}
@@ -138,9 +149,6 @@ const mapDispatchToProps = dispatch => {
 
 //Connect to Firestore
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(ForgotPassword);

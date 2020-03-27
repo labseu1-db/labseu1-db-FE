@@ -26,12 +26,16 @@ export default class CreateCompanyModal extends Component {
         <StyledModalCard>
           <Modal.Content>
             <StyledModalText>
-              Organisations are the shared home for your team. Use organisations to get a bird's eye view of all
-              discussions and decisions happening across your organisation.
+              Organisations are the shared home for your team. Use organisations
+              to get a bird's eye view of all discussions and decisions
+              happening across your organisation.
             </StyledModalText>
             <StyledModalForm>
               <StyledModalLabel>
-                Organisation name <span className="ligther-font">(Company, nonprofit, school, team)</span>
+                Organisation name{' '}
+                <span className="ligther-font">
+                  (Company, nonprofit, school, team)
+                </span>
               </StyledModalLabel>
               <StyledLableContainer>
                 <StyledModalInput
@@ -54,7 +58,8 @@ export default class CreateCompanyModal extends Component {
                   e.preventDefault();
                   this.props.showModal('InviteYourTeamModal');
                   this.props.addOrgName(this.state.orgName);
-                }}>
+                }}
+              >
                 Next
               </StyledModalButton>
               <StyledModalMainButtonContainer>
@@ -63,8 +68,9 @@ export default class CreateCompanyModal extends Component {
                   onClick={e => {
                     e.preventDefault();
                     this.props.showModal(null);
-                    this.props.props.history.push('/homescreen');
-                  }}>
+                    this.props.props.history.goBack();
+                  }}
+                >
                   Cancel
                 </StyledModalButton>
               </StyledModalMainButtonContainer>

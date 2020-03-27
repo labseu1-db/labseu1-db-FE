@@ -155,8 +155,8 @@ class CreateThreadModal extends Component {
           threadCreatedByUserId: window.localStorage.getItem('uuid'),
           threadCreatedByUserName: this.props.user.fullName,
           threadCreatedAt: Date.now(),
-          spaceId: this.state.spaceId,
-          orgId: this.props.activeOrg,
+          spaceId: this.props.match.params.spaceId,
+          orgId: this.props.match.params.id,
           lastCommentCreatedAt: Date.now(),
           whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
         }
@@ -172,7 +172,11 @@ class CreateThreadModal extends Component {
         threadRef.update(whenUserHasSeen);
       })
       .then(() => this.props.showModal(null))
-      .then(() => this.props.setActiveThread(this.threadId))
+      .then(() =>
+        this.props.history.push(
+          `/mainscreen/${this.props.match.params.id}/${this.props.match.params.spaceId}/${this.threadId}`
+        )
+      )
       .catch(err => console.log(err));
   };
   close = () => this.setState({ open: false });
@@ -318,17 +322,14 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
         collection: 'spaces',
         where: [
           ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.activeOrg]
+          ['orgId', '==', props.match.params.id]
         ],
         storeAs: 'spacesUserIsIn'
       },

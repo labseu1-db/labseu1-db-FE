@@ -24,7 +24,9 @@ class UserManagement extends Component {
 
   //Add email input when clicked on email
   appendInput = () => {
-    this.setState(prevState => ({ teamEmailAddress: prevState.teamEmailAddress.concat(['']) }));
+    this.setState(prevState => ({
+      teamEmailAddress: prevState.teamEmailAddress.concat([''])
+    }));
   };
 
   //Add email to state
@@ -48,8 +50,12 @@ class UserManagement extends Component {
     this.props.firestore.update(
       { collection: 'users', doc: id },
       {
-        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayRemove(this.props.organisation.id),
-        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayRemove(this.props.organisation.orgName)
+        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayRemove(
+          this.props.organisation.id
+        ),
+        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayRemove(
+          this.props.organisation.orgName
+        )
       }
     );
   };
@@ -73,7 +79,9 @@ class UserManagement extends Component {
             doc: space.id
           },
           {
-            arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(id)
+            arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(
+              id
+            )
           }
         )
         .then(res =>
@@ -83,8 +91,12 @@ class UserManagement extends Component {
               doc: id
             },
             {
-              arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(space.id),
-              arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(space.spaceName)
+              arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
+                space.id
+              ),
+              arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
+                space.spaceName
+              )
             }
           )
         );
@@ -92,9 +104,11 @@ class UserManagement extends Component {
   };
 
   addUserEmailsToOrgDatabase = () => {
-    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress.filter(Boolean).map(e => {
-      return e;
-    });
+    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress
+      .filter(Boolean)
+      .map(e => {
+        return e;
+      });
     usersEmailsWithoutEmptyStrings.forEach(email => {
       this.props.firestore.update(
         {
@@ -109,7 +123,9 @@ class UserManagement extends Component {
   };
 
   render() {
-    if (this.props.organisation.createdByUserId === localStorage.getItem('uuid')) {
+    if (
+      this.props.organisation.createdByUserId === localStorage.getItem('uuid')
+    ) {
       return (
         <Modal open={true} size="tiny">
           <StyledContainer>
@@ -121,7 +137,9 @@ class UserManagement extends Component {
                   <Header as="h5" className="first-heading">
                     Active Members
                   </Header>
-                  <Subheader>Be very careful when deleting users as this can't be undone.</Subheader>
+                  <Subheader>
+                    Be very careful when deleting users as this can't be undone.
+                  </Subheader>
                 </StyledHeaderContainer>
               )}
               {this.props.listOfUsersWithinTheOrg.length > 0 &&
@@ -137,7 +155,8 @@ class UserManagement extends Component {
                             this.removeSpacesFromUser(u.id);
                             this.removeOrgFromUser(u.id);
                             this.removeUserFromOrg(u.id, u.userEmail);
-                          }}>
+                          }}
+                        >
                           Delete
                         </StyledButtonDelete>
                       </StyledUserContainer>
@@ -162,7 +181,9 @@ class UserManagement extends Component {
                       ))}
                     </div>
                   </StyledModalForm>
-                  <StyledModalAdder onClick={() => this.appendInput()}>Add more emails</StyledModalAdder>
+                  <StyledModalAdder onClick={() => this.appendInput()}>
+                    Add more emails
+                  </StyledModalAdder>
                 </Modal.Content>
                 <Modal.Actions>
                   <StyledActionButtonsContainer>
@@ -177,13 +198,16 @@ class UserManagement extends Component {
                           this.props.organisation.isPremium === false
                         ) {
                           this.setState({ alert: 'subscription' });
-                        } else if (!this.state.teamEmailAddress.every(this.checkIfEmail)) {
+                        } else if (
+                          !this.state.teamEmailAddress.every(this.checkIfEmail)
+                        ) {
                           this.setState({ alert: 'email' });
                         } else {
                           this.addUserEmailsToOrgDatabase();
-                          this.props.history.push('/homescreen');
+                          this.props.history.goBack();
                         }
-                      }}>
+                      }}
+                    >
                       Invite
                     </StyledModalButton>
                     <StyledModalMainButtonContainer>
@@ -191,8 +215,9 @@ class UserManagement extends Component {
                         className="cancel-button"
                         onClick={e => {
                           e.preventDefault();
-                          this.props.history.push('/homescreen');
-                        }}>
+                          this.props.history.goBack();
+                        }}
+                      >
                         Go back
                       </StyledModalButton>
                     </StyledModalMainButtonContainer>
@@ -201,14 +226,16 @@ class UserManagement extends Component {
               </StyledModalCard>
               {this.state.alert === 'email' && (
                 <StyledAlertMessage>
-                  <Message color="red">Please make sure that you are using valid email address.</Message>
+                  <Message color="red">
+                    Please make sure that you are using valid email address.
+                  </Message>
                 </StyledAlertMessage>
               )}
               {this.state.alert === 'subscription' && (
                 <StyledAlertMessage>
                   <Message color="red">
-                    With free version you can invite up to 20 users. If you want to invite more, please upgrade your
-                    account.
+                    With free version you can invite up to 20 users. If you want
+                    to invite more, please upgrade your account.
                   </Message>
                 </StyledAlertMessage>
               )}
@@ -217,7 +244,9 @@ class UserManagement extends Component {
         </Modal>
       );
     }
-    if (this.props.organisation.createdByUserId !== localStorage.getItem('uuid')) {
+    if (
+      this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
+    ) {
       return (
         <Modal open={true} size="tiny">
           <StyledContainer>
@@ -239,8 +268,9 @@ class UserManagement extends Component {
               className="cancel-button"
               onClick={e => {
                 e.preventDefault();
-                this.props.history.push('/homescreen');
-              }}>
+                this.props.history.goBack();
+              }}
+            >
               Go back
             </StyledModalButton>
           </StyledModalMainButtonContainer>
@@ -256,10 +286,16 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    organisation: state.firestore.ordered.organisations ? state.firestore.ordered.organisations[0] : [],
-    spaces: state.firestore.ordered.spaces ? state.firestore.ordered.spaces : [],
+    organisation: state.firestore.ordered.organisations
+      ? state.firestore.ordered.organisations[0]
+      : [],
+    spaces: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces
+      : [],
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg ? state.firestore.ordered.usersWithinTheOrg : []
+    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
+      ? state.firestore.ordered.usersWithinTheOrg
+      : []
   };
 };
 
@@ -267,10 +303,7 @@ const mapDispatchToProps = {};
 
 //Styled Components
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
@@ -279,16 +312,16 @@ export default compose(
       },
       {
         collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', localStorage.getItem('activeOrg')]],
+        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
         storeAs: 'usersWithinTheOrg'
       },
       {
         collection: 'organisations',
-        doc: localStorage.getItem('activeOrg')
+        doc: props.match.params.id
       },
       {
         collection: 'spaces',
-        where: [['orgId', '==', localStorage.getItem('activeOrg')]]
+        where: [['orgId', '==', props.match.params.id]]
       }
     ];
   }),

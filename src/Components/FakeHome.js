@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import Spinner from './semantic-components/Spinner';
 import RightSidebar from './RightSidebar';
 import MainScreen from './MainScreen';
-import SpaceThreads from './SpaceThreads';
 import ThreadsScreen from './ThreadsScreen';
 import UpgradeAccount from './UpgradeAccount';
 
@@ -31,16 +30,19 @@ class FakeHome extends Component {
         </FirstDiv>
         <MidRightContainer>
           <SecondDiv>
-            {this.props.spaceId && !this.props.threadId && <SpaceThreads {...this.props} />}
             {!this.props.spaceId &&
               !this.props.threadId &&
               !this.props.followUpStatus &&
               !this.props.profileRenderStatus &&
               !this.props.upgradeScreen && <MainScreen />}
-            {this.props.threadId && <ThreadsScreen threadId={this.props.threadId} />}
+            {this.props.threadId && (
+              <ThreadsScreen threadId={this.props.threadId} />
+            )}
             {this.props.followUpStatus && <FollowUp />}
             {this.props.profileRenderStatus && <UserProfile {...this.props} />}
-            {!this.props.spaceId && !this.props.threadId && this.props.upgradeScreen && <UpgradeAccount />}
+            {!this.props.spaceId &&
+              !this.props.threadId &&
+              this.props.upgradeScreen && <UpgradeAccount />}
           </SecondDiv>
           <ThirdDiv>
             {this.props.followUpStatus && null}
@@ -102,9 +104,6 @@ const MidRightContainer = styled.div`
 `;
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firebaseConnect()
 )(FakeHome);

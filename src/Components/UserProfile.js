@@ -6,16 +6,22 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 import styled from 'styled-components';
 import ProfileCard from './reusable-components/ProfileCard';
 import { Redirect } from 'react-router-dom';
+import Navbar from './NavBar';
+import RightSidebar from './RightSidebar';
 
 class UserProfile extends Component {
   render() {
     if (this.props.resetPasswordStatus) {
-      return <Redirect to="/changePassword" />;
+      return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
     }
     return (
-      <StyledMainScreen>
-        <ProfileCard />
-      </StyledMainScreen>
+      <StyledMain>
+        <Navbar {...this.props} />
+        <StyledMainScreen>
+          <ProfileCard />
+        </StyledMainScreen>
+        <RightSidebar />
+      </StyledMain>
     );
   }
 }
@@ -24,8 +30,12 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads ? state.firestore.ordered.threads : [],
-    space: state.firestore.ordered.spaces ? state.firestore.ordered.spaces[0] : [],
+    threads: state.firestore.ordered.threads
+      ? state.firestore.ordered.threads
+      : [],
+    space: state.firestore.ordered.spaces
+      ? state.firestore.ordered.spaces[0]
+      : [],
     spaceId: state.spaceId,
     activeModal: state.modal.activeModal,
     resetPasswordStatus: state.resetPassword
@@ -38,10 +48,7 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
@@ -56,9 +63,16 @@ export default compose(
   })
 )(UserProfile);
 
+const StyledMain = styled.div`
+  display: flex;
+  width: 100vw;
+  background-color: #fff7f3;
+`;
+
 const StyledMainScreen = styled.div`
+  margin-left: 309px;
   background-color: #fff7f3;
   min-height: 100vh;
   padding: 10vh 12%;
-  margin: 0 auto;
+  width: 100%;
 `;

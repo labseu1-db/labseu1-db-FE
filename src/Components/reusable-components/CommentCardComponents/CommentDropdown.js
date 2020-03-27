@@ -11,7 +11,9 @@ import { Dropdown } from 'semantic-ui-react';
 export class CommentDropdown extends React.Component {
   markAsDecision = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
+    let commentRef = this.props.firestore
+      .collection('comments')
+      .doc(this.props.commentId);
     commentRef.update({
       isCommentDecided: true
     });
@@ -19,7 +21,9 @@ export class CommentDropdown extends React.Component {
 
   removeDecision = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore.collection('comments').doc(this.props.commentId);
+    let commentRef = this.props.firestore
+      .collection('comments')
+      .doc(this.props.commentId);
     commentRef.update({
       isCommentDecided: false
     });
@@ -31,16 +35,28 @@ export class CommentDropdown extends React.Component {
         <Dropdown>
           <Dropdown.Menu>
             {!this.props.isCommentDecided && (
-              <Dropdown.Item text="Mark as Decision" onClick={e => this.markAsDecision(e)} />
+              <Dropdown.Item
+                text="Mark as Decision"
+                onClick={e => this.markAsDecision(e)}
+              />
             )}
             {this.props.isCommentDecided && (
-              <Dropdown.Item text="Remove decision" onClick={e => this.removeDecision(e)} />
+              <Dropdown.Item
+                text="Remove decision"
+                onClick={e => this.removeDecision(e)}
+              />
             )}
             {localStorage.getItem('uuid') === this.props.createdByUserId && (
-              <Dropdown.Item text="Edit Comment" onClick={() => this.props.setIsUpdating(true)} />
+              <Dropdown.Item
+                text="Edit Comment"
+                onClick={() => this.props.setIsUpdating(true)}
+              />
             )}
             {localStorage.getItem('uuid') === this.props.createdByUserId && (
-              <Dropdown.Item text="Delete Comment" onClick={() => this.props.deleteComment(this.props.commentId)} />
+              <Dropdown.Item
+                text="Delete Comment"
+                onClick={() => this.props.deleteComment(this.props.commentId)}
+              />
             )}
           </Dropdown.Menu>
         </Dropdown>
@@ -80,9 +96,6 @@ const mapDispatchToProps = {};
 
 export default compose(
   withFirestore,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect()
 )(CommentDropdown);

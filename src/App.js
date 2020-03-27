@@ -6,7 +6,6 @@ import { Route } from 'react-router-dom';
 
 import Register from './Components/Register';
 import Login from './Components/Login';
-import FakeHome from './Components/FakeHome';
 import PasswordlessSubmit from './Components/PasswordlessSubmit';
 import PasswordlessCheck from './Components/PasswordlessCheck';
 import ForgotPassword from './Components/ForgotPassword';
@@ -14,8 +13,14 @@ import CreateNewOrganisation from './Components/CreateNewOrganisation';
 import UserManagement from './Components/UserManagement';
 import LandingPage from './Components/landing-page/LandingPage';
 import ContextProvider from './Components/ContextProvider/ContextProvider';
+import SpaceThreads from './Components/SpaceThreads';
+import MainScreen from './Components/MainScreen';
+import ThreadsScreen from './Components/ThreadsScreen';
+import FollowUp from './Components/reusable-components/FollowUp';
+import UpgradeAccount from './Components/UpgradeAccount';
+import UserProfile from './Components/UserProfile';
 
-class App extends Component {
+export class App extends Component {
   render() {
     return (
       <ContextProvider {...this.props}>
@@ -24,12 +29,12 @@ class App extends Component {
           path="/register"
           render={props => <Register {...props} />}
         />
-        <Route exact path="/login" render={props => <Login {...props} />} />
         <Route
           exact
-          path="/homescreen"
-          render={props => <FakeHome {...props} />}
+          path="/mainscreen/:id"
+          render={props => <MainScreen {...props} />}
         />
+        <Route exact path="/login" render={props => <Login {...props} />} />
         <Route
           exact
           path="/passwordlesssubmit"
@@ -42,9 +47,19 @@ class App extends Component {
         />
         <Route
           exact
+          path="/mainscreen/:id/:spaceId"
+          render={props => <SpaceThreads {...props} />}
+        />
+        <Route
+          exact
+          path="/mainscreen/:id/:spaceId/:threadId"
+          render={props => <ThreadsScreen {...props} />}
+        />
+        <Route
+          exact
           path={
             this.props.resetPasswordStatus
-              ? '/changePassword'
+              ? '/changePassword/:id'
               : '/forgotPassword'
           }
           render={props => <ForgotPassword {...props} />}
@@ -56,8 +71,23 @@ class App extends Component {
         />
         <Route
           exact
-          path="/users"
+          path="/users/:id"
           render={props => <UserManagement {...props} />}
+        />
+        <Route
+          exact
+          path="/follow-up/:id"
+          render={props => <FollowUp {...props} />}
+        />
+        <Route
+          exact
+          path="/upgrade/:id"
+          render={props => <UpgradeAccount {...props} />}
+        />
+        <Route
+          exact
+          path="/profile/:id"
+          render={props => <UserProfile {...props} />}
         />
         <Route exact path="/" render={props => <LandingPage {...props} />} />
       </ContextProvider>
