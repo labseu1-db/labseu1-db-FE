@@ -1,13 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import {
-  firebaseConnect,
-  isLoaded,
-  isEmpty,
-  withFirestore
-} from 'react-redux-firebase';
 
 import Context from './ContextProvider/Context';
 
@@ -44,17 +35,15 @@ import LoginAnimation from './animations/LoginAnimation';
 
 const Login = props => {
   // function from context api
-  const { setError } = useContext(Context);
+  const { setError, isLoggedIn } = useContext(Context);
 
   const [loginEmail, setEmail] = useState('');
   const [loginPassword, setPassword] = useState('');
   const [savinUsergInfoToDb, setSavingUserInfoToDb] = useState(false);
 
   useEffect(() => {
-    if (!isEmpty(props.auth)) {
-      props.history.push('/homescreen');
-    }
-  }, [props.auth]);
+    isLoggedIn();
+  }, [isLoggedIn]);
 
   const handleInputChange = e => {
     switch (e.target.name) {
@@ -66,15 +55,13 @@ const Login = props => {
         break;
       case 'setSavingUserInfoToDb':
         setSavingUserInfoToDb(st => !st);
+        break;
+      default:
+        break;
     }
   };
 
   const handleLogIn = e => {
-    const INITIAL_STATE = {
-      loginEmail: '',
-      loginPassword: '',
-      error: null
-    };
     e.preventDefault();
     props.firebase
       .login({
@@ -127,13 +114,7 @@ const Login = props => {
 
   const isInvalid = loginPassword === '' || loginEmail === '';
 
-  if (!isLoaded(props.auth)) {
-    return <Spinner />;
-  }
   if (savinUsergInfoToDb === true) {
-    return <Spinner />;
-  }
-  if (!isEmpty(props.auth)) {
     return <Spinner />;
   }
   return (
@@ -204,24 +185,4 @@ const Login = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-    },
-    dispatch
-  );
-};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect()
-)(Login);
+export default Login;
