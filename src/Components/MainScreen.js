@@ -31,7 +31,10 @@ class MainScreen extends React.Component {
           />
         )}
         <StyledFirstRow>
-          <ScreenHeading heading="Home" info="Catch up on the most recent threads." />
+          <ScreenHeading
+            heading="Home"
+            info="Catch up on the most recent threads."
+          />
           <ScreenButton
             content="Start a thread"
             icon={penIconWhite}
@@ -63,11 +66,18 @@ class MainScreen extends React.Component {
                 heading={t.threadName}
                 info={t.threadTopic}
                 isFollowUpDecided={
-                  t.arrayOfUserIdsWhoFollowUp && t.arrayOfUserIdsWhoFollowUp.includes(this.props.uuid) ? true : false
+                  t.arrayOfUserIdsWhoFollowUp &&
+                  t.arrayOfUserIdsWhoFollowUp.includes(this.props.uuid)
+                    ? true
+                    : false
                 }
                 checked={
-                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] && 'false') ||
-                  (t.lastCommentCreatedAt > t.whenUserHasSeen[localStorage.getItem('uuid')] ? 'false' : 'true')
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                    'false') ||
+                  (t.lastCommentCreatedAt >
+                  t.whenUserHasSeen[localStorage.getItem('uuid')]
+                    ? 'false'
+                    : 'true')
                 }
                 onClick={() => this.props.setActiveThread(t.id)}
               />
@@ -97,8 +107,12 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-    threads: state.firestore.ordered.mainScreenThreads ? state.firestore.ordered.mainScreenThreads : [],
-    activeOrg: localStorage.getItem('activeOrg') ? localStorage.getItem('activeOrg') : '',
+    threads: state.firestore.ordered.mainScreenThreads
+      ? state.firestore.ordered.mainScreenThreads
+      : [],
+    activeOrg: localStorage.getItem('activeOrg')
+      ? localStorage.getItem('activeOrg')
+      : '',
     activeModal: state.modal.activeModal,
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
@@ -109,10 +123,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return [
       {
