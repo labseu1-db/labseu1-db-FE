@@ -14,14 +14,9 @@ const ContextProvider = ({ children, ...props }) => {
   const isLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        let request = {
-          collection: 'users',
-          key: 'userEmail',
-          term: '==',
-          value: user.email,
-          type: 'redirect_to_active_org'
-        };
-        getDataWithWhere(request);
+        return true;
+      } else {
+        return false;
       }
     });
   };

@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Context from './ContextProvider/Context';
 
-//Import semantic components
-import Spinner from './semantic-components/Spinner';
-
 //Import styling
 import {
   StyledButton,
@@ -41,10 +38,9 @@ const Login = props => {
 
   const [loginEmail, setEmail] = useState('');
   const [loginPassword, setPassword] = useState('');
-  const [savinUsergInfoToDb, setSavingUserInfoToDb] = useState(false);
 
   useEffect(() => {
-    isLoggedIn();
+    const result = isLoggedIn();
   }, [isLoggedIn]);
 
   const handleInputChange = e => {
@@ -54,9 +50,6 @@ const Login = props => {
         break;
       case 'loginPassword':
         setPassword(e.target.value);
-        break;
-      case 'setSavingUserInfoToDb':
-        setSavingUserInfoToDb(st => !st);
         break;
       default:
         break;
@@ -100,9 +93,6 @@ const Login = props => {
 
   const isInvalid = loginPassword === '' || loginEmail === '';
 
-  if (savinUsergInfoToDb === true) {
-    return <Spinner />;
-  }
   return (
     <StyledLogin>
       <StyledLoginCon>
