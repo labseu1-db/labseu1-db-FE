@@ -14,7 +14,7 @@ const ContextProvider = ({ children, ...props }) => {
   const isLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        return true;
+        return { user: user, result: true };
       } else {
         return false;
       }
