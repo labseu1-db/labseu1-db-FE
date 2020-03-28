@@ -27,7 +27,14 @@ import Context from './ContextProvider/Context';
 
 const Register = props => {
   // Context Api
-  const { setError, firebase, saveData } = useContext(Context);
+  const {
+    setError,
+    firebase,
+    saveData,
+    getDataWithWhere,
+    updateDataWithDoc,
+    db
+  } = useContext(Context);
 
   // Hooks
   const [loginEmail, setEmail] = useState('');
@@ -74,58 +81,35 @@ const Register = props => {
   //     });
   // };
 
-  const saveUserToDatabaseAndToLocalStorage = res => {
-    let userId = uuid();
-
-    props.firestore
-      .collection('users')
-      .doc(userId)
-      .set({
-        fullName: fullName,
-        userEmail: res.user.user.email,
-        profileUrl: 'http://lorempixel.com/640/480',
-        arrayOfOrgsNames: [],
-        arrayOfOrgsIds: [],
-        arrayOfSpaceIds: [],
-        arrayOfSpaceNames: []
-      })
-      .then(() => {
-        localStorage.setItem('uuid', userId);
-        localStorage.setItem('userEmail', loginEmail);
-      })
-      .then(res => {
-        const orgRef = props.firestore
-          .collection('organisations')
-          .where('arrayOfUsersEmails', 'array-contains', loginEmail);
-        orgRef
-          .get()
-          .then(qs => {
-            qs.forEach(doc => {
-              saveUserIdInOrg(doc.id, userId);
-              saveOrgNameAndOrgIdInUser(doc.id, doc.data().orgName, userId);
-
-              localStorage.setItem('activeOrg', doc.id);
-            });
-          })
-          .catch(function(error) {
-            console.log('Error getting documents: ', error);
-          });
-      })
-      .catch(function(error) {
-        console.log('Error getting documents: ', error);
-        setError(error);
+  const isUserInvited = async userId => {
+    let request = {
+      collection: 'organisations',
+      key: 'arrayOfUsersEmails',
+      term: 'array-contains',
+      value: loginEmail,
+      type: 'return_data'
+    };
+    let data = await getDataWithWhere(request);
+    if (data) {
+      data.forEach(org => {
+        saveUserIdInOrg(org.id, userId);
+        saveOrgNameAndOrgIdInUser(org.id, org.orgName, userId);
       });
+    }
   };
 
   const createAndLogInNewUser = async e => {
     try {
       e.preventDefault();
-      await firebase.createUser(
-        { loginEmail, loginPassword },
-        { fullName, loginEmail }
-      );
-      let data = await firebase.login({ loginEmail, loginPassword });
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(loginEmail, loginPassword);
+      let data = await firebase
+        .auth()
+        .signInWithEmailAndPassword(loginEmail, loginPassword);
+      console.log('login successfull');
       let { user } = data;
+      console.log('user in login', user);
       const userId = uuid();
       let request = {
         collection: 'users',
@@ -142,33 +126,36 @@ const Register = props => {
         }
       };
       saveData(request);
-      // .then(() => {
-      //   props.history.push('/createneworganisation');
-      // });
+      isUserInvited(userId);
+      props.history.push('/createneworganisation');
     } catch (error) {
       setError(error);
     }
   };
 
   const saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
-    props.firestore
-      .collection('users')
-      .doc(userId)
-      .update({
-        arrayOfOrgsNames: props.firestore.FieldValue.arrayUnion(orgName),
-        arrayOfOrgsIds: props.firestore.FieldValue.arrayUnion(orgId)
-      })
-      .catch(err => console.log(err));
+    console.log('saveOrgName');
+    let request = {
+      collection: 'users',
+      docId: userId,
+      data: {
+        arrayOfOrgsNames: db.FieldValue.arrayUnion(orgName),
+        arrayOfOrgsIds: db.FieldValue.arrayUnion(orgId)
+      }
+    };
+    updateDataWithDoc(request);
   };
 
   const saveUserIdInOrg = (orgId, userId) => {
-    props.firestore
-      .collection('organisations')
-      .doc(orgId)
-      .update({
-        arrayOfUsersIds: props.firestore.FieldValue.arrayUnion(userId)
-      })
-      .catch(err => console.log(err));
+    console.log('userid in org');
+    let request = {
+      collection: 'organisations',
+      docId: orgId,
+      data: {
+        arrayOfUsersIds: db.FieldValue.arrayUnion(userId)
+      }
+    };
+    updateDataWithDoc(request);
   };
 
   const togglePassword = () => {
@@ -184,7 +171,6 @@ const Register = props => {
       passwordIcon.alt = 'showPassword';
     }
   };
-
   const isInvalid =
     loginEmail === '' || loginPassword === '' || fullName === '';
   return (

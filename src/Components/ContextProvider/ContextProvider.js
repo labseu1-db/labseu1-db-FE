@@ -11,12 +11,21 @@ const ContextProvider = ({ children, ...props }) => {
   // Firestore
   const db = firebase.firestore();
 
-  const isLoggedIn = () => {
+  const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        return { user: user, result: true };
+      if (user && path === 'login') {
+        let request = {
+          collection: 'users',
+          key: 'userEmail',
+          term: '==',
+          value: user.email,
+          type: 'redirect_to_active_org'
+        };
+        getDataWithWhere(request);
+      } else if (user) {
+      } else if (path === 'login') {
       } else {
-        return false;
+        redirect('/login');
       }
     });
   };
@@ -26,8 +35,24 @@ const ContextProvider = ({ children, ...props }) => {
   };
 
   const saveData = async request => {
-    let ref = db.collection(request.collection).doc(request.doc);
-    ref.set(request.data);
+    let ref = db.collection(request.collection).doc(request.docId);
+    await ref.set(request.data);
+    handleData({ type: request.type, data: request.docId });
+  };
+
+  const updateDataWithDoc = async request => {
+    try {
+      let ref = db.collection(request.collection).doc(request.docId);
+      await ref.update(request.data);
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const getDataWithDoc = async request => {
+    let ref = db.collection(request.collection).doc(request.docId);
+    let doc = ref.get();
+    console.log(doc);
   };
 
   const getDataWithWhere = async request => {
@@ -36,9 +61,14 @@ const ContextProvider = ({ children, ...props }) => {
         .collection(request.collection)
         .where(request.key, request.term, request.value);
       let querySnapshot = await ref.get();
+      let docs = [];
       querySnapshot.forEach(doc => {
-        handleData({ type: request.type, doc: doc });
+        docs.push(doc);
       });
+      if (docs.length) {
+        const { type } = request;
+        handleData({ docs, type });
+      }
     } catch (erro) {
       setError(error);
     }
@@ -51,13 +81,20 @@ const ContextProvider = ({ children, ...props }) => {
   const handleData = request => {
     switch (request.type) {
       case 'redirect_to_active_org':
-        let activeOrg = request.doc.data().arrayOfOrgsIds[0];
-        saveToLocalStorage('uuid', request.doc.id);
+        let doc = request.docs[0];
+        let activeOrg = doc.data().arrayOfOrgsIds[0];
+        saveToLocalStorage('uuid', doc.id);
         let path = `/mainscreen/${activeOrg}`;
         redirect(path);
         break;
+      case 'save_id_to_local':
+        let data = request.docs.map(doc => doc.data());
+        saveToLocalStorage('uuid', data);
+        break;
+      case 'return_data':
+        data = request.docs.forEach(doc => doc.data());
+        return data;
       default:
-        console.log(request.doc.data());
     }
   };
 
@@ -68,7 +105,10 @@ const ContextProvider = ({ children, ...props }) => {
         isLoggedIn: isLoggedIn,
         firebase: firebase,
         getDataWithWhere: getDataWithWhere,
-        saveData: saveData
+        saveData: saveData,
+        updateDataWithDoc: updateDataWithDoc,
+        db: db,
+        getDataWithDoc: getDataWithDoc
       }}
     >
       {children}

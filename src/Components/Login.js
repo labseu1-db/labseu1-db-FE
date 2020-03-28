@@ -40,18 +40,8 @@ const Login = props => {
   const [loginPassword, setPassword] = useState('');
 
   useEffect(() => {
-    const { user, result } = isLoggedIn();
-    if (result) {
-      let request = {
-        collection: 'users',
-        key: 'userEmail',
-        term: '==',
-        value: user.email,
-        type: 'redirect_to_active_org'
-      };
-      getDataWithWhere(request);
-    }
-  }, [isLoggedIn, getDataWithWhere]);
+    isLoggedIn('login');
+  }, [isLoggedIn]);
 
   const handleInputChange = e => {
     switch (e.target.name) {
