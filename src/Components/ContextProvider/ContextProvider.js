@@ -25,6 +25,11 @@ const ContextProvider = ({ children, ...props }) => {
     props.history.push(path);
   };
 
+  const saveData = async request => {
+    let ref = db.collection(request.collection).doc(request.doc);
+    ref.set(request.data);
+  };
+
   const getDataWithWhere = async request => {
     try {
       let ref = db
@@ -62,7 +67,8 @@ const ContextProvider = ({ children, ...props }) => {
         setError: setError,
         isLoggedIn: isLoggedIn,
         firebase: firebase,
-        getDataWithWhere: getDataWithWhere
+        getDataWithWhere: getDataWithWhere,
+        saveData: saveData
       }}
     >
       {children}
