@@ -20,80 +20,78 @@ import RightSidebar from './RightSidebar';
 import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
 //Main component
-class MainScreen extends React.Component {
-  render() {
-    return (
-      <StyledMain>
-        <NavBar {...this.props} />
-        <StyledMainScreen>
-          {this.props.activeModal === 'CreateThreadModal' && (
-            <CreateThreadModal
-              shoudlBeOpen={true}
-              showModal={this.props.showModal}
-              setActiveThread={this.props.setActiveThread}
-              activeModal={this.props.activeModal}
-              {...this.props}
-            />
-          )}
-          <StyledFirstRow>
-            <ScreenHeading
-              heading="Home"
-              info="Catch up on the most recent threads."
-            />
-            <ScreenButton
-              content="Start a thread"
-              icon={penIconWhite}
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              onClick={e => {
-                this.props.showModal('CreateThreadModal');
-              }}
-            />
-          </StyledFirstRow>
-          <ScreenSectionHeading heading="Recent" />
+const MainScreen = props => {
+  return (
+    <StyledMain>
+      <NavBar {...props} />
+      <StyledMainScreen>
+        {props.activeModal === 'CreateThreadModal' && (
+          <CreateThreadModal
+            shoudlBeOpen={true}
+            showModal={props.showModal}
+            setActiveThread={props.setActiveThread}
+            activeModal={props.activeModal}
+            {...props}
+          />
+        )}
+        <StyledFirstRow>
+          <ScreenHeading
+            heading="Home"
+            info="Catch up on the most recent threads."
+          />
+          <ScreenButton
+            content="Start a thread"
+            icon={penIconWhite}
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            onClick={e => {
+              props.showModal('CreateThreadModal');
+            }}
+          />
+        </StyledFirstRow>
+        <ScreenSectionHeading heading="Recent" />
 
-          {/*Loop trough all the threads that are associated with the orgId*/}
-          {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
-          {this.props.threads.length > 0 &&
-            this.props.threads.map((t, i) => {
-              let dateInfo = new Date(t.threadCreatedAt);
-              let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
-                '0' + dateInfo.getMinutes()
-              ).slice(-2)}`;
-              return (
-                <ThreadCard
-                  key={t.id}
-                  createdBy={t.threadCreatedByUserName}
-                  createdAt={date}
-                  spaceId={t.spaceId}
-                  threadId={t.id}
-                  heading={t.threadName}
-                  info={t.threadTopic}
-                  isFollowUpDecided={
-                    t.arrayOfUserIdsWhoFollowUp &&
-                    t.arrayOfUserIdsWhoFollowUp.includes(this.props.uuid)
-                      ? true
-                      : false
-                  }
-                  checked={
-                    (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
-                      'false') ||
-                    (t.lastCommentCreatedAt >
-                    t.whenUserHasSeen[localStorage.getItem('uuid')]
-                      ? 'false'
-                      : 'true')
-                  }
-                  onClick={() => this.props.setActiveThread(t.id)}
-                />
-              );
-            })}
-        </StyledMainScreen>
-        <RightSidebar />
-      </StyledMain>
-    );
-  }
-}
+        {/*Loop trough all the threads that are associated with the orgId*/}
+        {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
+        {props.threads.length > 0 &&
+          props.threads.map((t, i) => {
+            let dateInfo = new Date(t.threadCreatedAt);
+            let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+              '0' + dateInfo.getMinutes()
+            ).slice(-2)}`;
+            return (
+              <ThreadCard
+                key={t.id}
+                createdBy={t.threadCreatedByUserName}
+                createdAt={date}
+                spaceId={t.spaceId}
+                threadId={t.id}
+                heading={t.threadName}
+                info={t.threadTopic}
+                isFollowUpDecided={
+                  t.arrayOfUserIdsWhoFollowUp &&
+                  t.arrayOfUserIdsWhoFollowUp.includes(props.uuid)
+                    ? true
+                    : false
+                }
+                checked={
+                  (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                    'false') ||
+                  (t.lastCommentCreatedAt >
+                  t.whenUserHasSeen[localStorage.getItem('uuid')]
+                    ? 'false'
+                    : 'true')
+                }
+                onClick={() => props.setActiveThread(t.id)}
+              />
+            );
+          })}
+      </StyledMainScreen>
+      <RightSidebar />
+    </StyledMain>
+  );
+};
 
 //Styling
 const StyledMainScreen = styled.div`
