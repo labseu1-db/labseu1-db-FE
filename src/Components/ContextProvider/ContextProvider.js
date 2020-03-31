@@ -34,6 +34,24 @@ const ContextProvider = ({ children, ...props }) => {
     props.history.push(path);
   };
 
+  const getUuid = () => {
+    let uuid = localStorage.getItem('uuid');
+    return uuid;
+  };
+
+  const getThreads = async orgId => {
+    let request = {
+      collection: 'threads',
+      key: 'orgId',
+      term: '==',
+      value: orgId,
+      orderBy: 'threadCreatedAt',
+      order: 'desc',
+      type: 'return_data'
+    };
+    return getDataWithWhereOrdered(request);
+  };
+
   const saveData = async request => {
     let ref = db.collection(request.collection).doc(request.docId);
     await ref.set(request.data);
@@ -74,6 +92,25 @@ const ContextProvider = ({ children, ...props }) => {
     }
   };
 
+  const getDataWithWhereOrdered = async request => {
+    try {
+      let ref = db
+        .collection(request.collection)
+        .where(request.key, request.term, request.value);
+      let querySnapshot = await ref.get();
+      let docs = [];
+      querySnapshot.forEach(doc => {
+        docs.push(doc);
+      });
+      if (docs.length) {
+        const { type } = request;
+        return handleData({ docs, type });
+      }
+    } catch (erro) {
+      setError(error);
+    }
+  };
+
   const saveToLocalStorage = (key, value) => {
     localStorage.setItem(key, value);
   };
@@ -88,12 +125,13 @@ const ContextProvider = ({ children, ...props }) => {
         redirect(path);
         break;
       case 'save_id_to_local':
-        let data = request.docs.map(doc => doc.data());
+        let data = [];
+        request.docs.forEach(doc => data.push(doc.data()));
         saveToLocalStorage('uuid', data);
         break;
       case 'return_data':
-        data = request.docs.forEach(doc => doc.data());
-        return data;
+        let return_data = request.docs.map(doc => doc.data());
+        return return_data;
       default:
     }
   };
@@ -108,7 +146,9 @@ const ContextProvider = ({ children, ...props }) => {
         saveData: saveData,
         updateDataWithDoc: updateDataWithDoc,
         db: db,
-        getDataWithDoc: getDataWithDoc
+        getDataWithDoc: getDataWithDoc,
+        getUuid: getUuid,
+        getThreads: getThreads
       }}
     >
       {children}

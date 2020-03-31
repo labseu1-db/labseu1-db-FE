@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -19,8 +19,25 @@ import RightSidebar from './RightSidebar';
 //Actions
 import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
+// Context
+import Context from './ContextProvider/Context';
+
 //Main component
 const MainScreen = props => {
+  const { getThreads } = useContext(Context);
+
+  const [threads, setThreads] = useState([]);
+
+  const setThreadsData = useCallback(async () => {
+    let data = await getThreads(props.match.params.id);
+    setThreads(data);
+  }, [getThreads, props.match.params.id]);
+
+  useEffect(() => {
+    setThreadsData();
+  }, [setThreadsData]);
+
+  console.log('threads', threads);
   return (
     <StyledMain>
       <NavBar {...props} />
@@ -115,16 +132,10 @@ const StyledFirstRow = styled.div`
 //Export component wrapped in store + firestore
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
     threads: state.firestore.ordered.mainScreenThreads
       ? state.firestore.ordered.mainScreenThreads
       : [],
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
-    activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
+    activeModal: state.modal.activeModal
   };
 };
 
