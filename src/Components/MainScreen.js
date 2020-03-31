@@ -24,20 +24,19 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const MainScreen = props => {
-  const { getThreads } = useContext(Context);
+  const { getThreadsWithOrg } = useContext(Context);
 
   const [threads, setThreads] = useState([]);
 
   const setThreadsData = useCallback(async () => {
-    let data = await getThreads(props.match.params.id);
+    let data = await getThreadsWithOrg(props.match.params.id);
     setThreads(data);
-  }, [getThreads, props.match.params.id]);
+  }, [getThreadsWithOrg, props.match.params.id]);
 
   useEffect(() => {
     setThreadsData();
   }, [setThreadsData]);
 
-  console.log('threads', threads);
   return (
     <StyledMain>
       <NavBar {...props} />
@@ -71,12 +70,13 @@ const MainScreen = props => {
 
         {/*Loop trough all the threads that are associated with the orgId*/}
         {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
-        {props.threads.length > 0 &&
-          props.threads.map((t, i) => {
+        {threads.length > 0 &&
+          threads.map((t, i) => {
             let dateInfo = new Date(t.threadCreatedAt);
             let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
               '0' + dateInfo.getMinutes()
             ).slice(-2)}`;
+            console.log(t);
             return (
               <ThreadCard
                 key={t.id}

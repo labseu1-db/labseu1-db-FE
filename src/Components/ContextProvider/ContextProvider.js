@@ -4,9 +4,14 @@ import { Icon, Message } from 'semantic-ui-react';
 import firebase from 'firebase/app';
 import styled from 'styled-components';
 
+// modals
+import CreateThreadModal from '../Modals/CreateThreadModal';
+
 const ContextProvider = ({ children, ...props }) => {
   // Hooks
   const [error, setError] = useState(null);
+  const [loading, setloading] = useState(false);
+  const [modal, setModal] = useState(null);
 
   // Firestore
   const db = firebase.firestore();
@@ -39,7 +44,7 @@ const ContextProvider = ({ children, ...props }) => {
     return uuid;
   };
 
-  const getThreads = async orgId => {
+  const getThreadsWithOrg = async orgId => {
     let request = {
       collection: 'threads',
       key: 'orgId',
@@ -125,12 +130,12 @@ const ContextProvider = ({ children, ...props }) => {
         redirect(path);
         break;
       case 'save_id_to_local':
-        let data = [];
-        request.docs.forEach(doc => data.push(doc.data()));
-        saveToLocalStorage('uuid', data);
+        saveToLocalStorage('uuid', request.docs[0].id);
         break;
       case 'return_data':
-        let return_data = request.docs.map(doc => doc.data());
+        let return_data = request.docs.map(doc =>
+          Object.assign({ id: doc.id }, doc.data())
+        );
         return return_data;
       default:
     }
@@ -148,7 +153,7 @@ const ContextProvider = ({ children, ...props }) => {
         db: db,
         getDataWithDoc: getDataWithDoc,
         getUuid: getUuid,
-        getThreads: getThreads
+        getThreadsWithOrg: getThreadsWithOrg
       }}
     >
       {children}
@@ -157,6 +162,15 @@ const ContextProvider = ({ children, ...props }) => {
           <Icon name="warning" />
           {error.message}
         </StyledMessage>
+      )}
+      {props.activeModal === 'CreateThreadModal' && (
+        <CreateThreadModal
+          shoudlBeOpen={true}
+          showModal={props.showModal}
+          setActiveThread={props.setActiveThread}
+          activeModal={props.activeModal}
+          {...props}
+        />
       )}
     </Context.Provider>
   );
