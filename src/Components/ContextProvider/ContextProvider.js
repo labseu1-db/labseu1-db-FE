@@ -4,13 +4,10 @@ import { Icon, Message } from 'semantic-ui-react';
 import firebase from 'firebase/app';
 import styled from 'styled-components';
 
-// modals
-import CreateThreadModal from '../Modals/CreateThreadModal';
-
 const ContextProvider = ({ children, ...props }) => {
   // Hooks
   const [error, setError] = useState(null);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(null);
 
   // Firestore
@@ -35,6 +32,10 @@ const ContextProvider = ({ children, ...props }) => {
     });
   };
 
+  const toggleLoading = () => {
+    setLoading(st => !st);
+  };
+
   const redirect = path => {
     props.history.push(path);
   };
@@ -44,7 +45,7 @@ const ContextProvider = ({ children, ...props }) => {
     return uuid;
   };
 
-  const getThreadsWithOrg = async orgId => {
+  const getThreadsWithOrg = orgId => {
     let request = {
       collection: 'threads',
       key: 'orgId',
@@ -101,7 +102,8 @@ const ContextProvider = ({ children, ...props }) => {
     try {
       let ref = db
         .collection(request.collection)
-        .where(request.key, request.term, request.value);
+        .where(request.key, request.term, request.value)
+        .orderBy(request.orderBy, request.order);
       let querySnapshot = await ref.get();
       let docs = [];
       querySnapshot.forEach(doc => {
@@ -153,7 +155,11 @@ const ContextProvider = ({ children, ...props }) => {
         db: db,
         getDataWithDoc: getDataWithDoc,
         getUuid: getUuid,
-        getThreadsWithOrg: getThreadsWithOrg
+        getThreadsWithOrg: getThreadsWithOrg,
+        setModal: setModal,
+        modal: modal,
+        toggleLoading: toggleLoading,
+        loading: loading
       }}
     >
       {children}
@@ -162,15 +168,6 @@ const ContextProvider = ({ children, ...props }) => {
           <Icon name="warning" />
           {error.message}
         </StyledMessage>
-      )}
-      {props.activeModal === 'CreateThreadModal' && (
-        <CreateThreadModal
-          shoudlBeOpen={true}
-          showModal={props.showModal}
-          setActiveThread={props.setActiveThread}
-          activeModal={props.activeModal}
-          {...props}
-        />
       )}
     </Context.Provider>
   );

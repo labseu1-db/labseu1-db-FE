@@ -301,16 +301,10 @@ class CreateThreadModal extends Component {
 }
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
     spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn
       ? state.firestore.ordered.spacesUserIsIn
       : [],
     user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
     uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
   };
 };
