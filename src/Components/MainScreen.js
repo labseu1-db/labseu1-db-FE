@@ -27,13 +27,7 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const MainScreen = props => {
-  const {
-    getThreadsWithOrg,
-    setModal,
-    modal,
-    toggleLoading,
-    loading
-  } = useContext(Context);
+  const { getThreadsWithOrg, setModal, modal, loading } = useContext(Context);
 
   const [threads, setThreads] = useState([]);
 
@@ -43,9 +37,7 @@ const MainScreen = props => {
   }, [getThreadsWithOrg, props.match.params.id, setThreads]);
 
   useEffect(() => {
-    Promise.all([setThreadsData()]).then(() => {
-      console.log('done');
-    });
+    setThreadsData();
   }, [setThreadsData]);
   if (loading) {
     return <Spinner />;
