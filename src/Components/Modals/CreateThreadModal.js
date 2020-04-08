@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -12,13 +12,28 @@ import styled from 'styled-components';
 import Context from '../ContextProvider/Context';
 
 const CreateThreadModal = props => {
-  const { setError } = useContext(Context);
+  const { setError, getSpacesWithOrg, firebase, getUserData } = useContext(
+    Context
+  );
+
+  console.log(firebase.auth().currentUser);
 
   const [threadName, setThreadName] = useState('');
   const [threadTopic, setThreadTopic] = useState('');
   const [spaceId, setSpaceId] = useState('');
   const [threadCreatedByUserName, setThreadCreatedByUserName] = useState('');
+  const [spaces, setSpaces] = useState([]);
 
+  const setData = useCallback(async () => {
+    let spaces = await getSpacesWithOrg(props.match.params.id);
+    let user = await getUserData();
+    setThreadCreatedByUserName(user.userName);
+    setSpaces(spaces);
+  }, [getSpacesWithOrg, getUserData, props.match.params.id]);
+
+  useEffect(() => {
+    setData();
+  }, [setData]);
   const saveSpaceToThread = (e, data) => {
     e.preventDefault();
     const { value } = data;
@@ -55,9 +70,9 @@ const CreateThreadModal = props => {
           threadName: threadName,
           threadTopic: threadTopic,
           threadCreatedByUserId: window.localStorage.getItem('uuid'),
-          threadCreatedByUserName: props.user.fullName,
+          threadCreatedByUserName: threadCreatedByUserName,
           threadCreatedAt: Date.now(),
-          spaceId: props.match.params.spaceId,
+          spaceId: spaceId,
           orgId: props.match.params.id,
           lastCommentCreatedAt: Date.now(),
           whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
@@ -80,8 +95,7 @@ const CreateThreadModal = props => {
       .catch(err => console.log(err));
   };
 
-  const { spacesForActiveOrg } = props;
-  const spaceOptions = spacesForActiveOrg.map((space, index) => ({
+  const spaceOptions = spaces.map((space, index) => ({
     key: index,
     text: space.spaceName,
     value: `${space.id}`
@@ -129,7 +143,9 @@ const CreateThreadModal = props => {
             </StyledBackButton>
             <StyledButton
               disabled={!threadName.length > 0 || !spaceId.length > 0}
-              onClick={() => {}}
+              onClick={() => {
+                addNewThread();
+              }}
             >
               Post
             </StyledButton>
@@ -139,41 +155,8 @@ const CreateThreadModal = props => {
     </Modal>
   );
 };
-const mapstateToProps = state => {
-  return {
-    spacesForActiveOrg: state.firestore.ordered.spacesUserIsIn
-      ? state.firestore.ordered.spacesUserIsIn
-      : [],
-    user: state.firestore.ordered.users ? state.firestore.ordered.users[0] : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
-  };
-};
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-  };
-};
-
-export default compose(
-  connect(mapstateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.match.params.id]
-        ],
-        storeAs: 'spacesUserIsIn'
-      },
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      }
-    ];
-  })
-)(CreateThreadModal);
+export default CreateThreadModal;
 
 const MiniModalRight = styled.div`
   position: absolute;

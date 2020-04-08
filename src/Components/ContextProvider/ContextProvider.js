@@ -32,6 +32,17 @@ const ContextProvider = ({ children, ...props }) => {
     });
   };
 
+  const getUserData = () => {
+    let request = {
+      collection: 'users',
+      key: 'userEmail',
+      term: '==',
+      value: firebase.auth().currentUser.email,
+      type: 'return_data'
+    };
+    return getDataWithWhere(request);
+  };
+
   const toggleLoading = () => {
     setLoading(st => !st);
   };
@@ -56,6 +67,17 @@ const ContextProvider = ({ children, ...props }) => {
       type: 'return_data'
     };
     return getDataWithWhereOrdered(request);
+  };
+
+  const getSpacesWithOrg = orgId => {
+    let request = {
+      collection: 'spaces',
+      key: 'orgId',
+      term: '==',
+      value: orgId,
+      type: 'return_data'
+    };
+    return getDataWithWhere(request);
   };
 
   const saveData = async request => {
@@ -91,7 +113,7 @@ const ContextProvider = ({ children, ...props }) => {
       });
       if (docs.length) {
         const { type } = request;
-        handleData({ docs, type });
+        return handleData({ docs, type });
       }
     } catch (erro) {
       setError(error);
@@ -159,7 +181,9 @@ const ContextProvider = ({ children, ...props }) => {
         setModal: setModal,
         modal: modal,
         toggleLoading: toggleLoading,
-        loading: loading
+        loading: loading,
+        getSpacesWithOrg: getSpacesWithOrg,
+        getUserData: getUserData
       }}
     >
       {children}
