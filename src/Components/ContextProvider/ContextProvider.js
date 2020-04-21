@@ -85,6 +85,18 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhere(request);
   };
 
+  const getOrgWithUuid = () => {
+    let uuid = localStorage.getItem('uuid');
+    let request = {
+      collection: 'organisations',
+      key: 'arrayOfUsersIds',
+      term: 'array-contains',
+      value: uuid,
+      type: 'return_data'
+    };
+    return getDataWithWhere(request);
+  };
+
   const saveData = async request => {
     let ref = db.collection(request.collection).doc(request.docId);
     await ref.set(request.data);
@@ -103,7 +115,9 @@ const ContextProvider = ({ children, ...props }) => {
   const getDataWithDoc = async request => {
     let ref = db.collection(request.collection).doc(request.docId);
     let doc = await ref.get();
-    return doc.data();
+    let data = doc.data();
+    data.id = doc.id;
+    return data;
   };
 
   const getDataWithWhere = async request => {
@@ -189,7 +203,8 @@ const ContextProvider = ({ children, ...props }) => {
         loading: loading,
         getSpacesWithOrg: getSpacesWithOrg,
         getUserData: getUserData,
-        closeModal: closeModal
+        closeModal: closeModal,
+        getOrgWithUuid: getOrgWithUuid
       }}
     >
       {children}

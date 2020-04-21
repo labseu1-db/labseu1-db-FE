@@ -1,25 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import styled from 'styled-components';
 import { Redirect, Link } from 'react-router-dom';
-
-//Import actions
-import {
-  showModal,
-  resetThread,
-  setActiveOrg,
-  switchSpaces,
-  resetSpace,
-  showUpgradeScreen,
-  resetUpgradeScreen,
-  editingProfileDone,
-  notRenderProfile,
-  renderProfile,
-  showFollowUp,
-  hideFollowUp
-} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Dropdown } from 'semantic-ui-react';
@@ -50,17 +31,22 @@ const NavBar = props => {
 
   // Context API
 
-  const { getUserData } = useContext(Context);
+  const { getUserData, getOrgWithUuid, getSpacesWithOrg } = useContext(Context);
 
   const [profileDropdown, setProfileDropdown] = useState('');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
   const [orgs, setOrgs] = useState([]);
   const [spaces, setSpaces] = useState([]);
 
   const setData = useCallback(async () => {
     let user = await getUserData();
+    let orgs = await getOrgWithUuid();
+    let orgId = props.match.params.id;
+    let spaces = await getSpacesWithOrg(orgId);
+    setSpaces(spaces);
+    setOrgs(orgs);
     setUser(user);
-  }, [getUserData]);
+  }, [getUserData, getOrgWithUuid, getSpacesWithOrg, props.match.params.id]);
 
   useEffect(() => {
     setData();
@@ -108,17 +94,12 @@ const NavBar = props => {
   };
 
   //Will load spinner if user doesn't exist
-  if (
-    isEmpty(
-      props.user || props.orgsFromArrayOfUsersIds || props.spacesForActiveOrg
-    )
-  ) {
+  if (!user || orgs.length === 0 || spaces.length === 0) {
     return <Spinner />;
   }
-  if (props.user.id === props.uuid) {
-    const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = props;
-    // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-    const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
+  console.log('user', user);
+  if (user.id === props.uuid) {
+    const orgOptions = orgs.map(org => ({
       key: org.orgName,
       text: org.orgName,
       value: `${org.id}`
@@ -153,9 +134,7 @@ const NavBar = props => {
       <NavBarContainer>
         <HeaderContainer>
           <InnerContainerHorizontal>
-            {props.user.fullName && (
-              <AvatarFromLetter username={props.user.fullName} />
-            )}
+            {user.fullName && <AvatarFromLetter username={user.fullName} />}
             {orgOptions && (
               //props.user.fullName
               <StyledDropdown>
@@ -164,7 +143,7 @@ const NavBar = props => {
                   name={'profileDropdown'}
                   basic={true}
                   options={userOptions}
-                  text={props.user.fullName}
+                  text={user.fullName}
                   onChange={handleDropDownChange}
                 />
               </StyledDropdown>
@@ -227,9 +206,9 @@ const NavBar = props => {
                 <CreateNewSpaceModal {...props} />
               </OuterOrgContainer>
               <SpaceContainer>
-                {spacesForActiveOrg && (
+                {spaces && (
                   <div>
-                    {spacesForActiveOrg.map((space, index) => (
+                    {spaces.map((space, index) => (
                       <RowDiv
                         key={index}
                         style={
@@ -258,77 +237,8 @@ const NavBar = props => {
   }
 };
 
-const mapStateToProps = state => {
-  return {
-    user: state.firestore.ordered.filteredUser
-      ? state.firestore.ordered.filteredUser[0]
-      : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
-    // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
-      ? state.firestore.ordered.filteredSpaces
-      : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
-      setActiveOrg,
-      switchSpaces,
-      resetSpace,
-      resetThread,
-      showModal,
-      showUpgradeScreen,
-      resetUpgradeScreen,
-      editingProfileDone,
-      renderProfile,
-      notRenderProfile,
-      showFollowUp,
-      hideFollowUp
-    },
-    dispatch
-  );
-};
-
 //Connect to Firestore
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    // if (!userDoc) return []; <-- empty array if no userDoc in local storage
-    return [
-      {
-        collection: 'users',
-        doc: props.uuid,
-        storeAs: 'filteredUser'
-      },
-      {
-        collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.match.params.id]
-        ],
-        storeAs: 'filteredSpaces'
-      },
-      {
-        collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
-        storeAs: 'orgsInWhichUser'
-      }
-      // {
-      //   collection: 'organisations',
-      //   where: ['arrayOfAdminsIds', '==', props.uuid],
-      //   storeAs: 'orgsInWhichAdmin'
-      // }
-    ];
-  })
-)(NavBar);
+export default NavBar;
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
