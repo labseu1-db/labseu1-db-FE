@@ -1,7 +1,4 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 import { Modal, Dropdown } from 'semantic-ui-react';
 import uuid from 'uuid';
@@ -12,11 +9,13 @@ import styled from 'styled-components';
 import Context from '../ContextProvider/Context';
 
 const CreateThreadModal = props => {
-  const { setError, getSpacesWithOrg, firebase, getUserData } = useContext(
-    Context
-  );
-
-  console.log(firebase.auth().currentUser);
+  const {
+    setError,
+    getSpacesWithOrg,
+    getUserData,
+    db,
+    closeModal
+  } = useContext(Context);
 
   const [threadName, setThreadName] = useState('');
   const [threadTopic, setThreadTopic] = useState('');
@@ -27,7 +26,7 @@ const CreateThreadModal = props => {
   const setData = useCallback(async () => {
     let spaces = await getSpacesWithOrg(props.match.params.id);
     let user = await getUserData();
-    setThreadCreatedByUserName(user.userName);
+    setThreadCreatedByUserName(user[0].fullName);
     setSpaces(spaces);
   }, [getSpacesWithOrg, getUserData, props.match.params.id]);
 
@@ -62,22 +61,20 @@ const CreateThreadModal = props => {
   };
 
   const threadId = uuid();
-  const addNewThread = () => {
-    props.firestore
-      .set(
-        { collection: 'threads', doc: threadId },
-        {
-          threadName: threadName,
-          threadTopic: threadTopic,
-          threadCreatedByUserId: window.localStorage.getItem('uuid'),
-          threadCreatedByUserName: threadCreatedByUserName,
-          threadCreatedAt: Date.now(),
-          spaceId: spaceId,
-          orgId: props.match.params.id,
-          lastCommentCreatedAt: Date.now(),
-          whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
-        }
-      )
+  const addNewThread = async () => {
+    let ref = db.collection('threads').doc(threadId);
+    await ref
+      .set({
+        threadName: threadName,
+        threadTopic: threadTopic,
+        threadCreatedByUserId: window.localStorage.getItem('uuid'),
+        threadCreatedByUserName: threadCreatedByUserName,
+        threadCreatedAt: Date.now(),
+        spaceId: spaceId,
+        orgId: props.match.params.id,
+        lastCommentCreatedAt: Date.now(),
+        whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
+      })
       .then(() => {
         let threadRef = props.firestore.collection('threads').doc(threadId);
         let whenUserHasSeen = {};
@@ -133,14 +130,7 @@ const CreateThreadModal = props => {
       <Modal.Actions>
         <StyledActions>
           <div>
-            <StyledBackButton
-              onClick={e => {
-                e.preventDefault();
-                props.showModal(null);
-              }}
-            >
-              Back
-            </StyledBackButton>
+            <StyledBackButton onClick={closeModal}>Back</StyledBackButton>
             <StyledButton
               disabled={!threadName.length > 0 || !spaceId.length > 0}
               onClick={() => {

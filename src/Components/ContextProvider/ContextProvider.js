@@ -32,6 +32,11 @@ const ContextProvider = ({ children, ...props }) => {
     });
   };
 
+  const closeModal = e => {
+    e.preventDefault();
+    setModal(null);
+  };
+
   const getUserData = () => {
     let request = {
       collection: 'users',
@@ -183,7 +188,8 @@ const ContextProvider = ({ children, ...props }) => {
         toggleLoading: toggleLoading,
         loading: loading,
         getSpacesWithOrg: getSpacesWithOrg,
-        getUserData: getUserData
+        getUserData: getUserData,
+        closeModal: closeModal
       }}
     >
       {children}
