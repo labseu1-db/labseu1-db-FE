@@ -46,8 +46,6 @@ const NavBar = props => {
   // };
 
   const [profileDropdown, setProfileDropdown] = useState('');
-  const [highlightedHome, setHighlightedHome] = useState(false);
-  const [highlightedFollowUp, setHighlightedFollowUp] = useState(false);
 
   // componentDidMount() {
   //   let result = props.spacesForActiveOrg.every(space => {
@@ -88,21 +86,6 @@ const NavBar = props => {
   const setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
     return props.history.push(`/mainscreen/${data.value}`);
-  };
-
-  const highlightHome = () => {
-    setHighlightedHome(true);
-    setHighlightedFollowUp(false);
-  };
-
-  const highlightFollowUp = () => {
-    setHighlightedFollowUp(true);
-    setHighlightedHome(false);
-  };
-
-  const clearHighlightedNav = () => {
-    setHighlightedHome(false);
-    setHighlightedFollowUp(false);
   };
 
   //Will load spinner if user doesn't exist
