@@ -97,7 +97,6 @@ const NavBar = props => {
   if (!user || orgs.length === 0 || spaces.length === 0) {
     return <Spinner />;
   }
-  console.log('user', user);
   if (user.id === props.uuid) {
     const orgOptions = orgs.map(org => ({
       key: org.orgName,
