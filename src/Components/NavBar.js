@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
@@ -37,6 +37,9 @@ import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
 import peopleIcon from '../images/icon-people-lightgray.svg';
 
+// Context
+import Context from './ContextProvider/Context';
+
 const NavBar = props => {
   // state = {
   //   profileDropdown: '',
@@ -45,7 +48,23 @@ const NavBar = props => {
   //   : ''
   // };
 
+  // Context API
+
+  const { getUserData } = useContext(Context);
+
   const [profileDropdown, setProfileDropdown] = useState('');
+  const [user, setUser] = useState(null);
+  const [orgs, setOrgs] = useState([]);
+  const [spaces, setSpaces] = useState([]);
+
+  const setData = useCallback(async () => {
+    let user = await getUserData();
+    setUser(user);
+  }, [getUserData]);
+
+  useEffect(() => {
+    setData();
+  }, [setData]);
 
   // componentDidMount() {
   //   let result = props.spacesForActiveOrg.every(space => {

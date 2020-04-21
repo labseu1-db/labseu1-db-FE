@@ -37,15 +37,15 @@ const ContextProvider = ({ children, ...props }) => {
     setModal(null);
   };
 
-  const getUserData = () => {
-    let request = {
-      collection: 'users',
-      key: 'userEmail',
-      term: '==',
-      value: firebase.auth().currentUser.email,
-      type: 'return_data'
-    };
-    return getDataWithWhere(request);
+  const getUserData = async () => {
+    const uuid = localStorage.getItem('uuid');
+    if (uuid) {
+      let request = {
+        collection: 'users',
+        docId: uuid
+      };
+      return getDataWithDoc(request);
+    }
   };
 
   const toggleLoading = () => {
@@ -102,8 +102,8 @@ const ContextProvider = ({ children, ...props }) => {
 
   const getDataWithDoc = async request => {
     let ref = db.collection(request.collection).doc(request.docId);
-    let doc = ref.get();
-    console.log(doc);
+    let doc = await ref.get();
+    return doc.data();
   };
 
   const getDataWithWhere = async request => {
