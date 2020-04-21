@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
@@ -37,244 +37,224 @@ import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
 import peopleIcon from '../images/icon-people-lightgray.svg';
 
-export class NavBar extends Component {
-  state = {
-    profileDropdown: '',
-    highlightedHome: false,
-    highlightedFollowUp: false,
-    activeSpace: ''
-  };
+const NavBar = props => {
+  // state = {
+  //   profileDropdown: '',
+  //   highlightedHome: false,
+  //   highlightedFollowUp: false,
+  //   : ''
+  // };
 
-  componentDidMount() {
-    let result = this.props.spacesForActiveOrg.every(space => {
-      return space.orgId === this.props.match.params.id;
-    });
-    if (!result) {
-      window.location.reload();
-    }
-  }
+  const [profileDropdown, setProfileDropdown] = useState('');
+  const [highlightedHome, setHighlightedHome] = useState(false);
+  const [highlightedFollowUp, setHighlightedFollowUp] = useState(false);
 
-  handleLogOut = () => {
-    this.props.firebase
+  // componentDidMount() {
+  //   let result = props.spacesForActiveOrg.every(space => {
+  //     return space.orgId === props.match.params.id;
+  //   });
+  //   if (!result) {
+  //     window.location.reload();
+  //   }
+  // }
+
+  const handleLogOut = () => {
+    props.firebase
       .logout()
       .then(() => {
-        this.props.clearFirestore();
+        props.clearFirestore();
       })
       .then(() => {
         localStorage.clear();
-        this.props.history.push('/login');
+        props.history.push('/login');
       })
       .catch(err => console.log("something's wrong."));
 
-    // this.props.history.push("/login");
+    // props.history.push("/login");
   };
 
-  handleDropDownChange = (e, { name, value }) => {
-    this.setState({ [name]: value }, () => {
-      if (this.state.profileDropdown === 'Log out') {
-        this.handleLogOut();
-      } else if (this.state.profileDropdown === 'Upgrade Account') {
-        this.props.history.push(`/upgrade/${this.props.match.params.id}`);
-      } else if (this.state.profileDropdown === 'Profile') {
-        this.props.history.push(`/profile/${this.props.match.params.id}`);
+  const handleDropDownChange = (e, { name, value }) => {
+    setProfileDropdown(value, () => {
+      if (profileDropdown === 'Log out') {
+        handleLogOut();
+      } else if (profileDropdown === 'Upgrade Account') {
+        props.history.push(`/upgrade/${props.match.params.id}`);
+      } else if (profileDropdown === 'Profile') {
+        props.history.push(`/profile/${props.match.params.id}`);
       }
     });
   };
 
-  setSelectedOrgToLocalStorage = (e, data) => {
+  const setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    return this.props.history.push(`/mainscreen/${data.value}`);
+    return props.history.push(`/mainscreen/${data.value}`);
   };
 
-  highlightHome = () => {
-    this.setState({
-      highlightedHome: true,
-      highlightedFollowUp: false,
-      highlightedSpace: false,
-      activeSpace: ''
-    });
+  const highlightHome = () => {
+    setHighlightedHome(true);
+    setHighlightedFollowUp(false);
   };
 
-  highlightFollowUp = () => {
-    this.setState({
-      highlightedHome: false,
-      highlightedFollowUp: true,
-      highlightedSpace: false,
-      activeSpace: ''
-    });
+  const highlightFollowUp = () => {
+    setHighlightedFollowUp(true);
+    setHighlightedHome(false);
   };
 
-  clickedSpace = spaceName => {
-    this.setState({
-      activeSpace: spaceName,
-      highlightedHome: false,
-      highlightedFollowUp: false
-    });
+  const clearHighlightedNav = () => {
+    setHighlightedHome(false);
+    setHighlightedFollowUp(false);
   };
 
-  clearHighlightedNav = () => {
-    this.setState({
-      highlightedHome: false,
-      highlightFollowUp: false
-    });
-  };
-
-  render() {
-    //Will load spinner if user doesn't exist
-    if (
-      isEmpty(
-        this.props.user ||
-          this.props.orgsFromArrayOfUsersIds ||
-          this.props.spacesForActiveOrg
-      )
-    ) {
-      return <Spinner />;
-    }
-    if (this.props.user.id === this.props.uuid) {
-      const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
-      // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
-        key: org.orgName,
-        text: org.orgName,
-        value: `${org.id}`
-      }));
-      // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
-      const userOptions = [
-        {
-          key: 'Profile',
-          text: 'Profile',
-          value: 'Profile'
-        },
-        {
-          key: 'Create Organisation',
-          text: 'Create Organisation',
-          value: 'Create Organisation'
-        },
-        {
-          key: 'Upgrade Account',
-          text: 'Upgrade Account',
-          value: 'Upgrade Account'
-        },
-        {
-          key: 'Log out',
-          text: 'Log out',
-          value: 'Log out'
-        }
-      ];
-      if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
+  //Will load spinner if user doesn't exist
+  if (
+    isEmpty(
+      props.user || props.orgsFromArrayOfUsersIds || props.spacesForActiveOrg
+    )
+  ) {
+    return <Spinner />;
+  }
+  if (props.user.id === props.uuid) {
+    const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = props;
+    // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
+    const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
+      key: org.orgName,
+      text: org.orgName,
+      value: `${org.id}`
+    }));
+    // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
+    const userOptions = [
+      {
+        key: 'Profile',
+        text: 'Profile',
+        value: 'Profile'
+      },
+      {
+        key: 'Create Organisation',
+        text: 'Create Organisation',
+        value: 'Create Organisation'
+      },
+      {
+        key: 'Upgrade Account',
+        text: 'Upgrade Account',
+        value: 'Upgrade Account'
+      },
+      {
+        key: 'Log out',
+        text: 'Log out',
+        value: 'Log out'
       }
-      return (
-        <NavBarContainer>
-          <HeaderContainer>
-            <InnerContainerHorizontal>
-              {this.props.user.fullName && (
-                <AvatarFromLetter username={this.props.user.fullName} />
-              )}
-              {orgOptions && (
-                //this.props.user.fullName
-                <StyledDropdown>
-                  <Dropdown
-                    inline
-                    name={'profileDropdown'}
-                    basic={true}
-                    options={userOptions}
-                    text={this.props.user.fullName}
-                    onChange={this.handleDropDownChange}
-                  />
-                </StyledDropdown>
-              )}
-            </InnerContainerHorizontal>
-            {/* <div>
+    ];
+    if (profileDropdown === 'Create Organisation') {
+      return <Redirect to="/createneworganisation" />;
+    }
+    return (
+      <NavBarContainer>
+        <HeaderContainer>
+          <InnerContainerHorizontal>
+            {props.user.fullName && (
+              <AvatarFromLetter username={props.user.fullName} />
+            )}
+            {orgOptions && (
+              //props.user.fullName
+              <StyledDropdown>
+                <Dropdown
+                  inline
+                  name={'profileDropdown'}
+                  basic={true}
+                  options={userOptions}
+                  text={props.user.fullName}
+                  onChange={handleDropDownChange}
+                />
+              </StyledDropdown>
+            )}
+          </InnerContainerHorizontal>
+          {/* <div>
               <Icon name="cog" />
             </div> */}
-          </HeaderContainer>
-          <InnerContainer>
+        </HeaderContainer>
+        <InnerContainer>
+          <RowContainer>
+            <img src={homeIcon} alt="home icon" />
+            <RowDiv
+              style={
+                props.match.path === '/mainscreen/:id'
+                  ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                  : {}
+              }
+              to={`/mainscreen/${props.match.params.id}`}
+            >
+              Home
+            </RowDiv>
+          </RowContainer>
+          <RowContainer>
+            <img src={clipboardIcon} alt="home icon" />
+            <RowDiv
+              style={
+                props.match.path === '/follow-up/:id'
+                  ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                  : {}
+              }
+              to={`/follow-up/${props.match.params.id}`}
+            >
+              Follow up
+            </RowDiv>
+          </RowContainer>
+          {localStorage.getItem('activeOrg') && (
             <RowContainer>
-              <img src={homeIcon} alt="home icon" />
-              <RowDiv
-                style={
-                  this.props.match.path === '/mainscreen/:id'
-                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                    : {}
-                }
-                to={`/mainscreen/${this.props.match.params.id}`}
-              >
-                Home
-              </RowDiv>
+              <img src={peopleIcon} alt="users icon" />
+              <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>
             </RowContainer>
-            <RowContainer>
-              <img src={clipboardIcon} alt="home icon" />
-              <RowDiv
-                style={
-                  this.props.match.path === '/follow-up/:id'
-                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                    : {}
-                }
-                to={`/follow-up/${this.props.match.params.id}`}
-              >
-                Follow up
-              </RowDiv>
-            </RowContainer>
-            {localStorage.getItem('activeOrg') && (
-              <RowContainer>
-                <img src={peopleIcon} alt="users icon" />
-                <RowDiv to={`/users/${this.props.match.params.id}`}>
-                  Users
-                </RowDiv>
-              </RowContainer>
-            )}
+          )}
+          <div>
             <div>
-              <div>
-                <OuterOrgContainer>
-                  <OrgContainer>
-                    <img src={discIcon} alt="home icon" />
+              <OuterOrgContainer>
+                <OrgContainer>
+                  <img src={discIcon} alt="home icon" />
 
-                    {this.props.match.params.id && (
-                      <NavBarOrgDropdown
-                        // setActiveOrg={this.props.setActiveOrg}
-                        activeOrg={this.props.match.params.id}
-                        orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={
-                          this.setSelectedOrgToLocalStorage
-                        }
-                      />
-                    )}
-                  </OrgContainer>
-                  <CreateNewSpaceModal {...this.props} />
-                </OuterOrgContainer>
-                <SpaceContainer>
-                  {spacesForActiveOrg && (
-                    <div>
-                      {spacesForActiveOrg.map((space, index) => (
-                        <RowDiv
-                          key={index}
-                          style={
-                            this.props.match.params.spaceId === space.id
-                              ? {
-                                  backgroundColor: '#fff0ea',
-                                  color: 'rgb(55, 71, 80)'
-                                }
-                              : {}
-                          }
-                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
-                        >
-                          {space.spaceName}
-                        </RowDiv>
-                      ))}
-                    </div>
+                  {props.match.params.id && (
+                    <NavBarOrgDropdown
+                      // setActiveOrg={props.setActiveOrg}
+                      activeOrg={props.match.params.id}
+                      orgOptions={orgOptions}
+                      setSelectedOrgToLocalStorage={
+                        setSelectedOrgToLocalStorage
+                      }
+                    />
                   )}
-                </SpaceContainer>
-              </div>
+                </OrgContainer>
+                <CreateNewSpaceModal {...props} />
+              </OuterOrgContainer>
+              <SpaceContainer>
+                {spacesForActiveOrg && (
+                  <div>
+                    {spacesForActiveOrg.map((space, index) => (
+                      <RowDiv
+                        key={index}
+                        style={
+                          props.match.params.spaceId === space.id
+                            ? {
+                                backgroundColor: '#fff0ea',
+                                color: 'rgb(55, 71, 80)'
+                              }
+                            : {}
+                        }
+                        to={`/mainscreen/${props.match.params.id}/${space.id}`}
+                      >
+                        {space.spaceName}
+                      </RowDiv>
+                    ))}
+                  </div>
+                )}
+              </SpaceContainer>
             </div>
-          </InnerContainer>
-        </NavBarContainer>
-      );
-    } else {
-      return <Spinner />;
-    }
+          </div>
+        </InnerContainer>
+      </NavBarContainer>
+    );
+  } else {
+    return <Spinner />;
   }
-}
+};
 
 const mapStateToProps = state => {
   return {
