@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -13,176 +13,178 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class CreateNewSpaceModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const CreateNewSpaceModal = props => {
+  // constructor(props) {
+  //   super(props);
+  //   props.state = {
+  //     spaceName: '',
+  //     spaceTopic: '',
+  //     idsInSpace: [props.uuid]
+  //   };
+  // }
+  console.log(props);
+
+  const [model_open, setModel_open] = useState(false);
+  const [spaceName, setSpaceName] = useState('');
+  const [spaceTopic, setSpaceTopic] = useState('');
+  const [idsInSpace, setIdsInSpace] = useState([localStorage.getItem('uuid')]);
+
+  const handleInputChange = e => {
+    props.setState({ [e.target.name]: e.target.value });
+  };
+
+  const handleOpen = () => {
+    props.setState({ model_open: true });
+  };
+
+  const handleClose = () => {
+    props.setState({ model_open: false });
+  };
+
+  const cleanInputs = () => {
+    props.setState({
       spaceName: '',
       spaceTopic: '',
-      idsInSpace: [this.props.uuid]
-    };
-  }
-
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleOpen = () => {
-    this.setState({ model_open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ model_open: false });
-  };
-
-  cleanInputs = () => {
-    this.setState({
-      spaceName: '',
-      spaceTopic: '',
-      idsInSpace: [this.props.uuid]
+      idsInSpace: [props.uuid]
     });
   };
 
-  addSpaceToDatabase = () => {
+  const addSpaceToDatabase = () => {
     const spaceId = uuid();
-    this.props.firestore
+    props.firestore
       .set(
         { collection: 'spaces', doc: spaceId },
         {
-          spaceName: this.state.spaceName,
+          spaceName: props.state.spaceName,
           spaceCreatedByUserId: window.localStorage.getItem('uuid'),
-          spaceTopic: this.state.spaceTopic,
-          orgId: this.props.match.params.id,
-          arrayOfUserIdsInSpace: this.state.idsInSpace
+          spaceTopic: props.state.spaceTopic,
+          orgId: props.match.params.id,
+          arrayOfUserIdsInSpace: props.state.idsInSpace
         }
       )
-      .then(res => this.addSpaceToUsers(spaceId))
-      .then(res => this.cleanInputs())
+      .then(res => props.addSpaceToUsers(spaceId))
+      .then(res => props.cleanInputs())
       .then(res =>
-        this.props.history.push(
-          `/mainscreen/${this.props.match.params.id}/${spaceId}`
-        )
+        props.history.push(`/mainscreen/${props.match.params.id}/${spaceId}`)
       );
   };
 
-  addSpaceToUsers = spaceId => {
-    this.state.idsInSpace.map(id => {
-      return this.props.firestore.update(
+  const addSpaceToUsers = spaceId => {
+    props.state.idsInSpace.map(id => {
+      return props.firestore.update(
         { collection: 'users', doc: id },
         {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(spaceId),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
-            this.state.spaceName
+          arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(spaceId),
+          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(
+            props.state.spaceName
           )
         }
       );
     });
   };
 
-  setIdsToState = (e, data) => {
+  const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState(prState => ({
+    props.setState(prState => ({
       idsInSpace: [...prState.idsInSpace, ...value]
     }));
   };
-  render() {
-    const { organisation } = this.props;
+  const { organisation } = props;
 
-    if (isEmpty(organisation)) {
-      return <Spinner />;
-    } else {
-      const userIdsOptions = this.props.listOfUsersWithinTheOrg
-        .filter(user => user.id !== this.props.uuid)
-        .map(user => ({
-          key: user.id,
-          text: user.fullName,
-          value: user.id
-        }));
-      return (
-        <Modal
-          trigger={
+  if (isEmpty(organisation)) {
+    return <Spinner />;
+  } else {
+    const userIdsOptions = props.listOfUsersWithinTheOrg
+      .filter(user => user.id !== props.uuid)
+      .map(user => ({
+        key: user.id,
+        text: user.fullName,
+        value: user.id
+      }));
+    return (
+      <Modal
+        trigger={
+          <div>
+            <img
+              src={plusIcon}
+              alt="plus icon"
+              onClick={props.handleOpen}
+              disabled={isEmpty(localStorage.getItem('activeOrg'))}
+            />
+          </div>
+        }
+        open={model_open}
+        size="tiny"
+      >
+        <StyledContainer>
+          <Modal.Header>
             <div>
-              <img
-                src={plusIcon}
-                alt="plus icon"
-                onClick={this.handleOpen}
-                disabled={isEmpty(localStorage.getItem('activeOrg'))}
-              />
+              <StyledMainHeader>Create a new space</StyledMainHeader>
             </div>
-          }
-          open={this.state.model_open}
-          size="tiny"
-        >
-          <StyledContainer>
-            <Modal.Header>
-              <div>
-                <StyledMainHeader>Create a new space</StyledMainHeader>
-              </div>
-              <div>
-                <Header as="h5">Space name</Header>
-                <StyledInput
-                  name="spaceName"
-                  placeholder="Product Design"
-                  type="text"
-                  required
-                  value={this.state.spaceName}
-                  onChange={this.handleInputChange}
+            <div>
+              <Header as="h5">Space name</Header>
+              <StyledInput
+                name="spaceName"
+                placeholder="Product Design"
+                type="text"
+                required
+                value={spaceName}
+                onChange={e => setSpaceName(e.target.value)}
+              />
+              <Header as="h5">
+                What types of discussions happen here?
+                <StyledOptional>(Optional)</StyledOptional>
+              </Header>
+              <StyledInput
+                name="spaceTopic"
+                placeholder="Questions and thoughts about proposals"
+                type="text"
+                value={spaceTopic}
+                onChange={props.handleInputChange}
+              />
+              <Header as="h5">Members</Header>
+              <StyledDropdown>
+                <Dropdown
+                  placeholder="Choose people to add"
+                  fluid
+                  multiple
+                  search
+                  selection
+                  options={userIdsOptions}
+                  onChange={props.setIdsToState}
                 />
-                <Header as="h5">
-                  What types of discussions happen here?
-                  <StyledOptional>(Optional)</StyledOptional>
-                </Header>
-                <StyledInput
-                  name="spaceTopic"
-                  placeholder="Questions and thoughts about proposals"
-                  type="text"
-                  value={this.state.spaceTopic}
-                  onChange={this.handleInputChange}
-                />
-                <Header as="h5">Members</Header>
-                <StyledDropdown>
-                  <Dropdown
-                    placeholder="Choose people to add"
-                    fluid
-                    multiple
-                    search
-                    selection
-                    options={userIdsOptions}
-                    onChange={this.setIdsToState}
-                  />
-                </StyledDropdown>
-                <Modal.Actions>
-                  <StyledActions>
-                    <StyledButtonCancel onClick={this.handleClose}>
-                      Cancel
-                    </StyledButtonCancel>
+              </StyledDropdown>
+              <Modal.Actions>
+                <StyledActions>
+                  <StyledButtonCancel onClick={props.handleClose}>
+                    Cancel
+                  </StyledButtonCancel>
 
-                    <StyledButtonCreateSpace
-                      type="submit"
-                      disabled={
-                        !this.state.spaceName.length > 0 ||
-                        !this.state.spaceTopic.length > 0 ||
-                        !this.state.idsInSpace.length > 0
-                      }
-                      onClick={e => {
-                        this.addSpaceToDatabase();
-                        this.props.showModal(null);
-                        this.handleClose();
-                      }}
-                    >
-                      Create Space
-                    </StyledButtonCreateSpace>
-                  </StyledActions>
-                </Modal.Actions>
-              </div>
-            </Modal.Header>
-          </StyledContainer>
-        </Modal>
-      );
-    }
+                  <StyledButtonCreateSpace
+                    type="submit"
+                    disabled={
+                      spaceName.length > 0 ||
+                      spaceTopic.length > 0 ||
+                      idsInSpace.length > 0
+                    }
+                    onClick={e => {
+                      props.addSpaceToDatabase();
+                      props.showModal(null);
+                      props.handleClose();
+                    }}
+                  >
+                    Create Space
+                  </StyledButtonCreateSpace>
+                </StyledActions>
+              </Modal.Actions>
+            </div>
+          </Modal.Header>
+        </StyledContainer>
+      </Modal>
+    );
   }
-}
+};
 
 //Export component wrapped in redux actions and store and firestore
 const mapStateToProps = state => {

@@ -94,146 +94,137 @@ const NavBar = props => {
   };
 
   //Will load spinner if user doesn't exist
-  if (!user || orgs.length === 0 || spaces.length === 0) {
-    return <Spinner />;
-  }
-  if (user.id === props.uuid) {
-    const orgOptions = orgs.map(org => ({
-      key: org.orgName,
-      text: org.orgName,
-      value: `${org.id}`
-    }));
-    // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
-    const userOptions = [
-      {
-        key: 'Profile',
-        text: 'Profile',
-        value: 'Profile'
-      },
-      {
-        key: 'Create Organisation',
-        text: 'Create Organisation',
-        value: 'Create Organisation'
-      },
-      {
-        key: 'Upgrade Account',
-        text: 'Upgrade Account',
-        value: 'Upgrade Account'
-      },
-      {
-        key: 'Log out',
-        text: 'Log out',
-        value: 'Log out'
-      }
-    ];
-    if (profileDropdown === 'Create Organisation') {
-      return <Redirect to="/createneworganisation" />;
+  const orgOptions = orgs.map(org => ({
+    key: org.orgName,
+    text: org.orgName,
+    value: `${org.id}`
+  }));
+  // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
+  const userOptions = [
+    {
+      key: 'Profile',
+      text: 'Profile',
+      value: 'Profile'
+    },
+    {
+      key: 'Create Organisation',
+      text: 'Create Organisation',
+      value: 'Create Organisation'
+    },
+    {
+      key: 'Upgrade Account',
+      text: 'Upgrade Account',
+      value: 'Upgrade Account'
+    },
+    {
+      key: 'Log out',
+      text: 'Log out',
+      value: 'Log out'
     }
-    return (
-      <NavBarContainer>
-        <HeaderContainer>
-          <InnerContainerHorizontal>
-            {user.fullName && <AvatarFromLetter username={user.fullName} />}
-            {orgOptions && (
-              //props.user.fullName
-              <StyledDropdown>
-                <Dropdown
-                  inline
-                  name={'profileDropdown'}
-                  basic={true}
-                  options={userOptions}
-                  text={user.fullName}
-                  onChange={handleDropDownChange}
-                />
-              </StyledDropdown>
-            )}
-          </InnerContainerHorizontal>
-          {/* <div>
+  ];
+  if (profileDropdown === 'Create Organisation') {
+    return <Redirect to="/createneworganisation" />;
+  }
+  return (
+    <NavBarContainer>
+      <HeaderContainer>
+        <InnerContainerHorizontal>
+          {user.fullName && <AvatarFromLetter username={user.fullName} />}
+          {orgOptions && (
+            //props.user.fullName
+            <StyledDropdown>
+              <Dropdown
+                inline
+                name={'profileDropdown'}
+                basic={true}
+                options={userOptions}
+                text={user.fullName}
+                onChange={handleDropDownChange}
+              />
+            </StyledDropdown>
+          )}
+        </InnerContainerHorizontal>
+        {/* <div>
               <Icon name="cog" />
             </div> */}
-        </HeaderContainer>
-        <InnerContainer>
+      </HeaderContainer>
+      <InnerContainer>
+        <RowContainer>
+          <img src={homeIcon} alt="home icon" />
+          <RowDiv
+            style={
+              props.match.path === '/mainscreen/:id'
+                ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                : {}
+            }
+            to={`/mainscreen/${props.match.params.id}`}
+          >
+            Home
+          </RowDiv>
+        </RowContainer>
+        <RowContainer>
+          <img src={clipboardIcon} alt="home icon" />
+          <RowDiv
+            style={
+              props.match.path === '/follow-up/:id'
+                ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                : {}
+            }
+            to={`/follow-up/${props.match.params.id}`}
+          >
+            Follow up
+          </RowDiv>
+        </RowContainer>
+        {localStorage.getItem('activeOrg') && (
           <RowContainer>
-            <img src={homeIcon} alt="home icon" />
-            <RowDiv
-              style={
-                props.match.path === '/mainscreen/:id'
-                  ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                  : {}
-              }
-              to={`/mainscreen/${props.match.params.id}`}
-            >
-              Home
-            </RowDiv>
+            <img src={peopleIcon} alt="users icon" />
+            <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>
           </RowContainer>
-          <RowContainer>
-            <img src={clipboardIcon} alt="home icon" />
-            <RowDiv
-              style={
-                props.match.path === '/follow-up/:id'
-                  ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                  : {}
-              }
-              to={`/follow-up/${props.match.params.id}`}
-            >
-              Follow up
-            </RowDiv>
-          </RowContainer>
-          {localStorage.getItem('activeOrg') && (
-            <RowContainer>
-              <img src={peopleIcon} alt="users icon" />
-              <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>
-            </RowContainer>
-          )}
+        )}
+        <div>
           <div>
-            <div>
-              <OuterOrgContainer>
-                <OrgContainer>
-                  <img src={discIcon} alt="home icon" />
+            <OuterOrgContainer>
+              <OrgContainer>
+                <img src={discIcon} alt="home icon" />
 
-                  {props.match.params.id && (
-                    <NavBarOrgDropdown
-                      // setActiveOrg={props.setActiveOrg}
-                      activeOrg={props.match.params.id}
-                      orgOptions={orgOptions}
-                      setSelectedOrgToLocalStorage={
-                        setSelectedOrgToLocalStorage
-                      }
-                    />
-                  )}
-                </OrgContainer>
-                <CreateNewSpaceModal {...props} />
-              </OuterOrgContainer>
-              <SpaceContainer>
-                {spaces && (
-                  <div>
-                    {spaces.map((space, index) => (
-                      <RowDiv
-                        key={index}
-                        style={
-                          props.match.params.spaceId === space.id
-                            ? {
-                                backgroundColor: '#fff0ea',
-                                color: 'rgb(55, 71, 80)'
-                              }
-                            : {}
-                        }
-                        to={`/mainscreen/${props.match.params.id}/${space.id}`}
-                      >
-                        {space.spaceName}
-                      </RowDiv>
-                    ))}
-                  </div>
+                {props.match.params.id && (
+                  <NavBarOrgDropdown
+                    // setActiveOrg={props.setActiveOrg}
+                    activeOrg={props.match.params.id}
+                    orgOptions={orgOptions}
+                    setSelectedOrgToLocalStorage={setSelectedOrgToLocalStorage}
+                  />
                 )}
-              </SpaceContainer>
-            </div>
+              </OrgContainer>
+              <CreateNewSpaceModal {...props} />
+            </OuterOrgContainer>
+            <SpaceContainer>
+              {spaces && (
+                <div>
+                  {spaces.map((space, index) => (
+                    <RowDiv
+                      key={index}
+                      style={
+                        props.match.params.spaceId === space.id
+                          ? {
+                              backgroundColor: '#fff0ea',
+                              color: 'rgb(55, 71, 80)'
+                            }
+                          : {}
+                      }
+                      to={`/mainscreen/${props.match.params.id}/${space.id}`}
+                    >
+                      {space.spaceName}
+                    </RowDiv>
+                  ))}
+                </div>
+              )}
+            </SpaceContainer>
           </div>
-        </InnerContainer>
-      </NavBarContainer>
-    );
-  } else {
-    return <Spinner />;
-  }
+        </div>
+      </InnerContainer>
+    </NavBarContainer>
+  );
 };
 
 //Connect to Firestore
