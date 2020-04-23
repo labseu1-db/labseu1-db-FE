@@ -6,7 +6,6 @@ import { Redirect, Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 
 //Import components
-import Spinner from './semantic-components/Spinner';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 import AvatarFromLetter from './reusable-components/AvatarFromLetter';

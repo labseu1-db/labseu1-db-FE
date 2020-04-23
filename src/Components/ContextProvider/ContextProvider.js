@@ -48,6 +48,17 @@ const ContextProvider = ({ children, ...props }) => {
     }
   };
 
+  const getUsersFromOrg = orgId => {
+    let request = {
+      collection: 'users',
+      key: 'arrayOfOrgsIds',
+      term: 'array-contains',
+      value: orgId,
+      type: 'return_data'
+    };
+    return getDataWithWhere(request);
+  };
+
   const toggleLoading = () => {
     setLoading(st => !st);
   };
@@ -85,6 +96,14 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhere(request);
   };
 
+  const getOrgWithId = orgId => {
+    let request = {
+      collection: 'organisations',
+      docId: orgId
+    };
+    return getDataWithDoc(request);
+  };
+
   const getOrgWithUuid = () => {
     let uuid = localStorage.getItem('uuid');
     let request = {
@@ -100,7 +119,11 @@ const ContextProvider = ({ children, ...props }) => {
   const saveData = async request => {
     let ref = db.collection(request.collection).doc(request.docId);
     await ref.set(request.data);
-    handleData({ type: request.type, data: request.docId });
+  };
+
+  const updateData = async request => {
+    let ref = db.collection(request.collection).doc(request.docId);
+    await ref.update(request.data);
   };
 
   const updateDataWithDoc = async request => {
@@ -204,7 +227,9 @@ const ContextProvider = ({ children, ...props }) => {
         getSpacesWithOrg: getSpacesWithOrg,
         getUserData: getUserData,
         closeModal: closeModal,
-        getOrgWithUuid: getOrgWithUuid
+        getOrgWithUuid: getOrgWithUuid,
+        getOrgWithId: getOrgWithId,
+        getUsersFromOrg: getUsersFromOrg
       }}
     >
       {children}
