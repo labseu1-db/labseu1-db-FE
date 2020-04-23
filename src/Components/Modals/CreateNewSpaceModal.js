@@ -31,7 +31,9 @@ const CreateNewSpaceModal = props => {
     getUserData,
     getOrgWithId,
     getUsersFromOrg,
-    saveData
+    saveData,
+    updateDataWithDoc,
+    firebase
   } = useContext(Context);
 
   const [spaceName, setSpaceName] = useState('');
@@ -53,8 +55,6 @@ const CreateNewSpaceModal = props => {
   useEffect(() => {
     setData();
   }, [setData]);
-
-  console.log('org', users);
 
   const cleanInputs = () => {
     setIdsInSpace([localStorage.getItem('uuid')]);
@@ -84,16 +84,16 @@ const CreateNewSpaceModal = props => {
   };
 
   const addSpaceToUsers = spaceId => {
-    props.state.idsInSpace.map(id => {
-      return props.firestore.update(
-        { collection: 'users', doc: id },
-        {
-          arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(spaceId),
-          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(
-            props.state.spaceName
-          )
+    idsInSpace.map(id => {
+      let request = {
+        collection: 'users',
+        docId: id,
+        data: {
+          arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(spaceId),
+          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(spaceName)
         }
-      );
+      };
+      updateDataWithDoc(request);
     });
   };
 
@@ -174,13 +174,13 @@ const CreateNewSpaceModal = props => {
                       <StyledButtonCreateSpace
                         type="submit"
                         disabled={
-                          spaceName.length > 0 ||
-                          spaceTopic.length > 0 ||
-                          idsInSpace.length > 0
+                          spaceName.length === 0 ||
+                          spaceTopic.length === 0 ||
+                          idsInSpace.length === 0
                         }
                         onClick={e => {
                           addSpaceToDatabase();
-                          closeModal();
+                          closeModal(e);
                         }}
                       >
                         Create Space

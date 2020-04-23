@@ -117,13 +117,12 @@ const ContextProvider = ({ children, ...props }) => {
   };
 
   const saveData = async request => {
-    let ref = db.collection(request.collection).doc(request.docId);
-    await ref.set(request.data);
-  };
-
-  const updateData = async request => {
-    let ref = db.collection(request.collection).doc(request.docId);
-    await ref.update(request.data);
+    try {
+      let ref = db.collection(request.collection).doc(request.docId);
+      await ref.set(request.data);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   const updateDataWithDoc = async request => {
