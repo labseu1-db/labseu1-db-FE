@@ -26,7 +26,7 @@ const CreateThreadModal = props => {
   const setData = useCallback(async () => {
     let spaces = await getSpacesWithOrg(props.match.params.id);
     let user = await getUserData();
-    setThreadCreatedByUserName(user[0].fullName);
+    setThreadCreatedByUserName(user.fullName);
     setSpaces(spaces);
   }, [getSpacesWithOrg, getUserData, props.match.params.id]);
 

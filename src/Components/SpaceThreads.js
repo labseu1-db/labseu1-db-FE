@@ -1,19 +1,9 @@
 import React, { useEffect, useCallback, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import { Dropdown } from 'semantic-ui-react';
 
 //Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
-
-//Import actions
-import {
-  showModal,
-  setActiveThread,
-  resetSpace
-} from '../redux/actions/actionCreators';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
@@ -34,15 +24,19 @@ import Context from './ContextProvider/Context';
 
 const SpaceThreads = props => {
   // Context
-  const { getSpaceWithId } = useContext(Context);
+  const { getSpaceWithId, getThreadsWithSpace, modal, setModal } = useContext(
+    Context
+  );
 
   const [space, setSpace] = useState('');
   const [threads, setThreads] = useState([]);
 
   const setData = useCallback(async () => {
     let space = await getSpaceWithId(props.match.params.spaceId);
+    let threads = await getThreadsWithSpace(props.match.params.spaceId);
     setSpace(space);
-  }, [props.match.params.spaceId, getSpaceWithId]);
+    setThreads(threads);
+  }, [props.match.params.spaceId, getSpaceWithId, getThreadsWithSpace]);
 
   useEffect(() => {
     setData();
@@ -69,7 +63,7 @@ const SpaceThreads = props => {
       <StyledMain>
         <NavBar {...props} />
         <StyledMainScreen>
-          {props.activeModal === 'CreateThreadModal' && (
+          {modal === 'CreateThreadModal' && (
             <CreateThreadModal
               shoudlBeOpen={true}
               showModal={props.showModal}
@@ -78,14 +72,15 @@ const SpaceThreads = props => {
               {...props}
             />
           )}
-          {props.activeModal === 'EditSpaceModal' && (
+          {modal === 'EditSpaceModal' && (
             <EditSpaceModal
               shoudlBeOpen={true}
               activeModal={props.activeModal}
               space={props.space}
+              {...props}
             />
           )}
-          {props.activeModal === 'DeleteSpaceModal' && (
+          {modal === 'DeleteSpaceModal' && (
             <DeleteSpaceModal
               shoudlBeOpen={true}
               activeModal={props.activeModal}
@@ -93,7 +88,7 @@ const SpaceThreads = props => {
               {...props}
             />
           )}
-          {props.activeModal === 'LeaveSpaceModal' && (
+          {modal === 'LeaveSpaceModal' && (
             <LeaveSpaceModal
               shoudlBeOpen={true}
               activeModal={props.activeModal}
@@ -115,7 +110,7 @@ const SpaceThreads = props => {
                       <Dropdown.Item
                         text="Edit space"
                         onClick={e => {
-                          props.showModal('EditSpaceModal');
+                          setModal('EditSpaceModal');
                         }}
                       />
                     )}
@@ -124,7 +119,7 @@ const SpaceThreads = props => {
                       <Dropdown.Item
                         text="Delete space"
                         onClick={e => {
-                          props.showModal('DeleteSpaceModal');
+                          setModal('DeleteSpaceModal');
                         }}
                       />
                     )}
@@ -133,7 +128,7 @@ const SpaceThreads = props => {
                       <Dropdown.Item
                         text="Leave space"
                         onClick={e => {
-                          props.showModal('LeaveSpaceModal');
+                          setModal('LeaveSpaceModal');
                         }}
                       />
                     )}
@@ -148,7 +143,7 @@ const SpaceThreads = props => {
                 color="white"
                 border="none"
                 onClick={e => {
-                  props.showModal('CreateThreadModal');
+                  setModal('CreateThreadModal');
                 }}
               />
             </StyledButtonsContainer>
@@ -156,8 +151,8 @@ const SpaceThreads = props => {
           <ScreenSectionHeading heading="Recent" />
 
           {/*Loop trough all the threads that are associated with the orgId*/}
-          {props.threads.length > 0 &&
-            props.threads.map(t => {
+          {threads.length > 0 &&
+            threads.map(t => {
               let dateInfo = new Date(t.threadCreatedAt);
               let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
                 '0' + dateInfo.getMinutes()
@@ -194,7 +189,7 @@ const SpaceThreads = props => {
                       `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${t.id}`
                     );
                   }}
-                  currentSpace={props.space.spaceName}
+                  currentSpace={space.spaceName}
                 />
               );
             })}
@@ -269,42 +264,4 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : [],
-    space: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces[0]
-      : [],
-    spaceId: state.spaceId,
-    activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { showModal, setActiveThread, resetSpace },
-    dispatch
-  );
-};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'threads',
-        where: ['spaceId', '==', props.match.params.spaceId],
-        orderBy: ['threadCreatedAt', 'desc']
-      },
-      {
-        collection: 'spaces',
-        doc: props.match.params.spaceId
-      }
-    ];
-  })
-)(SpaceThreads);
+export default SpaceThreads;

@@ -85,6 +85,19 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhereOrdered(request);
   };
 
+  const getThreadsWithSpace = async spaceId => {
+    let request = {
+      collection: 'threads',
+      key: 'spaceId',
+      term: '==',
+      value: spaceId,
+      order: 'desc',
+      orderBy: 'threadCreatedAt',
+      type: 'return_data'
+    };
+    return await getDataWithWhereOrdered(request);
+  };
+
   const getSpacesWithOrg = orgId => {
     let request = {
       collection: 'spaces',
@@ -183,6 +196,8 @@ const ContextProvider = ({ children, ...props }) => {
       if (docs.length) {
         const { type } = request;
         return handleData({ docs, type });
+      } else {
+        return [];
       }
     } catch (erro) {
       setError(error);
@@ -237,7 +252,8 @@ const ContextProvider = ({ children, ...props }) => {
         getOrgWithUuid: getOrgWithUuid,
         getOrgWithId: getOrgWithId,
         getUsersFromOrg: getUsersFromOrg,
-        getSpaceWithId: getSpaceWithId
+        getSpaceWithId: getSpaceWithId,
+        getThreadsWithSpace: getThreadsWithSpace
       }}
     >
       {children}
