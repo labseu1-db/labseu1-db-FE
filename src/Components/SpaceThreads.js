@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -30,6 +30,17 @@ import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
 const SpaceThreads = props => {
+  const setData = useCallback(async () => {
+    console.log('hello');
+  }, []);
+
+  const [space, setSpace] = useState('');
+  const [threads, setThreads] = useState([]);
+
+  useEffect(() => {
+    setData();
+  }, [setData]);
+
   if (!props.space) {
     return (
       <StyledErrorScreen>
