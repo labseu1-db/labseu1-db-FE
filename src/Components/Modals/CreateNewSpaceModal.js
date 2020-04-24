@@ -1,13 +1,9 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore, isEmpty } from 'react-redux-firebase';
-import Spinner from '../semantic-components/Spinner';
+import { isEmpty } from 'react-redux-firebase';
 import uuid from 'uuid';
 import plusIcon from '../../images/icon-plus-lightgray.svg';
 //Redux action
-import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
 import styled from 'styled-components';
@@ -96,150 +92,98 @@ const CreateNewSpaceModal = props => {
   const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    setIdsInSpace(prState => ({
-      idsInSpace: [...prState.idsInSpace, ...value]
+    setIdsInSpace(prState => [...prState, ...value]);
+  };
+
+  const userIdsOptions = users
+    .filter(user => user.id !== props.uuid)
+    .map(user => ({
+      key: user.id,
+      text: user.fullName,
+      value: user.id
     }));
-  };
-  const { organisation } = props;
+  return (
+    <div>
+      <img
+        src={plusIcon}
+        alt="plus icon"
+        onClick={() => setModal('CreateSpaceModal')}
+        disabled={isEmpty(localStorage.getItem('activeOrg'))}
+      />
 
-  if (isEmpty(organisation)) {
-    return <Spinner />;
-  } else {
-    const userIdsOptions = users
-      .filter(user => user.id !== props.uuid)
-      .map(user => ({
-        key: user.id,
-        text: user.fullName,
-        value: user.id
-      }));
-    return (
-      <div>
-        <img
-          src={plusIcon}
-          alt="plus icon"
-          onClick={() => setModal('CreateSpaceModal')}
-          disabled={isEmpty(localStorage.getItem('activeOrg'))}
-        />
-
-        {modal === 'CreateSpaceModal' && (
-          <Modal open={true} size="tiny">
-            <StyledContainer>
-              <Modal.Header>
-                <div>
-                  <StyledMainHeader>Create a new space</StyledMainHeader>
-                </div>
-                <div>
-                  <Header as="h5">Space name</Header>
-                  <StyledInput
-                    name="spaceName"
-                    placeholder="Product Design"
-                    type="text"
-                    required
-                    value={spaceName}
-                    onChange={e => setSpaceName(e.target.value)}
+      {modal === 'CreateSpaceModal' && (
+        <Modal open={true} size="tiny">
+          <StyledContainer>
+            <Modal.Header>
+              <div>
+                <StyledMainHeader>Create a new space</StyledMainHeader>
+              </div>
+              <div>
+                <Header as="h5">Space name</Header>
+                <StyledInput
+                  name="spaceName"
+                  placeholder="Product Design"
+                  type="text"
+                  required
+                  value={spaceName}
+                  onChange={e => setSpaceName(e.target.value)}
+                />
+                <Header as="h5">
+                  What types of discussions happen here?
+                  <StyledOptional>(Optional)</StyledOptional>
+                </Header>
+                <StyledInput
+                  name="spaceTopic"
+                  placeholder="Questions and thoughts about proposals"
+                  type="text"
+                  value={spaceTopic}
+                  onChange={e => setSpaceTopic(e.target.value)}
+                />
+                <Header as="h5">Members</Header>
+                <StyledDropdown>
+                  <Dropdown
+                    placeholder="Choose people to add"
+                    fluid
+                    multiple
+                    search
+                    selection
+                    options={userIdsOptions}
+                    onChange={setIdsToState}
                   />
-                  <Header as="h5">
-                    What types of discussions happen here?
-                    <StyledOptional>(Optional)</StyledOptional>
-                  </Header>
-                  <StyledInput
-                    name="spaceTopic"
-                    placeholder="Questions and thoughts about proposals"
-                    type="text"
-                    value={spaceTopic}
-                    onChange={e => setSpaceTopic(e.target.value)}
-                  />
-                  <Header as="h5">Members</Header>
-                  <StyledDropdown>
-                    <Dropdown
-                      placeholder="Choose people to add"
-                      fluid
-                      multiple
-                      search
-                      selection
-                      options={userIdsOptions}
-                      onChange={setIdsToState}
-                    />
-                  </StyledDropdown>
-                  <Modal.Actions>
-                    <StyledActions>
-                      <StyledButtonCancel onClick={closeModal}>
-                        Cancel
-                      </StyledButtonCancel>
+                </StyledDropdown>
+                <Modal.Actions>
+                  <StyledActions>
+                    <StyledButtonCancel onClick={closeModal}>
+                      Cancel
+                    </StyledButtonCancel>
 
-                      <StyledButtonCreateSpace
-                        type="submit"
-                        disabled={
-                          spaceName.length === 0 ||
-                          spaceTopic.length === 0 ||
-                          idsInSpace.length === 0
-                        }
-                        onClick={e => {
-                          addSpaceToDatabase();
-                          closeModal(e);
-                        }}
-                      >
-                        Create Space
-                      </StyledButtonCreateSpace>
-                    </StyledActions>
-                  </Modal.Actions>
-                </div>
-              </Modal.Header>
-            </StyledContainer>
-          </Modal>
-        )}
-      </div>
-    );
-  }
-};
-
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
-    organisation: state.firestore.ordered.activeOrgFromDatabase
-      ? state.firestore.ordered.activeOrgFromDatabase
-      : [],
-    user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
-      ? state.firestore.ordered.usersWithinTheOrg
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+                    <StyledButtonCreateSpace
+                      type="submit"
+                      disabled={
+                        spaceName.length === 0 ||
+                        spaceTopic.length === 0 ||
+                        idsInSpace.length === 0
+                      }
+                      onClick={e => {
+                        addSpaceToDatabase();
+                        closeModal(e);
+                      }}
+                    >
+                      Create Space
+                    </StyledButtonCreateSpace>
+                  </StyledActions>
+                </Modal.Actions>
+              </div>
+            </Modal.Header>
+          </StyledContainer>
+        </Modal>
+      )}
+    </div>
+  );
 };
 
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'organisations',
-        doc: props.match.params.id,
-        storeAs: 'activeOrgFromDatabase'
-      },
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
-        storeAs: 'usersWithinTheOrg'
-      }
-    ];
-  }),
-  withFirestore
-)(CreateNewSpaceModal);
+export default CreateNewSpaceModal;
 
 const StyledContainer = styled.div`
   padding: 40px;
