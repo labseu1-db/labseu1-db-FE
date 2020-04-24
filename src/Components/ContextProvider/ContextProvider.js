@@ -176,6 +176,8 @@ const ContextProvider = ({ children, ...props }) => {
       if (docs.length) {
         const { type } = request;
         return handleData({ docs, type });
+      } else {
+        return [];
       }
     } catch (erro) {
       setError(error);
