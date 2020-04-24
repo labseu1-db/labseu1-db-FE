@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -29,19 +29,26 @@ import EditSpaceModal from './Modals/EditSpaceModal';
 import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
+// Context API
+import Context from './ContextProvider/Context';
+
 const SpaceThreads = props => {
-  const setData = useCallback(async () => {
-    console.log('hello');
-  }, []);
+  // Context
+  const { getSpaceWithId } = useContext(Context);
 
   const [space, setSpace] = useState('');
   const [threads, setThreads] = useState([]);
+
+  const setData = useCallback(async () => {
+    let space = await getSpaceWithId(props.match.params.spaceId);
+    setSpace(space);
+  }, [props.match.params.spaceId, getSpaceWithId]);
 
   useEffect(() => {
     setData();
   }, [setData]);
 
-  if (!props.space) {
+  if (!space) {
     return (
       <StyledErrorScreen>
         <StyleErrorMessage>Space doesn't exist: 404</StyleErrorMessage>
@@ -95,16 +102,16 @@ const SpaceThreads = props => {
           )}
           <StyledFirstRow>
             <ScreenHeading
-              heading={props.space.spaceName}
-              info={`Read all the threads from ${props.space.spaceName}`}
-              topic={props.space.spaceTopic}
+              heading={space.spaceName}
+              info={`Read all the threads from ${space.spaceName}`}
+              topic={space.spaceTopic}
             />
             <StyledButtonsContainer>
               <StyledDropdown>
                 <Dropdown icon="ellipsis horizontal">
                   <Dropdown.Menu>
                     {localStorage.getItem('uuid') ===
-                      props.space.spaceCreatedByUserId && (
+                      space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Edit space"
                         onClick={e => {
@@ -113,7 +120,7 @@ const SpaceThreads = props => {
                       />
                     )}
                     {localStorage.getItem('uuid') ===
-                      props.space.spaceCreatedByUserId && (
+                      space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Delete space"
                         onClick={e => {
@@ -122,7 +129,7 @@ const SpaceThreads = props => {
                       />
                     )}
                     {localStorage.getItem('uuid') !==
-                      props.space.spaceCreatedByUserId && (
+                      space.spaceCreatedByUserId && (
                       <Dropdown.Item
                         text="Leave space"
                         onClick={e => {

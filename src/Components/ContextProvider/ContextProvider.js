@@ -96,6 +96,14 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhere(request);
   };
 
+  const getSpaceWithId = spaceId => {
+    let request = {
+      collection: 'spaces',
+      docId: spaceId
+    };
+    return getDataWithDoc(request);
+  };
+
   const getOrgWithId = orgId => {
     let request = {
       collection: 'organisations',
@@ -228,7 +236,8 @@ const ContextProvider = ({ children, ...props }) => {
         closeModal: closeModal,
         getOrgWithUuid: getOrgWithUuid,
         getOrgWithId: getOrgWithId,
-        getUsersFromOrg: getUsersFromOrg
+        getUsersFromOrg: getUsersFromOrg,
+        getSpaceWithId: getSpaceWithId
       }}
     >
       {children}
