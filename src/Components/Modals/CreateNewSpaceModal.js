@@ -29,7 +29,6 @@ const CreateNewSpaceModal = props => {
     setModal,
     closeModal,
     getUserData,
-    getOrgWithId,
     getUsersFromOrg,
     saveData,
     updateDataWithDoc,
@@ -40,17 +39,14 @@ const CreateNewSpaceModal = props => {
   const [spaceTopic, setSpaceTopic] = useState('');
   const [idsInSpace, setIdsInSpace] = useState([localStorage.getItem('uuid')]);
   const [user, setUser] = useState('');
-  const [org, setOrg] = useState('');
   const [users, setUsers] = useState([]);
 
   const setData = useCallback(async () => {
     let user = await getUserData();
-    let org = await getOrgWithId(props.match.params.id);
     let users = await getUsersFromOrg(props.match.params.id);
     setUsers(users);
-    setOrg(org);
     setUser(user);
-  }, [getUserData, getOrgWithId, getUsersFromOrg, props.match.params.id]);
+  }, [getUserData, getUsersFromOrg, props.match.params.id]);
 
   useEffect(() => {
     setData();
@@ -93,14 +89,14 @@ const CreateNewSpaceModal = props => {
           arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(spaceName)
         }
       };
-      updateDataWithDoc(request);
+      return updateDataWithDoc(request);
     });
   };
 
   const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    props.setState(prState => ({
+    setIdsInSpace(prState => ({
       idsInSpace: [...prState.idsInSpace, ...value]
     }));
   };
