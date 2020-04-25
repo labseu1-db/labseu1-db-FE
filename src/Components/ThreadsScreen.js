@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -16,82 +16,100 @@ import RightSidebar from './RightSidebar';
 //Import actions
 import { resetThread } from '../redux/actions/actionCreators';
 
+// import Context API
+import Context from './ContextProvider/Context';
+
 //Main component
-export class ThreadsScreen extends React.Component {
-  componentDidMount() {
-    let threadRef = this.props.firestore
-      .collection('threads')
-      .doc(this.props.match.params.threadId);
-    let whenUserHasSeen = {};
-    whenUserHasSeen[
-      `whenUserHasSeen.${localStorage.getItem('uuid')}`
-    ] = Date.now();
-    threadRef.update(whenUserHasSeen);
-  }
+const ThreadsScreen = props => {
+  // componentDidMount() {
+  //   let threadRef = props.firestore
+  //     .collection('threads')
+  //     .doc(props.match.params.threadId);
+  //   let whenUserHasSeen = {};
+  //   whenUserHasSeen[
+  //     `whenUserHasSeen.${localStorage.getItem('uuid')}`
+  //   ] = Date.now();
+  //   threadRef.update(whenUserHasSeen);
+  // }
 
-  componentWillUnmount() {
-    let threadRef = this.props.firestore
-      .collection('threads')
-      .doc(this.props.match.params.threadId);
-    let whenUserHasSeen = {};
-    whenUserHasSeen[
-      `whenUserHasSeen.${localStorage.getItem('uuid')}`
-    ] = Date.now();
-    threadRef.update(whenUserHasSeen);
-  }
-  render() {
-    return (
-      <StyledMain>
-        <NavBar {...this.props} />
-        <MidRightContainer>
-          <StyledThreadContent>
-            <BackToButton onClick={this.props.history.goBack} />
-            {this.props.activeThread && this.props.activeThread.threadName && (
-              <StyledHeadingContainer>
-                <ScreenHeading heading={this.props.activeThread.threadName} />
-              </StyledHeadingContainer>
-            )}
-            {this.props.activeThread && this.props.activeThread.threadName && (
-              <ThreadInformationCard
-                img="http://lorempixel.com/480/480"
-                createdBy={this.props.activeThread.threadCreatedByUserName}
-                createdAt={this.props.activeThread.threadCreatedAt}
-                spaceId={this.props.activeThread.spaceId}
-                info={this.props.activeThread.threadTopic}
-              />
-            )}
-            {this.props.comments.length > 0 &&
-              this.props.comments.map(c => {
-                return (
-                  <CommentCard
-                    key={c.id}
-                    img="http://lorempixel.com/480/480"
-                    commentId={c.id}
-                    createdBy={c.commentCreatedByUserName}
-                    createdByUserId={c.commentCreatedByUserId}
-                    content={c.commentBody}
-                    likes={c.arrayOfUserIdsWhoLiked.length}
-                    arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
-                    isCommentDecided={c.isCommentDecided}
-                    isCommentUpdated={c.isCommentUpdated}
-                    commentUpdatedAt={c.commentUpdatedAt}
-                    gifUrl={c.gifUrl}
-                  />
-                );
-              })}
+  // componentWillUnmount() {
+  //   let threadRef = props.firestore
+  //     .collection('threads')
+  //     .doc(props.match.params.threadId);
+  //   let whenUserHasSeen = {};
+  //   whenUserHasSeen[
+  //     `whenUserHasSeen.${localStorage.getItem('uuid')}`
+  //   ] = Date.now();
+  //   threadRef.update(whenUserHasSeen);
+  // }
 
-            <NewCommentCard
+  const { getThreadWithId, getCommentWithThread } = useContext(Context);
+
+  const [thread, setThread] = useState('');
+  const [comments, setComments] = useState([]);
+
+  const setData = useCallback(async () => {
+    let thread = await getThreadWithId(props.match.params.threadId);
+    let comments = await getCommentWithThread(props.match.params.threadId);
+    setComments(comments);
+    setThread(thread);
+  }, [getThreadWithId, getCommentWithThread, props.match.params.threadId]);
+
+  useEffect(() => {
+    setData();
+  }, [setData]);
+
+  return (
+    <StyledMain>
+      <NavBar {...props} />
+      <MidRightContainer>
+        <StyledThreadContent>
+          <BackToButton onClick={props.history.goBack} />
+          {thread && thread.threadName && (
+            <StyledHeadingContainer>
+              <ScreenHeading heading={thread.threadName} />
+            </StyledHeadingContainer>
+          )}
+          {thread && thread.threadName && (
+            <ThreadInformationCard
               img="http://lorempixel.com/480/480"
-              createdByUserId={localStorage.getItem('uuid')}
-              thread={this.props.activeThread}
+              createdBy={thread.threadCreatedByUserName}
+              createdAt={thread.threadCreatedAt}
+              spaceId={thread.spaceId}
+              info={thread.threadTopic}
             />
-          </StyledThreadContent>
-          <RightSidebar />
-        </MidRightContainer>
-      </StyledMain>
-    );
-  }
-}
+          )}
+          {comments.length > 0 &&
+            comments.map(c => {
+              return (
+                <CommentCard
+                  key={c.id}
+                  img="http://lorempixel.com/480/480"
+                  commentId={c.id}
+                  createdBy={c.commentCreatedByUserName}
+                  createdByUserId={c.commentCreatedByUserId}
+                  content={c.commentBody}
+                  likes={c.arrayOfUserIdsWhoLiked.length}
+                  arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
+                  isCommentDecided={c.isCommentDecided}
+                  isCommentUpdated={c.isCommentUpdated}
+                  commentUpdatedAt={c.commentUpdatedAt}
+                  gifUrl={c.gifUrl}
+                />
+              );
+            })}
+
+          <NewCommentCard
+            img="http://lorempixel.com/480/480"
+            createdByUserId={localStorage.getItem('uuid')}
+            thread={thread}
+          />
+        </StyledThreadContent>
+        <RightSidebar />
+      </MidRightContainer>
+    </StyledMain>
+  );
+};
 
 const StyledMain = styled.div`
   display: flex;
