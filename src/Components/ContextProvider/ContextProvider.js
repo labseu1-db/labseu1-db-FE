@@ -72,6 +72,19 @@ const ContextProvider = ({ children, ...props }) => {
     return uuid;
   };
 
+  const getCommentWithThread = threadId => {
+    let request = {
+      collection: 'comments',
+      key: 'threadId',
+      term: '==',
+      value: threadId,
+      orderBy: 'commentCreatedAt',
+      order: 'asc',
+      type: 'return_data'
+    };
+    return getDataWithWhereOrdered(request);
+  };
+
   const getThreadsWithOrg = orgId => {
     let request = {
       collection: 'threads',
@@ -83,6 +96,14 @@ const ContextProvider = ({ children, ...props }) => {
       type: 'return_data'
     };
     return getDataWithWhereOrdered(request);
+  };
+
+  const getThreadWithId = threadId => {
+    let request = {
+      collection: 'threads',
+      docId: threadId
+    };
+    return getDataWithDoc(request);
   };
 
   const getThreadsWithSpace = async spaceId => {
@@ -265,7 +286,9 @@ const ContextProvider = ({ children, ...props }) => {
         getUsersFromOrg: getUsersFromOrg,
         getSpaceWithId: getSpaceWithId,
         getThreadsWithSpace: getThreadsWithSpace,
-        deleteData: deleteData
+        deleteData: deleteData,
+        getThreadWithId: getThreadWithId,
+        getCommentWithThread: getCommentWithThread
       }}
     >
       {children}
