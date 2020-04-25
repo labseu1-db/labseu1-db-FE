@@ -37,7 +37,22 @@ const ThreadsScreen = props => {
   //   threadRef.update(whenUserHasSeen);
   // }
 
-  const { getThreadWithId, getCommentWithThread } = useContext(Context);
+  const updateThread = () => {
+    let data = {};
+    data[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
+    let request = {
+      collection: 'threads',
+      docId: props.match.params.threadId,
+      data: data
+    };
+    updateDataWithDoc(request);
+  };
+
+  const {
+    getThreadWithId,
+    getCommentWithThread,
+    updateDataWithDoc
+  } = useContext(Context);
 
   const [thread, setThread] = useState('');
   const [comments, setComments] = useState([]);
@@ -47,12 +62,15 @@ const ThreadsScreen = props => {
     let comments = await getCommentWithThread(props.match.params.threadId);
     setComments(comments);
     setThread(thread);
-    console.log('thread', thread);
   }, [getThreadWithId, getCommentWithThread, props.match.params.threadId]);
 
   useEffect(() => {
     setData();
   }, [setData]);
+
+  useEffect(() => {
+    updateThread();
+  });
 
   return (
     <StyledMain>
