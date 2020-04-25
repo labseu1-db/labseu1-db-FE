@@ -146,6 +146,15 @@ const ContextProvider = ({ children, ...props }) => {
     }
   };
 
+  const deleteData = async request => {
+    try {
+      let ref = db.collection(request.collection).doc(request.docId);
+      await ref.delete();
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   const updateDataWithDoc = async request => {
     try {
       let ref = db.collection(request.collection).doc(request.docId);
@@ -255,7 +264,8 @@ const ContextProvider = ({ children, ...props }) => {
         getOrgWithId: getOrgWithId,
         getUsersFromOrg: getUsersFromOrg,
         getSpaceWithId: getSpaceWithId,
-        getThreadsWithSpace: getThreadsWithSpace
+        getThreadsWithSpace: getThreadsWithSpace,
+        deleteData: deleteData
       }}
     >
       {children}
