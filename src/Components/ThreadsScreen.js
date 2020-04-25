@@ -1,8 +1,5 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
 import BackToButton from './reusable-components/BackToButton';
@@ -12,9 +9,6 @@ import CommentCard from './reusable-components/CommentCardComponents/CommentCard
 import NewCommentCard from './reusable-components/CommentCardComponents/NewCommentCard';
 import NavBar from './NavBar';
 import RightSidebar from './RightSidebar';
-
-//Import actions
-import { resetThread } from '../redux/actions/actionCreators';
 
 // import Context API
 import Context from './ContextProvider/Context';
@@ -53,6 +47,7 @@ const ThreadsScreen = props => {
     let comments = await getCommentWithThread(props.match.params.threadId);
     setComments(comments);
     setThread(thread);
+    console.log('thread', thread);
   }, [getThreadWithId, getCommentWithThread, props.match.params.threadId]);
 
   useEffect(() => {
@@ -138,37 +133,4 @@ const StyledHeadingContainer = styled.div`
   line-height: 1.3;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeThread: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads[0]
-      : [],
-    comments: state.firestore.ordered.comments
-      ? state.firestore.ordered.comments
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ resetThread }, dispatch);
-};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'threads',
-        doc: props.match.params.threadId
-      },
-      {
-        collection: 'comments',
-        where: [['threadId', '==', props.match.params.threadId]],
-        orderBy: ['commentCreatedAt', 'asc']
-      }
-    ];
-  })
-)(ThreadsScreen);
+export default ThreadsScreen;

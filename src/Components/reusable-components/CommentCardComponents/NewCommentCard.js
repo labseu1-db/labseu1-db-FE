@@ -93,11 +93,13 @@ export class NewCommentCard extends React.Component {
           </Message>
         )}
         <StyledTopContainer>
-          <AvatarFromLetter
-            username={this.props.profile.fullName}
-            height="32px"
-            width="32px"
-          />
+          {this.props.profile.fullName && (
+            <AvatarFromLetter
+              username={this.props.profile.fullName}
+              height="32px"
+              width="32px"
+            />
+          )}
           <StyledRightInput
             placeholder="Comment on the thread"
             name="text"
