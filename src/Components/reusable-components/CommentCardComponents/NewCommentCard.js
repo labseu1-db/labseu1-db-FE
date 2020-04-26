@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
 import { connect } from 'react-redux';
@@ -16,144 +16,147 @@ import AvatarFromLetter from '../AvatarFromLetter';
 import IconPenWhite from '../../../images/icon-pen-white.svg';
 import IconCheckWhite from '../../../images/icon-check-white.svg';
 
-//Main component
-export class NewCommentCard extends React.Component {
-  state = {
-    text: '',
-    display: 'none',
-    gif: ''
-  };
+// import Context API
+import Context from '../../ContextProvider/Context';
 
-  handleInputChange = e => {
-    let words = this.state.text.split(' ');
+//Main component
+const NewCommentCard = props => {
+  // state = {
+  //   text: '',
+  //   display: 'none',
+  //   gif: ''
+  // };
+
+  // use Context API
+  const { setError, error } = useContext(Context);
+
+  const [text, setText] = useState('');
+  const [display, setDisplay] = useState('none');
+  const [gif, setGif] = useState('');
+
+  const handleInputChange = e => {
+    let words = text.split(' ');
     let wordsWithSpecificLength = words.every(word => word.length <= 70);
     if (
       wordsWithSpecificLength ||
       e.target.name !== 'text' ||
       window.event.inputType === 'deleteContentBackward'
     ) {
-      this.setState({ [e.target.name]: e.target.value });
-      this.setState({ error: '' });
+      setText(e.target.value);
     }
     if (!wordsWithSpecificLength) {
-      this.setState({ error: 'wordIsTooLong' });
+      setError('wordIsTooLong');
     }
   };
 
-  clearInput = () => {
-    this.setState({ text: '' });
+  const clearInput = () => {
+    setText('');
   };
 
-  toggleDisplay = () => {
-    if (this.state.display === 'none') {
-      this.setState({
-        display: 'block'
-      });
+  const toggleDisplay = () => {
+    if (display === 'none') {
+      setDisplay('block');
     }
-    if (this.state.display === 'block') {
-      this.setState({
-        display: 'none'
-      });
+    if (display === 'block') {
+      setDisplay('none');
     }
   };
 
-  createNewComment = e => {
+  const createNewComment = e => {
     e.preventDefault();
     let commentId = uuid();
-    this.props.firestore.set(
+    props.firestore.set(
       { collection: 'comments', doc: commentId },
       {
         arrayOfUserIdsWhoLiked: [],
-        commentBody: this.state.text,
+        commentBody: text,
         commentCreatedAt: Date.now(),
         commentCreatedByUserId: localStorage.getItem('uuid'),
-        commentCreatedByUserName: this.props.profile.fullName,
+        commentCreatedByUserName: props.profile.fullName,
         isCommentDecided: false,
         isCommentUpdated: false,
-        orgId: this.props.thread.orgId,
-        threadId: this.props.thread.id,
-        threadName: this.props.thread.threadName,
-        gifUrl: this.state.gif
+        orgId: props.thread.orgId,
+        threadId: props.thread.id,
+        threadName: props.thread.threadName,
+        gifUrl: gif
       }
     );
-    this.props.firestore.update(
-      { collection: 'threads', doc: this.props.thread.id },
+    props.firestore.update(
+      { collection: 'threads', doc: props.thread.id },
       {
         lastCommentCreatedAt: Date.now()
       }
     );
   };
 
-  render() {
-    return (
-      <StyledCommentContainer>
-        {this.state.error === 'wordIsTooLong' && (
-          <Message warning attached="bottom">
-            <Icon name="warning" />A word can only be 70 characters long
-          </Message>
-        )}
-        <StyledTopContainer>
-          {this.props.profile.fullName && (
-            <AvatarFromLetter
-              username={this.props.profile.fullName}
-              height="32px"
-              width="32px"
-            />
-          )}
-          <StyledRightInput
-            placeholder="Comment on the thread"
-            name="text"
-            value={this.state.text}
-            onChange={this.handleInputChange}
+  return (
+    <StyledCommentContainer>
+      {error === 'wordIsTooLong' && (
+        <Message warning attached="bottom">
+          <Icon name="warning" />A word can only be 70 characters long
+        </Message>
+      )}
+      <StyledTopContainer>
+        {props.profile.fullName && (
+          <AvatarFromLetter
+            username={props.profile.fullName}
+            height="32px"
+            width="32px"
           />
-        </StyledTopContainer>
-        <StyledGifAndButtons>
-          <StyledButtonContainer>
-            <ScreenButton
-              content="GIF"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              icon={IconCheckWhite}
-              onClick={e => {
-                e.preventDefault();
-                this.toggleDisplay();
-              }}
-            />
-            <ScreenButton
-              content="Submit"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              icon={IconPenWhite}
-              onClick={e => {
-                this.createNewComment(e);
-                this.clearInput();
-                this.setState({ gif: '' });
-              }}
-            />
-          </StyledButtonContainer>
-          {this.state.gif !== '' && (
-            <StyledGifImage>
-              <img src={this.state.gif} alt="gif" />
-              <div onClick={() => this.setState({ gif: '' })}>x</div>
-            </StyledGifImage>
-          )}
-        </StyledGifAndButtons>
-        <StyledGifContainer>
-          <div className={this.state.display}>
-            <GifComponent
-              onSelected={gif => {
-                this.setState({ gif });
-                this.toggleDisplay();
-              }}
-            />
-          </div>
-        </StyledGifContainer>
-      </StyledCommentContainer>
-    );
-  }
-}
+        )}
+        <StyledRightInput
+          placeholder="Comment on the thread"
+          name="text"
+          value={text}
+          onChange={handleInputChange}
+        />
+      </StyledTopContainer>
+      <StyledGifAndButtons>
+        <StyledButtonContainer>
+          <ScreenButton
+            content="GIF"
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            icon={IconCheckWhite}
+            onClick={e => {
+              e.preventDefault();
+              toggleDisplay();
+            }}
+          />
+          <ScreenButton
+            content="Submit"
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            icon={IconPenWhite}
+            onClick={e => {
+              createNewComment(e);
+              clearInput();
+              setGif('');
+            }}
+          />
+        </StyledButtonContainer>
+        {gif !== '' && (
+          <StyledGifImage>
+            <img src={gif} alt="gif" />
+            <div onClick={() => setGif('')}>x</div>
+          </StyledGifImage>
+        )}
+      </StyledGifAndButtons>
+      <StyledGifContainer>
+        <div className={display}>
+          <GifComponent
+            onSelected={gif => {
+              setGif(gif);
+              toggleDisplay();
+            }}
+          />
+        </div>
+      </StyledGifContainer>
+    </StyledCommentContainer>
+  );
+};
 
 //Styling
 const StyledCommentContainer = styled.form`
