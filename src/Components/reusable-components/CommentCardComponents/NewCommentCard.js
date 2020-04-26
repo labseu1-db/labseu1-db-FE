@@ -28,7 +28,13 @@ const NewCommentCard = props => {
   // };
 
   // use Context API
-  const { setError, error } = useContext(Context);
+  const {
+    setError,
+    error,
+    saveData,
+    getUserData,
+    updateDataWithDoc
+  } = useContext(Context);
 
   const [text, setText] = useState('');
   const [display, setDisplay] = useState('none');
@@ -62,17 +68,19 @@ const NewCommentCard = props => {
     }
   };
 
-  const createNewComment = e => {
-    e.preventDefault();
+  const createNewComment = async e => {
     let commentId = uuid();
-    props.firestore.set(
-      { collection: 'comments', doc: commentId },
-      {
+    e.preventDefault();
+    let user = await getUserData();
+    let request = {
+      collection: 'comments',
+      docId: commentId,
+      data: {
         arrayOfUserIdsWhoLiked: [],
         commentBody: text,
         commentCreatedAt: Date.now(),
         commentCreatedByUserId: localStorage.getItem('uuid'),
-        commentCreatedByUserName: props.profile.fullName,
+        commentCreatedByUserName: user.fullName,
         isCommentDecided: false,
         isCommentUpdated: false,
         orgId: props.thread.orgId,
@@ -80,13 +88,23 @@ const NewCommentCard = props => {
         threadName: props.thread.threadName,
         gifUrl: gif
       }
-    );
-    props.firestore.update(
-      { collection: 'threads', doc: props.thread.id },
-      {
+    };
+    saveData(request);
+    // props.firestore.set({ collection: 'comments', doc: commentId });
+    let updateRequest = {
+      collection: 'threads',
+      docId: props.thread.id,
+      data: {
         lastCommentCreatedAt: Date.now()
       }
-    );
+    };
+    updateDataWithDoc(updateRequest);
+    // props.firestore.update(
+    //   { collection: 'threads', doc: props.thread.id },
+    //   {
+    //     lastCommentCreatedAt: Date.now()
+    //   }
+    // );
   };
 
   return (
