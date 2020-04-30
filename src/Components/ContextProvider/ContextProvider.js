@@ -89,18 +89,22 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
-  const getThreadsWithOrg = orgId => {
-    let request = {
-      collection: 'threads',
-      key: 'orgId',
-      term: '==',
-      value: orgId,
-      orderBy: 'threadCreatedAt',
-      order: 'desc',
-      type: 'return_data'
-    };
-    return getDataWithWhereOrdered(request);
-  };
+  const getThreadsWithOrg = useCallback(
+    (setData, orgId) => {
+      let ref = db
+        .collection('threads')
+        .where('orgId', '==', orgId)
+        .orderBy('threadCreatedAt', 'desc');
+      ref.onSnapshot(querySnapshot => {
+        let threads = [];
+        querySnapshot.forEach(doc => {
+          threads.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(threads);
+      });
+    },
+    [db]
+  );
 
   const getThreadWithId = useCallback(
     (setData, threadId) => {
@@ -214,28 +218,6 @@ const ContextProvider = ({ children, ...props }) => {
       let ref = db
         .collection(request.collection)
         .where(request.key, request.term, request.value);
-      let querySnapshot = await ref.get();
-      let docs = [];
-      querySnapshot.forEach(doc => {
-        docs.push(doc);
-      });
-      if (docs.length) {
-        const { type } = request;
-        return handleData({ docs, type });
-      } else {
-        return [];
-      }
-    } catch (erro) {
-      setError(error);
-    }
-  };
-
-  const getDataWithWhereOrdered = async request => {
-    try {
-      let ref = db
-        .collection(request.collection)
-        .where(request.key, request.term, request.value)
-        .orderBy(request.orderBy, request.order);
       let querySnapshot = await ref.get();
       let docs = [];
       querySnapshot.forEach(doc => {

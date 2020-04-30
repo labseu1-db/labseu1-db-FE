@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -31,14 +31,9 @@ const MainScreen = props => {
 
   const [threads, setThreads] = useState([]);
 
-  const setThreadsData = useCallback(async () => {
-    let data = await getThreadsWithOrg(props.match.params.id);
-    setThreads(data);
-  }, [getThreadsWithOrg, props.match.params.id, setThreads]);
-
   useEffect(() => {
-    setThreadsData();
-  }, [setThreadsData]);
+    getThreadsWithOrg(setThreads, props.match.params.id);
+  }, [getThreadsWithOrg, props.match.params.id]);
   if (loading) {
     return <Spinner />;
   } else {
