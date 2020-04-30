@@ -39,17 +39,16 @@ const NavBar = props => {
 
   const setData = useCallback(async () => {
     let user = await getUserData();
-    let orgs = await getOrgWithUuid();
     let orgId = props.match.params.id;
     let spaces = await getSpacesWithOrg(orgId);
     setSpaces(spaces);
-    setOrgs(orgs);
     setUser(user);
-  }, [getUserData, getOrgWithUuid, getSpacesWithOrg, props.match.params.id]);
+  }, [getUserData, getSpacesWithOrg, props.match.params.id]);
 
   useEffect(() => {
     setData();
-  }, [setData]);
+    getOrgWithUuid(setOrgs, localStorage.getItem('uuid'));
+  }, [setData, getOrgWithUuid]);
 
   // componentDidMount() {
   //   let result = props.spacesForActiveOrg.every(space => {

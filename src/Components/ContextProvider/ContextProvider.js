@@ -166,17 +166,21 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithDoc(request);
   };
 
-  const getOrgWithUuid = () => {
-    let uuid = localStorage.getItem('uuid');
-    let request = {
-      collection: 'organisations',
-      key: 'arrayOfUsersIds',
-      term: 'array-contains',
-      value: uuid,
-      type: 'return_data'
-    };
-    return getDataWithWhere(request);
-  };
+  const getOrgWithUuid = useCallback(
+    (setData, uuid) => {
+      let ref = db
+        .collection('organisations')
+        .where('arrayOfUsersIds', 'array-contains', uuid);
+      ref.onSnapshot(querySnapshot => {
+        let orgs = [];
+        querySnapshot.forEach(doc => {
+          orgs.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(orgs);
+      });
+    },
+    [db]
+  );
 
   const saveData = async request => {
     try {
