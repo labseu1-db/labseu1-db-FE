@@ -24,35 +24,22 @@ import Context from './ContextProvider/Context';
 
 const SpaceThreads = props => {
   // Context
-  const { getSpaceWithId, modal, setModal, db } = useContext(Context);
+  const { getSpaceWithId, modal, setModal, getThreadsWithSpace } = useContext(
+    Context
+  );
   const [space, setSpace] = useState('');
   const [threads, setThreads] = useState([]);
-
-  const getThreads = useCallback(() => {
-    let ref = db
-      .collection('threads')
-      .where('spaceId', '==', props.match.params.spaceId)
-      .orderBy('threadCreatedAt', 'desc');
-    ref.onSnapshot(querySnapshot => {
-      let threads = [];
-      querySnapshot.forEach(doc => {
-        threads.push(Object.assign({ id: doc.id }, doc.data()));
-      });
-      console.log('threads', threads);
-      setThreads(threads);
-    });
-  }, [db, props.match.params.spaceId]);
 
   const setData = useCallback(async () => {
     let space = await getSpaceWithId(props.match.params.spaceId);
     // let threads = await getThreadsWithSpace(props.match.params.spaceId);
-    getThreads();
     setSpace(space);
-  }, [props.match.params.spaceId, getSpaceWithId, getThreads]);
+  }, [props.match.params.spaceId, getSpaceWithId]);
 
   useEffect(() => {
     setData();
-  }, [setData]);
+    getThreadsWithSpace(setThreads, props.match.params.spaceId);
+  }, [setData, getThreadsWithSpace, props.match.params.spaceId]);
 
   if (!space) {
     return (

@@ -114,18 +114,22 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
-  const getThreadsWithSpace = async spaceId => {
-    let request = {
-      collection: 'threads',
-      key: 'spaceId',
-      term: '==',
-      value: spaceId,
-      order: 'desc',
-      orderBy: 'threadCreatedAt',
-      type: 'return_data'
-    };
-    return await getDataWithWhereOrdered(request);
-  };
+  const getThreadsWithSpace = useCallback(
+    (setData, spaceId) => {
+      let ref = db
+        .collection('threads')
+        .where('spaceId', '==', spaceId)
+        .orderBy('threadCreatedAt', 'desc');
+      ref.onSnapshot(querySnapshot => {
+        let threads = [];
+        querySnapshot.forEach(doc => {
+          threads.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(threads);
+      });
+    },
+    [db]
+  );
 
   const getSpacesWithOrg = orgId => {
     let request = {
