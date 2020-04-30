@@ -37,7 +37,13 @@ const ThreadsScreen = props => {
   //   threadRef.update(whenUserHasSeen);
   // }
 
-  const updateThread = () => {
+  const {
+    getThreadWithId,
+    updateDataWithDoc,
+    getCommentsWithThread
+  } = useContext(Context);
+
+  const updateThread = useCallback(() => {
     let data = {};
     data[`whenUserHasSeen.${localStorage.getItem('uuid')}`] = Date.now();
     let request = {
@@ -46,31 +52,21 @@ const ThreadsScreen = props => {
       data: data
     };
     updateDataWithDoc(request);
-  };
-
-  const {
-    getThreadWithId,
-    getCommentWithThread,
-    updateDataWithDoc
-  } = useContext(Context);
+  }, [props.match.params.threadId, updateDataWithDoc]);
 
   const [thread, setThread] = useState('');
   const [comments, setComments] = useState([]);
 
-  const setData = useCallback(async () => {
-    let thread = await getThreadWithId(props.match.params.threadId);
-    let comments = await getCommentWithThread(props.match.params.threadId);
-    setComments(comments);
-    setThread(thread);
-  }, [getThreadWithId, getCommentWithThread, props.match.params.threadId]);
-
-  useEffect(() => {
-    setData();
-  }, [setData]);
-
   useEffect(() => {
     updateThread();
-  });
+    getCommentsWithThread(setComments, props.match.params.threadId);
+    getThreadWithId(setThread, props.match.params.threadId);
+  }, [
+    getCommentsWithThread,
+    getThreadWithId,
+    updateThread,
+    props.match.params.threadId
+  ]);
 
   return (
     <StyledMain>

@@ -1,5 +1,5 @@
 import Context from './Context';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
 import firebase from 'firebase/app';
 import styled from 'styled-components';
@@ -72,18 +72,22 @@ const ContextProvider = ({ children, ...props }) => {
     return uuid;
   };
 
-  const getCommentWithThread = threadId => {
-    let request = {
-      collection: 'comments',
-      key: 'threadId',
-      term: '==',
-      value: threadId,
-      orderBy: 'commentCreatedAt',
-      order: 'asc',
-      type: 'return_data'
-    };
-    return getDataWithWhereOrdered(request);
-  };
+  const getCommentsWithThread = useCallback(
+    (setData, threadId) => {
+      let ref = db
+        .collection('comments')
+        .where('threadId', '==', threadId)
+        .orderBy('commentCreatedAt', 'asc');
+      ref.onSnapshot(querySnapshot => {
+        let comments = [];
+        querySnapshot.forEach(doc => {
+          comments.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(comments);
+      });
+    },
+    [db]
+  );
 
   const getThreadsWithOrg = orgId => {
     let request = {
@@ -98,13 +102,17 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhereOrdered(request);
   };
 
-  const getThreadWithId = threadId => {
-    let request = {
-      collection: 'threads',
-      docId: threadId
-    };
-    return getDataWithDoc(request);
-  };
+  const getThreadWithId = useCallback(
+    (setData, threadId) => {
+      let ref = db.collection('threads').doc(threadId);
+      ref.onSnapshot(doc => {
+        let comment = doc.data();
+        comment.id = doc.id;
+        setData(comment);
+      });
+    },
+    [db]
+  );
 
   const getThreadsWithSpace = async spaceId => {
     let request = {
@@ -288,7 +296,7 @@ const ContextProvider = ({ children, ...props }) => {
         getThreadsWithSpace: getThreadsWithSpace,
         deleteData: deleteData,
         getThreadWithId: getThreadWithId,
-        getCommentWithThread: getCommentWithThread
+        getCommentsWithThread: getCommentsWithThread
       }}
     >
       {children}
