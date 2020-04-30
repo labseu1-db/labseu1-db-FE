@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Dropdown } from 'semantic-ui-react';
 
@@ -30,16 +30,10 @@ const SpaceThreads = props => {
   const [space, setSpace] = useState('');
   const [threads, setThreads] = useState([]);
 
-  const setData = useCallback(async () => {
-    let space = await getSpaceWithId(props.match.params.spaceId);
-    // let threads = await getThreadsWithSpace(props.match.params.spaceId);
-    setSpace(space);
-  }, [props.match.params.spaceId, getSpaceWithId]);
-
   useEffect(() => {
-    setData();
     getThreadsWithSpace(setThreads, props.match.params.spaceId);
-  }, [setData, getThreadsWithSpace, props.match.params.spaceId]);
+    getSpaceWithId(setSpace, props.match.params.spaceId);
+  }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
 
   if (!space) {
     return (

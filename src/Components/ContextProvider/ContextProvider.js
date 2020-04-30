@@ -142,13 +142,17 @@ const ContextProvider = ({ children, ...props }) => {
     return getDataWithWhere(request);
   };
 
-  const getSpaceWithId = spaceId => {
-    let request = {
-      collection: 'spaces',
-      docId: spaceId
-    };
-    return getDataWithDoc(request);
-  };
+  const getSpaceWithId = useCallback(
+    (setData, spaceId) => {
+      let ref = db.collection('spaces').doc(spaceId);
+      ref.onSnapshot(doc => {
+        let space = doc.data();
+        space.id = doc.id;
+        setData(space);
+      });
+    },
+    [db]
+  );
 
   const getOrgWithId = orgId => {
     let request = {
