@@ -38,17 +38,21 @@ const NavBar = props => {
   const [spaces, setSpaces] = useState([]);
 
   const setData = useCallback(async () => {
-    let user = await getUserData();
-    let orgId = props.match.params.id;
-    let spaces = await getSpacesWithOrg(orgId);
-    setSpaces(spaces);
+    let user = getUserData();
     setUser(user);
-  }, [getUserData, getSpacesWithOrg, props.match.params.id]);
+  }, [getUserData]);
 
   useEffect(() => {
     setData();
     getOrgWithUuid(setOrgs, localStorage.getItem('uuid'));
-  }, [setData, getOrgWithUuid]);
+    getSpacesWithOrg(setSpaces, props.match.params.id);
+  }, [
+    setData,
+    getOrgWithUuid,
+    getSpacesWithOrg,
+    getUserData,
+    props.match.params.id
+  ]);
 
   // componentDidMount() {
   //   let result = props.spacesForActiveOrg.every(space => {

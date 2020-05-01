@@ -14,7 +14,8 @@ const CreateThreadModal = props => {
     getSpacesWithOrg,
     getUserData,
     db,
-    closeModal
+    closeModal,
+    saveData
   } = useContext(Context);
 
   const [threadName, setThreadName] = useState('');
@@ -24,15 +25,14 @@ const CreateThreadModal = props => {
   const [spaces, setSpaces] = useState([]);
 
   const setData = useCallback(async () => {
-    let spaces = await getSpacesWithOrg(props.match.params.id);
     let user = await getUserData();
     setThreadCreatedByUserName(user.fullName);
-    setSpaces(spaces);
-  }, [getSpacesWithOrg, getUserData, props.match.params.id]);
+  }, [getUserData]);
 
   useEffect(() => {
     setData();
-  }, [setData]);
+    getSpacesWithOrg(setSpaces, props.match.params.id);
+  }, [setData, getSpacesWithOrg, props.match.params.id]);
   const saveSpaceToThread = (e, data) => {
     e.preventDefault();
     const { value } = data;
@@ -76,14 +76,14 @@ const CreateThreadModal = props => {
         whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
       })
       .then(() => {
-        let threadRef = props.firestore.collection('threads').doc(threadId);
+        let threadRef = db.collection('threads').doc(threadId);
         let whenUserHasSeen = {};
         whenUserHasSeen[
           `whenUserHasSeen.${localStorage.getItem('uuid')}`
         ] = Date.now();
         threadRef.update(whenUserHasSeen);
       })
-      .then(() => props.showModal(null))
+      .then(() => closeModal())
       .then(() =>
         props.history.push(
           `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${threadId}`

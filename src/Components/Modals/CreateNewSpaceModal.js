@@ -39,14 +39,13 @@ const CreateNewSpaceModal = props => {
 
   const setData = useCallback(async () => {
     let user = await getUserData();
-    let users = await getUsersFromOrg(props.match.params.id);
-    setUsers(users);
     setUser(user);
-  }, [getUserData, getUsersFromOrg, props.match.params.id]);
+  }, [getUserData]);
 
   useEffect(() => {
     setData();
-  }, [setData]);
+    getUsersFromOrg(setUsers, props.match.params.id);
+  }, [setData, props.match.params.id, getUsersFromOrg]);
 
   const cleanInputs = () => {
     setIdsInSpace([localStorage.getItem('uuid')]);

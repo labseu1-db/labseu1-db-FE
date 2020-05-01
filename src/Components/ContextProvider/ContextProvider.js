@@ -33,7 +33,6 @@ const ContextProvider = ({ children, ...props }) => {
   };
 
   const closeModal = e => {
-    e.preventDefault();
     setModal(null);
   };
 
@@ -48,7 +47,7 @@ const ContextProvider = ({ children, ...props }) => {
     }
   };
 
-  const getUsersFromOrg = orgId => {
+  /* const getUsersFromOrg = orgId => {
     let request = {
       collection: 'users',
       key: 'arrayOfOrgsIds',
@@ -57,7 +56,22 @@ const ContextProvider = ({ children, ...props }) => {
       type: 'return_data'
     };
     return getDataWithWhere(request);
-  };
+  }; */
+  const getUsersFromOrg = useCallback(
+    (setData, orgId) => {
+      let ref = db
+        .collection('users')
+        .where('arrayOfOrgsIds', 'array-contains', orgId);
+      ref.onSnapshot(querySnapshot => {
+        let users = [];
+        querySnapshot.forEach(doc => {
+          users.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(users);
+      });
+    },
+    [db]
+  );
 
   const toggleLoading = () => {
     setLoading(st => !st);
@@ -135,16 +149,19 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
-  const getSpacesWithOrg = orgId => {
-    let request = {
-      collection: 'spaces',
-      key: 'orgId',
-      term: '==',
-      value: orgId,
-      type: 'return_data'
-    };
-    return getDataWithWhere(request);
-  };
+  const getSpacesWithOrg = useCallback(
+    (setData, orgId) => {
+      let ref = db.collection('spaces').where('orgId', '==', orgId);
+      ref.onSnapshot(querySnapshot => {
+        let spaces = [];
+        querySnapshot.forEach(doc => {
+          spaces.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(spaces);
+      });
+    },
+    [db]
+  );
 
   const getSpaceWithId = useCallback(
     (setData, spaceId) => {
@@ -157,14 +174,6 @@ const ContextProvider = ({ children, ...props }) => {
     },
     [db]
   );
-
-  const getOrgWithId = orgId => {
-    let request = {
-      collection: 'organisations',
-      docId: orgId
-    };
-    return getDataWithDoc(request);
-  };
 
   const getOrgWithUuid = useCallback(
     (setData, uuid) => {
@@ -284,7 +293,6 @@ const ContextProvider = ({ children, ...props }) => {
         getUserData: getUserData,
         closeModal: closeModal,
         getOrgWithUuid: getOrgWithUuid,
-        getOrgWithId: getOrgWithId,
         getUsersFromOrg: getUsersFromOrg,
         getSpaceWithId: getSpaceWithId,
         getThreadsWithSpace: getThreadsWithSpace,
