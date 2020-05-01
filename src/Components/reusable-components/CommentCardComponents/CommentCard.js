@@ -26,7 +26,6 @@ export const CommentCard = props => {
   );
   const [isUpdating, setUpdating] = useState(false);
   const [isHovering, setHovering] = useState(false);
-  const [text, setText] = useState(props.content);
   const [updated, setUpdated] = useState(props.isCommentUpdated);
 
   const toggleLikePhoto = () => {
