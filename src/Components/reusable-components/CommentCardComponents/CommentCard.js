@@ -1,8 +1,5 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import icons
 import heartIconBlack from '../../../images/icon-heart-black.svg';
@@ -26,7 +23,6 @@ export const CommentCard = props => {
   );
   const [isUpdating, setUpdating] = useState(false);
   const [isHovering, setHovering] = useState(false);
-  const [updated, setUpdated] = useState(props.isCommentUpdated);
 
   const toggleLikePhoto = () => {
     setDidUserLikeComment(prevState => !prevState);
@@ -49,7 +45,7 @@ export const CommentCard = props => {
   };
 
   const setIsCommentUpdated = boolean => {
-    setUpdated(boolean);
+    setUpdating(boolean);
   };
 
   const {
@@ -246,17 +242,4 @@ const GifInComment = styled.img`
   margin: 10px 0;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(CommentCard);
+export default CommentCard;

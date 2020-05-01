@@ -1,8 +1,5 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
 import ScreenButton from '../ScreenButton';
@@ -105,17 +102,4 @@ const StyledButtonContainer = styled.div`
   margin-top: 30px;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(UpdateComment);
+export default UpdateComment;
