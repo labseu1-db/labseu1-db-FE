@@ -38,7 +38,7 @@ const NavBar = props => {
   const [spaces, setSpaces] = useState([]);
 
   const setData = useCallback(async () => {
-    let user = getUserData();
+    let user = await getUserData();
     setUser(user);
   }, [getUserData]);
 
