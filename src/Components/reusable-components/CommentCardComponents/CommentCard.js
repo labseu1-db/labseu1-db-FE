@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -13,8 +13,14 @@ import UpdateComment from './UpdateComment';
 import CommentDropdown from './CommentDropdown';
 import AvatarFromLetter from '../AvatarFromLetter';
 
+// import Context API
+import Context from '../../ContextProvider/Context';
+
 //Main component
 export const CommentCard = props => {
+  // use context api
+  const { updateDataWithDoc, deleteData, firebase } = useContext(Context);
+
   const [didUserLikeComment, setDidUserLikeComment] = useState(
     props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid'))
   );
@@ -28,10 +34,11 @@ export const CommentCard = props => {
   };
 
   const deleteComment = id => {
-    props.firestore
-      .collection('comments')
-      .doc(id)
-      .delete();
+    let request = {
+      collection: 'comments',
+      docId: id
+    };
+    deleteData(request);
   };
 
   const setIsUpdating = boolean => {
@@ -106,14 +113,16 @@ export const CommentCard = props => {
                   alt="heart icon"
                   onClick={() => {
                     toggleLikePhoto();
-                    let commentRef = props.firestore
-                      .collection('comments')
-                      .doc(commentId);
-                    commentRef.update({
-                      arrayOfUserIdsWhoLiked: props.firestore.FieldValue.arrayUnion(
-                        localStorage.getItem('uuid')
-                      )
-                    });
+                    let request = {
+                      collection: 'comments',
+                      docId: commentId,
+                      data: {
+                        arrayOfUserIdsWhoLiked: firebase.firestore.FieldValue.arrayUnion(
+                          localStorage.getItem('uuid')
+                        )
+                      }
+                    };
+                    updateDataWithDoc(request);
                   }}
                 />
               )}
@@ -126,14 +135,16 @@ export const CommentCard = props => {
                   alt="heart icon"
                   onClick={() => {
                     toggleLikePhoto();
-                    let commentRef = props.firestore
-                      .collection('comments')
-                      .doc(commentId);
-                    commentRef.update({
-                      arrayOfUserIdsWhoLiked: props.firestore.FieldValue.arrayRemove(
-                        localStorage.getItem('uuid')
-                      )
-                    });
+                    let request = {
+                      collection: 'comments',
+                      docId: commentId,
+                      data: {
+                        arrayOfUserIdsWhoLiked: firebase.firestore.FieldValue.arrayRemove(
+                          localStorage.getItem('uuid')
+                        )
+                      }
+                    };
+                    updateDataWithDoc(request);
                   }}
                 />
               )}
