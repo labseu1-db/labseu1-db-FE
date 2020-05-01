@@ -81,7 +81,7 @@ const CreateNewSpaceModal = props => {
         docId: id,
         data: {
           arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(spaceId),
-          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(spaceName)
+          arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(spaceName)
         }
       };
       return updateDataWithDoc(request);

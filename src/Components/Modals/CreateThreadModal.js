@@ -13,9 +13,9 @@ const CreateThreadModal = props => {
     setError,
     getSpacesWithOrg,
     getUserData,
-    db,
     closeModal,
-    saveData
+    saveData,
+    updateDataWithDoc
   } = useContext(Context);
 
   const [threadName, setThreadName] = useState('');
@@ -62,9 +62,10 @@ const CreateThreadModal = props => {
 
   const threadId = uuid();
   const addNewThread = async () => {
-    let ref = db.collection('threads').doc(threadId);
-    await ref
-      .set({
+    let request = {
+      collection: 'threads',
+      docId: threadId,
+      data: {
         threadName: threadName,
         threadTopic: threadTopic,
         threadCreatedByUserId: window.localStorage.getItem('uuid'),
@@ -74,15 +75,19 @@ const CreateThreadModal = props => {
         orgId: props.match.params.id,
         lastCommentCreatedAt: Date.now(),
         whenUserHasSeen: { [localStorage.getItem('uuid')]: Date.now() }
-      })
-      .then(() => {
-        let threadRef = db.collection('threads').doc(threadId);
-        let whenUserHasSeen = {};
-        whenUserHasSeen[
-          `whenUserHasSeen.${localStorage.getItem('uuid')}`
-        ] = Date.now();
-        threadRef.update(whenUserHasSeen);
-      })
+      }
+    };
+    saveData(request);
+    let whenUserHasSeen = {};
+    whenUserHasSeen[
+      `whenUserHasSeen.${localStorage.getItem('uuid')}`
+    ] = Date.now();
+    let updateRequest = {
+      collection: 'threads',
+      docId: threadId,
+      data: whenUserHasSeen
+    };
+    updateDataWithDoc(updateRequest)
       .then(() => closeModal())
       .then(() =>
         props.history.push(
