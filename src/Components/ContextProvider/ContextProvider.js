@@ -191,6 +191,18 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
+  const getOrgWithId = useCallback(
+    (setData, orgId) => {
+      let ref = db.collection('organisations').doc(orgId);
+      ref.onSnapshot(doc => {
+        let org = doc.data();
+        org.id = doc.id;
+        setData(org);
+      });
+    },
+    [db]
+  );
+
   const saveData = async request => {
     try {
       let ref = db.collection(request.collection).doc(request.docId);
@@ -293,6 +305,7 @@ const ContextProvider = ({ children, ...props }) => {
         getUserData: getUserData,
         closeModal: closeModal,
         getOrgWithUuid: getOrgWithUuid,
+        getOrgWithId: getOrgWithId,
         getUsersFromOrg: getUsersFromOrg,
         getSpaceWithId: getSpaceWithId,
         getThreadsWithSpace: getThreadsWithSpace,

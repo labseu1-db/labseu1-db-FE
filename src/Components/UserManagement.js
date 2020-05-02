@@ -22,7 +22,7 @@ const UserManagement = props => {
   // }
 
   // use Context API
-  const { getUsersFromOrg } = useContext(Context);
+  const { getUsersFromOrg, getOrgWithId } = useContext(Context);
 
   const [teamEmailAddress, setTeamEmailAddress] = useState(['', '', '', '']);
   const [alert, setAlert] = useState(true);
@@ -33,9 +33,8 @@ const UserManagement = props => {
 
   useEffect(() => {
     getUsersFromOrg(setUsers, props.match.params.id);
-  }, [getUsersFromOrg, props.match.params.id]);
-
-  console.log(users);
+    getOrgWithId(setOrg, props.match.params.id);
+  }, [getUsersFromOrg, getOrgWithId, props.match.params.id]);
 
   const handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
