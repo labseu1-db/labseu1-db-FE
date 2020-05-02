@@ -120,16 +120,16 @@ const UserManagement = props => {
       .map(e => {
         return e;
       });
+
     usersEmailsWithoutEmptyStrings.forEach(email => {
-      props.firestore.update(
-        {
-          collection: 'organisations',
-          doc: org.id
-        },
-        {
-          arrayOfUsersEmails: props.firestore.FieldValue.arrayUnion(email)
+      let request = {
+        collection: 'organisations',
+        docId: org.id,
+        data: {
+          arrayOfUsersEmails: firebase.firestore.FieldValue.arrayUnion(email)
         }
-      );
+      };
+      updateDataWithDoc(request);
     });
   };
 
