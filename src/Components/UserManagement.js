@@ -58,10 +58,10 @@ const UserManagement = props => {
     );
   };
 
-  // const checkIfEmail = email => {
-  //   let re = /(^$|^.*@.*\..*$)/;
-  //   return re.test(email);
-  // };
+  const checkIfEmail = email => {
+    let re = /(^$|^.*@.*\..*$)/;
+    return re.test(email);
+  };
 
   const removeOrgFromUser = id => {
     let request = {
@@ -206,7 +206,7 @@ const UserManagement = props => {
                         org.isPremium === false
                       ) {
                         setAlert('subscription');
-                      } else if (!teamEmailAddress.every(this.checkIfEmail)) {
+                      } else if (!teamEmailAddress.every(checkIfEmail)) {
                         setAlert('email');
                       } else {
                         addUserEmailsToOrgDatabase();
