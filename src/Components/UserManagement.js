@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
 import { Header, Modal, Message } from 'semantic-ui-react';
@@ -22,11 +19,16 @@ const UserManagement = props => {
   // }
 
   // use Context API
-  const { getUsersFromOrg, getOrgWithId } = useContext(Context);
+  const {
+    getUsersFromOrg,
+    getOrgWithId,
+    getSpacesWithOrg,
+    updateDataWithDoc,
+    firebase
+  } = useContext(Context);
 
   const [teamEmailAddress, setTeamEmailAddress] = useState(['', '', '', '']);
   const [alert, setAlert] = useState(true);
-  const [user, setUser] = useState('');
   const [spaces, setSpaces] = useState([]);
   const [org, setOrg] = useState('');
   const [users, setUsers] = useState([]);
@@ -34,11 +36,8 @@ const UserManagement = props => {
   useEffect(() => {
     getUsersFromOrg(setUsers, props.match.params.id);
     getOrgWithId(setOrg, props.match.params.id);
-  }, [getUsersFromOrg, getOrgWithId, props.match.params.id]);
-
-  const handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+    getSpacesWithOrg(setSpaces, props.match.params.id);
+  }, [getUsersFromOrg, getOrgWithId, getSpacesWithOrg, props.match.params.id]);
 
   //Add email input when clicked on email
   const appendInput = () => {
@@ -49,14 +48,14 @@ const UserManagement = props => {
 
   //Add email to state
   const addEmail = (email, index) => {
-    this.setState(pr => ({
-      teamEmailAddress: pr.teamEmailAddress.map((value, i) => {
+    setTeamEmailAddress(pr =>
+      pr.map((value, i) => {
         if (i === index) {
           return email;
         }
         return value;
       })
-    }));
+    );
   };
 
   const checkIfEmail = email => {
@@ -65,55 +64,53 @@ const UserManagement = props => {
   };
 
   const removeOrgFromUser = id => {
-    props.firestore.update(
-      { collection: 'users', doc: id },
-      {
-        arrayOfOrgsIds: props.firestore.FieldValue.arrayRemove(
-          props.organisation.id
-        ),
-        arrayOfOrgsNames: props.firestore.FieldValue.arrayRemove(
-          props.organisation.orgName
-        )
+    let request = {
+      collection: 'users',
+      docId: id,
+      data: {
+        arrayOfOrgsIds: firebase.firestore.FieldValue.arrayRemove(org.id),
+        arrayOfOrgsNames: firebase.firestore.FieldValue.arrayRemove(org.orgName)
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
 
   const removeUserFromOrg = (id, email) => {
-    props.firestore.update(
-      { collection: 'organisations', doc: props.organisation.id },
-      {
-        arrayOfUsersEmails: props.firestore.FieldValue.arrayRemove(email),
-        arrayOfUsersIds: props.firestore.FieldValue.arrayRemove(id)
+    let request = {
+      collection: 'organisations',
+      docId: org.id,
+      data: {
+        arrayOfUsersEmails: firebase.firestore.FieldValue.arrayRemove(email),
+        arrayOfUsersIds: firebase.firestore.FieldValue.arrayRemove(id)
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
 
   const removeSpacesFromUser = id => {
-    props.spaces.forEach(space => {
-      props.firestore
-        .update(
-          {
-            collection: 'spaces',
-            doc: space.id
-          },
-          {
-            arrayOfUserIdsInSpace: props.firestore.FieldValue.arrayRemove(id)
+    spaces.forEach(space => {
+      let request = {
+        collection: 'spaces',
+        docId: space.id,
+        data: {
+          arrayOfUserIdsInSpace: firebase.firestore.FieldValue.arrayRemove(id)
+        }
+      };
+      updateDataWithDoc(request).then(res => {
+        let request = {
+          collection: 'users',
+          docId: id,
+          data: {
+            arrayOfSpaceIds: firebase.firestore.FieldValue.arrayRemove(
+              space.id
+            ),
+            arrayOfSpaceNames: firebase.firestore.FieldValue.arrayRemove(
+              space.spaceName
+            )
           }
-        )
-        .then(res =>
-          props.firestore.update(
-            {
-              collection: 'users',
-              doc: id
-            },
-            {
-              arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(space.id),
-              arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(
-                space.spaceName
-              )
-            }
-          )
-        );
+        };
+        updateDataWithDoc(request);
+      });
     });
   };
 
@@ -127,7 +124,7 @@ const UserManagement = props => {
       props.firestore.update(
         {
           collection: 'organisations',
-          doc: props.organisation.id
+          doc: org.id
         },
         {
           arrayOfUsersEmails: props.firestore.FieldValue.arrayUnion(email)
@@ -136,14 +133,14 @@ const UserManagement = props => {
     });
   };
 
-  if (props.organisation.createdByUserId === localStorage.getItem('uuid')) {
+  if (org.createdByUserId === localStorage.getItem('uuid')) {
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
           <StyledMainHeader>Your Team</StyledMainHeader>
 
           <div>
-            {props.listOfUsersWithinTheOrg.length > 1 && (
+            {users.length > 1 && (
               <StyledHeaderContainer>
                 <Header as="h5" className="first-heading">
                   Active Members
@@ -153,8 +150,8 @@ const UserManagement = props => {
                 </Subheader>
               </StyledHeaderContainer>
             )}
-            {props.listOfUsersWithinTheOrg.length > 0 &&
-              props.listOfUsersWithinTheOrg
+            {users.length > 0 &&
+              users
                 .filter(user => user.id !== props.uuid)
                 .map(u => {
                   return (
@@ -201,16 +198,16 @@ const UserManagement = props => {
                   <StyledModalButton
                     onClick={e => {
                       e.preventDefault();
-                      this.setState({ alert: false });
+                      setAlert(false);
                       if (
-                        props.organisation.arrayOfUsersEmails.length +
+                        org.arrayOfUsersEmails.length +
                           teamEmailAddress.filter(Boolean).length >
                           19 &&
-                        props.organisation.isPremium === false
+                        org.isPremium === false
                       ) {
-                        this.setState({ alert: 'subscription' });
+                        setAlert('subscription');
                       } else if (!teamEmailAddress.every(this.checkIfEmail)) {
-                        this.setState({ alert: 'email' });
+                        setAlert('email');
                       } else {
                         addUserEmailsToOrgDatabase();
                         props.history.goBack();
@@ -253,7 +250,7 @@ const UserManagement = props => {
       </Modal>
     );
   }
-  if (props.organisation.createdByUserId !== localStorage.getItem('uuid')) {
+  if (org.createdByUserId !== localStorage.getItem('uuid')) {
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
@@ -286,53 +283,9 @@ const UserManagement = props => {
   }
 };
 
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    organisation: state.firestore.ordered.organisations
-      ? state.firestore.ordered.organisations[0]
-      : [],
-    spaces: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces
-      : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
-      ? state.firestore.ordered.usersWithinTheOrg
-      : []
-  };
-};
-
-const mapDispatchToProps = {};
-
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'users',
-        where: [['arrayOfOrgsIds', 'array-contains', props.match.params.id]],
-        storeAs: 'usersWithinTheOrg'
-      },
-      {
-        collection: 'organisations',
-        doc: props.match.params.id
-      },
-      {
-        collection: 'spaces',
-        where: [['orgId', '==', props.match.params.id]]
-      }
-    ];
-  }),
-  withFirestore
-)(UserManagement);
+
+export default UserManagement;
 
 const StyledContainer = styled.div`
   padding: 40px;
