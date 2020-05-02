@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -8,29 +8,36 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 //Import semantic components
 import { Header, Modal, Message } from 'semantic-ui-react';
 
-class UserManagement extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      teamEmailAddress: ['', '', '', ''],
+const UserManagement = props => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     teamEmailAddress: ['', '', '', ''],
 
-      alert: false
-    };
-  }
+  //     alert: false
+  //   };
+  // }
 
-  handleInputChange = e => {
+  const [teamEmailAddress, setTeamEmailAddress] = useState(['', '', '', '']);
+  const [alert, setAlert] = useState(true);
+  const [user, setUser] = useState('');
+  const [spaces, setSpaces] = useState([]);
+  const [org, setOrg] = useState('');
+  const [users, setUsers] = useState([]);
+
+  const handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   //Add email input when clicked on email
-  appendInput = () => {
+  const appendInput = () => {
     this.setState(prevState => ({
       teamEmailAddress: prevState.teamEmailAddress.concat([''])
     }));
   };
 
   //Add email to state
-  addEmail = (email, index) => {
+  const addEmail = (email, index) => {
     this.setState(pr => ({
       teamEmailAddress: pr.teamEmailAddress.map((value, i) => {
         if (i === index) {
@@ -41,12 +48,12 @@ class UserManagement extends Component {
     }));
   };
 
-  checkIfEmail = email => {
+  const checkIfEmail = email => {
     let re = /(^$|^.*@.*\..*$)/;
     return re.test(email);
   };
 
-  removeOrgFromUser = id => {
+  const removeOrgFromUser = id => {
     this.props.firestore.update(
       { collection: 'users', doc: id },
       {
@@ -60,7 +67,7 @@ class UserManagement extends Component {
     );
   };
 
-  removeUserFromOrg = (id, email) => {
+  const removeUserFromOrg = (id, email) => {
     this.props.firestore.update(
       { collection: 'organisations', doc: this.props.organisation.id },
       {
@@ -70,7 +77,7 @@ class UserManagement extends Component {
     );
   };
 
-  removeSpacesFromUser = id => {
+  const removeSpacesFromUser = id => {
     this.props.spaces.forEach(space => {
       this.props.firestore
         .update(
@@ -103,7 +110,7 @@ class UserManagement extends Component {
     });
   };
 
-  addUserEmailsToOrgDatabase = () => {
+  const addUserEmailsToOrgDatabase = () => {
     let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress
       .filter(Boolean)
       .map(e => {
@@ -122,136 +129,25 @@ class UserManagement extends Component {
     });
   };
 
-  render() {
-    if (
-      this.props.organisation.createdByUserId === localStorage.getItem('uuid')
-    ) {
-      return (
-        <Modal open={true} size="tiny">
-          <StyledContainer>
-            <StyledMainHeader>Your Team</StyledMainHeader>
+  if (
+    this.props.organisation.createdByUserId === localStorage.getItem('uuid')
+  ) {
+    return (
+      <Modal open={true} size="tiny">
+        <StyledContainer>
+          <StyledMainHeader>Your Team</StyledMainHeader>
 
-            <div>
-              {this.props.listOfUsersWithinTheOrg.length > 1 && (
-                <StyledHeaderContainer>
-                  <Header as="h5" className="first-heading">
-                    Active Members
-                  </Header>
-                  <Subheader>
-                    Be very careful when deleting users as this can't be undone.
-                  </Subheader>
-                </StyledHeaderContainer>
-              )}
-              {this.props.listOfUsersWithinTheOrg.length > 0 &&
-                this.props.listOfUsersWithinTheOrg
-                  .filter(user => user.id !== this.props.uuid)
-                  .map(u => {
-                    return (
-                      <StyledUserContainer key={u.id}>
-                        <div>{u.fullName}</div>
-                        <StyledButtonDelete
-                          onClick={e => {
-                            e.preventDefault();
-                            this.removeSpacesFromUser(u.id);
-                            this.removeOrgFromUser(u.id);
-                            this.removeUserFromOrg(u.id, u.userEmail);
-                          }}
-                        >
-                          Delete
-                        </StyledButtonDelete>
-                      </StyledUserContainer>
-                    );
-                  })}
-              <StyledModalCard>
-                <Modal.Content>
-                  <StyledModalForm>
-                    <Header as="h5">Invite more users</Header>
-
-                    <div id="dynamicInput">
-                      {this.state.teamEmailAddress.map((input, i) => (
-                        <StyledModalInput
-                          placeholder="Email address"
-                          type="email"
-                          value={this.state.teamEmailAddress[i]}
-                          onChange={e => {
-                            this.addEmail(e.target.value, i);
-                          }}
-                          key={i}
-                        />
-                      ))}
-                    </div>
-                  </StyledModalForm>
-                  <StyledModalAdder onClick={() => this.appendInput()}>
-                    Add more emails
-                  </StyledModalAdder>
-                </Modal.Content>
-                <Modal.Actions>
-                  <StyledActionButtonsContainer>
-                    <StyledModalButton
-                      onClick={e => {
-                        e.preventDefault();
-                        this.setState({ alert: false });
-                        if (
-                          this.props.organisation.arrayOfUsersEmails.length +
-                            this.state.teamEmailAddress.filter(Boolean).length >
-                            19 &&
-                          this.props.organisation.isPremium === false
-                        ) {
-                          this.setState({ alert: 'subscription' });
-                        } else if (
-                          !this.state.teamEmailAddress.every(this.checkIfEmail)
-                        ) {
-                          this.setState({ alert: 'email' });
-                        } else {
-                          this.addUserEmailsToOrgDatabase();
-                          this.props.history.goBack();
-                        }
-                      }}
-                    >
-                      Invite
-                    </StyledModalButton>
-                    <StyledModalMainButtonContainer>
-                      <StyledModalButton
-                        className="cancel-button"
-                        onClick={e => {
-                          e.preventDefault();
-                          this.props.history.goBack();
-                        }}
-                      >
-                        Go back
-                      </StyledModalButton>
-                    </StyledModalMainButtonContainer>
-                  </StyledActionButtonsContainer>
-                </Modal.Actions>
-              </StyledModalCard>
-              {this.state.alert === 'email' && (
-                <StyledAlertMessage>
-                  <Message color="red">
-                    Please make sure that you are using valid email address.
-                  </Message>
-                </StyledAlertMessage>
-              )}
-              {this.state.alert === 'subscription' && (
-                <StyledAlertMessage>
-                  <Message color="red">
-                    With free version you can invite up to 20 users. If you want
-                    to invite more, please upgrade your account.
-                  </Message>
-                </StyledAlertMessage>
-              )}
-            </div>
-          </StyledContainer>
-        </Modal>
-      );
-    }
-    if (
-      this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
-    ) {
-      return (
-        <Modal open={true} size="tiny">
-          <StyledContainer>
-            <StyledMainHeader>Your team</StyledMainHeader>
-
+          <div>
+            {this.props.listOfUsersWithinTheOrg.length > 1 && (
+              <StyledHeaderContainer>
+                <Header as="h5" className="first-heading">
+                  Active Members
+                </Header>
+                <Subheader>
+                  Be very careful when deleting users as this can't be undone.
+                </Subheader>
+              </StyledHeaderContainer>
+            )}
             {this.props.listOfUsersWithinTheOrg.length > 0 &&
               this.props.listOfUsersWithinTheOrg
                 .filter(user => user.id !== this.props.uuid)
@@ -259,26 +155,135 @@ class UserManagement extends Component {
                   return (
                     <StyledUserContainer key={u.id}>
                       <div>{u.fullName}</div>
+                      <StyledButtonDelete
+                        onClick={e => {
+                          e.preventDefault();
+                          removeSpacesFromUser(u.id);
+                          removeOrgFromUser(u.id);
+                          removeUserFromOrg(u.id, u.userEmail);
+                        }}
+                      >
+                        Delete
+                      </StyledButtonDelete>
                     </StyledUserContainer>
                   );
                 })}
-          </StyledContainer>
-          <StyledModalMainButtonContainer>
-            <StyledModalButton
-              className="cancel-button"
-              onClick={e => {
-                e.preventDefault();
-                this.props.history.goBack();
-              }}
-            >
-              Go back
-            </StyledModalButton>
-          </StyledModalMainButtonContainer>
-        </Modal>
-      );
-    }
+            <StyledModalCard>
+              <Modal.Content>
+                <StyledModalForm>
+                  <Header as="h5">Invite more users</Header>
+
+                  <div id="dynamicInput">
+                    {this.state.teamEmailAddress.map((input, i) => (
+                      <StyledModalInput
+                        placeholder="Email address"
+                        type="email"
+                        value={this.state.teamEmailAddress[i]}
+                        onChange={e => {
+                          addEmail(e.target.value, i);
+                        }}
+                        key={i}
+                      />
+                    ))}
+                  </div>
+                </StyledModalForm>
+                <StyledModalAdder onClick={() => appendInput()}>
+                  Add more emails
+                </StyledModalAdder>
+              </Modal.Content>
+              <Modal.Actions>
+                <StyledActionButtonsContainer>
+                  <StyledModalButton
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState({ alert: false });
+                      if (
+                        this.props.organisation.arrayOfUsersEmails.length +
+                          this.state.teamEmailAddress.filter(Boolean).length >
+                          19 &&
+                        props.organisation.isPremium === false
+                      ) {
+                        this.setState({ alert: 'subscription' });
+                      } else if (
+                        !this.state.teamEmailAddress.every(this.checkIfEmail)
+                      ) {
+                        this.setState({ alert: 'email' });
+                      } else {
+                        addUserEmailsToOrgDatabase();
+                        props.history.goBack();
+                      }
+                    }}
+                  >
+                    Invite
+                  </StyledModalButton>
+                  <StyledModalMainButtonContainer>
+                    <StyledModalButton
+                      className="cancel-button"
+                      onClick={e => {
+                        e.preventDefault();
+                        props.history.goBack();
+                      }}
+                    >
+                      Go back
+                    </StyledModalButton>
+                  </StyledModalMainButtonContainer>
+                </StyledActionButtonsContainer>
+              </Modal.Actions>
+            </StyledModalCard>
+            {this.state.alert === 'email' && (
+              <StyledAlertMessage>
+                <Message color="red">
+                  Please make sure that you are using valid email address.
+                </Message>
+              </StyledAlertMessage>
+            )}
+            {this.state.alert === 'subscription' && (
+              <StyledAlertMessage>
+                <Message color="red">
+                  With free version you can invite up to 20 users. If you want
+                  to invite more, please upgrade your account.
+                </Message>
+              </StyledAlertMessage>
+            )}
+          </div>
+        </StyledContainer>
+      </Modal>
+    );
   }
-}
+  if (
+    this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
+  ) {
+    return (
+      <Modal open={true} size="tiny">
+        <StyledContainer>
+          <StyledMainHeader>Your team</StyledMainHeader>
+
+          {this.props.listOfUsersWithinTheOrg.length > 0 &&
+            this.props.listOfUsersWithinTheOrg
+              .filter(user => user.id !== this.props.uuid)
+              .map(u => {
+                return (
+                  <StyledUserContainer key={u.id}>
+                    <div>{u.fullName}</div>
+                  </StyledUserContainer>
+                );
+              })}
+        </StyledContainer>
+        <StyledModalMainButtonContainer>
+          <StyledModalButton
+            className="cancel-button"
+            onClick={e => {
+              e.preventDefault();
+              props.history.goBack();
+            }}
+          >
+            Go back
+          </StyledModalButton>
+        </StyledModalMainButtonContainer>
+      </Modal>
+    );
+  }
+};
 
 //Export component wrapped in redux actions and store and firestore
 const mapStateToProps = state => {
