@@ -58,10 +58,10 @@ const UserManagement = props => {
     );
   };
 
-  const checkIfEmail = email => {
-    let re = /(^$|^.*@.*\..*$)/;
-    return re.test(email);
-  };
+  // const checkIfEmail = email => {
+  //   let re = /(^$|^.*@.*\..*$)/;
+  //   return re.test(email);
+  // };
 
   const removeOrgFromUser = id => {
     let request = {
