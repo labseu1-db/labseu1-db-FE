@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -7,6 +7,9 @@ import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import semantic components
 import { Header, Modal, Message } from 'semantic-ui-react';
+
+// Import Context API
+import Context from './ContextProvider/Context';
 
 const UserManagement = props => {
   // constructor(props) {
@@ -18,12 +21,21 @@ const UserManagement = props => {
   //   };
   // }
 
+  // use Context API
+  const { getUsersFromOrg } = useContext(Context);
+
   const [teamEmailAddress, setTeamEmailAddress] = useState(['', '', '', '']);
   const [alert, setAlert] = useState(true);
   const [user, setUser] = useState('');
   const [spaces, setSpaces] = useState([]);
   const [org, setOrg] = useState('');
   const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    getUsersFromOrg(setUsers, props.match.params.id);
+  }, [getUsersFromOrg, props.match.params.id]);
+
+  console.log(users);
 
   const handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -54,54 +66,50 @@ const UserManagement = props => {
   };
 
   const removeOrgFromUser = id => {
-    this.props.firestore.update(
+    props.firestore.update(
       { collection: 'users', doc: id },
       {
-        arrayOfOrgsIds: this.props.firestore.FieldValue.arrayRemove(
-          this.props.organisation.id
+        arrayOfOrgsIds: props.firestore.FieldValue.arrayRemove(
+          props.organisation.id
         ),
-        arrayOfOrgsNames: this.props.firestore.FieldValue.arrayRemove(
-          this.props.organisation.orgName
+        arrayOfOrgsNames: props.firestore.FieldValue.arrayRemove(
+          props.organisation.orgName
         )
       }
     );
   };
 
   const removeUserFromOrg = (id, email) => {
-    this.props.firestore.update(
-      { collection: 'organisations', doc: this.props.organisation.id },
+    props.firestore.update(
+      { collection: 'organisations', doc: props.organisation.id },
       {
-        arrayOfUsersEmails: this.props.firestore.FieldValue.arrayRemove(email),
-        arrayOfUsersIds: this.props.firestore.FieldValue.arrayRemove(id)
+        arrayOfUsersEmails: props.firestore.FieldValue.arrayRemove(email),
+        arrayOfUsersIds: props.firestore.FieldValue.arrayRemove(id)
       }
     );
   };
 
   const removeSpacesFromUser = id => {
-    this.props.spaces.forEach(space => {
-      this.props.firestore
+    props.spaces.forEach(space => {
+      props.firestore
         .update(
           {
             collection: 'spaces',
             doc: space.id
           },
           {
-            arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(
-              id
-            )
+            arrayOfUserIdsInSpace: props.firestore.FieldValue.arrayRemove(id)
           }
         )
         .then(res =>
-          this.props.firestore.update(
+          props.firestore.update(
             {
               collection: 'users',
               doc: id
             },
             {
-              arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
-                space.id
-              ),
-              arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
+              arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(space.id),
+              arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(
                 space.spaceName
               )
             }
@@ -111,34 +119,32 @@ const UserManagement = props => {
   };
 
   const addUserEmailsToOrgDatabase = () => {
-    let usersEmailsWithoutEmptyStrings = this.state.teamEmailAddress
+    let usersEmailsWithoutEmptyStrings = teamEmailAddress
       .filter(Boolean)
       .map(e => {
         return e;
       });
     usersEmailsWithoutEmptyStrings.forEach(email => {
-      this.props.firestore.update(
+      props.firestore.update(
         {
           collection: 'organisations',
-          doc: this.props.organisation.id
+          doc: props.organisation.id
         },
         {
-          arrayOfUsersEmails: this.props.firestore.FieldValue.arrayUnion(email)
+          arrayOfUsersEmails: props.firestore.FieldValue.arrayUnion(email)
         }
       );
     });
   };
 
-  if (
-    this.props.organisation.createdByUserId === localStorage.getItem('uuid')
-  ) {
+  if (props.organisation.createdByUserId === localStorage.getItem('uuid')) {
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
           <StyledMainHeader>Your Team</StyledMainHeader>
 
           <div>
-            {this.props.listOfUsersWithinTheOrg.length > 1 && (
+            {props.listOfUsersWithinTheOrg.length > 1 && (
               <StyledHeaderContainer>
                 <Header as="h5" className="first-heading">
                   Active Members
@@ -148,9 +154,9 @@ const UserManagement = props => {
                 </Subheader>
               </StyledHeaderContainer>
             )}
-            {this.props.listOfUsersWithinTheOrg.length > 0 &&
-              this.props.listOfUsersWithinTheOrg
-                .filter(user => user.id !== this.props.uuid)
+            {props.listOfUsersWithinTheOrg.length > 0 &&
+              props.listOfUsersWithinTheOrg
+                .filter(user => user.id !== props.uuid)
                 .map(u => {
                   return (
                     <StyledUserContainer key={u.id}>
@@ -174,11 +180,11 @@ const UserManagement = props => {
                   <Header as="h5">Invite more users</Header>
 
                   <div id="dynamicInput">
-                    {this.state.teamEmailAddress.map((input, i) => (
+                    {teamEmailAddress.map((input, i) => (
                       <StyledModalInput
                         placeholder="Email address"
                         type="email"
-                        value={this.state.teamEmailAddress[i]}
+                        value={teamEmailAddress[i]}
                         onChange={e => {
                           addEmail(e.target.value, i);
                         }}
@@ -198,15 +204,13 @@ const UserManagement = props => {
                       e.preventDefault();
                       this.setState({ alert: false });
                       if (
-                        this.props.organisation.arrayOfUsersEmails.length +
-                          this.state.teamEmailAddress.filter(Boolean).length >
+                        props.organisation.arrayOfUsersEmails.length +
+                          teamEmailAddress.filter(Boolean).length >
                           19 &&
                         props.organisation.isPremium === false
                       ) {
                         this.setState({ alert: 'subscription' });
-                      } else if (
-                        !this.state.teamEmailAddress.every(this.checkIfEmail)
-                      ) {
+                      } else if (!teamEmailAddress.every(this.checkIfEmail)) {
                         this.setState({ alert: 'email' });
                       } else {
                         addUserEmailsToOrgDatabase();
@@ -230,14 +234,14 @@ const UserManagement = props => {
                 </StyledActionButtonsContainer>
               </Modal.Actions>
             </StyledModalCard>
-            {this.state.alert === 'email' && (
+            {alert === 'email' && (
               <StyledAlertMessage>
                 <Message color="red">
                   Please make sure that you are using valid email address.
                 </Message>
               </StyledAlertMessage>
             )}
-            {this.state.alert === 'subscription' && (
+            {alert === 'subscription' && (
               <StyledAlertMessage>
                 <Message color="red">
                   With free version you can invite up to 20 users. If you want
@@ -250,17 +254,15 @@ const UserManagement = props => {
       </Modal>
     );
   }
-  if (
-    this.props.organisation.createdByUserId !== localStorage.getItem('uuid')
-  ) {
+  if (props.organisation.createdByUserId !== localStorage.getItem('uuid')) {
     return (
       <Modal open={true} size="tiny">
         <StyledContainer>
           <StyledMainHeader>Your team</StyledMainHeader>
 
-          {this.props.listOfUsersWithinTheOrg.length > 0 &&
-            this.props.listOfUsersWithinTheOrg
-              .filter(user => user.id !== this.props.uuid)
+          {users.length > 0 &&
+            users
+              .filter(user => user.id !== props.uuid)
               .map(u => {
                 return (
                   <StyledUserContainer key={u.id}>
