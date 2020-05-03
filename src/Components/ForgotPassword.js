@@ -36,17 +36,23 @@ const ForgotPassword = props => {
   }; */
 
   // use Context API
-  const { error, setError, resetPasswordStatus } = useContext(Context);
+  const {
+    error,
+    setError,
+    resetPasswordStatus,
+    firebase,
+    setResetPasswordStatus
+  } = useContext(Context);
 
   const [loginEmail, setLoginEmail] = useState('');
 
   const submitHandler = (email, event) => {
     event.preventDefault();
-    props.firebase
+    firebase
       .resetPassword(email)
       .then(() => {
         if (resetPasswordStatus) {
-          props.resetPasswordDone();
+          setResetPasswordStatus(false);
           props.history.push(`/profile/${props.match.params.id}`);
         } else {
           props.history.push('/login');
@@ -59,9 +65,9 @@ const ForgotPassword = props => {
 
   useEffect(() => {
     if (!resetPasswordStatus) {
-      props.history.push('/homescreen');
+      props.history.push(`/mainscreen/${props.match.params.id}`);
     }
-  }, [props.history, resetPasswordStatus]);
+  }, [props.history, props.match.params.id, resetPasswordStatus]);
 
   const handleInputChange = e => {
     setLoginEmail(e.target.value);
