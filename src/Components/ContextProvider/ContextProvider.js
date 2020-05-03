@@ -212,7 +212,11 @@ const ContextProvider = ({ children, ...props }) => {
     (setData, uuid) => {
       let ref = db
         .collection('organisations')
-        .where('arrayOfUsersIds', 'array-contains', uuid);
+        .where(
+          'arrayOfUsersIds',
+          'array-contains',
+          uuid || localStorage.getItem('uuid')
+        );
       ref.onSnapshot(querySnapshot => {
         let orgs = [];
         querySnapshot.forEach(doc => {

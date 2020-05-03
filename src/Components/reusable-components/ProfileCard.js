@@ -8,14 +8,17 @@ import Context from '../ContextProvider/Context';
 
 function ProfileCard(props) {
   // use Context API
-  const { getUserDataRealTime } = useContext(Context);
+  const { getUserDataRealTime, getOrgWithUuid } = useContext(Context);
 
   // use hooks to set user data
   const [user, setUser] = useState('');
+  const [orgs, setOrgs] = useState([]);
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
-  }, [getUserDataRealTime]);
+    let uuid = localStorage.getItem('uuid');
+    getUserDataRealTime(setUser, uuid);
+    getOrgWithUuid(setOrgs);
+  }, [getUserDataRealTime, getOrgWithUuid]);
 
   return (
     <StyledProfileContainer>
@@ -30,7 +33,7 @@ function ProfileCard(props) {
           {...props}
         />
       )}
-      <ProfileCardOrgsField orgs={props.orgs} user={props.user} />
+      <ProfileCardOrgsField orgs={orgs} user={user} />
     </StyledProfileContainer>
   );
 }
