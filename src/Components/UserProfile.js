@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import ProfileCard from './reusable-components/ProfileCard';
 import Navbar from './NavBar';
 import RightSidebar from './RightSidebar';
+import { Redirect } from 'react-router-dom';
+
+// import Context API
+import Context from './ContextProvider/Context';
 
 const UserProfile = props => {
+  const { resetPasswordStatus } = useContext(Context);
+
+  if (resetPasswordStatus) {
+    return <Redirect to={`/changePassword/${props.match.params.id}`} />;
+  }
   return (
     <StyledMain>
       <Navbar {...props} />
       <StyledMainScreen>
-        <ProfileCard />
+        <ProfileCard {...props} />
       </StyledMainScreen>
       <RightSidebar />
     </StyledMain>

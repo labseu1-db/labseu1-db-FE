@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { withFirestore } from 'react-redux-firebase';
 
 // import Context API
@@ -24,7 +23,11 @@ export const ProfileCardUserRow = props => {
   //   document.removeEventListener('keydown', escFunction, false);
   // }
 
-  const { updateDataWithDoc, getUserDataRealTime } = useContext(Context);
+  const {
+    updateDataWithDoc,
+    getUserDataRealTime,
+    setResetPasswordStatus
+  } = useContext(Context);
 
   const escFunction = event => {
     if (editingProfileStatus && event.which === 27) {
@@ -36,7 +39,6 @@ export const ProfileCardUserRow = props => {
   const [user, setUser] = useState('');
   const [fullName, setFullName] = useState(user.fullName);
   const [editingProfileStatus, setEditingProfileStatus] = useState(false);
-  const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
 
   useEffect(() => {
     getUserDataRealTime(setUser);
@@ -64,9 +66,6 @@ export const ProfileCardUserRow = props => {
     }
   };
 
-  if (resetPasswordStatus) {
-    return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
-  }
   return (
     <StyledFirstRow onKeyDown={escFunction}>
       {/* <StyledImg src={props.user.profileUrl} alt='user' /> */}

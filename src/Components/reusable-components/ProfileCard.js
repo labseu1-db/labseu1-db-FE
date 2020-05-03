@@ -27,6 +27,7 @@ function ProfileCard(props) {
           editingProfileStatus={props.editingProfileStatus}
           editingProfileDone={props.editingProfileDone}
           uuid={user.id}
+          {...props}
         />
       )}
       <ProfileCardOrgsField orgs={props.orgs} user={props.user} />

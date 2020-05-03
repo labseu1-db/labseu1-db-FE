@@ -9,6 +9,7 @@ const ContextProvider = ({ children, ...props }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(null);
+  const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
 
   // Firestore
   const db = firebase.firestore();
@@ -345,7 +346,9 @@ const ContextProvider = ({ children, ...props }) => {
         getThreadWithId: getThreadWithId,
         getCommentsWithThread: getCommentsWithThread,
         getFollowUpThreads: getFollowUpThreads,
-        getUserDataRealTime: getUserDataRealTime
+        getUserDataRealTime: getUserDataRealTime,
+        resetPasswordStatus: resetPasswordStatus,
+        setResetPasswordStatus: setResetPasswordStatus
       }}
     >
       {children}
