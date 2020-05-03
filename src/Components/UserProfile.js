@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ProfileCard from './reusable-components/ProfileCard';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import Navbar from './NavBar';
 import RightSidebar from './RightSidebar';
 
