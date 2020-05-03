@@ -120,6 +120,25 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
+  const getFollowUpThreads = useCallback(
+    setData => {
+      let uuid = localStorage.getItem('uuid');
+      let ref = db
+        .collection('threads')
+        .where('isFollowUp', '==', true)
+        .where('arrayOfUserIdsWhoFollowUp', 'array-contains', uuid)
+        .orderBy('threadCreatedAt', 'desc');
+      ref.onSnapshot(querySnapshot => {
+        let threads = [];
+        querySnapshot.forEach(doc => {
+          threads.push(Object.assign({ id: doc.id }, doc.data()));
+        });
+        setData(threads);
+      });
+    },
+    [db]
+  );
+
   const getThreadWithId = useCallback(
     (setData, threadId) => {
       let ref = db.collection('threads').doc(threadId);
@@ -311,7 +330,8 @@ const ContextProvider = ({ children, ...props }) => {
         getThreadsWithSpace: getThreadsWithSpace,
         deleteData: deleteData,
         getThreadWithId: getThreadWithId,
-        getCommentsWithThread: getCommentsWithThread
+        getCommentsWithThread: getCommentsWithThread,
+        getFollowUpThreads: getFollowUpThreads
       }}
     >
       {children}
