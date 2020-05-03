@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { withFirestore } from 'react-redux-firebase';
+
+// import Context API
+import Context from '../../ContextProvider/Context';
 
 export const ProfileCardUserRow = props => {
   // constructor(props) {
@@ -20,6 +23,9 @@ export const ProfileCardUserRow = props => {
   // componentWillUnmount() {
   //   document.removeEventListener('keydown', escFunction, false);
   // }
+
+  const { updateDataWithDoc, getUserDataRealTime } = useContext(Context);
+
   const escFunction = event => {
     if (editingProfileStatus && event.which === 27) {
       setEditingProfileStatus(false);
@@ -27,25 +33,34 @@ export const ProfileCardUserRow = props => {
       onChangeHandler(event);
     }
   };
-
-  const [fullName, setFullName] = useState(props.user.fullName);
+  const [user, setUser] = useState('');
+  const [fullName, setFullName] = useState(user.fullName);
   const [editingProfileStatus, setEditingProfileStatus] = useState(false);
   const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
+
+  useEffect(() => {
+    getUserDataRealTime(setUser);
+  }, [getUserDataRealTime]);
 
   const onChangeHandler = e => {
     setFullName(e.target.value);
   };
+
+  const editProfile = () => {
+    setFullName(user.fullName);
+    setEditingProfileStatus(true);
+  };
   const onSubmitHandler = event => {
     if (event.which === 13 || event.keyCode === 13) {
       event.preventDefault();
-      let ref = props.firestore.collection('users').doc(props.uuid);
-      ref
-        .update({
+      let request = {
+        collection: 'users',
+        docId: props.uuid,
+        data: {
           fullName: fullName
-        })
-        .then(() => {
-          props.editingProfileDone();
-        });
+        }
+      };
+      updateDataWithDoc(request).then(setEditingProfileStatus(false));
     }
   };
 
@@ -56,9 +71,7 @@ export const ProfileCardUserRow = props => {
     <StyledFirstRow onKeyDown={escFunction}>
       {/* <StyledImg src={props.user.profileUrl} alt='user' /> */}
       {!editingProfileStatus && (
-        <StyledNameSpan aria-label="full name">
-          {props.user.fullName}
-        </StyledNameSpan>
+        <StyledNameSpan aria-label="full name">{user.fullName}</StyledNameSpan>
       )}
       {editingProfileStatus && (
         <StyledNameSubmitForm
@@ -85,7 +98,7 @@ export const ProfileCardUserRow = props => {
         border="solid 0.5px #37475026"
         top="0px"
         right="0px"
-        onClick={() => setEditingProfileStatus(true)}
+        onClick={editProfile}
       />
     </StyledFirstRow>
   );

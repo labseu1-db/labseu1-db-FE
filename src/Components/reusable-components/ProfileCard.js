@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ProfileCardUserRow from './ProfileCardComponents/ProfileCardUserRow';
 import ProfileCardOrgsField from './ProfileCardComponents/ProfileCardOrgsField';
@@ -8,19 +8,14 @@ import Context from '../ContextProvider/Context';
 
 function ProfileCard(props) {
   // use Context API
-  const { getUserData } = useContext(Context);
+  const { getUserDataRealTime } = useContext(Context);
 
   // use hooks to set user data
   const [user, setUser] = useState('');
 
-  const setData = useCallback(async () => {
-    let user = await getUserData();
-    setUser(user);
-  }, [getUserData]);
-
   useEffect(() => {
-    setData();
-  }, [setData]);
+    getUserDataRealTime(setUser);
+  }, [getUserDataRealTime]);
 
   return (
     <StyledProfileContainer>

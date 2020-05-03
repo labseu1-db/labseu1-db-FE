@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Redirect, Link } from 'react-router-dom';
 
@@ -31,10 +31,10 @@ const NavBar = props => {
   // Context API
 
   const {
-    getUserData,
     getOrgWithUuid,
     getSpacesWithOrg,
-    firebase
+    firebase,
+    getUserDataRealTime
   } = useContext(Context);
 
   const [profileDropdown, setProfileDropdown] = useState('');
@@ -42,20 +42,14 @@ const NavBar = props => {
   const [orgs, setOrgs] = useState([]);
   const [spaces, setSpaces] = useState([]);
 
-  const setData = useCallback(async () => {
-    let user = await getUserData();
-    setUser(user);
-  }, [getUserData]);
-
   useEffect(() => {
-    setData();
+    getUserDataRealTime(setUser);
     getOrgWithUuid(setOrgs, localStorage.getItem('uuid'));
     getSpacesWithOrg(setSpaces, props.match.params.id);
   }, [
-    setData,
     getOrgWithUuid,
     getSpacesWithOrg,
-    getUserData,
+    getUserDataRealTime,
     props.match.params.id
   ]);
 

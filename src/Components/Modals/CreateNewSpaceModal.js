@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import { isEmpty } from 'react-redux-firebase';
 import uuid from 'uuid';
@@ -24,11 +24,11 @@ const CreateNewSpaceModal = props => {
     modal,
     setModal,
     closeModal,
-    getUserData,
     getUsersFromOrg,
     saveData,
     updateDataWithDoc,
-    firebase
+    firebase,
+    getUserDataRealTime
   } = useContext(Context);
 
   const [spaceName, setSpaceName] = useState('');
@@ -37,15 +37,10 @@ const CreateNewSpaceModal = props => {
   const [user, setUser] = useState('');
   const [users, setUsers] = useState([]);
 
-  const setData = useCallback(async () => {
-    let user = await getUserData();
-    setUser(user);
-  }, [getUserData]);
-
   useEffect(() => {
-    setData();
+    getUserDataRealTime(setUser);
     getUsersFromOrg(setUsers, props.match.params.id);
-  }, [setData, props.match.params.id, getUsersFromOrg]);
+  }, [getUserDataRealTime, props.match.params.id, getUsersFromOrg]);
 
   const cleanInputs = () => {
     setIdsInSpace([localStorage.getItem('uuid')]);

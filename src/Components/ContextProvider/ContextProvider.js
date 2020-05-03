@@ -47,6 +47,19 @@ const ContextProvider = ({ children, ...props }) => {
     }
   };
 
+  const getUserDataRealTime = useCallback(
+    setData => {
+      const uuid = localStorage.getItem('uuid');
+      let ref = db.collection('users').doc(uuid);
+      ref.onSnapshot(doc => {
+        let user = doc.data();
+        user.id = doc.id;
+        setData(user);
+      });
+    },
+    [db]
+  );
+
   /* const getUsersFromOrg = orgId => {
     let request = {
       collection: 'users',
@@ -331,7 +344,8 @@ const ContextProvider = ({ children, ...props }) => {
         deleteData: deleteData,
         getThreadWithId: getThreadWithId,
         getCommentsWithThread: getCommentsWithThread,
-        getFollowUpThreads: getFollowUpThreads
+        getFollowUpThreads: getFollowUpThreads,
+        getUserDataRealTime: getUserDataRealTime
       }}
     >
       {children}
