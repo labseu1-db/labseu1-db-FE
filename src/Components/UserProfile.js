@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { showModal } from '../redux/actions/actionCreators';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,22 +9,20 @@ import { Redirect } from 'react-router-dom';
 import Navbar from './NavBar';
 import RightSidebar from './RightSidebar';
 
-class UserProfile extends Component {
-  render() {
-    if (this.props.resetPasswordStatus) {
-      return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
-    }
-    return (
-      <StyledMain>
-        <Navbar {...this.props} />
-        <StyledMainScreen>
-          <ProfileCard />
-        </StyledMainScreen>
-        <RightSidebar />
-      </StyledMain>
-    );
+const UserProfile = props => {
+  if (props.resetPasswordStatus) {
+    return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
   }
-}
+  return (
+    <StyledMain>
+      <Navbar {...props} />
+      <StyledMainScreen>
+        <ProfileCard />
+      </StyledMainScreen>
+      <RightSidebar />
+    </StyledMain>
+  );
+};
 
 const mapStateToProps = state => {
   return {

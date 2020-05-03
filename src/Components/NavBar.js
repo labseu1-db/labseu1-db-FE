@@ -30,7 +30,12 @@ const NavBar = props => {
 
   // Context API
 
-  const { getUserData, getOrgWithUuid, getSpacesWithOrg } = useContext(Context);
+  const {
+    getUserData,
+    getOrgWithUuid,
+    getSpacesWithOrg,
+    firebase
+  } = useContext(Context);
 
   const [profileDropdown, setProfileDropdown] = useState('');
   const [user, setUser] = useState('');
@@ -64,7 +69,7 @@ const NavBar = props => {
   // }
 
   const handleLogOut = () => {
-    props.firebase
+    firebase
       .logout()
       .then(() => {
         props.clearFirestore();
@@ -79,15 +84,7 @@ const NavBar = props => {
   };
 
   const handleDropDownChange = (e, { name, value }) => {
-    setProfileDropdown(value, () => {
-      if (profileDropdown === 'Log out') {
-        handleLogOut();
-      } else if (profileDropdown === 'Upgrade Account') {
-        props.history.push(`/upgrade/${props.match.params.id}`);
-      } else if (profileDropdown === 'Profile') {
-        props.history.push(`/profile/${props.match.params.id}`);
-      }
-    });
+    setProfileDropdown(value);
   };
 
   const setSelectedOrgToLocalStorage = (e, data) => {
@@ -126,6 +123,15 @@ const NavBar = props => {
   ];
   if (profileDropdown === 'Create Organisation') {
     return <Redirect to="/createneworganisation" />;
+  }
+  if (profileDropdown === 'Upgrade Account') {
+    return <Redirect to={`/upgrade/${props.match.params.id}`} />;
+  }
+  if (profileDropdown === 'Profile') {
+    return <Redirect to={`/profile/${props.match.params.id}`} />;
+  }
+  if (profileDropdown === 'Log out') {
+    handleLogOut();
   }
   return (
     <NavBarContainer>
