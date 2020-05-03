@@ -1,9 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { withFirestore } from 'react-redux-firebase';
 
 // import Context API
 import Context from '../../ContextProvider/Context';
@@ -103,16 +100,7 @@ export const ProfileCardUserRow = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps)
-)(ProfileCardUserRow);
+export default ProfileCardUserRow;
 
 const StyledCancel = styled.span`
   font-size: 11px;
