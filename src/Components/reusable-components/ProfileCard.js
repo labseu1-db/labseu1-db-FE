@@ -24,14 +24,16 @@ function ProfileCard(props) {
 
   return (
     <StyledProfileContainer>
-      <ProfileCardUserRow
-        user={user}
-        onClick={props.resetPassword}
-        secondOnClick={props.editingProfile}
-        editingProfileStatus={props.editingProfileStatus}
-        editingProfileDone={props.editingProfileDone}
-        uuid={user.id}
-      />
+      {user && (
+        <ProfileCardUserRow
+          user={user}
+          onClick={props.resetPassword}
+          secondOnClick={props.editingProfile}
+          editingProfileStatus={props.editingProfileStatus}
+          editingProfileDone={props.editingProfileDone}
+          uuid={user.id}
+        />
+      )}
       <ProfileCardOrgsField orgs={props.orgs} user={props.user} />
     </StyledProfileContainer>
   );

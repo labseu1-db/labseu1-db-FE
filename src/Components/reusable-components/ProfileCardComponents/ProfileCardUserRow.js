@@ -1,92 +1,95 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProfileCardButton from './ProfileCardButton';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { withFirestore } from 'react-redux-firebase';
 
-export class ProfileCardUserRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.escFunction = this.escFunction.bind(this);
-    this.state = {
-      fullName: this.props.user.fullName
-    };
-  }
-  componentDidMount() {
-    document.addEventListener('keydown', this.escFunction, false);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.escFunction, false);
-  }
-  onChangeHandler = e => {
-    this.setState({ fullName: e.target.value });
+export const ProfileCardUserRow = props => {
+  // constructor(props) {
+  //   super(props);
+  //   escFunction = escFunction.bind(this);
+  //   state = {
+  //     fullName: props.user.fullName
+  //   };
+  // }
+  // componentDidMount() {
+  //   document.addEventListener('keydown', escFunction, false);
+  // }
+  // componentWillUnmount() {
+  //   document.removeEventListener('keydown', escFunction, false);
+  // }
+  const escFunction = event => {
+    if (editingProfileStatus && event.which === 27) {
+      setEditingProfileStatus(false);
+    } else {
+      onChangeHandler(event);
+    }
   };
-  onSubmitHandler = event => {
+
+  const [fullName, setFullName] = useState(props.user.fullName);
+  const [editingProfileStatus, setEditingProfileStatus] = useState(false);
+  const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
+
+  const onChangeHandler = e => {
+    setFullName(e.target.value);
+  };
+  const onSubmitHandler = event => {
     if (event.which === 13 || event.keyCode === 13) {
       event.preventDefault();
-      let ref = this.props.firestore.collection('users').doc(this.props.uuid);
+      let ref = props.firestore.collection('users').doc(props.uuid);
       ref
         .update({
-          fullName: this.state.fullName
+          fullName: fullName
         })
         .then(() => {
-          this.props.editingProfileDone();
+          props.editingProfileDone();
         });
     }
   };
 
-  escFunction = event => {
-    if (this.props.editingProfileStatus && event.which === 27) {
-      this.props.editingProfileDone();
-    } else {
-      this.onChangeHandler(event);
-    }
-  };
-  render() {
-    const { onClick, secondOnClick } = this.props;
-    return (
-      <StyledFirstRow>
-        {/* <StyledImg src={this.props.user.profileUrl} alt='user' /> */}
-        {!this.props.editingProfileStatus && (
-          <StyledNameSpan aria-label="full name">
-            {this.props.user.fullName}
-          </StyledNameSpan>
-        )}
-        {this.props.editingProfileStatus && (
-          <StyledNameSubmitForm
-            onKeyPress={event => {
-              this.onSubmitHandler(event);
-            }}
-          >
-            <StyledNameInput
-              value={this.state.fullName}
-              onChange={this.onChangeHandler}
-            />
-            <StyledCancel>
-              Press Enter to Submit{'\n'} and Escape to cancel
-            </StyledCancel>
-          </StyledNameSubmitForm>
-        )}
-        <ProfileCardButton
-          content="Change Password"
-          border="solid 0.5px #37475026"
-          top="0px"
-          right="0px"
-          margin="6.5vw"
-          onClick={onClick}
-        />
-        <ProfileCardButton
-          content="Edit Profile"
-          border="solid 0.5px #37475026"
-          top="0px"
-          right="0px"
-          onClick={secondOnClick}
-        />
-      </StyledFirstRow>
-    );
+  if (resetPasswordStatus) {
+    return <Redirect to={`/changePassword/${this.props.match.params.id}`} />;
   }
-}
+  return (
+    <StyledFirstRow onKeyDown={escFunction}>
+      {/* <StyledImg src={props.user.profileUrl} alt='user' /> */}
+      {!editingProfileStatus && (
+        <StyledNameSpan aria-label="full name">
+          {props.user.fullName}
+        </StyledNameSpan>
+      )}
+      {editingProfileStatus && (
+        <StyledNameSubmitForm
+          onKeyPress={event => {
+            onSubmitHandler(event);
+          }}
+        >
+          <StyledNameInput value={fullName} onChange={onChangeHandler} />
+          <StyledCancel>
+            Press Enter to Submit{'\n'} and Escape to cancel
+          </StyledCancel>
+        </StyledNameSubmitForm>
+      )}
+      <ProfileCardButton
+        content="Change Password"
+        border="solid 0.5px #37475026"
+        top="0px"
+        right="0px"
+        margin="6.5vw"
+        onClick={() => setResetPasswordStatus(true)}
+      />
+      <ProfileCardButton
+        content="Edit Profile"
+        border="solid 0.5px #37475026"
+        top="0px"
+        right="0px"
+        onClick={() => setEditingProfileStatus(true)}
+      />
+    </StyledFirstRow>
+  );
+};
 
 const mapStateToProps = state => {
   return {};
