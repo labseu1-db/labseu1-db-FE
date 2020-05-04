@@ -1,7 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import icons/images
@@ -18,9 +15,6 @@ import ThreadCard from './reusable-components/ThreadCard';
 import CreateThreadModal from './Modals/CreateThreadModal';
 import NavBar from './NavBar';
 import RightSidebar from './RightSidebar';
-
-//Actions
-import { showModal, setActiveThread } from '../redux/actions/actionCreators';
 
 // Context
 import Context from './ContextProvider/Context';
@@ -141,30 +135,4 @@ const StyledFirstRow = styled.div`
   margin-bottom: 5vh;
 `;
 
-//Export component wrapped in store + firestore
-const mapStateToProps = state => {
-  return {
-    threads: state.firestore.ordered.mainScreenThreads
-      ? state.firestore.ordered.mainScreenThreads
-      : [],
-    activeModal: state.modal.activeModal
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal, setActiveThread }, dispatch);
-};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'threads',
-        where: [['orgId', '==', props.match.params.id]],
-        orderBy: ['threadCreatedAt', 'desc'],
-        storeAs: 'mainScreenThreads'
-      }
-    ];
-  })
-)(MainScreen);
+export default MainScreen;
