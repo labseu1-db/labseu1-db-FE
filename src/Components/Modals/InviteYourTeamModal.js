@@ -21,7 +21,6 @@ const InviteYourTeamModal = props => {
   //   alert: false
   // };
 
-  const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState([
     props.teamEmailAddress[0],
     props.teamEmailAddress[1],
@@ -32,7 +31,7 @@ const InviteYourTeamModal = props => {
 
   //Add email input when clicked on email
   const appendInput = () => {
-    setInputs(prevState => prevState.inputs.concat(['']));
+    setInputs(prevState => prevState.concat(['']));
   };
 
   //Add email to state
