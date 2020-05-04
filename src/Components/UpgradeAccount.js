@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -14,8 +14,13 @@ import RightSidebar from './RightSidebar';
 import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
 
+// import Context API
+import Context from './ContextProvider/Context';
+
 //Main component
 const UpgradeAccount = props => {
+  const { getOrgWithId } = useContext(Context);
+
   const [org, setOrg] = useState('');
 
   useEffect(() => {}, []);
