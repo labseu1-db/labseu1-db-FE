@@ -100,7 +100,11 @@ const MainScreen = props => {
                         ? 'false'
                         : 'true')
                     }
-                    onClick={() => props.setActiveThread(t.id)}
+                    onClick={() =>
+                      props.history.push(
+                        `/mainscreen/${props.match.params.id}/${t.spaceId}/${t.id}`
+                      )
+                    }
                   />
                 );
               })}
