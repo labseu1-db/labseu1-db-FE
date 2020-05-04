@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -15,61 +15,63 @@ import { showModal } from '../redux/actions/actionCreators';
 // import CreateThreadModal from './Modals/CreateThreadModal';
 
 //Main component
-class UpgradeAccount extends React.Component {
-  render() {
-    if (this.props.currentOrg.isPremium) {
-      return (
-        <StyledMain>
-          <Navbar {...this.props} />
-          <StyledMainScreen>
-            <StyledFirstRow>
-              {this.props.activeOrg && this.props.currentOrg && (
-                <ScreenHeading
-                  heading={this.props.currentOrg.orgName}
-                  info="Organization billing overview"
-                />
-              )}
-            </StyledFirstRow>
-            <StyledThreadContainerPremium>
-              <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
-              <div>
-                We hope you are enjoying the full benefits of your premium plan.
-                Please contact customer service for any further special
-                requirements.
-              </div>
-            </StyledThreadContainerPremium>
-          </StyledMainScreen>
-          <RightSidebar />
-        </StyledMain>
-      );
-    }
+const UpgradeAccount = props => {
+  const [org, setOrg] = useState('');
+
+  useEffect(() => {}, []);
+
+  if (props.currentOrg.isPremium) {
     return (
       <StyledMain>
-        <Navbar {...this.props} />
+        <Navbar {...props} />
         <StyledMainScreen>
           <StyledFirstRow>
-            {this.props.activeOrg && this.props.currentOrg && (
+            {props.activeOrg && props.currentOrg && (
               <ScreenHeading
-                heading={this.props.currentOrg.orgName}
+                heading={props.currentOrg.orgName}
                 info="Organization billing overview"
               />
             )}
           </StyledFirstRow>
-          <StyledThreadContainer>
-            <ScreenSectionHeading heading="Currently on the FREE plan" />
-            <ul>
-              <li>Store more than the most recent 150 threads</li>
-              <li>Invite more employees to your organisation</li>
-              <li>used 0GB of space -- 5.00GB remaining</li>
-            </ul>
-            <CheckoutFormContainer currentOrg={this.props.currentOrg} />
-          </StyledThreadContainer>
+          <StyledThreadContainerPremium>
+            <ScreenSectionHeading heading="This organisation is on the PREMIUM plan" />
+            <div>
+              We hope you are enjoying the full benefits of your premium plan.
+              Please contact customer service for any further special
+              requirements.
+            </div>
+          </StyledThreadContainerPremium>
         </StyledMainScreen>
         <RightSidebar />
       </StyledMain>
     );
   }
-}
+  return (
+    <StyledMain>
+      <Navbar {...props} />
+      <StyledMainScreen>
+        <StyledFirstRow>
+          {props.activeOrg && props.currentOrg && (
+            <ScreenHeading
+              heading={props.currentOrg.orgName}
+              info="Organization billing overview"
+            />
+          )}
+        </StyledFirstRow>
+        <StyledThreadContainer>
+          <ScreenSectionHeading heading="Currently on the FREE plan" />
+          <ul>
+            <li>Store more than the most recent 150 threads</li>
+            <li>Invite more employees to your organisation</li>
+            <li>used 0GB of space -- 5.00GB remaining</li>
+          </ul>
+          <CheckoutFormContainer currentOrg={props.currentOrg} />
+        </StyledThreadContainer>
+      </StyledMainScreen>
+      <RightSidebar />
+    </StyledMain>
+  );
+};
 
 //Export component wrapped in store + firestore
 const mapStateToProps = state => {
