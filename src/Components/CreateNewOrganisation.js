@@ -25,7 +25,14 @@ const CreateNewOrganisation = props => {
   //   };
   // }
 
-  const { setModal, modal } = useContext(Context);
+  const {
+    setModal,
+    modal,
+    getUserData,
+    saveData,
+    updateDataWithDoc,
+    firebase
+  } = useContext(Context);
 
   const [orgName, setOrgName] = useState('');
   const [teamEmailAddress, setTeamEmailAddress] = useState(['', '', '', '']);
@@ -75,45 +82,46 @@ const CreateNewOrganisation = props => {
 
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   //1. ADD DATA ABOUT ORGANISATION AND USERS TO ORGANISATIONS COLLECTION
-  const addOrganisationToDatabase = orgId => {
+  const addOrganisationToDatabase = async orgId => {
     let usersEmailsWithoutEmptyStrings = teamEmailAddress
       .filter(Boolean)
       .map(e => {
         return e;
       });
     //add creators/admins email to the array of users
+    let user = await getUserData();
     let usersAndAdminsEmails = usersEmailsWithoutEmptyStrings.concat(
-      localStorage.getItem('userEmail')
+      user.userEmail
     );
 
     //aave all collected data about organisation in firestore
-    return props.firestore
-      .set(
-        { collection: 'organisations', doc: orgId },
-        {
-          orgName: orgName,
-          isPremium: false,
-          createdByUserId: localStorage.getItem('uuid'),
-          arrayOfUsersEmails: usersAndAdminsEmails,
-          arrayOfUsersIds: [localStorage.getItem('uuid')],
-          arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
-          arrayOfAdminsIds: [localStorage.getItem('uuid')]
-        }
-      )
-      .then(() => {
-        localStorage.setItem('activeOrg', orgId);
-      });
+    let request = {
+      collection: 'organisations',
+      docId: orgId,
+      data: {
+        orgName: orgName,
+        isPremium: false,
+        createdByUserId: localStorage.getItem('uuid'),
+        arrayOfUsersEmails: usersAndAdminsEmails,
+        arrayOfUsersIds: [localStorage.getItem('uuid')],
+        arrayOfAdminsEmails: [localStorage.getItem('userEmail')],
+        arrayOfAdminsIds: [localStorage.getItem('uuid')]
+      }
+    };
+    return saveData(request);
   };
 
   //2. ADD DATA ABOUT ORGANISATION TO USERS COLLECTION
   const addOrganisationToUsers = orgId => {
-    let userRef = props.firestore
-      .collection('users')
-      .doc(localStorage.getItem('uuid'));
-    userRef.update({
-      arrayOfOrgsIds: props.firestore.FieldValue.arrayUnion(orgId),
-      arrayOfOrgsNames: props.firestore.FieldValue.arrayUnion(orgName)
-    });
+    let request = {
+      collection: 'users',
+      docId: localStorage.getItem('uuid'),
+      data: {
+        arrayOfOrgsIds: firebase.firestore.FieldValue.arrayUnion(orgId),
+        arrayOfOrgsNames: firebase.firestore.FieldValue.arrayUnion(orgName)
+      }
+    };
+    updateDataWithDoc(request);
     setSavingInfoToDb(true);
   };
 
@@ -123,75 +131,84 @@ const CreateNewOrganisation = props => {
     createdSpaces.filter(Boolean).forEach(space => {
       let spaceId = uuid();
       //save each space in spaces collection
-      props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
+      let request = {
+        collection: 'spaces',
+        docId: spaceId,
+        data: {
           spaceName: space,
           orgId: orgId,
           spaceCreatedByUserId: localStorage.getItem('uuid'),
           arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
         }
-      );
+      };
+      saveData(request);
 
       //add each space in users collection in array (therefore we need to use update instead of add/set)
-      let userRef = props.firestore
-        .collection('users')
-        .doc(localStorage.getItem('uuid'));
-      return userRef.update({
-        arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(space)
-      });
+      let updateRequest = {
+        collection: 'users',
+        docId: localStorage.getItem('uuid'),
+        data: {
+          arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(spaceId),
+          arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(space)
+        }
+      };
+      updateDataWithDoc(updateRequest);
     });
   };
 
   const addSpaceFromInput1ToOrganisationsAndUsers = orgId => {
     let spaceId = uuid();
     //save each space in spaces collection
-    addedSpace1 !== '' &&
-      props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
-          spaceName: addedSpace1,
-          orgId: orgId,
-          spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
-        }
-      );
+    let request = {
+      collection: 'spaces',
+      docId: spaceId,
+      data: {
+        spaceName: addedSpace1,
+        orgId: orgId,
+        spaceCreatedByUserId: localStorage.getItem('uuid'),
+        arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
+      }
+    };
+    addedSpace1 !== '' && saveData(request);
 
     //save each space in users collection
-    let userRef = props.firestore
-      .collection('users')
-      .doc(localStorage.getItem('uuid'));
-    addedSpace1 !== '' &&
-      userRef.update({
-        arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(addedSpace1)
-      });
+    let updateRequest = {
+      collection: 'users',
+      docId: localStorage.getItem('uuid'),
+      data: {
+        arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(addedSpace1)
+      }
+    };
+    addedSpace1 !== '' && updateDataWithDoc(updateRequest);
   };
 
   const addSpaceFromInput2ToOrganisationsAndUsers = orgId => {
     //save each space in spaces collection
     let spaceId = uuid();
-    addedSpace2 !== '' &&
-      props.firestore.set(
-        { collection: 'spaces', doc: spaceId },
-        {
-          spaceName: addedSpace2,
-          orgId: orgId,
-          spaceCreatedByUserId: localStorage.getItem('uuid'),
-          arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
-        }
-      );
+    let request = {
+      collection: 'spaces',
+      docId: spaceId,
+      data: {
+        spaceName: addedSpace2,
+        orgId: orgId,
+        spaceCreatedByUserId: localStorage.getItem('uuid'),
+        arrayOfUserIdsInSpace: [localStorage.getItem('uuid')]
+      }
+    };
+    addedSpace2 !== '' && saveData(request);
 
     //save each space in users collection
-    let userRef = props.firestore
-      .collection('users')
-      .doc(localStorage.getItem('uuid'));
-    addedSpace2 !== '' &&
-      userRef.update({
-        arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(spaceId),
-        arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(addedSpace2)
-      });
+    let updateRequest = {
+      collection: 'users',
+      docId: localStorage.getItem('uuid'),
+      data: {
+        arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(spaceId),
+        arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(addedSpace2)
+      }
+    };
+
+    addedSpace2 !== '' && updateDataWithDoc(updateRequest);
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   useEffect(() => {
