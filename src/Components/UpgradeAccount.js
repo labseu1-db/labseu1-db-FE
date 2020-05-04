@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import styled from 'styled-components';
 
 //Import components
@@ -10,9 +7,6 @@ import ScreenSectionHeading from './reusable-components/ScreenSectionHeading';
 import CheckoutFormContainer from './CheckoutFormContainer';
 import Navbar from './NavBar';
 import RightSidebar from './RightSidebar';
-
-import { showModal } from '../redux/actions/actionCreators';
-// import CreateThreadModal from './Modals/CreateThreadModal';
 
 // import Context API
 import Context from './ContextProvider/Context';
@@ -23,17 +17,19 @@ const UpgradeAccount = props => {
 
   const [org, setOrg] = useState('');
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getOrgWithId(setOrg, props.match.params.id);
+  }, [getOrgWithId, props.match.params.id]);
 
-  if (props.currentOrg.isPremium) {
+  if (org.isPremium) {
     return (
       <StyledMain>
         <Navbar {...props} />
         <StyledMainScreen>
           <StyledFirstRow>
-            {props.activeOrg && props.currentOrg && (
+            {props.match.params.id && org && (
               <ScreenHeading
-                heading={props.currentOrg.orgName}
+                heading={org.orgName}
                 info="Organization billing overview"
               />
             )}
@@ -56,9 +52,9 @@ const UpgradeAccount = props => {
       <Navbar {...props} />
       <StyledMainScreen>
         <StyledFirstRow>
-          {props.activeOrg && props.currentOrg && (
+          {props.match.params.id && org && (
             <ScreenHeading
-              heading={props.currentOrg.orgName}
+              heading={org.orgName}
               info="Organization billing overview"
             />
           )}
@@ -70,7 +66,7 @@ const UpgradeAccount = props => {
             <li>Invite more employees to your organisation</li>
             <li>used 0GB of space -- 5.00GB remaining</li>
           </ul>
-          <CheckoutFormContainer currentOrg={props.currentOrg} />
+          <CheckoutFormContainer currentOrg={org} />
         </StyledThreadContainer>
       </StyledMainScreen>
       <RightSidebar />
@@ -78,37 +74,7 @@ const UpgradeAccount = props => {
   );
 };
 
-//Export component wrapped in store + firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    activeOrg: localStorage.getItem('activeOrg')
-      ? localStorage.getItem('activeOrg')
-      : '',
-    currentOrg: state.firestore.ordered.currentOrg
-      ? state.firestore.ordered.currentOrg[0]
-      : ''
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
-};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'organisations',
-        doc: `${props.match.params.id}`,
-        storeAs: 'currentOrg'
-      }
-    ];
-  })
-)(UpgradeAccount);
+export default UpgradeAccount;
 
 //Styling
 const StyledMain = styled.div`
