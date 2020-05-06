@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+
 //Import icons
 import clipboardIcon from '../../../images/icon-clipboard-green.svg';
 
@@ -122,19 +120,4 @@ const StyledDecision = styled.button`
   }
 `;
 
-//Default export
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-
-    // followupArray: state.followUpText
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(ThreadRightComponent);
+export default ThreadRightComponent;
