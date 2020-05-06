@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import AvatarFromLetter from '../reusable-components/AvatarFromLetter';
 
+// import Context API
+import Context from '../ContextProvider/Context';
+
 //Main component
 export function ThreadInformationCard(props) {
-  const { createdBy, createdAt, info, space } = props;
+  // use Context API
+  const { getSpaceWithId } = useContext(Context);
+
+  const [space, setSpace] = useState('');
+
+  useEffect(() => {
+    getSpaceWithId(setSpace, props.spaceId);
+  }, [getSpaceWithId, props.spaceId]);
+
+  const { createdBy, createdAt, info } = props;
   let dateInfo = new Date(createdAt);
   let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
     '0' + dateInfo.getMinutes()
@@ -76,26 +85,4 @@ const StyledBottomContent = styled.div`
   line-height: 1.75;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    space: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces[0]
-      : []
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'spaces',
-        doc: props.spaceId
-      }
-    ];
-  })
-)(ThreadInformationCard);
+export default ThreadInformationCard;
