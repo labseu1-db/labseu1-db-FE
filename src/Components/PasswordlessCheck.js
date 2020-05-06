@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firebaseConnect, isEmpty } from 'react-redux-firebase';
+import React, { useEffect, useContext } from 'react';
 
 import { StyledH1 } from './styled-components/StyledText';
 
-class PasswordlessCheck extends Component {
-  componentDidMount() {
+// import Context API
+import Context from './ContextProvider/Context';
+
+const PasswordlessCheck = props => {
+  /* componentDidMount() {
     if (
       this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
     ) {
@@ -22,32 +22,30 @@ class PasswordlessCheck extends Component {
         })
         .catch(function(error) {});
     }
-  }
+  } */
 
-  componentWillUpdate() {
+  /* componentWillUpdate() {
     if (!isEmpty(this.props.auth)) {
       this.props.history.push('/homescreen');
     }
-  }
+  } */
 
-  render() {
-    return (
-      <div>
-        <StyledH1>Verifying User...</StyledH1>
-      </div>
-    );
-  }
-}
+  // use Context API
+  const { firebase } = useContext(Context);
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth
-  };
+  useEffect(() => {
+    let email = window.prompt('Please provide your email for confirmation');
+    firebase
+      .auth()
+      .signInWithEmailLink(email, window.location.href)
+      .catch(function(error) {});
+  });
+
+  return (
+    <div>
+      <StyledH1>Verifying User...</StyledH1>
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect()
-)(PasswordlessCheck);
+export default PasswordlessCheck;
