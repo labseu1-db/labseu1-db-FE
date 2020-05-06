@@ -15,17 +15,19 @@ import Context from '../ContextProvider/Context';
 
 const LeaveSpaceModal = props => {
   // use Context API
-  const { updateDataWithDoc, closeModal } = useContext(Context);
+  const { updateDataWithDoc, closeModal, firebase } = useContext(Context);
 
   const removeUserFromSpace = () => {
-    props.firestore.update(
-      { collection: 'spaces', doc: props.space.id },
-      {
-        arrayOfUserIdsInSpace: props.firestore.FieldValue.arrayRemove(
+    let request = {
+      collection: 'spaces',
+      docId: props.space.id,
+      data: {
+        arrayOfUserIdsInSpace: firebase.firestore.FieldValue.arrayRemove(
           localStorage.getItem('uuid')
         )
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
 
   const removeSpaceFromUser = () => {
