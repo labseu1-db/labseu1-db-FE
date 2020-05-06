@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -10,84 +10,75 @@ import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class LeaveSpaceModal extends Component {
-  handleOpen = () => {
-    this.setState({ model_open: true });
-  };
+// import Context API
+import Context from '../ContextProvider/Context';
 
-  handleClose = () => {
-    this.setState({ model_open: false });
-  };
+const LeaveSpaceModal = props => {
+  // use Context API
+  const { updateDataWithDoc, closeModal } = useContext(Context);
 
-  removeUserFromSpace = () => {
-    this.props.firestore.update(
-      { collection: 'spaces', doc: this.props.space.id },
+  const removeUserFromSpace = () => {
+    props.firestore.update(
+      { collection: 'spaces', doc: props.space.id },
       {
-        arrayOfUserIdsInSpace: this.props.firestore.FieldValue.arrayRemove(
+        arrayOfUserIdsInSpace: props.firestore.FieldValue.arrayRemove(
           localStorage.getItem('uuid')
         )
       }
     );
   };
 
-  removeSpaceFromUser = () => {
-    this.props.firestore.update(
+  const removeSpaceFromUser = () => {
+    props.firestore.update(
       { collection: 'users', doc: localStorage.getItem('uuid') },
       {
-        arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
-          this.props.space.id
-        ),
-        arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
-          this.props.space.spaceName
+        arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(props.space.id),
+        arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(
+          props.space.spaceName
         )
       }
     );
   };
 
-  render() {
-    return (
-      <Modal open={this.props.shoudlBeOpen} size="small">
-        <StyledContainer>
-          <Modal.Header>
-            <div>
-              <StyledMainHeader>
-                Are you really really sure that you want to leave space{' '}
-                <strong>{this.props.space.spaceName}</strong>?
-              </StyledMainHeader>
-            </div>
+  return (
+    <Modal open={props.shoudlBeOpen} size="small">
+      <StyledContainer>
+        <Modal.Header>
+          <div>
+            <StyledMainHeader>
+              Are you really really sure that you want to leave space{' '}
+              <strong>{props.space.spaceName}</strong>?
+            </StyledMainHeader>
+          </div>
 
-            <Modal.Actions>
-              <StyledActions>
-                <StyledButtonCancel
-                  onClick={() => {
-                    this.handleClose();
-                    this.props.showModal(null);
-                  }}
-                >
-                  Cancel
-                </StyledButtonCancel>
+          <Modal.Actions>
+            <StyledActions>
+              <StyledButtonCancel
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                Cancel
+              </StyledButtonCancel>
 
-                <StyledButtonCreateSpace
-                  type="submit"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.showModal(null);
-                    this.removeSpaceFromUser();
-                    this.removeUserFromSpace();
-                    this.handleClose();
-                    this.props.resetSpace();
-                  }}
-                >
-                  Leave Space
-                </StyledButtonCreateSpace>
-              </StyledActions>
-            </Modal.Actions>
-          </Modal.Header>
-        </StyledContainer>
-      </Modal>
-    );
-  }
-}
+              <StyledButtonCreateSpace
+                type="submit"
+                onClick={e => {
+                  e.preventDefault();
+                  removeSpaceFromUser();
+                  removeUserFromSpace();
+                  closeModal();
+                }}
+              >
+                Leave Space
+              </StyledButtonCreateSpace>
+            </StyledActions>
+          </Modal.Actions>
+        </Modal.Header>
+      </StyledContainer>
+    </Modal>
+  );
+};
 
 //Export component wrapped in redux actions and store and firestore
 const mapStateToProps = state => {
