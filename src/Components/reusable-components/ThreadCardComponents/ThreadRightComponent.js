@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -6,25 +6,38 @@ import { firestoreConnect } from 'react-redux-firebase';
 //Import icons
 import clipboardIcon from '../../../images/icon-clipboard-green.svg';
 
+// import Context API
+import Context from '../../ContextProvider/Context';
+
 //Main component
 export const ThreadRightComponent = props => {
+  // use Context API
+  const { updateDataWithDoc, firebase } = useContext(Context);
+
   const markAsFollowUp = e => {
     e.stopPropagation();
-
-    let threadRef = props.firestore.collection('threads').doc(props.threadId);
     if (props.isFollowUpDecided) {
-      threadRef.update({
-        arrayOfUserIdsWhoFollowUp: props.firestore.FieldValue.arrayRemove(
-          localStorage.getItem('uuid')
-        )
-      });
+      let request = {
+        collection: 'threads',
+        docId: props.threadId,
+        data: {
+          arrayOfUserIdsWhoFollowUp: firebase.firestore.FieldValue.arrayRemove(
+            localStorage.getItem('uuid')
+          )
+        }
+      };
+      updateDataWithDoc(request);
     } else {
-      threadRef.update({
-        isFollowUp: true,
-        arrayOfUserIdsWhoFollowUp: props.firestore.FieldValue.arrayUnion(
-          localStorage.getItem('uuid')
-        )
-      });
+      let request = {
+        collection: 'threads',
+        docId: props.threadId,
+        data: {
+          arrayOfUserIdsWhoFollowUp: props.firestore.FieldValue.arrayUnion(
+            localStorage.getItem('uuid')
+          )
+        }
+      };
+      updateDataWithDoc(request);
     }
   };
 
