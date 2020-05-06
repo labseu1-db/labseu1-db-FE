@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
@@ -8,17 +8,19 @@ import { compose } from 'redux';
 
 import { paymentEndPoint } from '../firebase/firebaseConfig';
 
-class CheckoutForm extends Component {
-  constructor(props) {
+const CheckoutForm = props => {
+  /* constructor(props) {
     super(props);
-    this.state = { complete: false };
-    this.submit = this.submit.bind(this);
-  }
+    state = { complete: false };
+    submit = submit.bind(this);
+  } */
 
-  async submit(e) {
+  const [complete, setComplete] = useState(false);
+
+  const submit = async e => {
     e.preventDefault();
     // User clicked submit
-    let { token } = await this.props.stripe.createToken({ name: 'Name' });
+    let { token } = await props.stripe.createToken({ name: 'Name' });
     if (!token) {
       window.alert('Invalid payment details');
     } else {
@@ -29,89 +31,85 @@ class CheckoutForm extends Component {
       });
 
       if (response.ok) {
-        this.setState({ complete: true });
+        setComplete(true);
       } else {
         window.alert('Error processing payment');
-        this.props.handleClose();
+        props.handleClose();
       }
     }
-  }
+  };
 
-  completeUpgrade = () => {
-    this.props.firestore.update(
-      { collection: 'organisations', doc: this.props.currentOrg.id },
+  const completeUpgrade = () => {
+    props.firestore.update(
+      { collection: 'organisations', doc: props.currentOrg.id },
       {
         isPremium: true
       }
     );
-    this.props.handleClose();
+    props.handleClose();
   };
 
-  render() {
-    if (this.state.complete) {
-      return (
-        <div>
-          <StyledModalH1>
-            <Modal.Header content="Purchase Complete" />
-          </StyledModalH1>
-
-          <StyledModalMainButtonContainerOk>
-            <StyledModalButtonUpgrade onClick={this.completeUpgrade}>
-              Upgrade Account
-            </StyledModalButtonUpgrade>
-          </StyledModalMainButtonContainerOk>
-        </div>
-      );
-    }
+  if (complete) {
     return (
-      <div className="checkout">
+      <div>
         <StyledModalH1>
-          <Modal.Header content="Confirm your purchase" />
+          <Modal.Header content="Purchase Complete" />
         </StyledModalH1>
-        <StyledModalCard>
-          <Modal.Content>
-            <StyledModalText>
-              If you wish to upgrade your account please make a one off payment
-              of $20. This is non-refundable and will appear on your bank
-              statement as sailor co.
-            </StyledModalText>
-            <StyledModalForm>
-              <StyledModalLabel>
-                Please enter your card details below{' '}
-                <span className="ligther-font">
-                  (Card number, expiry date and CVC)
-                </span>
-              </StyledModalLabel>
-            </StyledModalForm>
-          </Modal.Content>
 
-          <form onSubmit={this.submit}>
-            <CardElementContainer>
-              <CardElement style={{ base: { fontSize: '18px' } }} />
-            </CardElementContainer>
-          </form>
-
-          <Modal.Actions>
-            <StyledActionButtonsContainer>
-              <StyledModalButton onClick={this.submit}>
-                Pay now
-              </StyledModalButton>
-
-              <StyledModalMainButtonContainer>
-                <StyledModalButton
-                  className="cancel-button"
-                  onClick={this.props.handleClose}
-                >
-                  Cancel
-                </StyledModalButton>
-              </StyledModalMainButtonContainer>
-            </StyledActionButtonsContainer>
-          </Modal.Actions>
-        </StyledModalCard>
+        <StyledModalMainButtonContainerOk>
+          <StyledModalButtonUpgrade onClick={completeUpgrade}>
+            Upgrade Account
+          </StyledModalButtonUpgrade>
+        </StyledModalMainButtonContainerOk>
       </div>
     );
   }
-}
+  return (
+    <div className="checkout">
+      <StyledModalH1>
+        <Modal.Header content="Confirm your purchase" />
+      </StyledModalH1>
+      <StyledModalCard>
+        <Modal.Content>
+          <StyledModalText>
+            If you wish to upgrade your account please make a one off payment of
+            $20. This is non-refundable and will appear on your bank statement
+            as sailor co.
+          </StyledModalText>
+          <StyledModalForm>
+            <StyledModalLabel>
+              Please enter your card details below{' '}
+              <span className="ligther-font">
+                (Card number, expiry date and CVC)
+              </span>
+            </StyledModalLabel>
+          </StyledModalForm>
+        </Modal.Content>
+
+        <form onSubmit={submit}>
+          <CardElementContainer>
+            <CardElement style={{ base: { fontSize: '18px' } }} />
+          </CardElementContainer>
+        </form>
+
+        <Modal.Actions>
+          <StyledActionButtonsContainer>
+            <StyledModalButton onClick={submit}>Pay now</StyledModalButton>
+
+            <StyledModalMainButtonContainer>
+              <StyledModalButton
+                className="cancel-button"
+                onClick={props.handleClose}
+              >
+                Cancel
+              </StyledModalButton>
+            </StyledModalMainButtonContainer>
+          </StyledActionButtonsContainer>
+        </Modal.Actions>
+      </StyledModalCard>
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {};

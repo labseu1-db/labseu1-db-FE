@@ -1,8 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { resetPasswordDone } from '../redux/actions/actionCreators';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -129,24 +125,5 @@ const ForgotPassword = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    resetPasswordStatus: state.resetPassword
-  };
-};
-
-//As we are not dispatching anything - this is empty
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      resetPasswordDone
-    },
-    dispatch
-  );
-};
-
 //Connect to Firestore
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(ForgotPassword);
+export default ForgotPassword;

@@ -1,9 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 import { Message, Icon } from 'semantic-ui-react';
 
@@ -33,12 +30,18 @@ const NewCommentCard = props => {
     error,
     saveData,
     getUserData,
-    updateDataWithDoc
+    updateDataWithDoc,
+    getUserDataRealTime
   } = useContext(Context);
 
   const [text, setText] = useState('');
   const [display, setDisplay] = useState('none');
   const [gif, setGif] = useState('');
+  const [user, setUser] = useState('');
+
+  useEffect(() => {
+    getUserDataRealTime(setUser);
+  }, [getUserDataRealTime]);
 
   const handleInputChange = e => {
     let words = text.split(' ');
@@ -115,9 +118,9 @@ const NewCommentCard = props => {
         </Message>
       )}
       <StyledTopContainer>
-        {props.profile.fullName && (
+        {user.fullName && (
           <AvatarFromLetter
-            username={props.profile.fullName}
+            username={user.fullName}
             height="32px"
             width="32px"
           />
@@ -255,16 +258,4 @@ const StyledButtonContainer = styled.div`
   }
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(NewCommentCard);
+export default NewCommentCard;
