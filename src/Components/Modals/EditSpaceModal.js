@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -10,29 +10,29 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
-class EditSpaceModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      spaceName: this.props.space.spaceName,
-      spaceTopic: this.props.space.spaceTopic,
-      idsInSpace: this.props.space.arrayOfUserIdsInSpace
-    };
-  }
+const EditSpaceModal = props => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     spaceName: this.props.space.spaceName,
+  //     spaceTopic: this.props.space.spaceTopic,
+  //     idsInSpace: this.props.space.arrayOfUserIdsInSpace
+  //   };
+  // }
 
-  handleInputChange = e => {
+  const handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleOpen = () => {
+  const handleOpen = () => {
     this.setState({ model_open: true });
   };
 
-  handleClose = () => {
+  const handleClose = () => {
     this.setState({ model_open: false });
   };
 
-  updateSpaceToDatabase = () => {
+  const updateSpaceToDatabase = () => {
     this.props.firestore.update(
       { collection: 'spaces', doc: this.props.space.id },
       {
@@ -42,7 +42,7 @@ class EditSpaceModal extends Component {
       }
     );
   };
-  addSpaceToUsers = () => {
+  const addSpaceToUsers = () => {
     this.state.idsInSpace.map(id => {
       return this.props.firestore.update(
         { collection: 'users', doc: id },
@@ -58,7 +58,7 @@ class EditSpaceModal extends Component {
     });
   };
 
-  removeSpaceFromUsers = () => {
+  const removeSpaceFromUsers = () => {
     this.props.space.arrayOfUserIdsInSpace
       .filter(id => this.state.idsInSpace.indexOf(id) === -1)
       .map(id => {
@@ -76,97 +76,95 @@ class EditSpaceModal extends Component {
       });
   };
 
-  setIdsToState = (e, data) => {
+  const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
     this.setState({ idsInSpace: value });
   };
 
-  render() {
-    const userIdsOptions = this.props.listOfUsersWithinTheOrg
-      .filter(user => user.id !== this.props.uuid)
-      .map(user => ({
-        key: user.id,
-        text: user.fullName,
-        value: user.id
-      }));
+  const userIdsOptions = this.props.listOfUsersWithinTheOrg
+    .filter(user => user.id !== this.props.uuid)
+    .map(user => ({
+      key: user.id,
+      text: user.fullName,
+      value: user.id
+    }));
 
-    return (
-      <Modal open={this.props.shoudlBeOpen} size="tiny">
-        <StyledContainer>
-          <Modal.Header>
-            <div>
-              <StyledMainHeader>
-                Edit {this.props.space.spaceName}
-              </StyledMainHeader>
-            </div>
-            <div>
-              <Header as="h5">Space name</Header>
-              <StyledInput
-                name="spaceName"
-                type="text"
-                required
-                value={this.state.spaceName}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">
-                What types of discussions happen here?
-                <StyledOptional>(Optional)</StyledOptional>
-              </Header>
-              <StyledInput
-                name="spaceTopic"
-                type="text"
-                value={this.state.spaceTopic}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">Members</Header>
-              <Dropdown
-                placeholder="Choose people to add"
-                fluid
-                multiple
-                search
-                selection
-                defaultValue={this.state.idsInSpace}
-                options={userIdsOptions}
-                onChange={this.setIdsToState}
-              />
-              <Modal.Actions>
-                <StyledActions>
-                  <StyledButtonCancel
-                    onClick={() => {
-                      this.handleClose();
-                      this.props.showModal(null);
-                    }}
-                  >
-                    Cancel
-                  </StyledButtonCancel>
+  return (
+    <Modal open={this.props.shoudlBeOpen} size="tiny">
+      <StyledContainer>
+        <Modal.Header>
+          <div>
+            <StyledMainHeader>
+              Edit {this.props.space.spaceName}
+            </StyledMainHeader>
+          </div>
+          <div>
+            <Header as="h5">Space name</Header>
+            <StyledInput
+              name="spaceName"
+              type="text"
+              required
+              value={this.state.spaceName}
+              onChange={this.handleInputChange}
+            />
+            <Header as="h5">
+              What types of discussions happen here?
+              <StyledOptional>(Optional)</StyledOptional>
+            </Header>
+            <StyledInput
+              name="spaceTopic"
+              type="text"
+              value={this.state.spaceTopic}
+              onChange={this.handleInputChange}
+            />
+            <Header as="h5">Members</Header>
+            <Dropdown
+              placeholder="Choose people to add"
+              fluid
+              multiple
+              search
+              selection
+              defaultValue={this.state.idsInSpace}
+              options={userIdsOptions}
+              onChange={this.setIdsToState}
+            />
+            <Modal.Actions>
+              <StyledActions>
+                <StyledButtonCancel
+                  onClick={() => {
+                    this.handleClose();
+                    this.props.showModal(null);
+                  }}
+                >
+                  Cancel
+                </StyledButtonCancel>
 
-                  <StyledButtonCreateSpace
-                    type="submit"
-                    disabled={
-                      !this.state.spaceName.length > 0 ||
-                      !this.state.idsInSpace.length > 0
-                    }
-                    onClick={e => {
-                      e.preventDefault();
-                      this.props.showModal(null);
-                      this.updateSpaceToDatabase();
-                      this.addSpaceToUsers();
-                      this.removeSpaceFromUsers();
-                      this.handleClose();
-                    }}
-                  >
-                    Edit Space
-                  </StyledButtonCreateSpace>
-                </StyledActions>
-              </Modal.Actions>
-            </div>
-          </Modal.Header>
-        </StyledContainer>
-      </Modal>
-    );
-  }
-}
+                <StyledButtonCreateSpace
+                  type="submit"
+                  disabled={
+                    !this.state.spaceName.length > 0 ||
+                    !this.state.idsInSpace.length > 0
+                  }
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props.showModal(null);
+                    this.updateSpaceToDatabase();
+                    this.addSpaceToUsers();
+                    this.removeSpaceFromUsers();
+                    this.handleClose();
+                  }}
+                >
+                  Edit Space
+                </StyledButtonCreateSpace>
+              </StyledActions>
+            </Modal.Actions>
+          </div>
+        </Modal.Header>
+      </StyledContainer>
+    </Modal>
+  );
+};
 
 //Export component wrapped in redux actions and store and firestore
 const mapStateToProps = state => {

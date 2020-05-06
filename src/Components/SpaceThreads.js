@@ -78,7 +78,8 @@ const SpaceThreads = props => {
               <DeleteSpaceModal
                 shoudlBeOpen={true}
                 activeModal={props.activeModal}
-                space={props.space}
+                space={space}
+                threads={threads}
                 {...props}
               />
             )}
