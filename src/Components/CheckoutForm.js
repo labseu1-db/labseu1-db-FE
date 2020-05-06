@@ -2,9 +2,6 @@ import React, { useState, useContext } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 
 import { paymentEndPoint } from '../firebase/firebaseConfig';
 
@@ -44,12 +41,14 @@ const CheckoutForm = props => {
   };
 
   const completeUpgrade = () => {
-    props.firestore.update(
-      { collection: 'organisations', doc: props.currentOrg.id },
-      {
+    let request = {
+      collection: 'organisations',
+      docId: props.currentOrg.id,
+      data: {
         isPremium: true
       }
-    );
+    };
+    updateDataWithDoc(request);
     props.handleClose();
   };
 
@@ -115,18 +114,7 @@ const CheckoutForm = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {};
-};
-
-//As we are not dispatching anything - this is empty
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(injectStripe(CheckoutForm));
+export default injectStripe(CheckoutForm);
 
 // export default injectStripe(CheckoutForm);
 
