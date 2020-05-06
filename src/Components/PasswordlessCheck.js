@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 
 import { StyledH1 } from './styled-components/StyledText';
 
@@ -31,15 +31,24 @@ const PasswordlessCheck = props => {
   } */
 
   // use Context API
-  const { firebase } = useContext(Context);
+  const { firebase, isLoggedIn } = useContext(Context);
 
-  useEffect(() => {
-    let email = window.prompt('Please provide your email for confirmation');
+  const getEmail = useCallback(async () => {
+    let email = await window.prompt(
+      'Please provide your email for confirmation'
+    );
     firebase
       .auth()
       .signInWithEmailLink(email, window.location.href)
       .catch(function(error) {});
-  });
+  }, [firebase]);
+  useEffect(() => {
+    isLoggedIn();
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    getEmail();
+  }, [getEmail]);
 
   return (
     <div>
