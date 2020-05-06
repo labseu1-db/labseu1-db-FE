@@ -1,11 +1,5 @@
 import React, { useContext } from 'react';
 import { Modal } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
-
-//Redux action
-import { showModal, resetSpace } from '../../redux/actions/actionCreators';
 
 //Styled components
 import styled from 'styled-components';
@@ -31,15 +25,19 @@ const LeaveSpaceModal = props => {
   };
 
   const removeSpaceFromUser = () => {
-    props.firestore.update(
-      { collection: 'users', doc: localStorage.getItem('uuid') },
-      {
-        arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(props.space.id),
-        arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(
+    let request = {
+      collection: 'users',
+      docId: localStorage.getItem('uuid'),
+      data: {
+        arrayOfSpaceIds: firebase.firestore.FieldValue.arrayRemove(
+          props.space.id
+        ),
+        arrayOfSpaceNames: firebase.firestore.FieldValue.arrayRemove(
           props.space.spaceName
         )
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
 
   return (
@@ -82,28 +80,8 @@ const LeaveSpaceModal = props => {
   );
 };
 
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal, resetSpace }, dispatch);
-};
-
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(),
-  withFirestore
-)(LeaveSpaceModal);
+export default LeaveSpaceModal;
 
 const StyledContainer = styled.div`
   padding: 40px;
