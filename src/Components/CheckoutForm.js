@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
@@ -8,12 +8,16 @@ import { compose } from 'redux';
 
 import { paymentEndPoint } from '../firebase/firebaseConfig';
 
+import Context from './ContextProvider/Context';
+
 const CheckoutForm = props => {
   /* constructor(props) {
     super(props);
     state = { complete: false };
     submit = submit.bind(this);
   } */
+
+  const { updateDataWithDoc } = useContext(Context);
 
   const [complete, setComplete] = useState(false);
 
