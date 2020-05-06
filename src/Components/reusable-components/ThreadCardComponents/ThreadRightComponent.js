@@ -7,47 +7,43 @@ import { firestoreConnect } from 'react-redux-firebase';
 import clipboardIcon from '../../../images/icon-clipboard-green.svg';
 
 //Main component
-export class ThreadRightComponent extends React.Component {
-  markAsFollowUp = e => {
+export const ThreadRightComponent = props => {
+  const markAsFollowUp = e => {
     e.stopPropagation();
 
-    let threadRef = this.props.firestore
-      .collection('threads')
-      .doc(this.props.threadId);
-    if (this.props.isFollowUpDecided) {
+    let threadRef = props.firestore.collection('threads').doc(props.threadId);
+    if (props.isFollowUpDecided) {
       threadRef.update({
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayRemove(
+        arrayOfUserIdsWhoFollowUp: props.firestore.FieldValue.arrayRemove(
           localStorage.getItem('uuid')
         )
       });
     } else {
       threadRef.update({
         isFollowUp: true,
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
+        arrayOfUserIdsWhoFollowUp: props.firestore.FieldValue.arrayUnion(
           localStorage.getItem('uuid')
         )
       });
     }
   };
 
-  render() {
-    return (
-      <div>
-        {!this.props.isFollowUpDecided && (
-          <StyledRightContainer onClick={e => this.markAsFollowUp(e)}>
-            <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
-          </StyledRightContainer>
-        )}
-        {this.props.isFollowUpDecided && (
-          <StyledDecision onClick={e => this.markAsFollowUp(e)}>
-            <img src={clipboardIcon} alt="home icon" />
-            Following
-          </StyledDecision>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {!props.isFollowUpDecided && (
+        <StyledRightContainer onClick={e => markAsFollowUp(e)}>
+          <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
+        </StyledRightContainer>
+      )}
+      {props.isFollowUpDecided && (
+        <StyledDecision onClick={e => markAsFollowUp(e)}>
+          <img src={clipboardIcon} alt="home icon" />
+          Following
+        </StyledDecision>
+      )}
+    </div>
+  );
+};
 
 //Styling
 const StyledRightContainer = styled.div`
