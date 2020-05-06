@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose, bindActionCreators } from 'redux';
@@ -10,67 +10,74 @@ import { showModal } from '../../redux/actions/actionCreators';
 //Styled components
 import styled from 'styled-components';
 
+// import Context API
+import Context from '../ContextProvider/Context';
+
 const EditSpaceModal = props => {
   // constructor(props) {
   //   super(props);
-  //   this.state = {
-  //     spaceName: this.props.space.spaceName,
-  //     spaceTopic: this.props.space.spaceTopic,
-  //     idsInSpace: this.props.space.arrayOfUserIdsInSpace
+  //   state = {
+  //     spaceName: props.space.spaceName,
+  //     spaceTopic: props.space.spaceTopic,
+  //     idsInSpace: props.space.arrayOfUserIdsInSpace
   //   };
   // }
 
+  const { closeModal } = useContext(Context);
+
+  const [spaceName, setSpaceName] = useState(props.space.spaceName);
+  const [spaceTopic, setSpaceTopic] = useState(props.space.spaceTopic);
+  const [idsInSpace, setIdsInSpace] = useState(
+    props.space.arrayOfUserIdsInSpace
+  );
+
   const handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  const handleOpen = () => {
-    this.setState({ model_open: true });
-  };
-
-  const handleClose = () => {
-    this.setState({ model_open: false });
+    switch (e.target.name) {
+      case 'spaceName':
+        setSpaceName(e.target.value);
+        break;
+      case 'spaceTopic':
+        setSpaceTopic(e.target.value);
+        break;
+      default:
+    }
   };
 
   const updateSpaceToDatabase = () => {
-    this.props.firestore.update(
-      { collection: 'spaces', doc: this.props.space.id },
+    props.firestore.update(
+      { collection: 'spaces', doc: props.space.id },
       {
-        spaceName: this.state.spaceName,
-        spaceTopic: this.state.spaceTopic,
-        arrayOfUserIdsInSpace: this.state.idsInSpace
+        spaceName: spaceName,
+        spaceTopic: spaceTopic,
+        arrayOfUserIdsInSpace: idsInSpace
       }
     );
   };
   const addSpaceToUsers = () => {
-    this.state.idsInSpace.map(id => {
-      return this.props.firestore.update(
+    idsInSpace.map(id => {
+      return props.firestore.update(
         { collection: 'users', doc: id },
         {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(
-            this.props.space.id
+          arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(
+            props.space.id
           ),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
-            this.state.spaceName
-          )
+          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(spaceName)
         }
       );
     });
   };
 
   const removeSpaceFromUsers = () => {
-    this.props.space.arrayOfUserIdsInSpace
-      .filter(id => this.state.idsInSpace.indexOf(id) === -1)
+    props.space.arrayOfUserIdsInSpace
+      .filter(id => idsInSpace.indexOf(id) === -1)
       .map(id => {
-        return this.props.firestore.update(
+        return props.firestore.update(
           { collection: 'users', doc: id },
           {
-            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
-              this.props.space.id
+            arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(
+              props.space.id
             ),
-            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
-              this.state.spaceName
-            )
+            arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(spaceName)
           }
         );
       });
@@ -79,11 +86,11 @@ const EditSpaceModal = props => {
   const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: value });
+    setIdsInSpace(value);
   };
 
-  const userIdsOptions = this.props.listOfUsersWithinTheOrg
-    .filter(user => user.id !== this.props.uuid)
+  const userIdsOptions = props.listOfUsersWithinTheOrg
+    .filter(user => user.id !== props.uuid)
     .map(user => ({
       key: user.id,
       text: user.fullName,
@@ -91,13 +98,11 @@ const EditSpaceModal = props => {
     }));
 
   return (
-    <Modal open={this.props.shoudlBeOpen} size="tiny">
+    <Modal open={props.shoudlBeOpen} size="tiny">
       <StyledContainer>
         <Modal.Header>
           <div>
-            <StyledMainHeader>
-              Edit {this.props.space.spaceName}
-            </StyledMainHeader>
+            <StyledMainHeader>Edit {props.space.spaceName}</StyledMainHeader>
           </div>
           <div>
             <Header as="h5">Space name</Header>
@@ -105,8 +110,8 @@ const EditSpaceModal = props => {
               name="spaceName"
               type="text"
               required
-              value={this.state.spaceName}
-              onChange={this.handleInputChange}
+              value={spaceName}
+              onChange={handleInputChange}
             />
             <Header as="h5">
               What types of discussions happen here?
@@ -115,8 +120,8 @@ const EditSpaceModal = props => {
             <StyledInput
               name="spaceTopic"
               type="text"
-              value={this.state.spaceTopic}
-              onChange={this.handleInputChange}
+              value={spaceTopic}
+              onChange={handleInputChange}
             />
             <Header as="h5">Members</Header>
             <Dropdown
@@ -125,16 +130,15 @@ const EditSpaceModal = props => {
               multiple
               search
               selection
-              defaultValue={this.state.idsInSpace}
+              defaultValue={idsInSpace}
               options={userIdsOptions}
-              onChange={this.setIdsToState}
+              onChange={setIdsToState}
             />
             <Modal.Actions>
               <StyledActions>
                 <StyledButtonCancel
                   onClick={() => {
-                    this.handleClose();
-                    this.props.showModal(null);
+                    closeModal();
                   }}
                 >
                   Cancel
@@ -142,17 +146,13 @@ const EditSpaceModal = props => {
 
                 <StyledButtonCreateSpace
                   type="submit"
-                  disabled={
-                    !this.state.spaceName.length > 0 ||
-                    !this.state.idsInSpace.length > 0
-                  }
+                  disabled={!spaceName.length > 0 || !idsInSpace.length > 0}
                   onClick={e => {
                     e.preventDefault();
-                    this.props.showModal(null);
-                    this.updateSpaceToDatabase();
-                    this.addSpaceToUsers();
-                    this.removeSpaceFromUsers();
-                    this.handleClose();
+                    updateSpaceToDatabase();
+                    addSpaceToUsers();
+                    removeSpaceFromUsers();
+                    closeModal();
                   }}
                 >
                   Edit Space

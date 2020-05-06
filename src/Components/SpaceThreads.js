@@ -70,7 +70,7 @@ const SpaceThreads = props => {
               <EditSpaceModal
                 shoudlBeOpen={true}
                 activeModal={props.activeModal}
-                space={props.space}
+                space={space}
                 {...props}
               />
             )}
