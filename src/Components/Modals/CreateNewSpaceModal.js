@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
-import { isEmpty } from 'react-redux-firebase';
 import uuid from 'uuid';
 import plusIcon from '../../images/icon-plus-lightgray.svg';
 //Redux action
@@ -102,7 +101,7 @@ const CreateNewSpaceModal = props => {
         src={plusIcon}
         alt="plus icon"
         onClick={() => setModal('CreateSpaceModal')}
-        disabled={isEmpty(localStorage.getItem('activeOrg'))}
+        disabled={!props.match.params.id}
       />
 
       {modal === 'CreateSpaceModal' && (

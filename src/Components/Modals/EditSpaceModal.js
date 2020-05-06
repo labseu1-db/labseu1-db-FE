@@ -1,11 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
-
-//Redux action
-import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
 import styled from 'styled-components';
@@ -23,13 +17,26 @@ const EditSpaceModal = props => {
   //   };
   // }
 
-  const { closeModal } = useContext(Context);
+  const {
+    closeModal,
+    getUsersFromOrg,
+    getUserDataRealTime,
+    updateDataWithDoc,
+    firebase
+  } = useContext(Context);
 
   const [spaceName, setSpaceName] = useState(props.space.spaceName);
   const [spaceTopic, setSpaceTopic] = useState(props.space.spaceTopic);
   const [idsInSpace, setIdsInSpace] = useState(
     props.space.arrayOfUserIdsInSpace
   );
+  const [users, setUsers] = useState([]);
+  const [currentUser, setUser] = useState('');
+
+  useEffect(() => {
+    getUserDataRealTime(setUser);
+    getUsersFromOrg(setUsers, props.match.params.id);
+  }, [getUserDataRealTime, getUsersFromOrg, props.match.params.id]);
 
   const handleInputChange = e => {
     switch (e.target.name) {
@@ -44,26 +51,30 @@ const EditSpaceModal = props => {
   };
 
   const updateSpaceToDatabase = () => {
-    props.firestore.update(
-      { collection: 'spaces', doc: props.space.id },
-      {
+    let request = {
+      collection: 'spaces',
+      docId: props.space.id,
+      data: {
         spaceName: spaceName,
         spaceTopic: spaceTopic,
         arrayOfUserIdsInSpace: idsInSpace
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
   const addSpaceToUsers = () => {
     idsInSpace.map(id => {
-      return props.firestore.update(
-        { collection: 'users', doc: id },
-        {
-          arrayOfSpaceIds: props.firestore.FieldValue.arrayUnion(
+      let request = {
+        collection: 'users',
+        docId: id,
+        data: {
+          arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(
             props.space.id
           ),
-          arrayOfSpaceNames: props.firestore.FieldValue.arrayUnion(spaceName)
+          arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(spaceName)
         }
-      );
+      };
+      return updateDataWithDoc(request);
     });
   };
 
@@ -71,15 +82,19 @@ const EditSpaceModal = props => {
     props.space.arrayOfUserIdsInSpace
       .filter(id => idsInSpace.indexOf(id) === -1)
       .map(id => {
-        return props.firestore.update(
-          { collection: 'users', doc: id },
-          {
-            arrayOfSpaceIds: props.firestore.FieldValue.arrayRemove(
+        let request = {
+          collection: 'users',
+          docId: id,
+          data: {
+            arrayOfSpaceIds: firebase.firestore.FieldValue.arrayRemove(
               props.space.id
             ),
-            arrayOfSpaceNames: props.firestore.FieldValue.arrayRemove(spaceName)
+            arrayOfSpaceNames: firebase.firestore.FieldValue.arrayRemove(
+              spaceName
+            )
           }
-        );
+        };
+        return updateDataWithDoc(request);
       });
   };
 
@@ -89,8 +104,8 @@ const EditSpaceModal = props => {
     setIdsInSpace(value);
   };
 
-  const userIdsOptions = props.listOfUsersWithinTheOrg
-    .filter(user => user.id !== props.uuid)
+  const userIdsOptions = users
+    .filter(user => user.id !== currentUser.id)
     .map(user => ({
       key: user.id,
       text: user.fullName,
@@ -166,44 +181,8 @@ const EditSpaceModal = props => {
   );
 };
 
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
-      ? state.firestore.ordered.usersWithinTheOrg
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
-};
-
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'users',
-        where: [
-          ['arrayOfOrgsIds', 'array-contains', `${props.match.params.id}`]
-        ],
-        storeAs: 'usersWithinTheOrg'
-      }
-    ];
-  }),
-  withFirestore
-)(EditSpaceModal);
+export default EditSpaceModal;
 
 const StyledContainer = styled.div`
   padding: 40px;

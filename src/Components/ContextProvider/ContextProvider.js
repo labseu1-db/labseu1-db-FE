@@ -1,8 +1,17 @@
 import Context from './Context';
 import React, { useState, useCallback } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
+
+// firebase
 import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
+// import Firebase Config
+import firebaseConfig from '../../firebase/firebaseConfig';
 import styled from 'styled-components';
+
+firebase.initializeApp(firebaseConfig);
 
 const ContextProvider = ({ children, ...props }) => {
   // Hooks
