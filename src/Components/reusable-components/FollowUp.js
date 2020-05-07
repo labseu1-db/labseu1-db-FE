@@ -12,7 +12,7 @@ import Context from '../ContextProvider/Context';
 //Main component
 const FollowUp = props => {
   // use Context API
-  const { getFollowUpThreads } = useContext(Context);
+  const { getFollowUpThreads, redirect } = useContext(Context);
 
   // hooks to set threads
   const [threads, setThreads] = useState([]);
@@ -53,7 +53,7 @@ const FollowUp = props => {
                     : 'true')
                 }
                 onClick={() => {
-                  props.history.push(
+                  redirect(
                     `/mainscreen/${props.match.params.id}/${t.spaceId}/${t.id}`
                   );
                 }}
