@@ -14,7 +14,8 @@ const DeleteSpaceModal = props => {
     deleteData,
     firebase,
     db,
-    closeModal
+    closeModal,
+    redirect
   } = useContext(Context);
 
   const removeSpaceFromUsersAndDeleteSpace = () => {
@@ -58,7 +59,7 @@ const DeleteSpaceModal = props => {
           deleteData(request);
         })
         .then(() => {
-          props.history.push(`/mainscreen/${props.match.params.id}`);
+          redirect(`/mainscreen/${props.match.params.id}`);
         });
     });
   };
