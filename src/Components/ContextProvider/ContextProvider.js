@@ -213,7 +213,7 @@ const ContextProvider = ({ children, ...props }) => {
   const getSpaceWithId = useCallback(
     (setData, spaceId) => {
       let ref = db.collection('spaces').doc(spaceId);
-      ref.onSnapshot(doc => {
+      let unsubscribe = ref.onSnapshot(doc => {
         if (doc) {
           let space = doc.data();
           space.id = doc.id;
@@ -222,6 +222,7 @@ const ContextProvider = ({ children, ...props }) => {
           setData('');
         }
       });
+      return () => unsubscribe();
     },
     [db]
   );
