@@ -62,9 +62,13 @@ const ContextProvider = ({ children, ...props }) => {
       const uuid = localStorage.getItem('uuid');
       let ref = db.collection('users').doc(uuid);
       ref.onSnapshot(doc => {
-        let user = doc.data();
-        user.id = doc.id;
-        setData(user);
+        if (doc.exists) {
+          let user = doc.data();
+          user.id = doc.id;
+          setData(user);
+        } else {
+          setData('');
+        }
       });
     },
     [db]
