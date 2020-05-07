@@ -165,13 +165,14 @@ const ContextProvider = ({ children, ...props }) => {
   const getThreadWithId = useCallback(
     (setData, threadId) => {
       let ref = db.collection('threads').doc(threadId);
-      ref.onSnapshot(doc => {
+      let unsubribe = ref.onSnapshot(doc => {
         if (doc.exists) {
           let comment = doc.data();
           comment.id = doc.id;
           setData(comment);
         }
       });
+      return () => unsubribe();
     },
     [db]
   );
@@ -182,13 +183,14 @@ const ContextProvider = ({ children, ...props }) => {
         .collection('threads')
         .where('spaceId', '==', spaceId)
         .orderBy('threadCreatedAt', 'desc');
-      ref.onSnapshot(querySnapshot => {
+      let unsubscribe = ref.onSnapshot(querySnapshot => {
         let threads = [];
         querySnapshot.forEach(doc => {
           threads.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(threads);
       });
+      return () => unsubscribe();
     },
     [db]
   );
