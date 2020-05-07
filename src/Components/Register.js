@@ -133,7 +133,6 @@ const Register = props => {
   };
 
   const saveOrgNameAndOrgIdInUser = (orgId, orgName, userId) => {
-    console.log('saveOrgName');
     let request = {
       collection: 'users',
       docId: userId,
@@ -146,7 +145,6 @@ const Register = props => {
   };
 
   const saveUserIdInOrg = (orgId, userId) => {
-    console.log('userid in org');
     let request = {
       collection: 'organisations',
       docId: orgId,
