@@ -34,7 +34,8 @@ const NavBar = props => {
     getOrgWithUuid,
     getSpacesWithOrg,
     firebase,
-    getUserDataRealTime
+    getUserDataRealTime,
+    redirect
   } = useContext(Context);
 
   const [profileDropdown, setProfileDropdown] = useState('');
@@ -70,7 +71,7 @@ const NavBar = props => {
       })
       .then(() => {
         localStorage.clear();
-        props.history.push('/login');
+        redirect('/login');
       })
       .catch(err => console.log("something's wrong."));
 
@@ -83,7 +84,7 @@ const NavBar = props => {
 
   const setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    return props.history.push(`/mainscreen/${data.value}`);
+    return redirect(`/mainscreen/${data.value}`);
   };
 
   //Will load spinner if user doesn't exist
