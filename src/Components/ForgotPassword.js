@@ -37,7 +37,8 @@ const ForgotPassword = props => {
     setError,
     resetPasswordStatus,
     firebase,
-    setResetPasswordStatus
+    setResetPasswordStatus,
+    redirect
   } = useContext(Context);
 
   const [loginEmail, setLoginEmail] = useState('');
@@ -49,9 +50,9 @@ const ForgotPassword = props => {
       .then(() => {
         if (resetPasswordStatus) {
           setResetPasswordStatus(false);
-          props.history.push(`/profile/${props.match.params.id}`);
+          redirect(`/profile/${props.match.params.id}`);
         } else {
-          props.history.push('/login');
+          redirect('/login');
         }
       })
       .catch(error => {
@@ -61,9 +62,9 @@ const ForgotPassword = props => {
 
   useEffect(() => {
     if (!resetPasswordStatus) {
-      props.history.push(`/mainscreen/${props.match.params.id}`);
+      redirect(`/mainscreen/${props.match.params.id}`);
     }
-  }, [props.history, props.match.params.id, resetPasswordStatus]);
+  }, [redirect, props.match.params.id, resetPasswordStatus]);
 
   const handleInputChange = e => {
     setLoginEmail(e.target.value);
