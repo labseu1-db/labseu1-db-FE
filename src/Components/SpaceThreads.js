@@ -24,9 +24,13 @@ import Context from './ContextProvider/Context';
 
 const SpaceThreads = props => {
   // Context
-  const { getSpaceWithId, modal, setModal, getThreadsWithSpace } = useContext(
-    Context
-  );
+  const {
+    getSpaceWithId,
+    modal,
+    setModal,
+    getThreadsWithSpace,
+    redirect
+  } = useContext(Context);
   const [space, setSpace] = useState('');
   const [threads, setThreads] = useState([]);
 
@@ -45,9 +49,7 @@ const SpaceThreads = props => {
           backgroundColor="#00bc98"
           color="white"
           border="none"
-          onClick={() =>
-            props.history.push(`/mainscreen/${props.match.params.id}`)
-          }
+          onClick={() => redirect(`/mainscreen/${props.match.params.id}`)}
         />
       </StyledErrorScreen>
     );
