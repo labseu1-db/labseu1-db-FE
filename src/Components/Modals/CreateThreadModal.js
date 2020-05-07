@@ -15,7 +15,8 @@ const CreateThreadModal = props => {
     getUserData,
     closeModal,
     saveData,
-    updateDataWithDoc
+    updateDataWithDoc,
+    redirect
   } = useContext(Context);
 
   const [threadName, setThreadName] = useState('');
@@ -90,7 +91,7 @@ const CreateThreadModal = props => {
     updateDataWithDoc(updateRequest)
       .then(() => closeModal())
       .then(() =>
-        props.history.push(
+        redirect(
           `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${threadId}`
         )
       )
