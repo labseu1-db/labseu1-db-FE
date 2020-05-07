@@ -182,7 +182,7 @@ const SpaceThreads = props => {
                         : 'true')
                     }
                     onClick={() => {
-                      props.history.push(
+                      redirect(
                         `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${t.id}`
                       );
                     }}
