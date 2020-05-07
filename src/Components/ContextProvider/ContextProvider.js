@@ -251,7 +251,7 @@ const ContextProvider = ({ children, ...props }) => {
   const getOrgWithId = useCallback(
     (setData, orgId) => {
       let ref = db.collection('organisations').doc(orgId);
-      ref.onSnapshot(doc => {
+      let unsubscribe = ref.onSnapshot(doc => {
         if (doc.exists) {
           let org = doc.data();
           org.id = doc.id;
@@ -260,6 +260,7 @@ const ContextProvider = ({ children, ...props }) => {
           setData('');
         }
       });
+      return () => unsubscribe();
     },
     [db]
   );
