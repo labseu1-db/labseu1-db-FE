@@ -214,9 +214,13 @@ const ContextProvider = ({ children, ...props }) => {
     (setData, spaceId) => {
       let ref = db.collection('spaces').doc(spaceId);
       ref.onSnapshot(doc => {
-        let space = doc.data();
-        space.id = doc.id;
-        setData(space);
+        if (doc) {
+          let space = doc.data();
+          space.id = doc.id;
+          setData(space);
+        } else {
+          setData('');
+        }
       });
     },
     [db]
