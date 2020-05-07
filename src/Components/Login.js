@@ -32,9 +32,13 @@ import LoginAnimation from './animations/LoginAnimation';
 
 const Login = props => {
   // function from context api
-  const { setError, isLoggedIn, firebase, getDataWithWhere } = useContext(
-    Context
-  );
+  const {
+    setError,
+    isLoggedIn,
+    firebase,
+    getDataWithWhere,
+    redirect
+  } = useContext(Context);
 
   const [loginEmail, setEmail] = useState('');
   const [loginPassword, setPassword] = useState('');
@@ -125,9 +129,7 @@ const Login = props => {
               onClick={togglePassword}
             />
           </StyledLabel>
-          <ForgotPasswordDiv
-            onClick={() => props.history.push('/forgotPassword')}
-          >
+          <ForgotPasswordDiv onClick={() => redirect('/forgotPassword')}>
             Forgot Password?
           </ForgotPasswordDiv>
           <StyledLowerSignIn>
