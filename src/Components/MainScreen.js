@@ -21,7 +21,9 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const MainScreen = props => {
-  const { getThreadsWithOrg, setModal, modal, loading } = useContext(Context);
+  const { getThreadsWithOrg, setModal, modal, loading, redirect } = useContext(
+    Context
+  );
 
   const [threads, setThreads] = useState([]);
 
@@ -95,7 +97,7 @@ const MainScreen = props => {
                         : 'true')
                     }
                     onClick={() =>
-                      props.history.push(
+                      redirect(
                         `/mainscreen/${props.match.params.id}/${t.spaceId}/${t.id}`
                       )
                     }
