@@ -113,7 +113,7 @@ const ForgotPassword = props => {
         {resetPasswordStatus && (
           <StyledSendEmailButton
             onClick={() => {
-              props.history.push(`/profile/${props.match.params.id}`);
+              redirect(`/profile/${props.match.params.id}`);
               props.resetPasswordDone();
             }}
           >
