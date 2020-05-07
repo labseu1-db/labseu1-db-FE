@@ -376,7 +376,8 @@ const ContextProvider = ({ children, ...props }) => {
         getFollowUpThreads: getFollowUpThreads,
         getUserDataRealTime: getUserDataRealTime,
         resetPasswordStatus: resetPasswordStatus,
-        setResetPasswordStatus: setResetPasswordStatus
+        setResetPasswordStatus: setResetPasswordStatus,
+        redirect: redirect
       }}
     >
       {children}
