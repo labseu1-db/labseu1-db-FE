@@ -75,16 +75,6 @@ const ContextProvider = ({ children, ...props }) => {
     [db]
   );
 
-  /* const getUsersFromOrg = orgId => {
-    let request = {
-      collection: 'users',
-      key: 'arrayOfOrgsIds',
-      term: 'array-contains',
-      value: orgId,
-      type: 'return_data'
-    };
-    return getDataWithWhere(request);
-  }; */
   const getUsersFromOrg = useCallback(
     (setData, orgId) => {
       let ref = db
