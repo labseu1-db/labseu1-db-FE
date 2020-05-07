@@ -252,9 +252,13 @@ const ContextProvider = ({ children, ...props }) => {
     (setData, orgId) => {
       let ref = db.collection('organisations').doc(orgId);
       ref.onSnapshot(doc => {
-        let org = doc.data();
-        org.id = doc.id;
-        setData(org);
+        if (doc.exists) {
+          let org = doc.data();
+          org.id = doc.id;
+          setData(org);
+        } else {
+          setData('');
+        }
       });
     },
     [db]
