@@ -111,13 +111,14 @@ const ContextProvider = ({ children, ...props }) => {
         .collection('comments')
         .where('threadId', '==', threadId)
         .orderBy('commentCreatedAt', 'asc');
-      ref.onSnapshot(querySnapshot => {
+      let unsubscribe = ref.onSnapshot(querySnapshot => {
         let comments = [];
         querySnapshot.forEach(doc => {
           comments.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(comments);
       });
+      return () => unsubscribe();
     },
     [db]
   );
