@@ -57,7 +57,6 @@ const UserManagement = props => {
       })
     );
   };
-  console.log(teamEmailAddress);
 
   const checkIfEmail = email => {
     let re = /(^$|^.*@.*\..*$)/;
