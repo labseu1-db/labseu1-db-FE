@@ -33,7 +33,8 @@ const Register = props => {
     saveData,
     getDataWithWhere,
     updateDataWithDoc,
-    db
+    db,
+    redirect
   } = useContext(Context);
 
   // Hooks
@@ -127,7 +128,7 @@ const Register = props => {
       };
       saveData(request);
       isUserInvited(userId);
-      props.history.push('/createneworganisation');
+      redirect('/createneworganisation');
     } catch (error) {
       setError(error);
     }
