@@ -212,7 +212,6 @@ const CreateNewOrganisation = props => {
   };
   //======== FUNCTIONS TO ADD DATA THAT WERE COLLECTED TO FIRESTORE ========//
   useEffect(() => {
-    console.log('running');
     setModal('CreateOrganisationModal');
   }, [setModal]);
 

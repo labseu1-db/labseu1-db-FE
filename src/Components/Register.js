@@ -108,9 +108,7 @@ const Register = props => {
       let data = await firebase
         .auth()
         .signInWithEmailAndPassword(loginEmail, loginPassword);
-      console.log('login successfull');
       let { user } = data;
-      console.log('user in login', user);
       const userId = uuid();
       let request = {
         collection: 'users',
