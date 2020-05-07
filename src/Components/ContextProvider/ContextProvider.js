@@ -61,7 +61,7 @@ const ContextProvider = ({ children, ...props }) => {
     setData => {
       const uuid = localStorage.getItem('uuid');
       let ref = db.collection('users').doc(uuid);
-      ref.onSnapshot(doc => {
+      let unsubscribe = ref.onSnapshot(doc => {
         if (doc.exists) {
           let user = doc.data();
           user.id = doc.id;
@@ -70,6 +70,7 @@ const ContextProvider = ({ children, ...props }) => {
           setData('');
         }
       });
+      return () => unsubscribe();
     },
     [db]
   );
