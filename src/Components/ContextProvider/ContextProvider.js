@@ -80,13 +80,14 @@ const ContextProvider = ({ children, ...props }) => {
       let ref = db
         .collection('users')
         .where('arrayOfOrgsIds', 'array-contains', orgId);
-      ref.onSnapshot(querySnapshot => {
+      let unsubscribe = ref.onSnapshot(querySnapshot => {
         let users = [];
         querySnapshot.forEach(doc => {
           users.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(users);
       });
+      return () => unsubscribe();
     },
     [db]
   );
