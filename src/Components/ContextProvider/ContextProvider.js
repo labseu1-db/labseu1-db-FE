@@ -166,9 +166,11 @@ const ContextProvider = ({ children, ...props }) => {
     (setData, threadId) => {
       let ref = db.collection('threads').doc(threadId);
       ref.onSnapshot(doc => {
-        let comment = doc.data();
-        comment.id = doc.id;
-        setData(comment);
+        if (doc.exists) {
+          let comment = doc.data();
+          comment.id = doc.id;
+          setData(comment);
+        }
       });
     },
     [db]
