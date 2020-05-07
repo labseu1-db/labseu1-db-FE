@@ -27,7 +27,8 @@ const CreateNewSpaceModal = props => {
     saveData,
     updateDataWithDoc,
     firebase,
-    getUserDataRealTime
+    getUserDataRealTime,
+    redirect
   } = useContext(Context);
 
   const [spaceName, setSpaceName] = useState('');
@@ -63,9 +64,7 @@ const CreateNewSpaceModal = props => {
     saveData(request)
       .then(res => addSpaceToUsers(spaceId))
       .then(res => cleanInputs())
-      .then(res =>
-        props.history.push(`/mainscreen/${props.match.params.id}/${spaceId}`)
-      );
+      .then(res => redirect(`/mainscreen/${props.match.params.id}/${spaceId}`));
   };
 
   const addSpaceToUsers = spaceId => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 //Import dependencies
 import styled from 'styled-components';
@@ -10,8 +10,14 @@ import { Modal } from 'semantic-ui-react';
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
+// import Context API
+import Context from '../ContextProvider/Context';
+
 //Default export
 const CreateSpacesModal = props => {
+  // use Context API
+  const { redirect } = useContext(Context);
+
   const spacesExamples = [
     { name: 'Product', color: 'eggplant' },
     { name: 'Engineering', color: 'darkgreen' },
@@ -92,7 +98,7 @@ const CreateSpacesModal = props => {
                   props.clearState(),
                   props.addOrganisationToDatabase(orgId)
                 ]).then(values => {
-                  props.props.history.push(`/mainscreen/${orgId}`);
+                  redirect(`/mainscreen/${orgId}`);
                 });
               }}
             >
