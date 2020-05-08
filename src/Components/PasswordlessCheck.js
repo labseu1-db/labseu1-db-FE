@@ -43,7 +43,7 @@ const PasswordlessCheck = props => {
       .catch(function(error) {});
   }, [firebase]);
   useEffect(() => {
-    isLoggedIn();
+    isLoggedIn('login');
   }, [isLoggedIn]);
 
   useEffect(() => {

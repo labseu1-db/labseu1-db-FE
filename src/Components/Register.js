@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import uuid from 'uuid';
 
 import { StyledButton } from './styled-components/StyledButton';
@@ -34,13 +34,18 @@ const Register = props => {
     getDataWithWhere,
     updateDataWithDoc,
     db,
-    redirect
+    redirect,
+    isLoggedIn
   } = useContext(Context);
 
   // Hooks
   const [loginEmail, setEmail] = useState('');
   const [loginPassword, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+
+  useEffect(() => {
+    isLoggedIn('login');
+  }, [isLoggedIn]);
 
   const handleInputChange = e => {
     switch (e.target.name) {

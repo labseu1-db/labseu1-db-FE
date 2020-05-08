@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
@@ -28,9 +28,13 @@ const PasswordlessSubmit = props => {
   // }
 
   // use Context API
-  const { error, setError, firebase } = useContext(Context);
+  const { error, setError, firebase, isLoggedIn } = useContext(Context);
 
   const [loginEmail, setLoginEmail] = useState('');
+
+  useEffect(() => {
+    isLoggedIn('login');
+  }, [isLoggedIn]);
 
   const passwordlessSignIn = (loginEmail, event) => {
     event.preventDefault();
