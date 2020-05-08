@@ -15,7 +15,8 @@ export function ThreadInformationCard(props) {
   const [space, setSpace] = useState('');
 
   useEffect(() => {
-    getSpaceWithId(setSpace, props.spaceId);
+    let getSpaceUnsubscribe = getSpaceWithId(setSpace, props.spaceId);
+    return () => getSpaceUnsubscribe();
   }, [getSpaceWithId, props.spaceId]);
 
   const { createdBy, createdAt, info } = props;
