@@ -38,8 +38,11 @@ const CreateNewSpaceModal = props => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
     getUsersFromOrg(setUsers, props.match.params.id);
+    return () => {
+      getUserUnsubscribe();
+    };
   }, [getUserDataRealTime, props.match.params.id, getUsersFromOrg]);
 
   const cleanInputs = () => {
