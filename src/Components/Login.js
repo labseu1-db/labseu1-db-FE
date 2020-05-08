@@ -63,10 +63,9 @@ const Login = props => {
   const handleLogIn = async e => {
     try {
       e.preventDefault();
-      let data = await firebase.login({
-        email: loginEmail,
-        password: loginPassword
-      });
+      let data = await firebase
+        .auth()
+        .signInWithEmailAndPassword(loginEmail, loginPassword);
       let { user } = data.user;
       let request = {
         collection: 'users',

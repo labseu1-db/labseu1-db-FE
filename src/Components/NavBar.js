@@ -76,10 +76,8 @@ const NavBar = props => {
 
   const handleLogOut = () => {
     firebase
-      .logout()
-      .then(() => {
-        props.clearFirestore();
-      })
+      .auth()
+      .signOut()
       .then(() => {
         localStorage.clear();
         redirect('/login');
