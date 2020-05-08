@@ -34,9 +34,17 @@ const UserManagement = props => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    getUsersFromOrg(setUsers, props.match.params.id);
-    getOrgWithId(setOrg, props.match.params.id);
-    getSpacesWithOrg(setSpaces, props.match.params.id);
+    let getUsersUnsubscribe = getUsersFromOrg(setUsers, props.match.params.id);
+    let getOrgUnsubscribe = getOrgWithId(setOrg, props.match.params.id);
+    let getSpacesUnsubscribe = getSpacesWithOrg(
+      setSpaces,
+      props.match.params.id
+    );
+    return () => {
+      getUsersUnsubscribe();
+      getOrgUnsubscribe();
+      getSpacesUnsubscribe();
+    };
   }, [getUsersFromOrg, getOrgWithId, getSpacesWithOrg, props.match.params.id]);
 
   //Add email input when clicked on email
