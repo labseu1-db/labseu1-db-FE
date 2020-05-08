@@ -44,9 +44,20 @@ const NavBar = props => {
   const [spaces, setSpaces] = useState([]);
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
-    getOrgWithUuid(setOrgs, localStorage.getItem('uuid'));
-    getSpacesWithOrg(setSpaces, props.match.params.id);
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    let getOrgUnsubscribe = getOrgWithUuid(
+      setOrgs,
+      localStorage.getItem('uuid')
+    );
+    let getSpacesUnsubscribe = getSpacesWithOrg(
+      setSpaces,
+      props.match.params.id
+    );
+    return () => {
+      getUserUnsubscribe();
+      getOrgUnsubscribe();
+      getSpacesUnsubscribe();
+    };
   }, [
     getOrgWithUuid,
     getSpacesWithOrg,
