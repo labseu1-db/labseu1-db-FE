@@ -16,8 +16,12 @@ function ProfileCard(props) {
 
   useEffect(() => {
     let uuid = localStorage.getItem('uuid');
-    getUserDataRealTime(setUser, uuid);
-    getOrgWithUuid(setOrgs);
+    let getUserUnsubscribe = getUserDataRealTime(setUser, uuid);
+    let getOrgUnsubscribe = getOrgWithUuid(setOrgs);
+    return () => {
+      getUserUnsubscribe();
+      getOrgUnsubscribe();
+    };
   }, [getUserDataRealTime, getOrgWithUuid]);
 
   return (
