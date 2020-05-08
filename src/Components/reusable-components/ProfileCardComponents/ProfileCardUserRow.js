@@ -38,7 +38,8 @@ export const ProfileCardUserRow = props => {
   const [editingProfileStatus, setEditingProfileStatus] = useState(false);
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    return () => getUserUnsubscribe();
   }, [getUserDataRealTime]);
 
   const onChangeHandler = e => {
