@@ -229,14 +229,13 @@ const ContextProvider = ({ children, ...props }) => {
           'array-contains',
           uuid || localStorage.getItem('uuid')
         );
-      let unsubscribe = ref.onSnapshot(querySnapshot => {
+      return ref.onSnapshot(querySnapshot => {
         let orgs = [];
         querySnapshot.forEach(doc => {
           orgs.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(orgs);
       });
-      return () => unsubscribe();
     },
     [db]
   );
