@@ -18,7 +18,8 @@ const FollowUp = props => {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-    getFollowUpThreads(setThreads);
+    let getThreadsUnsubscribe = getFollowUpThreads(setThreads);
+    return () => getThreadsUnsubscribe();
   }, [getFollowUpThreads]);
 
   return (
