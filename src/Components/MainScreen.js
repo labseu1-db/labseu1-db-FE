@@ -28,7 +28,13 @@ const MainScreen = props => {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-    getThreadsWithOrg(setThreads, props.match.params.id);
+    let getThreadsUnsubscribe = getThreadsWithOrg(
+      setThreads,
+      props.match.params.id
+    );
+    return () => {
+      getThreadsUnsubscribe();
+    };
   }, [getThreadsWithOrg, props.match.params.id]);
   if (loading) {
     return <Spinner />;
