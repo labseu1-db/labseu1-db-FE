@@ -42,13 +42,11 @@ const PasswordlessCheck = props => {
       .signInWithEmailLink(email, window.location.href)
       .catch(function(error) {});
   }, [firebase]);
-  useEffect(() => {
-    isLoggedIn('login');
-  }, [isLoggedIn]);
 
   useEffect(() => {
+    isLoggedIn('login');
     getEmail();
-  }, [getEmail]);
+  }, [getEmail, isLoggedIn]);
 
   return (
     <div>
