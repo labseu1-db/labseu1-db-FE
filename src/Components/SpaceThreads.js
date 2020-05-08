@@ -39,9 +39,13 @@ const SpaceThreads = props => {
       setThreads,
       props.match.params.spaceId
     );
-    getSpaceWithId(setSpace, props.match.params.spaceId);
+    let getSpaceUnsubscribe = getSpaceWithId(
+      setSpace,
+      props.match.params.spaceId
+    );
     return () => {
       getThreadsUnsubscribe();
+      getSpaceUnsubscribe();
     };
   }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
 
