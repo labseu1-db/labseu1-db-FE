@@ -40,7 +40,10 @@ const NewCommentCard = props => {
   const [user, setUser] = useState('');
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    return () => {
+      getUserUnsubscribe();
+    };
   }, [getUserDataRealTime]);
 
   const handleInputChange = e => {
