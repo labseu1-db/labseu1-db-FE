@@ -34,8 +34,12 @@ const EditSpaceModal = props => {
   const [currentUser, setUser] = useState('');
 
   useEffect(() => {
-    getUserDataRealTime(setUser);
-    getUsersFromOrg(setUsers, props.match.params.id);
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    let getUsersUnsubscribe = getUsersFromOrg(setUsers, props.match.params.id);
+    return () => {
+      getUsersUnsubscribe();
+      getUserUnsubscribe();
+    };
   }, [getUserDataRealTime, getUsersFromOrg, props.match.params.id]);
 
   const handleInputChange = e => {
