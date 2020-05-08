@@ -66,7 +66,7 @@ const Login = props => {
       let data = await firebase
         .auth()
         .signInWithEmailAndPassword(loginEmail, loginPassword);
-      let { user } = data.user;
+      let { user } = data;
       let request = {
         collection: 'users',
         key: 'userEmail',
