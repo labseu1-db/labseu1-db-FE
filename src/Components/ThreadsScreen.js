@@ -59,8 +59,18 @@ const ThreadsScreen = props => {
 
   useEffect(() => {
     updateThread();
-    getCommentsWithThread(setComments, props.match.params.threadId);
-    getThreadWithId(setThread, props.match.params.threadId);
+    let getCommentsUnsubscribe = getCommentsWithThread(
+      setComments,
+      props.match.params.threadId
+    );
+    let getThreadUnsubscribe = getThreadWithId(
+      setThread,
+      props.match.params.threadId
+    );
+    return () => {
+      getCommentsUnsubscribe();
+      getThreadUnsubscribe();
+    };
   }, [
     getCommentsWithThread,
     getThreadWithId,
