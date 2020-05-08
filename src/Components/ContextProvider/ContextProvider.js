@@ -146,14 +146,13 @@ const ContextProvider = ({ children, ...props }) => {
         .where('isFollowUp', '==', true)
         .where('arrayOfUserIdsWhoFollowUp', 'array-contains', uuid)
         .orderBy('threadCreatedAt', 'desc');
-      let unsubscribe = ref.onSnapshot(querySnapshot => {
+      return ref.onSnapshot(querySnapshot => {
         let threads = [];
         querySnapshot.forEach(doc => {
           threads.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(threads);
       });
-      return () => unsubscribe();
     },
     [db]
   );
