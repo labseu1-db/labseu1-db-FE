@@ -35,8 +35,14 @@ const SpaceThreads = props => {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-    getThreadsWithSpace(setThreads, props.match.params.spaceId);
+    let getThreadsUnsubscribe = getThreadsWithSpace(
+      setThreads,
+      props.match.params.spaceId
+    );
     getSpaceWithId(setSpace, props.match.params.spaceId);
+    return () => {
+      getThreadsUnsubscribe();
+    };
   }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
 
   if (!space) {
