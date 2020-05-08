@@ -39,8 +39,9 @@ const CreateNewSpaceModal = props => {
 
   useEffect(() => {
     let getUserUnsubscribe = getUserDataRealTime(setUser);
-    getUsersFromOrg(setUsers, props.match.params.id);
+    let getUsersUnsubscribe = getUsersFromOrg(setUsers, props.match.params.id);
     return () => {
+      getUsersUnsubscribe();
       getUserUnsubscribe();
     };
   }, [getUserDataRealTime, props.match.params.id, getUsersFromOrg]);
