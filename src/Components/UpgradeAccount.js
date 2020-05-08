@@ -18,7 +18,8 @@ const UpgradeAccount = props => {
   const [org, setOrg] = useState('');
 
   useEffect(() => {
-    getOrgWithId(setOrg, props.match.params.id);
+    let getOrgUnsubscribe = getOrgWithId(setOrg, props.match.params.id);
+    return () => getOrgUnsubscribe();
   }, [getOrgWithId, props.match.params.id]);
 
   if (org.isPremium) {
