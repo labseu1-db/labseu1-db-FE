@@ -193,14 +193,13 @@ const ContextProvider = ({ children, ...props }) => {
   const getSpacesWithOrg = useCallback(
     (setData, orgId) => {
       let ref = db.collection('spaces').where('orgId', '==', orgId);
-      let unsubscribe = ref.onSnapshot(querySnapshot => {
+      return ref.onSnapshot(querySnapshot => {
         let spaces = [];
         querySnapshot.forEach(doc => {
           spaces.push(Object.assign({ id: doc.id }, doc.data()));
         });
         setData(spaces);
       });
-      return () => unsubscribe();
     },
     [db]
   );
