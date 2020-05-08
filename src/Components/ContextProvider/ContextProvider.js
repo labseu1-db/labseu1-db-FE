@@ -159,14 +159,13 @@ const ContextProvider = ({ children, ...props }) => {
   const getThreadWithId = useCallback(
     (setData, threadId) => {
       let ref = db.collection('threads').doc(threadId);
-      let unsubribe = ref.onSnapshot(doc => {
+      return ref.onSnapshot(doc => {
         if (doc.exists) {
           let comment = doc.data();
           comment.id = doc.id;
           setData(comment);
         }
       });
-      return () => unsubribe();
     },
     [db]
   );
