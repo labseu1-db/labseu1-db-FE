@@ -32,7 +32,13 @@ const CreateThreadModal = props => {
 
   useEffect(() => {
     setData();
-    getSpacesWithOrg(setSpaces, props.match.params.id);
+    let getSpacesUnsubscribe = getSpacesWithOrg(
+      setSpaces,
+      props.match.params.id
+    );
+    return () => {
+      getSpacesUnsubscribe();
+    };
   }, [setData, getSpacesWithOrg, props.match.params.id]);
   const saveSpaceToThread = (e, data) => {
     e.preventDefault();
