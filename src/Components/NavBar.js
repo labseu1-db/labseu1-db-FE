@@ -187,7 +187,7 @@ const NavBar = props => {
             Follow up
           </RowDiv>
         </RowContainer>
-        {localStorage.getItem('activeOrg') && (
+        {props.match.params.id && (
           <RowContainer>
             <img src={peopleIcon} alt="users icon" />
             <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>

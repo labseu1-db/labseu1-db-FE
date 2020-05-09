@@ -135,7 +135,15 @@ const CreateThreadModal = props => {
             value={threadName}
             onChange={event => handleInputChange(event)}
           />
-          <StyledThreadInput></StyledThreadInput>
+          <StyledThreadInput>
+            <StyledTopicInput
+              name="threadTopic"
+              type="text"
+              placeholder="What would you like to discuss with your teammates?"
+              value={threadTopic}
+              onChange={event => handleInputChange(event)}
+            />
+          </StyledThreadInput>
         </StyledInputsContainer>
       </Modal.Content>
 
@@ -210,6 +218,18 @@ const StyledTitleInput = styled.input`
   height: 56px;
   font-family: 'Open Sans', sans-serif;
   font-size: 36px;
+  font-weight: 300;
+  line-height: 1.11;
+  margin-bottom: 20px;
+`;
+
+const StyledTopicInput = styled.input`
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 56px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.11;
   margin-bottom: 20px;
