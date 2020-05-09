@@ -30,6 +30,7 @@ export const ThreadRightComponent = props => {
         collection: 'threads',
         docId: props.threadId,
         data: {
+          isFollowUp: true,
           arrayOfUserIdsWhoFollowUp: firebase.firestore.FieldValue.arrayUnion(
             localStorage.getItem('uuid')
           )
