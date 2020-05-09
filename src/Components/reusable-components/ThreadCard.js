@@ -1,8 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 //Import components
 import ThreadLeftComponentImage from './ThreadCardComponents/ThreadLeftComponentImage';
@@ -61,27 +58,4 @@ const StyledThreadContainer = styled.div`
   }
 `;
 
-//Export component wrapped in store + firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeSpace: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces[0]
-      : []
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'spaces',
-        doc: `${props.spaceId}`
-      }
-    ];
-  })
-)(ThreadCard);
+export default ThreadCard;

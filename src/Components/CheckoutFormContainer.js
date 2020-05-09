@@ -1,49 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-class CheckoutFormContainer extends Component {
-  state = {
-    model_open: false
+const CheckoutFormContainer = props => {
+  // state = {
+  //   model_open: false
+  // };
+
+  const [model, setModel] = useState(false);
+
+  const handleOpen = () => {
+    setModel(true);
   };
 
-  handleOpen = () => {
-    this.setState({ model_open: true });
+  const handleClose = () => {
+    setModel(false);
   };
 
-  handleClose = () => {
-    this.setState({ model_open: false });
-  };
-
-  render() {
-    return (
-      <Modal
-        trigger={
-          <div aria-label="Checkout Form Container">
-            <UpgradePlanButton onClick={this.handleOpen}>
-              <div>Upgrade Plan</div>
-            </UpgradePlanButton>
-          </div>
-        }
-        open={this.state.model_open}
-        size="tiny"
-      >
-        <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
-          <div className="example">
-            <Elements>
-              <CheckoutForm
-                handleClose={this.handleClose}
-                currentOrg={this.props.currentOrg}
-              />
-            </Elements>
-          </div>
-        </StripeProvider>
-      </Modal>
-    );
-  }
-}
+  return (
+    <Modal
+      trigger={
+        <div>
+          <UpgradePlanButton onClick={handleOpen}>
+            <div>Upgrade Plan</div>
+          </UpgradePlanButton>
+        </div>
+      }
+      open={model}
+      size="tiny"
+    >
+      <StripeProvider apiKey="pk_test_pigHFNnI4QzYmyhZNos15gSO00D4tYq8B3">
+        <div className="example">
+          <Elements>
+            <CheckoutForm
+              handleClose={handleClose}
+              currentOrg={props.currentOrg}
+            />
+          </Elements>
+        </div>
+      </StripeProvider>
+    </Modal>
+  );
+};
 
 export default CheckoutFormContainer;
 

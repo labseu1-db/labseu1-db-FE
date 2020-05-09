@@ -1,8 +1,5 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import icons
 import heartIconBlack from '../../../images/icon-heart-black.svg';
@@ -13,151 +10,147 @@ import UpdateComment from './UpdateComment';
 import CommentDropdown from './CommentDropdown';
 import AvatarFromLetter from '../AvatarFromLetter';
 
+// import Context API
+import Context from '../../ContextProvider/Context';
+
 //Main component
-export class CommentCard extends React.Component {
-  state = {
-    didUserLikeComment: this.props.arrayOfUsersWhoLiked.includes(
-      localStorage.getItem('uuid')
-    ),
-    isUpdating: false,
-    isHovering: false,
-    text: this.props.content
+export const CommentCard = props => {
+  // use context api
+  const { updateDataWithDoc, deleteData, firebase } = useContext(Context);
+
+  const [didUserLikeComment, setDidUserLikeComment] = useState(
+    props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid'))
+  );
+  const [isUpdating, setUpdating] = useState(false);
+  const [isHovering, setHovering] = useState(false);
+
+  const toggleLikePhoto = () => {
+    setDidUserLikeComment(prevState => !prevState);
   };
 
-  toggleLikePhoto = () => {
-    this.setState(prevState => ({
-      didUserLikeComment: !prevState.didUserLikeComment
-    }));
+  const deleteComment = id => {
+    let request = {
+      collection: 'comments',
+      docId: id
+    };
+    deleteData(request);
   };
 
-  deleteComment = id => {
-    this.props.firestore
-      .collection('comments')
-      .doc(id)
-      .delete();
+  const setIsUpdating = boolean => {
+    setUpdating(boolean);
   };
 
-  setIsUpdating = boolean => {
-    this.setState({
-      isUpdating: boolean
-    });
+  const setIsHovering = boolean => {
+    setHovering(boolean);
   };
 
-  setIsHovering = boolean => {
-    this.setState({
-      isHovering: boolean
-    });
+  const setIsCommentUpdated = boolean => {
+    setUpdating(boolean);
   };
 
-  setIsCommentUpdated = boolean => {
-    this.setState({
-      isCommentUpdated: boolean
-    });
-  };
+  const {
+    createdBy,
+    content,
+    commentId,
+    likes,
+    createdByUserId,
+    isCommentUpdated,
+    isCommentDecided,
+    gifUrl
+  } = props;
 
-  render() {
-    const {
-      createdBy,
-      content,
-      commentId,
-      likes,
-      createdByUserId,
-      isCommentUpdated,
-      isCommentDecided,
-      gifUrl
-    } = this.props;
-
-    const dateInfo = new Date(this.props.commentUpdatedAt);
-    const date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
-      '0' + dateInfo.getMinutes()
-    ).slice(-2)}`;
-    return (
-      <StyledContainer aria-label="Comment Card">
-        <StyledCommentContainer
-          className={`${isCommentDecided && 'paddingTop'}`}
-          onMouseEnter={() => this.setIsHovering(true)}
-          onMouseLeave={() => this.setIsHovering(false)}
-        >
-          {isCommentDecided && (
-            <StyledDecision>Marked as Decision</StyledDecision>
-          )}
-          {this.state.isHovering && (
-            <CommentDropdown
-              setIsUpdating={this.setIsUpdating}
-              deleteComment={this.deleteComment}
-              commentId={commentId}
-              createdByUserId={createdByUserId}
-              isCommentDecided={isCommentDecided}
-            />
-          )}
-          {this.state.isUpdating && (
-            <UpdateComment
-              commentId={commentId}
-              content={content}
-              setIsUpdating={this.setIsUpdating}
-              setIsCommentUpdated={this.setIsCommentUpdated}
-            />
-          )}
-          {!this.state.isUpdating && (
-            <AvatarFromLetter marginTop="4px" username={createdBy} />
-          )}
-          {!this.state.isUpdating && (
-            <StyledRightContainer>
-              <StyledAuthorsName>{createdBy}</StyledAuthorsName>
-              <StyledContent>{content}</StyledContent>
-              {isCommentUpdated && (
-                <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>
+  const dateInfo = new Date(props.commentUpdatedAt);
+  const date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+    '0' + dateInfo.getMinutes()
+  ).slice(-2)}`;
+  return (
+    <StyledContainer>
+      <StyledCommentContainer
+        className={`${isCommentDecided && 'paddingTop'}`}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        {isCommentDecided && (
+          <StyledDecision>Marked as Decision</StyledDecision>
+        )}
+        {isHovering && (
+          <CommentDropdown
+            setIsUpdating={setIsUpdating}
+            deleteComment={deleteComment}
+            commentId={commentId}
+            createdByUserId={createdByUserId}
+            isCommentDecided={isCommentDecided}
+          />
+        )}
+        {isUpdating && (
+          <UpdateComment
+            commentId={commentId}
+            content={content}
+            setIsUpdating={setIsUpdating}
+            setIsCommentUpdated={setIsCommentUpdated}
+          />
+        )}
+        {!isUpdating && (
+          <AvatarFromLetter marginTop="4px" username={createdBy} />
+        )}
+        {!isUpdating && (
+          <StyledRightContainer>
+            <StyledAuthorsName>{createdBy}</StyledAuthorsName>
+            <StyledContent>{content}</StyledContent>
+            {isCommentUpdated && (
+              <StyledUpdatedMessage>Updated at {date}</StyledUpdatedMessage>
+            )}
+            {gifUrl && <GifInComment src={gifUrl} alt="gif" />}
+            <StyledLikesContainer>
+              {!didUserLikeComment && (
+                <img
+                  src={heartIconBlack}
+                  alt="heart icon"
+                  onClick={() => {
+                    toggleLikePhoto();
+                    let request = {
+                      collection: 'comments',
+                      docId: commentId,
+                      data: {
+                        arrayOfUserIdsWhoLiked: firebase.firestore.FieldValue.arrayUnion(
+                          localStorage.getItem('uuid')
+                        )
+                      }
+                    };
+                    updateDataWithDoc(request);
+                  }}
+                />
               )}
-              {gifUrl && <GifInComment src={gifUrl} alt="gif" />}
-              <StyledLikesContainer>
-                {!this.state.didUserLikeComment && (
-                  <img
-                    src={heartIconBlack}
-                    alt="heart icon"
-                    onClick={() => {
-                      this.toggleLikePhoto();
-                      let commentRef = this.props.firestore
-                        .collection('comments')
-                        .doc(commentId);
-                      commentRef.update({
-                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayUnion(
+              {!didUserLikeComment && likes !== 0 && (
+                <div className="black-likes">{likes}</div>
+              )}
+              {didUserLikeComment && (
+                <img
+                  src={heartIconRed}
+                  alt="heart icon"
+                  onClick={() => {
+                    toggleLikePhoto();
+                    let request = {
+                      collection: 'comments',
+                      docId: commentId,
+                      data: {
+                        arrayOfUserIdsWhoLiked: firebase.firestore.FieldValue.arrayRemove(
                           localStorage.getItem('uuid')
                         )
-                      });
-                    }}
-                  />
-                )}
-                {!this.state.didUserLikeComment && likes !== 0 && (
-                  <div className="black-likes">{likes}</div>
-                )}
-                {this.state.didUserLikeComment && (
-                  <img
-                    src={heartIconRed}
-                    alt="heart icon"
-                    onClick={() => {
-                      this.toggleLikePhoto();
-                      let commentRef = this.props.firestore
-                        .collection('comments')
-                        .doc(commentId);
-                      commentRef.update({
-                        arrayOfUserIdsWhoLiked: this.props.firestore.FieldValue.arrayRemove(
-                          localStorage.getItem('uuid')
-                        )
-                      });
-                    }}
-                  />
-                )}
-                {this.state.didUserLikeComment && (
-                  <div className="red-likes">{likes}</div>
-                )}
-              </StyledLikesContainer>
-            </StyledRightContainer>
-          )}
-        </StyledCommentContainer>
-      </StyledContainer>
-    );
-  }
-}
+                      }
+                    };
+                    updateDataWithDoc(request);
+                  }}
+                />
+              )}
+              {didUserLikeComment && <div className="red-likes">{likes}</div>}
+            </StyledLikesContainer>
+          </StyledRightContainer>
+        )}
+      </StyledCommentContainer>
+    </StyledContainer>
+  );
+};
 
 //Styling
 const StyledContainer = styled.div`
@@ -249,17 +242,4 @@ const GifInComment = styled.img`
   margin: 10px 0;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(CommentCard);
+export default CommentCard;

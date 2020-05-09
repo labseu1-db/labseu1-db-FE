@@ -1,215 +1,192 @@
-import React, { Component } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Header, Modal, Dropdown } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
-
-//Redux action
-import { showModal } from '../../redux/actions/actionCreators';
 
 //Styled components
 import styled from 'styled-components';
 
-export class EditSpaceModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      spaceName: this.props.space.spaceName,
-      spaceTopic: this.props.space.spaceTopic,
-      idsInSpace: this.props.space.arrayOfUserIdsInSpace
+// import Context API
+import Context from '../ContextProvider/Context';
+
+const EditSpaceModal = props => {
+  // constructor(props) {
+  //   super(props);
+  //   state = {
+  //     spaceName: props.space.spaceName,
+  //     spaceTopic: props.space.spaceTopic,
+  //     idsInSpace: props.space.arrayOfUserIdsInSpace
+  //   };
+  // }
+
+  const {
+    closeModal,
+    getUsersFromOrg,
+    getUserDataRealTime,
+    updateDataWithDoc,
+    firebase
+  } = useContext(Context);
+
+  const [spaceName, setSpaceName] = useState(props.space.spaceName);
+  const [spaceTopic, setSpaceTopic] = useState(props.space.spaceTopic);
+  const [idsInSpace, setIdsInSpace] = useState(
+    props.space.arrayOfUserIdsInSpace
+  );
+  const [users, setUsers] = useState([]);
+  const [currentUser, setUser] = useState('');
+
+  useEffect(() => {
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    let getUsersUnsubscribe = getUsersFromOrg(setUsers, props.match.params.id);
+    return () => {
+      getUsersUnsubscribe();
+      getUserUnsubscribe();
     };
-  }
+  }, [getUserDataRealTime, getUsersFromOrg, props.match.params.id]);
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleInputChange = e => {
+    switch (e.target.name) {
+      case 'spaceName':
+        setSpaceName(e.target.value);
+        break;
+      case 'spaceTopic':
+        setSpaceTopic(e.target.value);
+        break;
+      default:
+    }
   };
 
-  handleOpen = () => {
-    this.setState({ model_open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ model_open: false });
-  };
-
-  updateSpaceToDatabase = () => {
-    this.props.firestore.update(
-      { collection: 'spaces', doc: this.props.space.id },
-      {
-        spaceName: this.state.spaceName,
-        spaceTopic: this.state.spaceTopic,
-        arrayOfUserIdsInSpace: this.state.idsInSpace
+  const updateSpaceToDatabase = () => {
+    let request = {
+      collection: 'spaces',
+      docId: props.space.id,
+      data: {
+        spaceName: spaceName,
+        spaceTopic: spaceTopic,
+        arrayOfUserIdsInSpace: idsInSpace
       }
-    );
+    };
+    updateDataWithDoc(request);
   };
-  addSpaceToUsers = () => {
-    this.state.idsInSpace.map(id => {
-      return this.props.firestore.update(
-        { collection: 'users', doc: id },
-        {
-          arrayOfSpaceIds: this.props.firestore.FieldValue.arrayUnion(
-            this.props.space.id
+  const addSpaceToUsers = () => {
+    idsInSpace.map(id => {
+      let request = {
+        collection: 'users',
+        docId: id,
+        data: {
+          arrayOfSpaceIds: firebase.firestore.FieldValue.arrayUnion(
+            props.space.id
           ),
-          arrayOfSpaceNames: this.props.firestore.FieldValue.arrayUnion(
-            this.state.spaceName
-          )
+          arrayOfSpaceNames: firebase.firestore.FieldValue.arrayUnion(spaceName)
         }
-      );
+      };
+      return updateDataWithDoc(request);
     });
   };
 
-  removeSpaceFromUsers = () => {
-    this.props.space.arrayOfUserIdsInSpace
-      .filter(id => this.state.idsInSpace.indexOf(id) === -1)
+  const removeSpaceFromUsers = () => {
+    props.space.arrayOfUserIdsInSpace
+      .filter(id => idsInSpace.indexOf(id) === -1)
       .map(id => {
-        return this.props.firestore.update(
-          { collection: 'users', doc: id },
-          {
-            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
-              this.props.space.id
+        let request = {
+          collection: 'users',
+          docId: id,
+          data: {
+            arrayOfSpaceIds: firebase.firestore.FieldValue.arrayRemove(
+              props.space.id
             ),
-            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
-              this.state.spaceName
+            arrayOfSpaceNames: firebase.firestore.FieldValue.arrayRemove(
+              spaceName
             )
           }
-        );
+        };
+        return updateDataWithDoc(request);
       });
   };
 
-  setIdsToState = (e, data) => {
+  const setIdsToState = (e, data) => {
     e.preventDefault();
     const { value } = data;
-    this.setState({ idsInSpace: value });
+    setIdsInSpace(value);
   };
 
-  render() {
-    const userIdsOptions = this.props.listOfUsersWithinTheOrg
-      .filter(user => user.id !== this.props.uuid)
-      .map(user => ({
-        key: user.id,
-        text: user.fullName,
-        value: user.id
-      }));
+  const userIdsOptions = users
+    .filter(user => user.id !== currentUser.id)
+    .map(user => ({
+      key: user.id,
+      text: user.fullName,
+      value: user.id
+    }));
 
-    return (
-      <Modal
-        open={this.props.shoudlBeOpen}
-        size="tiny"
-        aria-label="Edit Space Modal"
-      >
-        <StyledContainer>
-          <Modal.Header>
-            <div>
-              <StyledMainHeader>
-                Edit {this.props.space.spaceName}
-              </StyledMainHeader>
-            </div>
-            <div>
-              <Header as="h5">Space name</Header>
-              <StyledInput
-                name="spaceName"
-                type="text"
-                required
-                value={this.state.spaceName}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">
-                What types of discussions happen here?
-                <StyledOptional>(Optional)</StyledOptional>
-              </Header>
-              <StyledInput
-                name="spaceTopic"
-                type="text"
-                value={this.state.spaceTopic}
-                onChange={this.handleInputChange}
-              />
-              <Header as="h5">Members</Header>
-              <Dropdown
-                placeholder="Choose people to add"
-                fluid
-                multiple
-                search
-                selection
-                defaultValue={this.state.idsInSpace}
-                options={userIdsOptions}
-                onChange={this.setIdsToState}
-              />
-              <Modal.Actions>
-                <StyledActions>
-                  <StyledButtonCancel
-                    onClick={() => {
-                      this.handleClose();
-                      this.props.showModal(null);
-                    }}
-                  >
-                    Cancel
-                  </StyledButtonCancel>
+  return (
+    <Modal open={props.shoudlBeOpen} size="tiny">
+      <StyledContainer>
+        <Modal.Header>
+          <div>
+            <StyledMainHeader>Edit {props.space.spaceName}</StyledMainHeader>
+          </div>
+          <div>
+            <Header as="h5">Space name</Header>
+            <StyledInput
+              name="spaceName"
+              type="text"
+              required
+              value={spaceName}
+              onChange={handleInputChange}
+            />
+            <Header as="h5">
+              What types of discussions happen here?
+              <StyledOptional>(Optional)</StyledOptional>
+            </Header>
+            <StyledInput
+              name="spaceTopic"
+              type="text"
+              value={spaceTopic}
+              onChange={handleInputChange}
+            />
+            <Header as="h5">Members</Header>
+            <Dropdown
+              placeholder="Choose people to add"
+              fluid
+              multiple
+              search
+              selection
+              defaultValue={idsInSpace}
+              options={userIdsOptions}
+              onChange={setIdsToState}
+            />
+            <Modal.Actions>
+              <StyledActions>
+                <StyledButtonCancel
+                  onClick={() => {
+                    closeModal();
+                  }}
+                >
+                  Cancel
+                </StyledButtonCancel>
 
-                  <StyledButtonCreateSpace
-                    type="submit"
-                    disabled={
-                      !this.state.spaceName.length > 0 ||
-                      !this.state.idsInSpace.length > 0
-                    }
-                    onClick={e => {
-                      e.preventDefault();
-                      this.props.showModal(null);
-                      this.updateSpaceToDatabase();
-                      this.addSpaceToUsers();
-                      this.removeSpaceFromUsers();
-                      this.handleClose();
-                    }}
-                  >
-                    Edit Space
-                  </StyledButtonCreateSpace>
-                </StyledActions>
-              </Modal.Actions>
-            </div>
-          </Modal.Header>
-        </StyledContainer>
-      </Modal>
-    );
-  }
-}
-
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    user: state.firestore.ordered.users ? state.firestore.ordered.users : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    listOfUsersWithinTheOrg: state.firestore.ordered.usersWithinTheOrg
-      ? state.firestore.ordered.usersWithinTheOrg
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal }, dispatch);
+                <StyledButtonCreateSpace
+                  type="submit"
+                  disabled={!spaceName.length > 0 || !idsInSpace.length > 0}
+                  onClick={e => {
+                    e.preventDefault();
+                    updateSpaceToDatabase();
+                    addSpaceToUsers();
+                    removeSpaceFromUsers();
+                    closeModal();
+                  }}
+                >
+                  Edit Space
+                </StyledButtonCreateSpace>
+              </StyledActions>
+            </Modal.Actions>
+          </div>
+        </Modal.Header>
+      </StyledContainer>
+    </Modal>
+  );
 };
 
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'users',
-        where: [
-          ['arrayOfOrgsIds', 'array-contains', `${props.match.params.id}`]
-        ],
-        storeAs: 'usersWithinTheOrg'
-      }
-    ];
-  }),
-  withFirestore
-)(EditSpaceModal);
+export default EditSpaceModal;
 
 const StyledContainer = styled.div`
   padding: 40px;

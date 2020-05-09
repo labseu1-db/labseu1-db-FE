@@ -1,69 +1,73 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 //Semantic components
 import { Dropdown } from 'semantic-ui-react';
+import Context from '../../ContextProvider/Context';
+
+// import Context API
 
 //Main component
-export class CommentDropdown extends React.Component {
-  markAsDecision = e => {
+export const CommentDropdown = props => {
+  const { updateDataWithDoc } = useContext(Context);
+
+  const markAsDecision = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore
-      .collection('comments')
-      .doc(this.props.commentId);
-    commentRef.update({
-      isCommentDecided: true
-    });
+    let request = {
+      collection: 'comments',
+      docId: props.commentId,
+      data: {
+        isCommentDecided: true
+      }
+    };
+    updateDataWithDoc(request);
   };
 
-  removeDecision = e => {
+  const removeDecision = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore
-      .collection('comments')
-      .doc(this.props.commentId);
-    commentRef.update({
-      isCommentDecided: false
-    });
+    let request = {
+      collection: 'comments',
+      docId: props.commentId,
+      data: {
+        isCommentDecided: false
+      }
+    };
+    updateDataWithDoc(request);
   };
 
-  render() {
-    return (
-      <StyledDropdown aria-label="Comment Drop">
-        <Dropdown>
-          <Dropdown.Menu>
-            {!this.props.isCommentDecided && (
-              <Dropdown.Item
-                text="Mark as Decision"
-                onClick={e => this.markAsDecision(e)}
-              />
-            )}
-            {this.props.isCommentDecided && (
-              <Dropdown.Item
-                text="Remove decision"
-                onClick={e => this.removeDecision(e)}
-              />
-            )}
-            {localStorage.getItem('uuid') === this.props.createdByUserId && (
-              <Dropdown.Item
-                text="Edit Comment"
-                onClick={() => this.props.setIsUpdating(true)}
-              />
-            )}
-            {localStorage.getItem('uuid') === this.props.createdByUserId && (
-              <Dropdown.Item
-                text="Delete Comment"
-                onClick={() => this.props.deleteComment(this.props.commentId)}
-              />
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
-      </StyledDropdown>
-    );
-  }
-}
+  return (
+    <StyledDropdown>
+      <Dropdown>
+        <Dropdown.Menu>
+          {!props.isCommentDecided && (
+            <Dropdown.Item
+              text="Mark as Decision"
+              onClick={e => markAsDecision(e)}
+            />
+          )}
+          {props.isCommentDecided && (
+            <Dropdown.Item
+              text="Remove decision"
+              onClick={e => removeDecision(e)}
+            />
+          )}
+          {localStorage.getItem('uuid') === props.createdByUserId && (
+            <Dropdown.Item
+              text="Edit Comment"
+              onClick={() => props.setIsUpdating(true)}
+            />
+          )}
+          {localStorage.getItem('uuid') === props.createdByUserId && (
+            <Dropdown.Item
+              text="Delete Comment"
+              onClick={() => props.deleteComment(props.commentId)}
+            />
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
+    </StyledDropdown>
+  );
+};
 
 //Styling
 const StyledDropdown = styled.div`
@@ -85,17 +89,4 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(CommentDropdown);
+export default CommentDropdown;

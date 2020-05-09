@@ -1,9 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
-import { resetPasswordDone } from '../redux/actions/actionCreators';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { StyledSendEmailButton } from './styled-components/StyledButton';
 import {
@@ -22,14 +17,11 @@ import {
 import LoginAnimation from './animations/LoginAnimation';
 import { Icon, Message } from 'semantic-ui-react';
 
-export class ForgotPassword extends Component {
-  static propTypes = {
-    firestore: PropTypes.shape({
-      add: PropTypes.func.isRequired
-    }).isRequired
-  };
+// import Context API
+import Context from './ContextProvider/Context';
 
-  state = {
+const ForgotPassword = props => {
+  /* state = {
     loginEmail: '',
     error: null
   };
@@ -37,118 +29,102 @@ export class ForgotPassword extends Component {
   INITIAL_STATE = {
     loginEmail: '',
     error: null
-  };
+  }; */
 
-  submitHandler = (email, event) => {
+  // use Context API
+  const {
+    error,
+    setError,
+    resetPasswordStatus,
+    firebase,
+    setResetPasswordStatus,
+    redirect
+  } = useContext(Context);
+
+  const [loginEmail, setLoginEmail] = useState('');
+
+  const submitHandler = (email, event) => {
     event.preventDefault();
-    this.props.firebase
+    firebase
       .resetPassword(email)
       .then(() => {
-        if (this.props.resetPasswordStatus) {
-          this.props.resetPasswordDone();
-          this.props.history.push(`/profile/${this.props.match.params.id}`);
+        if (resetPasswordStatus) {
+          setResetPasswordStatus(false);
+          redirect(`/profile/${props.match.params.id}`);
         } else {
-          this.props.history.push('/login');
+          redirect('/login');
         }
       })
       .catch(error => {
-        const INITIAL_STATE = {
-          loginEmail: '',
-          error: null
-        };
-        this.setState({ ...INITIAL_STATE, error });
+        setError(error);
       });
   };
 
-  componentWillUpdate() {
-    if (!isEmpty(this.props.auth) && !this.props.resetPasswordStatus) {
-      this.props.history.push('/homescreen');
+  useEffect(() => {
+    if (!resetPasswordStatus) {
+      redirect(`/mainscreen/${props.match.params.id}`);
     }
-  }
+  }, [redirect, props.match.params.id, resetPasswordStatus]);
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const handleInputChange = e => {
+    setLoginEmail(e.target.value);
   };
 
-  render() {
-    const { loginEmail } = this.state;
-    const isInvalid = loginEmail === '';
-    return (
-      <StyledLogin aria-label="Forgot Password">
-        <StyledLoginCon>
-          <StyledH1>Reset Password</StyledH1>
-          <StyledForm
-            onSubmit={event => {
-              this.submitHandler(this.state.loginEmail, event);
-            }}
-          >
-            <StyledLabel>
-              <StyledPLabel>Email Address</StyledPLabel>
-              <StyledInput
-                name="loginEmail"
-                value={this.state.loginEmail}
-                type="email"
-                onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
-              />
-            </StyledLabel>
-            <StyledLowerSignInPasswordless>
-              <StyledSendEmailButton
-                disabled={isInvalid}
-                onClick={event => {
-                  this.submitHandler(this.state.loginEmail, event);
-                }}
-              >
-                Send Email &#62;
-              </StyledSendEmailButton>
-            </StyledLowerSignInPasswordless>
-          </StyledForm>
-          {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
-              {this.state.error.message}
-            </Message>
-          )}
-          {!this.props.resetPasswordStatus && (
-            <StyledLink to="/login">Back to Log In</StyledLink>
-          )}
-          {this.props.resetPasswordStatus && (
+  const isInvalid = loginEmail === '';
+  return (
+    <StyledLogin>
+      <StyledLoginCon>
+        <StyledH1>Reset Password</StyledH1>
+        <StyledForm
+          onSubmit={event => {
+            submitHandler(loginEmail, event);
+          }}
+        >
+          <StyledLabel>
+            <StyledPLabel>Email Address</StyledPLabel>
+            <StyledInput
+              name="loginEmail"
+              value={loginEmail}
+              type="email"
+              onChange={handleInputChange}
+              placeholder="tonystark@example.com"
+            />
+          </StyledLabel>
+          <StyledLowerSignInPasswordless>
             <StyledSendEmailButton
-              onClick={() => {
-                this.props.history.push(
-                  `/profile/${this.props.match.params.id}`
-                );
-                this.props.resetPasswordDone();
+              disabled={isInvalid}
+              onClick={event => {
+                submitHandler(loginEmail, event);
               }}
             >
-              Cancel
+              Send Email &#62;
             </StyledSendEmailButton>
-          )}
-        </StyledLoginCon>
-        <LoginAnimation />
-      </StyledLogin>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    resetPasswordStatus: state.resetPassword
-  };
-};
-
-//As we are not dispatching anything - this is empty
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      resetPasswordDone
-    },
-    dispatch
+          </StyledLowerSignInPasswordless>
+        </StyledForm>
+        {error && (
+          <Message warning attached="bottom">
+            <Icon name="warning" />
+            {error.message}
+          </Message>
+        )}
+        {!resetPasswordStatus && (
+          <StyledLink to="/login">Back to Log In</StyledLink>
+        )}
+        {resetPasswordStatus && (
+          <StyledSendEmailButton
+            onClick={() => {
+              redirect(`/profile/${props.match.params.id}`);
+              props.resetPasswordDone();
+            }}
+          >
+            Cancel
+          </StyledSendEmailButton>
+        )}
+      </StyledLoginCon>
+      <LoginAnimation />
+    </StyledLogin>
   );
 };
 
 //Connect to Firestore
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(ForgotPassword);
+export default ForgotPassword;

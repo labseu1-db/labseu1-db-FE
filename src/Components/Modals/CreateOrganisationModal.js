@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -6,86 +6,79 @@ import styled from 'styled-components';
 import ProgressBar from '../reusable-components/ProgressBar';
 
 //Main component - Modal
-export default class CreateCompanyModal extends Component {
-  state = {
-    orgName: ''
-  };
+const CreateCompanyModal = props => {
+  // state = {
+  //   orgName: ''
+  // };
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  const [orgName, setOrgName] = useState('');
 
   //Render component
-  render() {
-    return (
-      <Modal
-        open={this.props.shoudlBeOpen}
-        basic
-        size="tiny"
-        aria-label="Create Org"
-      >
-        <ProgressBar activeDots={1} bulletpoints={3} />
-        <StyledModalH1>
-          <Modal.Header content="Create an organisation" />
-        </StyledModalH1>
-        <StyledModalCard>
-          <Modal.Content>
-            <StyledModalText>
-              Organisations are the shared home for your team. Use organisations
-              to get a bird's eye view of all discussions and decisions
-              happening across your organisation.
-            </StyledModalText>
-            <StyledModalForm>
-              <StyledModalLabel>
-                Organisation name{' '}
-                <span className="ligther-font">
-                  (Company, nonprofit, school, team)
-                </span>
-              </StyledModalLabel>
-              <StyledLableContainer>
-                <StyledModalInput
-                  name="orgName"
-                  maxLength="20"
-                  type="text"
-                  required
-                  onChange={this.handleInputChange}
-                  value={this.state.orgName}
-                />
-                <CharacterLeft>{20 - this.state.orgName.length}</CharacterLeft>
-              </StyledLableContainer>
-            </StyledModalForm>
-          </Modal.Content>
-          <Modal.Actions>
-            <StyledActionButtonsContainer>
+  return (
+    <Modal open={props.shoudlBeOpen} basic size="tiny">
+      <ProgressBar activeDots={1} bulletpoints={3} />
+      <StyledModalH1>
+        <Modal.Header content="Create an organisation" />
+      </StyledModalH1>
+      <StyledModalCard>
+        <Modal.Content>
+          <StyledModalText>
+            Organisations are the shared home for your team. Use organisations
+            to get a bird's eye view of all discussions and decisions happening
+            across your organisation.
+          </StyledModalText>
+          <StyledModalForm>
+            <StyledModalLabel>
+              Organisation name{' '}
+              <span className="ligther-font">
+                (Company, nonprofit, school, team)
+              </span>
+            </StyledModalLabel>
+            <StyledLableContainer>
+              <StyledModalInput
+                name="orgName"
+                maxLength="20"
+                type="text"
+                required
+                onChange={e => setOrgName(e.target.value)}
+                value={orgName}
+              />
+              <CharacterLeft>{20 - orgName.length}</CharacterLeft>
+            </StyledLableContainer>
+          </StyledModalForm>
+        </Modal.Content>
+        <Modal.Actions>
+          <StyledActionButtonsContainer>
+            <StyledModalButton
+              disabled={!orgName.length > 0}
+              onClick={e => {
+                e.preventDefault();
+                props.showModal('InviteYourTeamModal');
+                props.addOrgName(orgName);
+              }}
+            >
+              Next
+            </StyledModalButton>
+            <StyledModalMainButtonContainer>
               <StyledModalButton
-                disabled={!this.state.orgName.length > 0}
+                className="cancel-button"
                 onClick={e => {
                   e.preventDefault();
-                  this.props.showModal('InviteYourTeamModal');
-                  this.props.addOrgName(this.state.orgName);
+                  props.showModal(null);
+                  props.props.history.goBack();
                 }}
               >
-                Next
+                Cancel
               </StyledModalButton>
-              <StyledModalMainButtonContainer>
-                <StyledModalButton
-                  className="cancel-button"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.showModal(null);
-                    this.props.props.history.goBack();
-                  }}
-                >
-                  Cancel
-                </StyledModalButton>
-              </StyledModalMainButtonContainer>
-            </StyledActionButtonsContainer>
-          </Modal.Actions>
-        </StyledModalCard>
-      </Modal>
-    );
-  }
-}
+            </StyledModalMainButtonContainer>
+          </StyledActionButtonsContainer>
+        </Modal.Actions>
+      </StyledModalCard>
+    </Modal>
+  );
+};
+
+export default CreateCompanyModal;
 
 const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;

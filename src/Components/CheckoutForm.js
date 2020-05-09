@@ -1,24 +1,27 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import styled from 'styled-components';
 import { Modal } from 'semantic-ui-react';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 
 import { paymentEndPoint } from '../firebase/firebaseConfig';
 
-export class CheckoutForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { complete: false };
-    this.submit = this.submit.bind(this);
-  }
+import Context from './ContextProvider/Context';
 
-  async submit(e) {
+const CheckoutForm = props => {
+  /* constructor(props) {
+    super(props);
+    state = { complete: false };
+    submit = submit.bind(this);
+  } */
+
+  const { updateDataWithDoc } = useContext(Context);
+
+  const [complete, setComplete] = useState(false);
+
+  const submit = async e => {
     e.preventDefault();
     // User clicked submit
-    let { token } = await this.props.stripe.createToken({ name: 'Name' });
+    let { token } = await props.stripe.createToken({ name: 'Name' });
     if (!token) {
       window.alert('Invalid payment details');
     } else {
@@ -29,102 +32,89 @@ export class CheckoutForm extends Component {
       });
 
       if (response.ok) {
-        this.setState({ complete: true });
+        setComplete(true);
       } else {
         window.alert('Error processing payment');
-        this.props.handleClose();
+        props.handleClose();
       }
     }
-  }
-
-  completeUpgrade = () => {
-    this.props.firestore.update(
-      { collection: 'organisations', doc: this.props.currentOrg.id },
-      {
-        isPremium: true
-      }
-    );
-    this.props.handleClose();
   };
 
-  render() {
-    if (this.state.complete) {
-      return (
-        <div>
-          <StyledModalH1>
-            <Modal.Header content="Purchase Complete" />
-          </StyledModalH1>
+  const completeUpgrade = () => {
+    let request = {
+      collection: 'organisations',
+      docId: props.currentOrg.id,
+      data: {
+        isPremium: true
+      }
+    };
+    updateDataWithDoc(request);
+    props.handleClose();
+  };
 
-          <StyledModalMainButtonContainerOk>
-            <StyledModalButtonUpgrade onClick={this.completeUpgrade}>
-              Upgrade Account
-            </StyledModalButtonUpgrade>
-          </StyledModalMainButtonContainerOk>
-        </div>
-      );
-    }
+  if (complete) {
     return (
-      <div className="checkout">
+      <div>
         <StyledModalH1>
-          <Modal.Header content="Confirm your purchase" />
+          <Modal.Header content="Purchase Complete" />
         </StyledModalH1>
-        <StyledModalCard>
-          <Modal.Content>
-            <StyledModalText>
-              If you wish to upgrade your account please make a one off payment
-              of $20. This is non-refundable and will appear on your bank
-              statement as sailor co.
-            </StyledModalText>
-            <StyledModalForm>
-              <StyledModalLabel>
-                Please enter your card details below{' '}
-                <span className="ligther-font">
-                  (Card number, expiry date and CVC)
-                </span>
-              </StyledModalLabel>
-            </StyledModalForm>
-          </Modal.Content>
 
-          <form onSubmit={this.submit}>
-            <CardElementContainer>
-              <CardElement style={{ base: { fontSize: '18px' } }} />
-            </CardElementContainer>
-          </form>
-
-          <Modal.Actions>
-            <StyledActionButtonsContainer>
-              <StyledModalButton onClick={this.submit}>
-                Pay now
-              </StyledModalButton>
-
-              <StyledModalMainButtonContainer>
-                <StyledModalButton
-                  className="cancel-button"
-                  onClick={this.props.handleClose}
-                >
-                  Cancel
-                </StyledModalButton>
-              </StyledModalMainButtonContainer>
-            </StyledActionButtonsContainer>
-          </Modal.Actions>
-        </StyledModalCard>
+        <StyledModalMainButtonContainerOk>
+          <StyledModalButtonUpgrade onClick={completeUpgrade}>
+            Upgrade Account
+          </StyledModalButtonUpgrade>
+        </StyledModalMainButtonContainerOk>
       </div>
     );
   }
-}
+  return (
+    <div className="checkout">
+      <StyledModalH1>
+        <Modal.Header content="Confirm your purchase" />
+      </StyledModalH1>
+      <StyledModalCard>
+        <Modal.Content>
+          <StyledModalText>
+            If you wish to upgrade your account please make a one off payment of
+            $20. This is non-refundable and will appear on your bank statement
+            as sailor co.
+          </StyledModalText>
+          <StyledModalForm>
+            <StyledModalLabel>
+              Please enter your card details below{' '}
+              <span className="ligther-font">
+                (Card number, expiry date and CVC)
+              </span>
+            </StyledModalLabel>
+          </StyledModalForm>
+        </Modal.Content>
 
-const mapStateToProps = state => {
-  return {};
+        <form onSubmit={submit}>
+          <CardElementContainer>
+            <CardElement style={{ base: { fontSize: '18px' } }} />
+          </CardElementContainer>
+        </form>
+
+        <Modal.Actions>
+          <StyledActionButtonsContainer>
+            <StyledModalButton onClick={submit}>Pay now</StyledModalButton>
+
+            <StyledModalMainButtonContainer>
+              <StyledModalButton
+                className="cancel-button"
+                onClick={props.handleClose}
+              >
+                Cancel
+              </StyledModalButton>
+            </StyledModalMainButtonContainer>
+          </StyledActionButtonsContainer>
+        </Modal.Actions>
+      </StyledModalCard>
+    </div>
+  );
 };
 
-//As we are not dispatching anything - this is empty
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(injectStripe(CheckoutForm));
+export default injectStripe(CheckoutForm);
 
 // export default injectStripe(CheckoutForm);
 

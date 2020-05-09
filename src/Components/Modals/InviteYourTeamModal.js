@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -8,120 +8,123 @@ import { Message } from 'semantic-ui-react';
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
-export default class InviteYourTeamModal extends Component {
+const InviteYourTeamModal = props => {
   //Start with 4 inputs
-  state = {
-    open: false,
-    inputs: [
-      this.props.teamEmailAddress[0],
-      this.props.teamEmailAddress[1],
-      this.props.teamEmailAddress[2],
-      this.props.teamEmailAddress[3]
-    ],
-    alert: false
-  };
+  // state = {
+  //   open: false,
+  //   inputs: [
+  //     props.teamEmailAddress[0],
+  //     props.teamEmailAddress[1],
+  //     props.teamEmailAddress[2],
+  //     props.teamEmailAddress[3]
+  //   ],
+  //   alert: false
+  // };
+
+  const [inputs, setInputs] = useState([
+    props.teamEmailAddress[0],
+    props.teamEmailAddress[1],
+    props.teamEmailAddress[2],
+    props.teamEmailAddress[3]
+  ]);
+  const [alert, setAlert] = useState(false);
 
   //Add email input when clicked on email
-  appendInput = () => {
-    this.setState(prevState => ({ inputs: prevState.inputs.concat(['']) }));
+  const appendInput = () => {
+    setInputs(prevState => prevState.concat(['']));
   };
 
   //Add email to state
-  addEmail = (email, index) => {
-    this.setState(pr => ({
-      inputs: pr.inputs.map((value, i) => {
+  const addEmail = (email, index) => {
+    setInputs(pr =>
+      pr.map((value, i) => {
         if (i === index) {
           return email;
         }
         return value;
       })
-    }));
+    );
   };
 
-  checkIfEmail = email => {
+  const checkIfEmail = email => {
     let re = /(^$|^.*@.*\..*$)/;
     return re.test(email);
   };
 
   //Render component
-  render() {
-    return (
-      <Modal
-        open={this.props.shoudlBeOpen}
-        basic
-        size="tiny"
-        aria-label="Invite Team Modal"
-      >
-        <ProgressBar activeDots={2} bulletpoints={3} />
-        <StyledModalH1>
-          <Modal.Header content="Invite your team" />
-        </StyledModalH1>
-        <StyledModalCard>
-          <Modal.Content>
-            <StyledModalForm>
-              <StyledModalLabel className="heading">
-                Email addresses
-              </StyledModalLabel>
-              <div id="dynamicInput">
-                {this.state.inputs.map((input, i) => (
-                  <StyledModalInput
-                    placeholder="Email address"
-                    type="email"
-                    value={this.state.inputs[i]}
-                    onChange={e => {
-                      this.addEmail(e.target.value, i);
-                    }}
-                    key={i}
-                  />
-                ))}
-              </div>
-            </StyledModalForm>
-            <StyledModalAdder onClick={() => this.appendInput()}>
-              Add more emails
-            </StyledModalAdder>
-          </Modal.Content>
-          <Modal.Actions>
-            <StyledActionButtonsContainer>
+  return (
+    <Modal open={props.shoudlBeOpen} basic size="tiny">
+      <ProgressBar activeDots={2} bulletpoints={3} />
+      <StyledModalH1>
+        <Modal.Header content="Invite your team" />
+      </StyledModalH1>
+      <StyledModalCard>
+        <Modal.Content>
+          <StyledModalForm>
+            <StyledModalLabel className="heading">
+              Email addresses
+            </StyledModalLabel>
+            <div id="dynamicInput">
+              {inputs.map((input, i) => (
+                <StyledModalInput
+                  placeholder="Email address"
+                  type="email"
+                  value={inputs[i]}
+                  onChange={e => {
+                    addEmail(e.target.value, i);
+                  }}
+                  key={i}
+                />
+              ))}
+            </div>
+          </StyledModalForm>
+          <StyledModalAdder onClick={() => appendInput()}>
+            Add more emails
+          </StyledModalAdder>
+        </Modal.Content>
+        <Modal.Actions>
+          <StyledActionButtonsContainer>
+            <StyledModalButton
+              onClick={e => {
+                e.preventDefault();
+                setAlert(false);
+                if (inputs.every(checkIfEmail)) {
+                  props.addTeamEmailAddress(inputs);
+                  props.showModal('CreateSpacesModal');
+                } else {
+                  setAlert(true);
+                }
+              }}
+            >
+              Next
+            </StyledModalButton>
+            <StyledModalMainButtonContainer>
               <StyledModalButton
+                className="cancel-button"
                 onClick={e => {
                   e.preventDefault();
-                  this.setState({ alert: false });
-                  if (this.state.inputs.every(this.checkIfEmail)) {
-                    this.props.addTeamEmailAddress(this.state.inputs);
-                    this.props.showModal('CreateSpacesModal');
-                  } else {
-                    this.setState({ alert: true });
-                  }
+                  props.showModal('CreateSpacesModal');
                 }}
               >
-                Next
+                Skip
               </StyledModalButton>
-              <StyledModalMainButtonContainer>
-                <StyledModalButton
-                  className="cancel-button"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.showModal('CreateSpacesModal');
-                  }}
-                >
-                  Skip
-                </StyledModalButton>
-              </StyledModalMainButtonContainer>
-            </StyledActionButtonsContainer>
-          </Modal.Actions>
-        </StyledModalCard>
+            </StyledModalMainButtonContainer>
+          </StyledActionButtonsContainer>
+        </Modal.Actions>
+      </StyledModalCard>
 
-        {this.state.alert && (
-          <StyledAlertMessage>
-            <Message color="red">
-              Please make sure that you are using valid email address.
-            </Message>
-          </StyledAlertMessage>
-        )}
-      </Modal>
-    );
-  }
-}
+      {alert && (
+        <StyledAlertMessage>
+          <Message color="red">
+            Please make sure that you are using valid email address.
+          </Message>
+        </StyledAlertMessage>
+      )}
+    </Modal>
+  );
+};
+
+export default InviteYourTeamModal;
 
 const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;

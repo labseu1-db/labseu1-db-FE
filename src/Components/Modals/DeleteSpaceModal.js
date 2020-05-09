@@ -1,145 +1,110 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { Modal } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
-//Redux action
-import { showModal, resetSpace } from '../../redux/actions/actionCreators';
+// import Context API
+import Context from '../ContextProvider/Context';
 
 //Styled components
 import styled from 'styled-components';
 
-export class DeleteSpaceModal extends Component {
-  handleOpen = () => {
-    this.setState({ model_open: true });
-  };
+const DeleteSpaceModal = props => {
+  // use Context API
+  const {
+    updateDataWithDoc,
+    deleteData,
+    firebase,
+    db,
+    closeModal,
+    redirect
+  } = useContext(Context);
 
-  handleClose = () => {
-    this.setState({ model_open: false });
-  };
-
-  removeSpaceFromUsersAndDeleteSpace = () => {
-    this.props.space.arrayOfUserIdsInSpace.forEach(id => {
-      this.props.firestore
-        .update(
-          { collection: 'users', doc: id },
-          {
-            arrayOfSpaceIds: this.props.firestore.FieldValue.arrayRemove(
-              this.props.space.id
-            ),
-            arrayOfSpaceNames: this.props.firestore.FieldValue.arrayRemove(
-              this.props.space.spaceName
-            )
-          }
-        )
+  const removeSpaceFromUsersAndDeleteSpace = () => {
+    props.space.arrayOfUserIdsInSpace.forEach(id => {
+      let request = {
+        collection: 'users',
+        docId: id,
+        data: {
+          arrayOfSpaceIds: firebase.firestore.FieldValue.arrayRemove(
+            props.space.id
+          ),
+          arrayOfSpaceNames: firebase.firestore.FieldValue.arrayRemove(
+            props.space.spaceName
+          )
+        }
+      };
+      updateDataWithDoc(request)
         .then(res => {
-          this.props.threads.forEach(t => {
-            this.props.firestore
-              .collection('threads')
-              .doc(t.id)
-              .delete()
-              .then(res => {
-                const ref = this.props.firestore
-                  .collection('comments')
-                  .where('threadId', '==', t.id);
-                ref.get().then(function(querySnapshot) {
-                  querySnapshot.forEach(function(doc) {
-                    doc.ref.delete();
-                  });
+          props.threads.forEach(t => {
+            let request = {
+              collection: 'threads',
+              docId: t.id
+            };
+            deleteData(request).then(res => {
+              const ref = db
+                .collection('comments')
+                .where('threadId', '==', t.id);
+              ref.get().then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                  doc.ref.delete();
                 });
               });
+            });
           });
         })
         .then(res => {
-          this.props.firestore
-            .collection('spaces')
-            .doc(this.props.space.id)
-            .delete();
+          let request = {
+            collection: 'spaces',
+            docId: props.space.id
+          };
+          deleteData(request);
         })
         .then(() => {
-          this.props.history.push(`/mainscreen/${this.props.match.params.id}`);
+          redirect(`/mainscreen/${props.match.params.id}`);
         });
     });
   };
 
-  render() {
-    return (
-      <Modal
-        open={this.props.shoudlBeOpen}
-        size="small"
-        aria-label="Delete Space Modal"
-      >
-        <StyledContainer>
-          <Modal.Header>
-            <div>
-              <StyledMainHeader>
-                Are you really really sure that you want to delete space{' '}
-                <strong>{this.props.space.spaceName}</strong>?
-              </StyledMainHeader>
-            </div>
+  return (
+    <Modal open={props.shoudlBeOpen} size="small">
+      <StyledContainer>
+        <Modal.Header>
+          <div>
+            <StyledMainHeader>
+              Are you really really sure that you want to delete space{' '}
+              <strong>{props.space.spaceName}</strong>?
+            </StyledMainHeader>
+          </div>
 
-            <Modal.Actions>
-              <StyledActions>
-                <StyledButtonCancel
-                  onClick={() => {
-                    this.handleClose();
-                    this.props.showModal(null);
-                  }}
-                >
-                  Cancel
-                </StyledButtonCancel>
+          <Modal.Actions>
+            <StyledActions>
+              <StyledButtonCancel
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                Cancel
+              </StyledButtonCancel>
 
-                <StyledButtonCreateSpace
-                  type="submit"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.showModal(null);
-                    this.removeSpaceFromUsersAndDeleteSpace();
-                    this.handleClose();
-                    this.props.resetSpace();
-                  }}
-                >
-                  Delete Space
-                </StyledButtonCreateSpace>
-              </StyledActions>
-            </Modal.Actions>
-          </Modal.Header>
-        </StyledContainer>
-      </Modal>
-    );
-  }
-}
-
-//Export component wrapped in redux actions and store and firestore
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    activeModal: state.modal.activeModal,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : []
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showModal, resetSpace }, dispatch);
+              <StyledButtonCreateSpace
+                type="submit"
+                onClick={e => {
+                  e.preventDefault();
+                  removeSpaceFromUsersAndDeleteSpace();
+                  closeModal();
+                }}
+              >
+                Delete Space
+              </StyledButtonCreateSpace>
+            </StyledActions>
+          </Modal.Actions>
+        </Modal.Header>
+      </StyledContainer>
+    </Modal>
+  );
 };
 
 //Styled Components
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'threads',
-        where: [['spaceId', '==', props.space.id]]
-      }
-    ];
-  }),
-  withFirestore
-)(DeleteSpaceModal);
+export default DeleteSpaceModal;
 
 const StyledContainer = styled.div`
   padding: 40px;

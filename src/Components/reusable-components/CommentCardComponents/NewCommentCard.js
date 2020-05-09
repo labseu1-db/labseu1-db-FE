@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 import { Message, Icon } from 'semantic-ui-react';
 
@@ -16,142 +13,174 @@ import AvatarFromLetter from '../AvatarFromLetter';
 import IconPenWhite from '../../../images/icon-pen-white.svg';
 import IconCheckWhite from '../../../images/icon-check-white.svg';
 
-//Main component
-export class NewCommentCard extends React.Component {
-  state = {
-    text: '',
-    display: 'none',
-    gif: ''
-  };
+// import Context API
+import Context from '../../ContextProvider/Context';
 
-  handleInputChange = e => {
-    let words = this.state.text.split(' ');
+//Main component
+const NewCommentCard = props => {
+  // state = {
+  //   text: '',
+  //   display: 'none',
+  //   gif: ''
+  // };
+
+  // use Context API
+  const {
+    setError,
+    error,
+    saveData,
+    getUserData,
+    updateDataWithDoc,
+    getUserDataRealTime
+  } = useContext(Context);
+
+  const [text, setText] = useState('');
+  const [display, setDisplay] = useState('none');
+  const [gif, setGif] = useState('');
+  const [user, setUser] = useState('');
+
+  useEffect(() => {
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    return () => {
+      getUserUnsubscribe();
+    };
+  }, [getUserDataRealTime]);
+
+  const handleInputChange = e => {
+    let words = text.split(' ');
     let wordsWithSpecificLength = words.every(word => word.length <= 70);
     if (
       wordsWithSpecificLength ||
       e.target.name !== 'text' ||
       window.event.inputType === 'deleteContentBackward'
     ) {
-      this.setState({ [e.target.name]: e.target.value });
-      this.setState({ error: '' });
+      setText(e.target.value);
     }
     if (!wordsWithSpecificLength) {
-      this.setState({ error: 'wordIsTooLong' });
+      setError('wordIsTooLong');
     }
   };
 
-  clearInput = () => {
-    this.setState({ text: '' });
+  const clearInput = () => {
+    setText('');
   };
 
-  toggleDisplay = () => {
-    if (this.state.display === 'none') {
-      this.setState({
-        display: 'block'
-      });
+  const toggleDisplay = () => {
+    if (display === 'none') {
+      setDisplay('block');
     }
-    if (this.state.display === 'block') {
-      this.setState({
-        display: 'none'
-      });
+    if (display === 'block') {
+      setDisplay('none');
     }
   };
 
-  createNewComment = e => {
-    e.preventDefault();
+  const createNewComment = async e => {
     let commentId = uuid();
-    this.props.firestore.set(
-      { collection: 'comments', doc: commentId },
-      {
+    e.preventDefault();
+    let user = await getUserData();
+    let request = {
+      collection: 'comments',
+      docId: commentId,
+      data: {
         arrayOfUserIdsWhoLiked: [],
-        commentBody: this.state.text,
+        commentBody: text,
         commentCreatedAt: Date.now(),
         commentCreatedByUserId: localStorage.getItem('uuid'),
-        commentCreatedByUserName: this.props.profile.fullName,
+        commentCreatedByUserName: user.fullName,
         isCommentDecided: false,
         isCommentUpdated: false,
-        orgId: this.props.thread.orgId,
-        threadId: this.props.thread.id,
-        threadName: this.props.thread.threadName,
-        gifUrl: this.state.gif
+        orgId: props.thread.orgId,
+        threadId: props.thread.id,
+        threadName: props.thread.threadName,
+        gifUrl: gif
       }
-    );
-    this.props.firestore.update(
-      { collection: 'threads', doc: this.props.thread.id },
-      {
+    };
+    saveData(request);
+    // props.firestore.set({ collection: 'comments', doc: commentId });
+    let updateRequest = {
+      collection: 'threads',
+      docId: props.thread.id,
+      data: {
         lastCommentCreatedAt: Date.now()
       }
-    );
+    };
+    updateDataWithDoc(updateRequest);
+    // props.firestore.update(
+    //   { collection: 'threads', doc: props.thread.id },
+    //   {
+    //     lastCommentCreatedAt: Date.now()
+    //   }
+    // );
   };
 
-  render() {
-    return (
-      <StyledCommentContainer aria-label="Comment New">
-        {this.state.error === 'wordIsTooLong' && (
-          <Message warning attached="bottom">
-            <Icon name="warning" />A word can only be 70 characters long
-          </Message>
-        )}
-        <StyledTopContainer>
+  return (
+    <StyledCommentContainer>
+      {error === 'wordIsTooLong' && (
+        <Message warning attached="bottom">
+          <Icon name="warning" />A word can only be 70 characters long
+        </Message>
+      )}
+      <StyledTopContainer>
+        {user.fullName && (
           <AvatarFromLetter
-            username={this.props.profile.fullName}
+            username={user.fullName}
             height="32px"
             width="32px"
           />
-          <StyledRightInput
-            placeholder="Comment on the thread"
-            name="text"
-            value={this.state.text}
-            onChange={this.handleInputChange}
+        )}
+        <StyledRightInput
+          placeholder="Comment on the thread"
+          name="text"
+          value={text}
+          onChange={handleInputChange}
+        />
+      </StyledTopContainer>
+      <StyledGifAndButtons>
+        <StyledButtonContainer>
+          <ScreenButton
+            content="GIF"
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            icon={IconCheckWhite}
+            onClick={e => {
+              e.preventDefault();
+              toggleDisplay();
+            }}
           />
-        </StyledTopContainer>
-        <StyledGifAndButtons>
-          <StyledButtonContainer>
-            <ScreenButton
-              content="GIF"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              icon={IconCheckWhite}
-              onClick={e => {
-                e.preventDefault();
-                this.toggleDisplay();
-              }}
-            />
-            <ScreenButton
-              content="Submit"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              icon={IconPenWhite}
-              onClick={e => {
-                this.createNewComment(e);
-                this.clearInput();
-                this.setState({ gif: '' });
-              }}
-            />
-          </StyledButtonContainer>
-          {this.state.gif !== '' && (
-            <StyledGifImage>
-              <img src={this.state.gif} alt="gif" />
-              <div onClick={() => this.setState({ gif: '' })}>x</div>
-            </StyledGifImage>
-          )}
-        </StyledGifAndButtons>
-        <StyledGifContainer>
-          <div className={this.state.display}>
-            <GifComponent
-              onSelected={gif => {
-                this.setState({ gif });
-                this.toggleDisplay();
-              }}
-            />
-          </div>
-        </StyledGifContainer>
-      </StyledCommentContainer>
-    );
-  }
-}
+          <ScreenButton
+            content="Submit"
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            icon={IconPenWhite}
+            onClick={e => {
+              createNewComment(e);
+              clearInput();
+              setGif('');
+            }}
+          />
+        </StyledButtonContainer>
+        {gif !== '' && (
+          <StyledGifImage>
+            <img src={gif} alt="gif" />
+            <div onClick={() => setGif('')}>x</div>
+          </StyledGifImage>
+        )}
+      </StyledGifAndButtons>
+      <StyledGifContainer>
+        <div className={display}>
+          <GifComponent
+            onSelected={gif => {
+              setGif(gif);
+              toggleDisplay();
+            }}
+          />
+        </div>
+      </StyledGifContainer>
+    </StyledCommentContainer>
+  );
+};
 
 //Styling
 const StyledCommentContainer = styled.form`
@@ -232,16 +261,4 @@ const StyledButtonContainer = styled.div`
   }
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(NewCommentCard);
+export default NewCommentCard;

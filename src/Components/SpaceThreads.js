@@ -1,19 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import { Dropdown } from 'semantic-ui-react';
 
 //Import icons
 import penIconWhite from '../images/icon-pen-white.svg';
-
-//Import actions
-import {
-  showModal,
-  setActiveThread,
-  resetSpace
-} from '../redux/actions/actionCreators';
 
 //Import components
 import ScreenHeading from './reusable-components/ScreenHeading';
@@ -29,96 +19,123 @@ import EditSpaceModal from './Modals/EditSpaceModal';
 import DeleteSpaceModal from './Modals/DeleteSpaceModal';
 import LeaveSpaceModal from './Modals/LeaveSpaceModal';
 
-export class SpaceThreads extends React.Component {
-  render() {
-    if (!this.props.space) {
-      return (
-        <StyledErrorScreen>
-          <StyleErrorMessage>Space doesn't exist: 404</StyleErrorMessage>
-          <ScreenButton
-            content="Go back to Home"
-            icon={penIconWhite}
-            backgroundColor="#00bc98"
-            color="white"
-            border="none"
-            onClick={() =>
-              this.props.history.push(
-                `/mainscreen/${this.props.match.params.id}`
-              )
-            }
-          />
-        </StyledErrorScreen>
-      );
-    } else {
-      return (
-        <StyledMain aria-label="Space Thread">
-          <NavBar {...this.props} />
+// Context API
+import Context from './ContextProvider/Context';
+
+const SpaceThreads = props => {
+  // Context
+  const {
+    getSpaceWithId,
+    modal,
+    setModal,
+    getThreadsWithSpace,
+    redirect
+  } = useContext(Context);
+  const [space, setSpace] = useState('');
+  const [threads, setThreads] = useState([]);
+
+  useEffect(() => {
+    let getThreadsUnsubscribe = getThreadsWithSpace(
+      setThreads,
+      props.match.params.spaceId
+    );
+    let getSpaceUnsubscribe = getSpaceWithId(
+      setSpace,
+      props.match.params.spaceId
+    );
+    return () => {
+      getThreadsUnsubscribe();
+      getSpaceUnsubscribe();
+    };
+  }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
+
+  if (!space) {
+    return (
+      <StyledErrorScreen>
+        <StyleErrorMessage>Space doesn't exist: 404</StyleErrorMessage>
+        <ScreenButton
+          content="Go back to Home"
+          icon={penIconWhite}
+          backgroundColor="#00bc98"
+          color="white"
+          border="none"
+          onClick={() => redirect(`/mainscreen/${props.match.params.id}`)}
+        />
+      </StyledErrorScreen>
+    );
+  } else {
+    return (
+      <StyledMain>
+        <NavBar {...props} />
+        <MidRightContainer>
           <StyledMainScreen>
-            {this.props.activeModal === 'CreateThreadModal' && (
+            {modal === 'CreateThreadModal' && (
               <CreateThreadModal
                 shoudlBeOpen={true}
-                showModal={this.props.showModal}
-                activeModal={this.props.activeModal}
-                setActiveThread={this.props.setActiveThread}
-                {...this.props}
+                showModal={props.showModal}
+                activeModal={props.activeModal}
+                setActiveThread={props.setActiveThread}
+                {...props}
               />
             )}
-            {this.props.activeModal === 'EditSpaceModal' && (
+            {modal === 'EditSpaceModal' && (
               <EditSpaceModal
                 shoudlBeOpen={true}
-                activeModal={this.props.activeModal}
-                space={this.props.space}
+                activeModal={props.activeModal}
+                space={space}
+                {...props}
               />
             )}
-            {this.props.activeModal === 'DeleteSpaceModal' && (
+            {modal === 'DeleteSpaceModal' && (
               <DeleteSpaceModal
                 shoudlBeOpen={true}
-                activeModal={this.props.activeModal}
-                space={this.props.space}
-                {...this.props}
+                activeModal={props.activeModal}
+                space={space}
+                threads={threads}
+                {...props}
               />
             )}
-            {this.props.activeModal === 'LeaveSpaceModal' && (
+            {modal === 'LeaveSpaceModal' && (
               <LeaveSpaceModal
                 shoudlBeOpen={true}
-                activeModal={this.props.activeModal}
-                space={this.props.space}
+                activeModal={props.activeModal}
+                space={props.space}
               />
             )}
             <StyledFirstRow>
               <ScreenHeading
-                heading={this.props.space.spaceName}
-                info={`Read all the threads from ${this.props.space.spaceName}`}
-                topic={this.props.space.spaceTopic}
+                heading={space.spaceName}
+                info={`Read all the threads from ${space.spaceName}`}
+                topic={space.spaceTopic}
               />
               <StyledButtonsContainer>
                 <StyledDropdown>
                   <Dropdown icon="ellipsis horizontal">
                     <Dropdown.Menu>
                       {localStorage.getItem('uuid') ===
-                        this.props.space.spaceCreatedByUserId && (
+                        space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text="Edit space"
                           onClick={e => {
-                            this.props.showModal('EditSpaceModal');
+                            setModal('EditSpaceModal');
                           }}
                         />
                       )}
                       {localStorage.getItem('uuid') ===
-                        this.props.space.spaceCreatedByUserId && (
+                        space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text="Delete space"
                           onClick={e => {
-                            this.props.showModal('DeleteSpaceModal');
+                            setModal('DeleteSpaceModal');
                           }}
                         />
                       )}
                       {localStorage.getItem('uuid') !==
-                        this.props.space.spaceCreatedByUserId && (
+                        space.spaceCreatedByUserId && (
                         <Dropdown.Item
                           text="Leave space"
                           onClick={e => {
-                            this.props.showModal('LeaveSpaceModal');
+                            setModal('LeaveSpaceModal');
                           }}
                         />
                       )}
@@ -133,7 +150,7 @@ export class SpaceThreads extends React.Component {
                   color="white"
                   border="none"
                   onClick={e => {
-                    this.props.showModal('CreateThreadModal');
+                    setModal('CreateThreadModal');
                   }}
                 />
               </StyledButtonsContainer>
@@ -141,8 +158,8 @@ export class SpaceThreads extends React.Component {
             <ScreenSectionHeading heading="Recent" />
 
             {/*Loop trough all the threads that are associated with the orgId*/}
-            {this.props.threads.length > 0 &&
-              this.props.threads.map(t => {
+            {threads.length > 0 &&
+              threads.map(t => {
                 let dateInfo = new Date(t.threadCreatedAt);
                 let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
                   '0' + dateInfo.getMinutes()
@@ -175,21 +192,21 @@ export class SpaceThreads extends React.Component {
                         : 'true')
                     }
                     onClick={() => {
-                      this.props.history.push(
-                        `/mainscreen/${this.props.match.params.id}/${this.props.match.params.spaceId}/${t.id}`
+                      redirect(
+                        `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${t.id}`
                       );
                     }}
-                    currentSpace={this.props.space.spaceName}
+                    currentSpace={space.spaceName}
                   />
                 );
               })}
           </StyledMainScreen>
           <RightSidebar />
-        </StyledMain>
-      );
-    }
+        </MidRightContainer>
+      </StyledMain>
+    );
   }
-}
+};
 
 const StyledMain = styled.div`
   display: flex;
@@ -202,6 +219,12 @@ const StyledMainScreen = styled.div`
   padding: 10vh 5%;
   margin-left: 309px;
   width: 70%;
+`;
+
+const MidRightContainer = styled.div`
+  display: flex;
+  background-color: #fff7f3;
+  width: 100vw;
 `;
 
 const StyledFirstRow = styled.div`
@@ -255,42 +278,4 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    threads: state.firestore.ordered.threads
-      ? state.firestore.ordered.threads
-      : [],
-    space: state.firestore.ordered.spaces
-      ? state.firestore.ordered.spaces[0]
-      : [],
-    spaceId: state.spaceId,
-    activeModal: state.modal.activeModal,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : ''
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { showModal, setActiveThread, resetSpace },
-    dispatch
-  );
-};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'threads',
-        where: ['spaceId', '==', props.match.params.spaceId],
-        orderBy: ['threadCreatedAt', 'desc']
-      },
-      {
-        collection: 'spaces',
-        doc: props.match.params.spaceId
-      }
-    ];
-  })
-)(SpaceThreads);
+export default SpaceThreads;

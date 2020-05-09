@@ -1,8 +1,5 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect, withFirestore } from 'react-redux-firebase';
 
 //Import components
 import ScreenButton from '../ScreenButton';
@@ -10,68 +7,66 @@ import ScreenButton from '../ScreenButton';
 //Import icons
 import IconPenWhite from '../../../images/icon-pen-white.svg';
 
+// import Context
+import Context from '../../ContextProvider/Context';
+
 //Main component
-export class UpdateComment extends React.Component {
-  state = {
-    text: this.props.content
+export const UpdateComment = props => {
+  const { updateDataWithDoc } = useContext(Context);
+
+  const [text, setText] = useState(props.content);
+
+  const handleInputChange = e => {
+    setText(e.target.value);
   };
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const clearInput = () => {
+    setText('');
   };
-
-  clearInput = () => {
-    this.setState({ text: '' });
-  };
-  updateComment = e => {
+  const updateComment = e => {
     e.preventDefault();
-    let commentRef = this.props.firestore
-      .collection('comments')
-      .doc(this.props.commentId);
-    commentRef.update({
-      commentBody: this.state.text,
-      isCommentUpdated: true,
-      commentUpdatedAt: Date.now()
-    });
+    let request = {
+      collection: 'comments',
+      docId: props.commentId,
+      data: {
+        commentBody: text,
+        isCommentUpdated: true,
+        commentUpdatedAt: Date.now()
+      }
+    };
+    updateDataWithDoc(request);
   };
 
-  render() {
-    return (
-      <StyledCommentContainer
-        onSubmit={e => {
-          this.props.setIsUpdating(false);
-          this.updateComment(e);
-          this.clearInput();
-        }}
-        aria-label="Comment Update"
-      >
-        <StyledTopContainer>
-          <StyledInput
-            name="text"
-            value={this.state.text}
-            onChange={this.handleInputChange}
+  return (
+    <StyledCommentContainer
+      onSubmit={e => {
+        this.props.setIsUpdating(false);
+        this.updateComment(e);
+        this.clearInput();
+      }}
+    >
+      <StyledTopContainer>
+        <StyledInput name="text" value={text} onChange={handleInputChange} />
+      </StyledTopContainer>
+      <StyledButtonContainer>
+        {text.length > 0 && (
+          <ScreenButton
+            content="Submit"
+            backgroundColor="#00bc98"
+            color="white"
+            border="none"
+            icon={IconPenWhite}
+            onClick={e => {
+              props.setIsUpdating(false);
+              updateComment(e);
+              clearInput();
+            }}
           />
-        </StyledTopContainer>
-        <StyledButtonContainer>
-          {this.state.text.length > 0 && (
-            <ScreenButton
-              content="Submit"
-              backgroundColor="#00bc98"
-              color="white"
-              border="none"
-              icon={IconPenWhite}
-              onClick={e => {
-                this.props.setIsUpdating(false);
-                this.updateComment(e);
-                this.clearInput();
-              }}
-            />
-          )}
-        </StyledButtonContainer>
-      </StyledCommentContainer>
-    );
-  }
-}
+        )}
+      </StyledButtonContainer>
+    </StyledCommentContainer>
+  );
+};
 
 //Styling
 const StyledCommentContainer = styled.form`
@@ -107,17 +102,4 @@ const StyledButtonContainer = styled.div`
   margin-top: 30px;
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(UpdateComment);
+export default UpdateComment;

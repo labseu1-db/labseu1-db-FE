@@ -1,53 +1,60 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+
 //Import icons
 import clipboardIcon from '../../../images/icon-clipboard-green.svg';
 
-//Main component
-export class ThreadRightComponent extends React.Component {
-  markAsFollowUp = e => {
-    e.stopPropagation();
+// import Context API
+import Context from '../../ContextProvider/Context';
 
-    let threadRef = this.props.firestore
-      .collection('threads')
-      .doc(this.props.threadId);
-    if (this.props.isFollowUpDecided) {
-      threadRef.update({
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayRemove(
-          localStorage.getItem('uuid')
-        )
-      });
+//Main component
+export const ThreadRightComponent = props => {
+  // use Context API
+  const { updateDataWithDoc, firebase } = useContext(Context);
+
+  const markAsFollowUp = e => {
+    e.stopPropagation();
+    if (props.isFollowUpDecided) {
+      let request = {
+        collection: 'threads',
+        docId: props.threadId,
+        data: {
+          arrayOfUserIdsWhoFollowUp: firebase.firestore.FieldValue.arrayRemove(
+            localStorage.getItem('uuid')
+          )
+        }
+      };
+      updateDataWithDoc(request);
     } else {
-      threadRef.update({
-        isFollowUp: true,
-        arrayOfUserIdsWhoFollowUp: this.props.firestore.FieldValue.arrayUnion(
-          localStorage.getItem('uuid')
-        )
-      });
+      let request = {
+        collection: 'threads',
+        docId: props.threadId,
+        data: {
+          arrayOfUserIdsWhoFollowUp: firebase.firestore.FieldValue.arrayUnion(
+            localStorage.getItem('uuid')
+          )
+        }
+      };
+      updateDataWithDoc(request);
     }
   };
 
-  render() {
-    return (
-      <div aria-label="Thread Right">
-        {!this.props.isFollowUpDecided && (
-          <StyledRightContainer onClick={e => this.markAsFollowUp(e)}>
-            <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
-          </StyledRightContainer>
-        )}
-        {this.props.isFollowUpDecided && (
-          <StyledDecision onClick={e => this.markAsFollowUp(e)}>
-            <img src={clipboardIcon} alt="home icon" />
-            Following
-          </StyledDecision>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {!props.isFollowUpDecided && (
+        <StyledRightContainer onClick={e => markAsFollowUp(e)}>
+          <StyledFollowUpButton>Follow Up</StyledFollowUpButton>
+        </StyledRightContainer>
+      )}
+      {props.isFollowUpDecided && (
+        <StyledDecision onClick={e => markAsFollowUp(e)}>
+          <img src={clipboardIcon} alt="home icon" />
+          Following
+        </StyledDecision>
+      )}
+    </div>
+  );
+};
 
 //Styling
 const StyledRightContainer = styled.div`
@@ -113,19 +120,4 @@ const StyledDecision = styled.button`
   }
 `;
 
-//Default export
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-
-    // followupArray: state.followUpText
-  };
-};
-
-const mapDispatchToProps = {};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect()
-)(ThreadRightComponent);
+export default ThreadRightComponent;
