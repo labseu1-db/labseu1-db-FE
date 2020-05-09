@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import ProfileCardUserRow from './ProfileCardComponents/ProfileCardUserRow';
 import ProfileCardOrgsField from './ProfileCardComponents/ProfileCardOrgsField';
-import {
-  resetPassword,
-  resetPasswordDone,
-  editingProfile,
-  editingProfileDone
-} from '../../redux/actions/actionCreators';
+
+// import Context Api
+import Context from '../ContextProvider/Context';
 
 function ProfileCard(props) {
+  // use Context API
+  const { getUserDataRealTime, getOrgWithUuid } = useContext(Context);
+
+  // use hooks to set user data
+  const [user, setUser] = useState('');
+  const [orgs, setOrgs] = useState([]);
+
+  useEffect(() => {
+    let uuid = localStorage.getItem('uuid');
+    let getUserUnsubscribe = getUserDataRealTime(setUser, uuid);
+    let getOrgUnsubscribe = getOrgWithUuid(setOrgs);
+    return () => {
+      getUserUnsubscribe();
+      getOrgUnsubscribe();
+    };
+  }, [getUserDataRealTime, getOrgWithUuid]);
+
   return (
     <StyledProfileContainer>
-      <ProfileCardUserRow
-        user={props.user}
-        onClick={props.resetPassword}
-        secondOnClick={props.editingProfile}
-        editingProfileStatus={props.editingProfileStatus}
-        editingProfileDone={props.editingProfileDone}
-        uuid={props.uuid}
-      />
-      <ProfileCardOrgsField orgs={props.orgs} user={props.user} />
+      {user && (
+        <ProfileCardUserRow
+          user={user}
+          onClick={props.resetPassword}
+          secondOnClick={props.editingProfile}
+          editingProfileStatus={props.editingProfileStatus}
+          editingProfileDone={props.editingProfileDone}
+          uuid={user.id}
+          {...props}
+        />
+      )}
+      <ProfileCardOrgsField orgs={orgs} user={user} />
     </StyledProfileContainer>
   );
 }
@@ -38,44 +52,4 @@ const StyledProfileContainer = styled.div`
   box-shadow: 0px 0px 10px -8px rgba(0, 0, 0, 1);
 `;
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    user: state.firestore.ordered.filteredUser
-      ? state.firestore.ordered.filteredUser[0]
-      : '',
-    orgs: state.firestore.ordered.orgs ? state.firestore.ordered.orgs : '',
-    editingProfileStatus: state.editingProfileStatus
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      resetPassword,
-      resetPasswordDone,
-      editingProfile,
-      editingProfileDone
-    },
-    dispatch
-  );
-};
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return [
-      {
-        collection: 'users',
-        doc: `${props.uuid}`
-      },
-      {
-        collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
-        storeAs: 'orgs'
-      }
-    ];
-  })
-)(ProfileCard);
+export default ProfileCard;

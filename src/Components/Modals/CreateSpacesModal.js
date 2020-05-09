@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 
 //Import dependencies
 import styled from 'styled-components';
@@ -10,9 +10,15 @@ import { Modal } from 'semantic-ui-react';
 //Import components
 import ProgressBar from '../reusable-components/ProgressBar';
 
+// import Context API
+import Context from '../ContextProvider/Context';
+
 //Default export
-export default class CreateSpacesModal extends Component {
-  spacesExamples = [
+const CreateSpacesModal = props => {
+  // use Context API
+  const { redirect } = useContext(Context);
+
+  const spacesExamples = [
     { name: 'Product', color: 'eggplant' },
     { name: 'Engineering', color: 'darkgreen' },
     { name: 'Recruiting', color: 'violet' },
@@ -24,99 +30,99 @@ export default class CreateSpacesModal extends Component {
   ];
 
   //Render component
-  render() {
-    return (
-      <Modal open={this.props.shoudlBeOpen} basic size="tiny">
-        <ProgressBar activeDots={3} bulletpoints={3} />
-        <StyledModalH1>
-          <Modal.Header content="Create few spaces" />
-        </StyledModalH1>
-        <StyledModalCard>
-          <Modal.Content>
-            <StyledModalForm>
-              <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
-              <StyledModalTextInForm>
-                Spaces are your team's virtual meeting rooms. Use them to have
-                discussions about specific projects and broader team topics.
-              </StyledModalTextInForm>
-              <StyledModalLabel>
-                Choose a few spaces{' '}
-                <span>{`${this.props.createdSpaces.length} selected`}</span>
-              </StyledModalLabel>
-              <StyledModalSpacesContainer>
-                {this.spacesExamples.map(s => {
-                  return (
-                    <StyledSpacesModalCard
-                      className={`${this.props.createdSpaces.indexOf(s.name) >
-                        -1 && 'borderclass'} ${s.color}`}
-                      key={s.name}
-                      onClick={() => {
-                        this.props.addSpace(s.name);
-                      }}
-                    >
-                      {s.name}
-                    </StyledSpacesModalCard>
-                  );
-                })}
-              </StyledModalSpacesContainer>
-              <StyledModalLabel>Create a few spaces</StyledModalLabel>
-              <StyledModalTextInForm>
-                Start with current projects, ongoning discussion topics, or
-                anything else you would have a meeting about.
-              </StyledModalTextInForm>
-              <StyledModalInput
-                placeholder="ie. Products Proposals"
-                name="addedSpace1"
-                onChange={this.props.handleInputChange}
-                value={this.props.addedSpace1}
-              />
-              <StyledModalInput
-                placeholder="ie. Design Review"
-                name="addedSpace2"
-                onChange={this.props.handleInputChange}
-                value={this.props.addedSpace2}
-              />
-            </StyledModalForm>
-          </Modal.Content>
-          <Modal.Actions>
-            <StyledActionButtonsContainer>
+  return (
+    <Modal open={props.shoudlBeOpen} basic size="tiny">
+      <ProgressBar activeDots={3} bulletpoints={3} />
+      <StyledModalH1>
+        <Modal.Header content="Create few spaces" />
+      </StyledModalH1>
+      <StyledModalCard>
+        <Modal.Content>
+          <StyledModalForm>
+            <StyledModalLabel>Set up spaces for your team</StyledModalLabel>
+            <StyledModalTextInForm>
+              Spaces are your team's virtual meeting rooms. Use them to have
+              discussions about specific projects and broader team topics.
+            </StyledModalTextInForm>
+            <StyledModalLabel>
+              Choose a few spaces{' '}
+              <span>{`${props.createdSpaces.length} selected`}</span>
+            </StyledModalLabel>
+            <StyledModalSpacesContainer>
+              {spacesExamples.map(s => {
+                return (
+                  <StyledSpacesModalCard
+                    className={`${props.createdSpaces.indexOf(s.name) > -1 &&
+                      'borderclass'} ${s.color}`}
+                    key={s.name}
+                    onClick={() => {
+                      props.addSpace(s.name);
+                    }}
+                  >
+                    {s.name}
+                  </StyledSpacesModalCard>
+                );
+              })}
+            </StyledModalSpacesContainer>
+            <StyledModalLabel>Create a few spaces</StyledModalLabel>
+            <StyledModalTextInForm>
+              Start with current projects, ongoning discussion topics, or
+              anything else you would have a meeting about.
+            </StyledModalTextInForm>
+            <StyledModalInput
+              placeholder="ie. Products Proposals"
+              name="addedSpace1"
+              onChange={props.handleInputChange}
+              value={props.addedSpace1}
+            />
+            <StyledModalInput
+              placeholder="ie. Design Review"
+              name="addedSpace2"
+              onChange={props.handleInputChange}
+              value={props.addedSpace2}
+            />
+          </StyledModalForm>
+        </Modal.Content>
+        <Modal.Actions>
+          <StyledActionButtonsContainer>
+            <StyledModalButton
+              onClick={e => {
+                let orgId = uuid();
+                e.preventDefault();
+                Promise.all([
+                  props.showModal('null'),
+                  props.addOrganisationToUsers(orgId),
+                  props.addSpacesToSpacesAndUsers(orgId),
+                  props.addSpaceFromInput1ToOrganisationsAndUsers(orgId),
+                  props.addSpaceFromInput2ToOrganisationsAndUsers(orgId),
+                  props.clearState(),
+                  props.addOrganisationToDatabase(orgId)
+                ]).then(values => {
+                  redirect(`/mainscreen/${orgId}`);
+                });
+              }}
+            >
+              Finish
+            </StyledModalButton>
+            <StyledModalMainButtonContainer>
               <StyledModalButton
+                className="cancel-button"
                 onClick={e => {
-                  let orgId = uuid();
                   e.preventDefault();
-                  Promise.all([
-                    this.props.showModal('null'),
-                    this.props.addOrganisationToUsers(orgId),
-                    this.props.addSpacesToSpacesAndUsers(orgId),
-                    this.props.addSpaceFromInput1ToOrganisationsAndUsers(orgId),
-                    this.props.addSpaceFromInput2ToOrganisationsAndUsers(orgId),
-                    this.props.clearState(),
-                    this.props.addOrganisationToDatabase(orgId)
-                  ]).then(values => {
-                    this.props.props.history.push(`/mainscreen/${orgId}`);
-                  });
+                  props.showModal('InviteYourTeamModal');
                 }}
               >
-                Finish
+                Back
               </StyledModalButton>
-              <StyledModalMainButtonContainer>
-                <StyledModalButton
-                  className="cancel-button"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.props.showModal('InviteYourTeamModal');
-                  }}
-                >
-                  Back
-                </StyledModalButton>
-              </StyledModalMainButtonContainer>
-            </StyledActionButtonsContainer>
-          </Modal.Actions>
-        </StyledModalCard>
-      </Modal>
-    );
-  }
-}
+            </StyledModalMainButtonContainer>
+          </StyledActionButtonsContainer>
+        </Modal.Actions>
+      </StyledModalCard>
+    </Modal>
+  );
+};
+
+export default CreateSpacesModal;
 
 const StyledModalH1 = styled.h1`
   font-family: 'Open Sans', sans-serif;

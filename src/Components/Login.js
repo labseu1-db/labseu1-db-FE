@@ -1,17 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import {
-  firebaseConnect,
-  isLoaded,
-  isEmpty,
-  withFirestore
-} from 'react-redux-firebase';
+import React, { useState, useEffect, useContext } from 'react';
 
-//Import semantic components
-import { Icon, Message } from 'semantic-ui-react';
-import Spinner from './semantic-components/Spinner';
+import Context from './ContextProvider/Context';
 
 //Import styling
 import {
@@ -41,78 +30,57 @@ import hidePassword from '../images/icon-eye-green.svg';
 import LoginAnimation from './animations/LoginAnimation';
 // import { PasswordlessButton } from './styled-components/StyledButton';
 
-class Login extends Component {
-  static propTypes = {
-    auth: PropTypes.object,
-    firebase: PropTypes.shape({
-      login: PropTypes.func.isRequired,
-      logout: PropTypes.func.isRequired
-    })
-  };
+const Login = props => {
+  // function from context api
+  const {
+    setError,
+    isLoggedIn,
+    firebase,
+    getDataWithWhere,
+    redirect
+  } = useContext(Context);
 
-  state = {
-    loginEmail: '',
-    loginPassword: '',
-    error: null,
-    savinUsergInfoToDb: false,
-    activeOrg: null
-  };
+  const [loginEmail, setEmail] = useState('');
+  const [loginPassword, setPassword] = useState('');
 
-  componentWillUpdate() {
-    if (!isEmpty(this.props.auth)) {
-      this.props.history.push(
-        `/mainscreen/${localStorage.getItem('activeOrg')}`
-      );
+  useEffect(() => {
+    isLoggedIn('login');
+  }, [isLoggedIn]);
+
+  const handleInputChange = e => {
+    switch (e.target.name) {
+      case 'loginEmail':
+        setEmail(e.target.value);
+        break;
+      case 'loginPassword':
+        setPassword(e.target.value);
+        break;
+      default:
+        break;
     }
-  }
-
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleLogIn = e => {
-    const INITIAL_STATE = {
-      loginEmail: '',
-      loginPassword: '',
-      error: null
-    };
-    e.preventDefault();
-    this.props.firebase
-      .login({
-        email: this.state.loginEmail,
-        password: this.state.loginPassword
-      })
-      .then(res => {
-        this.setUserIdInLocalStorage(res.user.user.email);
-        this.setState({ savinUsergInfoToDb: true });
-      })
-      .catch(error => {
-        this.setState({ ...INITIAL_STATE, error });
-      });
+  const handleLogIn = async e => {
+    try {
+      e.preventDefault();
+      let data = await firebase
+        .auth()
+        .signInWithEmailAndPassword(loginEmail, loginPassword);
+      let { user } = data;
+      let request = {
+        collection: 'users',
+        key: 'userEmail',
+        term: '==',
+        value: user.email,
+        type: 'redirect_to_active_org'
+      };
+      getDataWithWhere(request);
+    } catch (error) {
+      setError(error);
+    }
   };
 
-  setUserIdInLocalStorage = email => {
-    var ref = this.props.firestore
-      .collection('users')
-      .where('userEmail', '==', email);
-    ref
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          // doc.data() is never undefined for query doc snapshots
-          localStorage.setItem('uuid', doc.id);
-          localStorage.setItem('userEmail', doc.data().userEmail);
-          localStorage.setItem('userData', JSON.stringify(doc.data()));
-          localStorage.setItem('activeOrg', doc.data().arrayOfOrgsIds[0]);
-          // to parse use -> var user = JSON.parse(localStorage.getItem('userData'))
-        });
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-  };
-
-  togglePassword = () => {
+  const togglePassword = () => {
     let temp = document.getElementById('typepass');
     let passwordIcon = document.getElementById('passwordIcon');
     if (temp.type === 'password') {
@@ -126,112 +94,72 @@ class Login extends Component {
     }
   };
 
-  render() {
-    const { loginEmail, loginPassword } = this.state;
-    const isInvalid = loginPassword === '' || loginEmail === '';
+  const isInvalid = loginPassword === '' || loginEmail === '';
 
-    if (!isLoaded(this.props.auth)) {
-      return <Spinner />;
-    }
-    if (this.state.savinUsergInfoToDb === true) {
-      return <Spinner />;
-    }
-    if (!isEmpty(this.props.auth)) {
-      return <Spinner />;
-    }
-    return (
-      <StyledLogin>
-        <StyledLoginCon>
-          <StyledH1>Sign in</StyledH1>
-          <StyledForm onSubmit={this.handleLogIn}>
-            <StyledLabel>
-              <StyledPLabel>Email</StyledPLabel>
-              <StyledInput
-                name="loginEmail"
-                value={this.state.loginEmail}
-                type="email"
-                onChange={this.handleInputChange}
-                placeholder="tonystark@example.com"
-              />
-            </StyledLabel>
-            <StyledLabel>
-              <StyledPLabel>Password</StyledPLabel>
-              <StyledInput
-                id="typepass"
-                name="loginPassword"
-                value={this.state.loginPassword}
-                type="password"
-                onChange={this.handleInputChange}
-                placeholder="········"
-              />
-              <StyledIcon
-                id="passwordIcon"
-                src={showPassword}
-                alt="showPassword"
-                onClick={this.togglePassword}
-              />
-            </StyledLabel>
-            <ForgotPasswordDiv
-              onClick={() => this.props.history.push('/forgotPassword')}
-            >
-              Forgot Password?
-            </ForgotPasswordDiv>
-            <StyledLowerSignIn>
-              <StyledLink to="/register"> Don't have an account? </StyledLink>
-              <StyledButton disabled={isInvalid} onClick={this.handleLogIn}>
-                Sign In
-              </StyledButton>
-            </StyledLowerSignIn>
-          </StyledForm>
-          {this.state.error && (
-            <Message warning attached="bottom">
-              <Icon name="warning" />
-              {this.state.error.message}
-            </Message>
-          )}
-          {/* <Button
+  return (
+    <StyledLogin>
+      <StyledLoginCon>
+        <StyledH1>Sign in</StyledH1>
+        <StyledForm onSubmit={handleLogIn}>
+          <StyledLabel>
+            <StyledPLabel>Email</StyledPLabel>
+            <StyledInput
+              name="loginEmail"
+              value={loginEmail}
+              type="email"
+              onChange={handleInputChange}
+              placeholder="tonystark@example.com"
+            />
+          </StyledLabel>
+          <StyledLabel>
+            <StyledPLabel>Password</StyledPLabel>
+            <StyledInput
+              id="typepass"
+              name="loginPassword"
+              value={loginPassword}
+              type="password"
+              onChange={handleInputChange}
+              placeholder="········"
+            />
+            <StyledIcon
+              id="passwordIcon"
+              src={showPassword}
+              alt="showPassword"
+              onClick={togglePassword}
+            />
+          </StyledLabel>
+          <ForgotPasswordDiv onClick={() => redirect('/forgotPassword')}>
+            Forgot Password?
+          </ForgotPasswordDiv>
+          <StyledLowerSignIn>
+            <StyledLink to="/register"> Don't have an account? </StyledLink>
+            <StyledButton disabled={isInvalid} onClick={handleLogIn}>
+              Sign In
+            </StyledButton>
+          </StyledLowerSignIn>
+        </StyledForm>
+        {/* <Button
             color='google plus'
             onClick={() =>
-              this.props.firebase
+              props.firebase
                 .login({
                   provider: 'google',
                   type: 'popup'
                 })
                 .then(res => {
-                  this.setUserIdInLocalStorage(res.profile.email);
+                  setUserIdInLocalStorage(res.profile.email);
                 })
             }
           >
             <Icon name='google plus' /> Sign in with Google
           </Button> */}
-          {/* <PasswordlessButton onClick={() => this.props.history.push('/passwordlesssubmit')}>
+        {/* <PasswordlessButton onClick={() => props.history.push('/passwordlesssubmit')}>
             Email Me a Link to Sign In
           </PasswordlessButton> */}
-        </StyledLoginCon>
-        <LoginAnimation />
-      </StyledLogin>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' })
-    },
-    dispatch
+      </StyledLoginCon>
+      <LoginAnimation />
+    </StyledLogin>
   );
 };
 
-export default compose(
-  withFirestore,
-  connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect()
-)(Login);
+export default Login;

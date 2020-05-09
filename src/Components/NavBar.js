@@ -1,31 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Redirect, Link } from 'react-router-dom';
-
-//Import actions
-import {
-  showModal,
-  resetThread,
-  setActiveOrg,
-  switchSpaces,
-  resetSpace,
-  showUpgradeScreen,
-  resetUpgradeScreen,
-  editingProfileDone,
-  notRenderProfile,
-  renderProfile,
-  showFollowUp,
-  hideFollowUp
-} from '../redux/actions/actionCreators';
 
 //Import semantic components
 import { Dropdown } from 'semantic-ui-react';
 
 //Import components
-import Spinner from './semantic-components/Spinner';
 import { NavBarOrgDropdown } from './NavBarOrgDropdown';
 import CreateNewSpaceModal from './Modals/CreateNewSpaceModal';
 import AvatarFromLetter from './reusable-components/AvatarFromLetter';
@@ -37,316 +17,230 @@ import clipboardIcon from '../images/icon-clipboard-lightgray.svg';
 import discIcon from '../images/icon-disc-darkgray.svg';
 import peopleIcon from '../images/icon-people-lightgray.svg';
 
-export class NavBar extends Component {
-  state = {
-    profileDropdown: '',
-    highlightedHome: false,
-    highlightedFollowUp: false,
-    activeSpace: ''
-  };
+// Context
+import Context from './ContextProvider/Context';
 
-  componentDidMount() {
-    let result = this.props.spacesForActiveOrg.every(space => {
-      return space.orgId === this.props.match.params.id;
-    });
-    if (!result) {
-      window.location.reload();
-    }
-  }
+const NavBar = props => {
+  // state = {
+  //   profileDropdown: '',
+  //   highlightedHome: false,
+  //   highlightedFollowUp: false,
+  //   : ''
+  // };
 
-  handleLogOut = () => {
-    this.props.firebase
-      .logout()
-      .then(() => {
-        this.props.clearFirestore();
-      })
+  // Context API
+
+  const {
+    getOrgWithUuid,
+    getSpacesWithOrg,
+    firebase,
+    getUserDataRealTime,
+    redirect
+  } = useContext(Context);
+
+  const [profileDropdown, setProfileDropdown] = useState('');
+  const [user, setUser] = useState('');
+  const [orgs, setOrgs] = useState([]);
+  const [spaces, setSpaces] = useState([]);
+
+  useEffect(() => {
+    let getUserUnsubscribe = getUserDataRealTime(setUser);
+    let getOrgUnsubscribe = getOrgWithUuid(
+      setOrgs,
+      localStorage.getItem('uuid')
+    );
+    let getSpacesUnsubscribe = getSpacesWithOrg(
+      setSpaces,
+      props.match.params.id
+    );
+    return () => {
+      getUserUnsubscribe();
+      getOrgUnsubscribe();
+      getSpacesUnsubscribe();
+    };
+  }, [
+    getOrgWithUuid,
+    getSpacesWithOrg,
+    getUserDataRealTime,
+    props.match.params.id
+  ]);
+
+  // componentDidMount() {
+  //   let result = props.spacesForActiveOrg.every(space => {
+  //     return space.orgId === props.match.params.id;
+  //   });
+  //   if (!result) {
+  //     window.location.reload();
+  //   }
+  // }
+
+  const handleLogOut = () => {
+    firebase
+      .auth()
+      .signOut()
       .then(() => {
         localStorage.clear();
-        this.props.history.push('/login');
+        redirect('/login');
       })
       .catch(err => console.log("something's wrong."));
 
-    // this.props.history.push("/login");
+    // props.history.push("/login");
   };
 
-  handleDropDownChange = (e, { name, value }) => {
-    this.setState({ [name]: value }, () => {
-      if (this.state.profileDropdown === 'Log out') {
-        this.handleLogOut();
-      } else if (this.state.profileDropdown === 'Upgrade Account') {
-        this.props.history.push(`/upgrade/${this.props.match.params.id}`);
-      } else if (this.state.profileDropdown === 'Profile') {
-        this.props.history.push(`/profile/${this.props.match.params.id}`);
-      }
-    });
+  const handleDropDownChange = (e, { name, value }) => {
+    setProfileDropdown(value);
   };
 
-  setSelectedOrgToLocalStorage = (e, data) => {
+  const setSelectedOrgToLocalStorage = (e, data) => {
     e.preventDefault();
-    return this.props.history.push(`/mainscreen/${data.value}`);
+    return redirect(`/mainscreen/${data.value}`);
   };
 
-  highlightHome = () => {
-    this.setState({
-      highlightedHome: true,
-      highlightedFollowUp: false,
-      highlightedSpace: false,
-      activeSpace: ''
-    });
-  };
-
-  highlightFollowUp = () => {
-    this.setState({
-      highlightedHome: false,
-      highlightedFollowUp: true,
-      highlightedSpace: false,
-      activeSpace: ''
-    });
-  };
-
-  clickedSpace = spaceName => {
-    this.setState({
-      activeSpace: spaceName,
-      highlightedHome: false,
-      highlightedFollowUp: false
-    });
-  };
-
-  clearHighlightedNav = () => {
-    this.setState({
-      highlightedHome: false,
-      highlightFollowUp: false
-    });
-  };
-
-  render() {
-    //Will load spinner if user doesn't exist
-    if (
-      isEmpty(
-        this.props.user ||
-          this.props.orgsFromArrayOfUsersIds ||
-          this.props.spacesForActiveOrg
-      )
-    ) {
-      return <Spinner />;
+  //Will load spinner if user doesn't exist
+  const orgOptions = orgs.map(org => ({
+    key: org.orgName,
+    text: org.orgName,
+    value: `${org.id}`
+  }));
+  // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
+  const userOptions = [
+    {
+      key: 'Profile',
+      text: 'Profile',
+      value: 'Profile'
+    },
+    {
+      key: 'Create Organisation',
+      text: 'Create Organisation',
+      value: 'Create Organisation'
+    },
+    {
+      key: 'Upgrade Account',
+      text: 'Upgrade Account',
+      value: 'Upgrade Account'
+    },
+    {
+      key: 'Log out',
+      text: 'Log out',
+      value: 'Log out'
     }
-    if (this.props.user.id === this.props.uuid) {
-      const { spacesForActiveOrg, orgsFromArrayOfUsersIds } = this.props;
-      // const allOrgsForUser = [...orgsFromArrayOfUsersIds, ...orgsFromArrayOfAdminsIds];
-      const orgOptions = orgsFromArrayOfUsersIds.map(org => ({
-        key: org.orgName,
-        text: org.orgName,
-        value: `${org.id}`
-      }));
-      // const isOrgsLoaded = orgsFromArrayOfUsersIds.length > 0;
-      const userOptions = [
-        {
-          key: 'Profile',
-          text: 'Profile',
-          value: 'Profile'
-        },
-        {
-          key: 'Create Organisation',
-          text: 'Create Organisation',
-          value: 'Create Organisation'
-        },
-        {
-          key: 'Upgrade Account',
-          text: 'Upgrade Account',
-          value: 'Upgrade Account'
-        },
-        {
-          key: 'Log out',
-          text: 'Log out',
-          value: 'Log out'
-        }
-      ];
-      if (this.state.profileDropdown === 'Create Organisation') {
-        return <Redirect to="/createneworganisation" />;
-      }
-      return (
-        <NavBarContainer>
-          <HeaderContainer>
-            <InnerContainerHorizontal>
-              {this.props.user.fullName && (
-                <AvatarFromLetter username={this.props.user.fullName} />
-              )}
-              {orgOptions && (
-                //this.props.user.fullName
-                <StyledDropdown>
-                  <Dropdown
-                    inline
-                    name={'profileDropdown'}
-                    basic={true}
-                    options={userOptions}
-                    text={this.props.user.fullName}
-                    onChange={this.handleDropDownChange}
-                  />
-                </StyledDropdown>
-              )}
-            </InnerContainerHorizontal>
-            {/* <div>
+  ];
+  if (profileDropdown === 'Create Organisation') {
+    return <Redirect to="/createneworganisation" />;
+  }
+  if (profileDropdown === 'Upgrade Account') {
+    return <Redirect to={`/upgrade/${props.match.params.id}`} />;
+  }
+  if (profileDropdown === 'Profile') {
+    return <Redirect to={`/profile/${props.match.params.id}`} />;
+  }
+  if (profileDropdown === 'Log out') {
+    handleLogOut();
+  }
+  return (
+    <NavBarContainer>
+      <HeaderContainer>
+        <InnerContainerHorizontal>
+          {user.fullName && <AvatarFromLetter username={user.fullName} />}
+          {orgOptions && (
+            //props.user.fullName
+            <StyledDropdown>
+              <Dropdown
+                inline
+                name={'profileDropdown'}
+                basic={true}
+                options={userOptions}
+                text={user.fullName}
+                onChange={handleDropDownChange}
+              />
+            </StyledDropdown>
+          )}
+        </InnerContainerHorizontal>
+        {/* <div>
               <Icon name="cog" />
             </div> */}
-          </HeaderContainer>
-          <InnerContainer>
-            <RowContainer>
-              <img src={homeIcon} alt="home icon" />
-              <RowDiv
-                style={
-                  this.props.match.path === '/mainscreen/:id'
-                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                    : {}
-                }
-                to={`/mainscreen/${this.props.match.params.id}`}
-              >
-                Home
-              </RowDiv>
-            </RowContainer>
-            <RowContainer>
-              <img src={clipboardIcon} alt="home icon" />
-              <RowDiv
-                style={
-                  this.props.match.path === '/follow-up/:id'
-                    ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
-                    : {}
-                }
-                to={`/follow-up/${this.props.match.params.id}`}
-              >
-                Follow up
-              </RowDiv>
-            </RowContainer>
-            {localStorage.getItem('activeOrg') && (
-              <RowContainer>
-                <img src={peopleIcon} alt="users icon" />
-                <RowDiv to={`/users/${this.props.match.params.id}`}>
-                  Users
-                </RowDiv>
-              </RowContainer>
-            )}
-            <div>
-              <div>
-                <OuterOrgContainer>
-                  <OrgContainer>
-                    <img src={discIcon} alt="home icon" />
+      </HeaderContainer>
+      <InnerContainer>
+        <RowContainer>
+          <img src={homeIcon} alt="home icon" />
+          <RowDiv
+            style={
+              props.match.path === '/mainscreen/:id'
+                ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                : {}
+            }
+            to={`/mainscreen/${props.match.params.id}`}
+          >
+            Home
+          </RowDiv>
+        </RowContainer>
+        <RowContainer>
+          <img src={clipboardIcon} alt="home icon" />
+          <RowDiv
+            style={
+              props.match.path === '/follow-up/:id'
+                ? { backgroundColor: '#fff0ea', color: 'rgb(55, 71, 80)' }
+                : {}
+            }
+            to={`/follow-up/${props.match.params.id}`}
+          >
+            Follow up
+          </RowDiv>
+        </RowContainer>
+        {localStorage.getItem('activeOrg') && (
+          <RowContainer>
+            <img src={peopleIcon} alt="users icon" />
+            <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>
+          </RowContainer>
+        )}
+        <div>
+          <div>
+            <OuterOrgContainer>
+              <OrgContainer>
+                <img src={discIcon} alt="home icon" />
 
-                    {this.props.match.params.id && (
-                      <NavBarOrgDropdown
-                        // setActiveOrg={this.props.setActiveOrg}
-                        activeOrg={this.props.match.params.id}
-                        orgOptions={orgOptions}
-                        setSelectedOrgToLocalStorage={
-                          this.setSelectedOrgToLocalStorage
-                        }
-                      />
-                    )}
-                  </OrgContainer>
-                  <CreateNewSpaceModal {...this.props} />
-                </OuterOrgContainer>
-                <SpaceContainer>
-                  {spacesForActiveOrg && (
-                    <div>
-                      {spacesForActiveOrg.map((space, index) => (
-                        <RowDiv
-                          key={index}
-                          style={
-                            this.props.match.params.spaceId === space.id
-                              ? {
-                                  backgroundColor: '#fff0ea',
-                                  color: 'rgb(55, 71, 80)'
-                                }
-                              : {}
-                          }
-                          to={`/mainscreen/${this.props.match.params.id}/${space.id}`}
-                        >
-                          {space.spaceName}
-                        </RowDiv>
-                      ))}
-                    </div>
-                  )}
-                </SpaceContainer>
-              </div>
-            </div>
-          </InnerContainer>
-        </NavBarContainer>
-      );
-    } else {
-      return <Spinner />;
-    }
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    user: state.firestore.ordered.filteredUser
-      ? state.firestore.ordered.filteredUser[0]
-      : '',
-    orgsFromArrayOfUsersIds: state.firestore.ordered.orgsInWhichUser
-      ? state.firestore.ordered.orgsInWhichUser
-      : [],
-    // orgsFromArrayOfAdminsIds: state.firestore.ordered.orgsInWhichAdmin ? state.firestore.ordered.orgsInWhichAdmin : [],
-    spacesForActiveOrg: state.firestore.ordered.filteredSpaces
-      ? state.firestore.ordered.filteredSpaces
-      : [],
-    uuid: localStorage.getItem('uuid') ? localStorage.getItem('uuid') : '',
-    // fullName: localStorage.getItem('fullName') ? localStorage.getItem('fullName') : '',
-    activeModal: state.modal.activeModal
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      clearFirestore: () => dispatch({ type: '@@reduxFirestore/CLEAR_DATA' }),
-      setActiveOrg,
-      switchSpaces,
-      resetSpace,
-      resetThread,
-      showModal,
-      showUpgradeScreen,
-      resetUpgradeScreen,
-      editingProfileDone,
-      renderProfile,
-      notRenderProfile,
-      showFollowUp,
-      hideFollowUp
-    },
-    dispatch
+                {props.match.params.id && (
+                  <NavBarOrgDropdown
+                    // setActiveOrg={props.setActiveOrg}
+                    activeOrg={props.match.params.id}
+                    orgOptions={orgOptions}
+                    setSelectedOrgToLocalStorage={setSelectedOrgToLocalStorage}
+                  />
+                )}
+              </OrgContainer>
+              <CreateNewSpaceModal {...props} />
+            </OuterOrgContainer>
+            <SpaceContainer>
+              {spaces && (
+                <div>
+                  {spaces.map((space, index) => (
+                    <RowDiv
+                      key={index}
+                      style={
+                        props.match.params.spaceId === space.id
+                          ? {
+                              backgroundColor: '#fff0ea',
+                              color: 'rgb(55, 71, 80)'
+                            }
+                          : {}
+                      }
+                      to={`/mainscreen/${props.match.params.id}/${space.id}`}
+                    >
+                      {space.spaceName}
+                    </RowDiv>
+                  ))}
+                </div>
+              )}
+            </SpaceContainer>
+          </div>
+        </div>
+      </InnerContainer>
+    </NavBarContainer>
   );
 };
 
 //Connect to Firestore
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    // if (!userDoc) return []; <-- empty array if no userDoc in local storage
-    return [
-      {
-        collection: 'users',
-        doc: props.uuid,
-        storeAs: 'filteredUser'
-      },
-      {
-        collection: 'spaces',
-        where: [
-          ['arrayOfUserIdsInSpace', 'array-contains', props.uuid],
-          ['orgId', '==', props.match.params.id]
-        ],
-        storeAs: 'filteredSpaces'
-      },
-      {
-        collection: 'organisations',
-        where: ['arrayOfUsersIds', 'array-contains', props.uuid],
-        storeAs: 'orgsInWhichUser'
-      }
-      // {
-      //   collection: 'organisations',
-      //   where: ['arrayOfAdminsIds', '==', props.uuid],
-      //   storeAs: 'orgsInWhichAdmin'
-      // }
-    ];
-  })
-)(NavBar);
+export default NavBar;
 
 const HeaderContainer = styled.div`
   padding-left: 32px;
