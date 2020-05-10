@@ -18,9 +18,12 @@ const FollowUp = props => {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-    let getThreadsUnsubscribe = getFollowUpThreads(setThreads);
+    let getThreadsUnsubscribe = getFollowUpThreads(
+      setThreads,
+      props.match.params.id
+    );
     return () => getThreadsUnsubscribe();
-  }, [getFollowUpThreads]);
+  }, [getFollowUpThreads, props.match.params.id]);
 
   return (
     <StyledMain>
