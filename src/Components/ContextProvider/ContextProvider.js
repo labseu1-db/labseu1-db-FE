@@ -138,12 +138,13 @@ const ContextProvider = ({ children, ...props }) => {
   );
 
   const getFollowUpThreads = useCallback(
-    setData => {
+    (setData, orgId) => {
       let uuid = localStorage.getItem('uuid');
       let ref = db
         .collection('threads')
         .where('isFollowUp', '==', true)
         .where('arrayOfUserIdsWhoFollowUp', 'array-contains', uuid)
+        .where('orgId', '==', orgId)
         .orderBy('threadCreatedAt', 'desc');
       return ref.onSnapshot(querySnapshot => {
         let threads = [];
