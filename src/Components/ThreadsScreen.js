@@ -15,28 +15,6 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const ThreadsScreen = props => {
-  // componentDidMount() {
-  //   let threadRef = props.firestore
-  //     .collection('threads')
-  //     .doc(props.match.params.threadId);
-  //   let whenUserHasSeen = {};
-  //   whenUserHasSeen[
-  //     `whenUserHasSeen.${localStorage.getItem('uuid')}`
-  //   ] = Date.now();
-  //   threadRef.update(whenUserHasSeen);
-  // }
-
-  // componentWillUnmount() {
-  //   let threadRef = props.firestore
-  //     .collection('threads')
-  //     .doc(props.match.params.threadId);
-  //   let whenUserHasSeen = {};
-  //   whenUserHasSeen[
-  //     `whenUserHasSeen.${localStorage.getItem('uuid')}`
-  //   ] = Date.now();
-  //   threadRef.update(whenUserHasSeen);
-  // }
-
   const {
     getThreadWithId,
     updateDataWithDoc,
