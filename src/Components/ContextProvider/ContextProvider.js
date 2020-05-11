@@ -1,5 +1,5 @@
 import Context from './Context';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
 
 // firebase
@@ -33,6 +33,8 @@ const ContextProvider = ({ children, ...props }) => {
   const stopLoading = () => {
     setLoading(false);
   };
+
+  const useMounteffect = func => useEffect(func, []);
 
   const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
@@ -380,7 +382,8 @@ const ContextProvider = ({ children, ...props }) => {
         setResetPasswordStatus: setResetPasswordStatus,
         redirect: redirect,
         stopLoading: stopLoading,
-        startLoading: startLoading
+        startLoading: startLoading,
+        useMounteffect: useMounteffect
       }}
     >
       {loading && <Spinner />}

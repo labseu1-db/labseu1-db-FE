@@ -21,11 +21,23 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const MainScreen = props => {
-  const { getThreadsWithOrg, setModal, modal, loading, redirect } = useContext(
-    Context
-  );
+  const {
+    getThreadsWithOrg,
+    setModal,
+    modal,
+    loading,
+    redirect,
+    startLoading,
+    stopLoading
+  } = useContext(Context);
 
   const [threads, setThreads] = useState([]);
+
+  // use Effect to set setLoading to false
+  useEffect(() => {
+    startLoading();
+    setTimeout(stopLoading, 600);
+  }, []);
 
   useEffect(() => {
     let getThreadsUnsubscribe = getThreadsWithOrg(
