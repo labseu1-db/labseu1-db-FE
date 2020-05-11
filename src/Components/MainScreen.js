@@ -27,17 +27,14 @@ const MainScreen = props => {
     modal,
     loading,
     redirect,
-    startLoading,
-    stopLoading
+    useMountEffect,
+    mountEffectFunction
   } = useContext(Context);
 
   const [threads, setThreads] = useState([]);
 
   // use Effect to set setLoading to false
-  useEffect(() => {
-    startLoading();
-    setTimeout(stopLoading, 600);
-  }, []);
+  useMountEffect(mountEffectFunction);
 
   useEffect(() => {
     let getThreadsUnsubscribe = getThreadsWithOrg(

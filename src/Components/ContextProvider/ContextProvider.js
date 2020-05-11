@@ -7,9 +7,6 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-// import Spinner
-import Spinner from '../semantic-components/Spinner';
-
 // import Firebase Config
 import firebaseConfig from '../../firebase/firebaseConfig';
 import styled from 'styled-components';
@@ -39,7 +36,7 @@ const ContextProvider = ({ children, ...props }) => {
     setTimeout(stopLoading, 600);
   };
 
-  const useMounteffect = func => useEffect(func, []);
+  const useMountEffect = func => useEffect(func, []);
 
   const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
@@ -388,11 +385,10 @@ const ContextProvider = ({ children, ...props }) => {
         redirect: redirect,
         stopLoading: stopLoading,
         startLoading: startLoading,
-        useMounteffect: useMounteffect,
+        useMountEffect: useMountEffect,
         mountEffectFunction: mountEffectFunction
       }}
     >
-      {loading && <Spinner />}
       {children}
       {error && (
         <StyledMessage warning attached="center">
