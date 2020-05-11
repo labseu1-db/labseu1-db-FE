@@ -1,5 +1,5 @@
 import Context from './Context';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
 
 // firebase
@@ -19,21 +19,20 @@ firebase.initializeApp(firebaseConfig);
 const ContextProvider = ({ children, ...props }) => {
   // Hooks
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(null);
   const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
 
   // Firestore
   const db = firebase.firestore();
 
+  const startLoading = () => {
+    setLoading(true);
+  };
+
   const stopLoading = () => {
     setLoading(false);
   };
-
-  // use Effect to set setLoading to false
-  useEffect(() => {
-    setTimeout(stopLoading, 600);
-  }, []);
 
   const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
@@ -380,7 +379,8 @@ const ContextProvider = ({ children, ...props }) => {
         resetPasswordStatus: resetPasswordStatus,
         setResetPasswordStatus: setResetPasswordStatus,
         redirect: redirect,
-        stopLoading: stopLoading
+        stopLoading: stopLoading,
+        startLoading: startLoading
       }}
     >
       {loading && <Spinner />}
