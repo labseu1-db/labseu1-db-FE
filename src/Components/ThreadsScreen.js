@@ -13,13 +13,21 @@ import RightSidebar from './RightSidebar';
 // import Context API
 import Context from './ContextProvider/Context';
 
+// import Spinner
+import Spinner from './semantic-components/Spinner';
+
 //Main component
 const ThreadsScreen = props => {
   const {
     getThreadWithId,
     updateDataWithDoc,
-    getCommentsWithThread
+    getCommentsWithThread,
+    loading,
+    useMountEffect,
+    mountEffectFunction
   } = useContext(Context);
+
+  useMountEffect(mountEffectFunction);
 
   const updateThread = useCallback(() => {
     let data = {};
@@ -59,51 +67,55 @@ const ThreadsScreen = props => {
   return (
     <StyledMain>
       <NavBar {...props} />
-      <MidRightContainer>
-        <StyledThreadContent>
-          <BackToButton onClick={props.history.goBack} />
-          {thread && thread.threadName && (
-            <StyledHeadingContainer>
-              <ScreenHeading heading={thread.threadName} />
-            </StyledHeadingContainer>
-          )}
-          {thread && thread.threadName && (
-            <ThreadInformationCard
-              img="http://lorempixel.com/480/480"
-              createdBy={thread.threadCreatedByUserName}
-              createdAt={thread.threadCreatedAt}
-              spaceId={thread.spaceId}
-              info={thread.threadTopic}
-            />
-          )}
-          {comments.length > 0 &&
-            comments.map(c => {
-              return (
-                <CommentCard
-                  key={c.id}
-                  img="http://lorempixel.com/480/480"
-                  commentId={c.id}
-                  createdBy={c.commentCreatedByUserName}
-                  createdByUserId={c.commentCreatedByUserId}
-                  content={c.commentBody}
-                  likes={c.arrayOfUserIdsWhoLiked.length}
-                  arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
-                  isCommentDecided={c.isCommentDecided}
-                  isCommentUpdated={c.isCommentUpdated}
-                  commentUpdatedAt={c.commentUpdatedAt}
-                  gifUrl={c.gifUrl}
-                />
-              );
-            })}
+      {!loading ? (
+        <MidRightContainer>
+          <StyledThreadContent>
+            <BackToButton onClick={props.history.goBack} />
+            {thread && thread.threadName && (
+              <StyledHeadingContainer>
+                <ScreenHeading heading={thread.threadName} />
+              </StyledHeadingContainer>
+            )}
+            {thread && thread.threadName && (
+              <ThreadInformationCard
+                img="http://lorempixel.com/480/480"
+                createdBy={thread.threadCreatedByUserName}
+                createdAt={thread.threadCreatedAt}
+                spaceId={thread.spaceId}
+                info={thread.threadTopic}
+              />
+            )}
+            {comments.length > 0 &&
+              comments.map(c => {
+                return (
+                  <CommentCard
+                    key={c.id}
+                    img="http://lorempixel.com/480/480"
+                    commentId={c.id}
+                    createdBy={c.commentCreatedByUserName}
+                    createdByUserId={c.commentCreatedByUserId}
+                    content={c.commentBody}
+                    likes={c.arrayOfUserIdsWhoLiked.length}
+                    arrayOfUsersWhoLiked={c.arrayOfUserIdsWhoLiked}
+                    isCommentDecided={c.isCommentDecided}
+                    isCommentUpdated={c.isCommentUpdated}
+                    commentUpdatedAt={c.commentUpdatedAt}
+                    gifUrl={c.gifUrl}
+                  />
+                );
+              })}
 
-          <NewCommentCard
-            img="http://lorempixel.com/480/480"
-            createdByUserId={localStorage.getItem('uuid')}
-            thread={thread}
-          />
-        </StyledThreadContent>
-        <RightSidebar />
-      </MidRightContainer>
+            <NewCommentCard
+              img="http://lorempixel.com/480/480"
+              createdByUserId={localStorage.getItem('uuid')}
+              thread={thread}
+            />
+          </StyledThreadContent>
+          <RightSidebar />
+        </MidRightContainer>
+      ) : (
+        <Spinner />
+      )}
     </StyledMain>
   );
 };
