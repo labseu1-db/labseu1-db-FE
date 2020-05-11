@@ -1,11 +1,14 @@
 import Context from './Context';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Icon, Message } from 'semantic-ui-react';
 
 // firebase
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+
+// import Spinner
+import Spinner from '../semantic-components/Spinner';
 
 // import Firebase Config
 import firebaseConfig from '../../firebase/firebaseConfig';
@@ -16,12 +19,21 @@ firebase.initializeApp(firebaseConfig);
 const ContextProvider = ({ children, ...props }) => {
   // Hooks
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(null);
   const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
 
   // Firestore
   const db = firebase.firestore();
+
+  const stopLoading = () => {
+    setLoading(false);
+  };
+
+  // use Effect to set setLoading to false
+  useEffect(() => {
+    setTimeout(stopLoading, 600);
+  }, []);
 
   const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
@@ -367,9 +379,11 @@ const ContextProvider = ({ children, ...props }) => {
         getUserDataRealTime: getUserDataRealTime,
         resetPasswordStatus: resetPasswordStatus,
         setResetPasswordStatus: setResetPasswordStatus,
-        redirect: redirect
+        redirect: redirect,
+        stopLoading: stopLoading
       }}
     >
+      {loading && <Spinner />}
       {children}
       {error && (
         <StyledMessage warning attached="center">
