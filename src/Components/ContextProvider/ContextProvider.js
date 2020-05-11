@@ -33,7 +33,7 @@ const ContextProvider = ({ children, ...props }) => {
 
   const mountEffectFunction = () => {
     startLoading();
-    setTimeout(stopLoading, 600);
+    setTimeout(stopLoading, 300);
   };
 
   const useMountEffect = func => useEffect(func, []);
