@@ -34,6 +34,11 @@ const ContextProvider = ({ children, ...props }) => {
     setLoading(false);
   };
 
+  const mountEffectFunction = () => {
+    startLoading();
+    setTimeout(stopLoading, 600);
+  };
+
   const useMounteffect = func => useEffect(func, []);
 
   const isLoggedIn = path => {
@@ -383,7 +388,8 @@ const ContextProvider = ({ children, ...props }) => {
         redirect: redirect,
         stopLoading: stopLoading,
         startLoading: startLoading,
-        useMounteffect: useMounteffect
+        useMounteffect: useMounteffect,
+        mountEffectFunction: mountEffectFunction
       }}
     >
       {loading && <Spinner />}
