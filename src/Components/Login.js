@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Context from './ContextProvider/Context';
 
+// import Spinner
+import Spinner from './semantic-components/Spinner';
+
 //Import styling
 import {
   StyledButton,
@@ -37,7 +40,10 @@ const Login = props => {
     isLoggedIn,
     firebase,
     getDataWithWhere,
-    redirect
+    redirect,
+    loading,
+    startLoading,
+    stopLoading
   } = useContext(Context);
 
   const [loginEmail, setEmail] = useState('');
@@ -63,6 +69,7 @@ const Login = props => {
   const handleLogIn = async e => {
     try {
       e.preventDefault();
+      startLoading();
       let data = await firebase
         .auth()
         .signInWithEmailAndPassword(loginEmail, loginPassword);
@@ -76,6 +83,7 @@ const Login = props => {
       };
       getDataWithWhere(request);
     } catch (error) {
+      stopLoading();
       setError(error);
     }
   };
@@ -95,6 +103,9 @@ const Login = props => {
   };
 
   const isInvalid = loginPassword === '' || loginEmail === '';
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <StyledLogin>
