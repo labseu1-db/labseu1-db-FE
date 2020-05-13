@@ -13,6 +13,9 @@ import ThreadCard from './reusable-components/ThreadCard';
 import NavBar from './NavBar';
 import RightSidebar from './RightSidebar';
 
+// import Spinner
+import Spinner from './semantic-components/Spinner';
+
 //Import Modals
 import CreateThreadModal from './Modals/CreateThreadModal';
 import EditSpaceModal from './Modals/EditSpaceModal';
@@ -29,10 +32,15 @@ const SpaceThreads = props => {
     modal,
     setModal,
     getThreadsWithSpace,
-    redirect
+    redirect,
+    loading,
+    useMountEffect,
+    mountEffectFunction
   } = useContext(Context);
-  const [space, setSpace] = useState('');
+  const [space, setSpace] = useState('Space');
   const [threads, setThreads] = useState([]);
+
+  useMountEffect(mountEffectFunction);
 
   useEffect(() => {
     let getThreadsUnsubscribe = getThreadsWithSpace(
@@ -67,142 +75,151 @@ const SpaceThreads = props => {
     return (
       <StyledMain>
         <NavBar {...props} />
-        <MidRightContainer>
-          <StyledMainScreen>
-            {modal === 'CreateThreadModal' && (
-              <CreateThreadModal
-                shoudlBeOpen={true}
-                showModal={props.showModal}
-                activeModal={props.activeModal}
-                setActiveThread={props.setActiveThread}
-                {...props}
-              />
-            )}
-            {modal === 'EditSpaceModal' && (
-              <EditSpaceModal
-                shoudlBeOpen={true}
-                activeModal={props.activeModal}
-                space={space}
-                {...props}
-              />
-            )}
-            {modal === 'DeleteSpaceModal' && (
-              <DeleteSpaceModal
-                shoudlBeOpen={true}
-                activeModal={props.activeModal}
-                space={space}
-                threads={threads}
-                {...props}
-              />
-            )}
-            {modal === 'LeaveSpaceModal' && (
-              <LeaveSpaceModal
-                shoudlBeOpen={true}
-                activeModal={props.activeModal}
-                space={props.space}
-              />
-            )}
-            <StyledFirstRow>
-              <ScreenHeading
-                heading={space.spaceName}
-                info={`Read all the threads from ${space.spaceName}`}
-                topic={space.spaceTopic}
-              />
-              <StyledButtonsContainer>
-                <StyledDropdown>
-                  <Dropdown icon="ellipsis horizontal">
-                    <Dropdown.Menu>
-                      {localStorage.getItem('uuid') ===
-                        space.spaceCreatedByUserId && (
-                        <Dropdown.Item
-                          text="Edit space"
-                          onClick={e => {
-                            setModal('EditSpaceModal');
-                          }}
-                        />
-                      )}
-                      {localStorage.getItem('uuid') ===
-                        space.spaceCreatedByUserId && (
-                        <Dropdown.Item
-                          text="Delete space"
-                          onClick={e => {
-                            setModal('DeleteSpaceModal');
-                          }}
-                        />
-                      )}
-                      {localStorage.getItem('uuid') !==
-                        space.spaceCreatedByUserId && (
-                        <Dropdown.Item
-                          text="Leave space"
-                          onClick={e => {
-                            setModal('LeaveSpaceModal');
-                          }}
-                        />
-                      )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </StyledDropdown>
-
-                <ScreenButton
-                  content="Start a thread"
-                  icon={penIconWhite}
-                  backgroundColor="#00bc98"
-                  color="white"
-                  border="none"
-                  onClick={e => {
-                    setModal('CreateThreadModal');
-                  }}
+        {!loading ? (
+          <MidRightContainer>
+            <StyledMainScreen>
+              {modal === 'CreateThreadModal' && (
+                <CreateThreadModal
+                  shoudlBeOpen={true}
+                  showModal={props.showModal}
+                  activeModal={props.activeModal}
+                  setActiveThread={props.setActiveThread}
+                  {...props}
                 />
-              </StyledButtonsContainer>
-            </StyledFirstRow>
-            <ScreenSectionHeading heading="Recent" />
+              )}
+              {modal === 'EditSpaceModal' && (
+                <EditSpaceModal
+                  shoudlBeOpen={true}
+                  activeModal={props.activeModal}
+                  space={space}
+                  {...props}
+                />
+              )}
+              {modal === 'DeleteSpaceModal' && (
+                <DeleteSpaceModal
+                  shoudlBeOpen={true}
+                  activeModal={props.activeModal}
+                  space={space}
+                  threads={threads}
+                  {...props}
+                />
+              )}
+              {modal === 'LeaveSpaceModal' && (
+                <LeaveSpaceModal
+                  shoudlBeOpen={true}
+                  activeModal={props.activeModal}
+                  space={props.space}
+                />
+              )}
+              <StyledFirstRow>
+                <ScreenHeading
+                  heading={space.spaceName}
+                  info={`Read all the threads from ${space.spaceName}`}
+                  topic={space.spaceTopic}
+                />
+                <StyledButtonsContainer>
+                  <StyledDropdown>
+                    <Dropdown icon="ellipsis horizontal">
+                      <Dropdown.Menu>
+                        {localStorage.getItem('uuid') ===
+                          space.spaceCreatedByUserId && (
+                          <Dropdown.Item
+                            text="Edit space"
+                            onClick={e => {
+                              setModal('EditSpaceModal');
+                            }}
+                          />
+                        )}
+                        {localStorage.getItem('uuid') ===
+                          space.spaceCreatedByUserId && (
+                          <Dropdown.Item
+                            text="Delete space"
+                            onClick={e => {
+                              setModal('DeleteSpaceModal');
+                            }}
+                          />
+                        )}
+                        {localStorage.getItem('uuid') !==
+                          space.spaceCreatedByUserId && (
+                          <Dropdown.Item
+                            text="Leave space"
+                            onClick={e => {
+                              setModal('LeaveSpaceModal');
+                            }}
+                          />
+                        )}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </StyledDropdown>
 
-            {/*Loop trough all the threads that are associated with the orgId*/}
-            {threads.length > 0 &&
-              threads.map(t => {
-                let dateInfo = new Date(t.threadCreatedAt);
-                let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
-                  '0' + dateInfo.getMinutes()
-                ).slice(-2)}`;
-
-                return (
-                  <ThreadCard
-                    key={t.id}
-                    createdBy={t.threadCreatedByUserName}
-                    createdAt={date}
-                    spaceId={t.spaceId}
-                    threadId={t.id}
-                    heading={t.threadName}
-                    info={t.threadTopic}
-                    whenUserHasSeen={t.whenUserHasSeen}
-                    isFollowUpDecided={
-                      t.arrayOfUserIdsWhoFollowUp &&
-                      t.arrayOfUserIdsWhoFollowUp.includes(
-                        localStorage.getItem('uuid')
-                      )
-                        ? true
-                        : false
-                    }
-                    checked={
-                      (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
-                        'false') ||
-                      (t.lastCommentCreatedAt >
-                      t.whenUserHasSeen[localStorage.getItem('uuid')]
-                        ? 'false'
-                        : 'true')
-                    }
-                    onClick={() => {
-                      redirect(
-                        `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${t.id}`
-                      );
+                  <ScreenButton
+                    content="Start a thread"
+                    icon={penIconWhite}
+                    backgroundColor="#00bc98"
+                    color="white"
+                    border="none"
+                    onClick={e => {
+                      setModal('CreateThreadModal');
                     }}
-                    currentSpace={space.spaceName}
                   />
-                );
-              })}
-          </StyledMainScreen>
-          <RightSidebar />
-        </MidRightContainer>
+                </StyledButtonsContainer>
+              </StyledFirstRow>
+              <ScreenSectionHeading heading="Recent" />
+              {!loading ? (
+                <div>
+                  {/*Loop trough all the threads that are associated with the orgId*/}
+                  {threads.length > 0 &&
+                    threads.map(t => {
+                      let dateInfo = new Date(t.threadCreatedAt);
+                      let date = `${dateInfo.getDate()}/${dateInfo.getMonth()}/${dateInfo.getFullYear()} at ${dateInfo.getHours()}:${(
+                        '0' + dateInfo.getMinutes()
+                      ).slice(-2)}`;
+
+                      return (
+                        <ThreadCard
+                          key={t.id}
+                          createdBy={t.threadCreatedByUserName}
+                          createdAt={date}
+                          spaceId={t.spaceId}
+                          threadId={t.id}
+                          heading={t.threadName}
+                          info={t.threadTopic}
+                          whenUserHasSeen={t.whenUserHasSeen}
+                          isFollowUpDecided={
+                            t.arrayOfUserIdsWhoFollowUp &&
+                            t.arrayOfUserIdsWhoFollowUp.includes(
+                              localStorage.getItem('uuid')
+                            )
+                              ? true
+                              : false
+                          }
+                          checked={
+                            (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                              'false') ||
+                            (t.lastCommentCreatedAt >
+                            t.whenUserHasSeen[localStorage.getItem('uuid')]
+                              ? 'false'
+                              : 'true')
+                          }
+                          onClick={() => {
+                            redirect(
+                              `/mainscreen/${props.match.params.id}/${props.match.params.spaceId}/${t.id}`
+                            );
+                          }}
+                          currentSpace={space.spaceName}
+                        />
+                      );
+                    })}
+                </div>
+              ) : (
+                <Spinner />
+              )}
+            </StyledMainScreen>
+            <RightSidebar />
+          </MidRightContainer>
+        ) : (
+          <Spinner />
+        )}
       </StyledMain>
     );
   }

@@ -1,6 +1,5 @@
 import Context from './Context';
-import React, { useState, useCallback } from 'react';
-import { Icon, Message } from 'semantic-ui-react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 // firebase
 import firebase from 'firebase/app';
@@ -9,7 +8,6 @@ import 'firebase/firestore';
 
 // import Firebase Config
 import firebaseConfig from '../../firebase/firebaseConfig';
-import styled from 'styled-components';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -22,6 +20,21 @@ const ContextProvider = ({ children, ...props }) => {
 
   // Firestore
   const db = firebase.firestore();
+
+  const startLoading = () => {
+    setLoading(true);
+  };
+
+  const stopLoading = () => {
+    setLoading(false);
+  };
+
+  const mountEffectFunction = () => {
+    startLoading();
+    setTimeout(stopLoading, 300);
+  };
+
+  const useMountEffect = func => useEffect(func, []);
 
   const isLoggedIn = path => {
     firebase.auth().onAuthStateChanged(user => {
@@ -138,12 +151,13 @@ const ContextProvider = ({ children, ...props }) => {
   );
 
   const getFollowUpThreads = useCallback(
-    setData => {
+    (setData, orgId) => {
       let uuid = localStorage.getItem('uuid');
       let ref = db
         .collection('threads')
         .where('isFollowUp', '==', true)
         .where('arrayOfUserIdsWhoFollowUp', 'array-contains', uuid)
+        .where('orgId', '==', orgId)
         .orderBy('threadCreatedAt', 'desc');
       return ref.onSnapshot(querySnapshot => {
         let threads = [];
@@ -338,6 +352,7 @@ const ContextProvider = ({ children, ...props }) => {
     <Context.Provider
       value={{
         setError: setError,
+        error: error,
         isLoggedIn: isLoggedIn,
         firebase: firebase,
         getDataWithWhere: getDataWithWhere,
@@ -366,23 +381,16 @@ const ContextProvider = ({ children, ...props }) => {
         getUserDataRealTime: getUserDataRealTime,
         resetPasswordStatus: resetPasswordStatus,
         setResetPasswordStatus: setResetPasswordStatus,
-        redirect: redirect
+        redirect: redirect,
+        stopLoading: stopLoading,
+        startLoading: startLoading,
+        useMountEffect: useMountEffect,
+        mountEffectFunction: mountEffectFunction
       }}
     >
       {children}
-      {error && (
-        <StyledMessage warning attached="center">
-          <Icon name="warning" />
-          {error.message}
-        </StyledMessage>
-      )}
     </Context.Provider>
   );
 };
-
-const StyledMessage = styled(Message)`
-  position: absolute;
-  z-index: 2;
-`;
 
 export default ContextProvider;

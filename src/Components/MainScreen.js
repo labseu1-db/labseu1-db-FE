@@ -21,11 +21,20 @@ import Context from './ContextProvider/Context';
 
 //Main component
 const MainScreen = props => {
-  const { getThreadsWithOrg, setModal, modal, loading, redirect } = useContext(
-    Context
-  );
+  const {
+    getThreadsWithOrg,
+    setModal,
+    modal,
+    loading,
+    redirect,
+    useMountEffect,
+    mountEffectFunction
+  } = useContext(Context);
 
   const [threads, setThreads] = useState([]);
+
+  // use Effect to set setLoading to false
+  useMountEffect(mountEffectFunction);
 
   useEffect(() => {
     let getThreadsUnsubscribe = getThreadsWithOrg(
@@ -36,86 +45,89 @@ const MainScreen = props => {
       getThreadsUnsubscribe();
     };
   }, [getThreadsWithOrg, props.match.params.id]);
-  if (loading) {
-    return <Spinner />;
-  } else {
-    return (
-      <StyledMain>
-        <NavBar {...props} />
-        <MidRightContainer>
-          <StyledMainScreen>
-            {modal === 'CreateThreadModal' && (
-              <CreateThreadModal
-                shoudlBeOpen={true}
-                showModal={props.showModal}
-                setActiveThread={props.setActiveThread}
-                activeModal={props.activeModal}
-                {...props}
-              />
-            )}
-            <StyledFirstRow>
-              <ScreenHeading
-                heading="Home"
-                info="Catch up on the most recent threads."
-              />
-              <ScreenButton
-                content="Start a thread"
-                icon={penIconWhite}
-                backgroundColor="#00bc98"
-                color="white"
-                border="none"
-                onClick={e => {
-                  setModal('CreateThreadModal');
-                }}
-              />
-            </StyledFirstRow>
-            <ScreenSectionHeading heading="Recent" />
 
-            {/*Loop trough all the threads that are associated with the orgId*/}
-            {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
-            {threads.length > 0 &&
-              threads.map((t, i) => {
-                let dateInfo = new Date(t.threadCreatedAt);
-                let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
-                  '0' + dateInfo.getMinutes()
-                ).slice(-2)}`;
-                return (
-                  <ThreadCard
-                    key={t.id}
-                    createdBy={t.threadCreatedByUserName}
-                    createdAt={date}
-                    spaceId={t.spaceId}
-                    threadId={t.id}
-                    heading={t.threadName}
-                    info={t.threadTopic}
-                    isFollowUpDecided={
-                      t.arrayOfUserIdsWhoFollowUp &&
-                      t.arrayOfUserIdsWhoFollowUp.includes(props.uuid)
-                        ? true
-                        : false
-                    }
-                    checked={
-                      (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
-                        'false') ||
-                      (t.lastCommentCreatedAt >
-                      t.whenUserHasSeen[localStorage.getItem('uuid')]
-                        ? 'false'
-                        : 'true')
-                    }
-                    onClick={() =>
-                      redirect(
-                        `/mainscreen/${props.match.params.id}/${t.spaceId}/${t.id}`
-                      )
-                    }
-                  />
-                );
-              })}
-          </StyledMainScreen>
-          <RightSidebar />
-        </MidRightContainer>
-      </StyledMain>
-    );
-  }
+  return (
+    <StyledMain>
+      <NavBar {...props} />
+      <MidRightContainer>
+        <StyledMainScreen>
+          {modal === 'CreateThreadModal' && (
+            <CreateThreadModal
+              shoudlBeOpen={true}
+              showModal={props.showModal}
+              setActiveThread={props.setActiveThread}
+              activeModal={props.activeModal}
+              {...props}
+            />
+          )}
+          <StyledFirstRow>
+            <ScreenHeading
+              heading="Home"
+              info="Catch up on the most recent threads."
+            />
+            <ScreenButton
+              content="Start a thread"
+              icon={penIconWhite}
+              backgroundColor="#00bc98"
+              color="white"
+              border="none"
+              onClick={e => {
+                setModal('CreateThreadModal');
+              }}
+            />
+          </StyledFirstRow>
+          <ScreenSectionHeading heading="Recent" />
+
+          {/*Loop trough all the threads that are associated with the orgId*/}
+          {/*OrgId is hardcoded -> we will need to fix this when we get id from logged in user*/}
+          {!loading ? (
+            <div>
+              {threads.length > 0 &&
+                threads.map((t, i) => {
+                  let dateInfo = new Date(t.threadCreatedAt);
+                  let date = `${dateInfo.getMonth()}/${dateInfo.getDate()} ${dateInfo.getHours()}:${(
+                    '0' + dateInfo.getMinutes()
+                  ).slice(-2)}`;
+                  return (
+                    <ThreadCard
+                      key={t.id}
+                      createdBy={t.threadCreatedByUserName}
+                      createdAt={date}
+                      spaceId={t.spaceId}
+                      threadId={t.id}
+                      heading={t.threadName}
+                      info={t.threadTopic}
+                      isFollowUpDecided={
+                        t.arrayOfUserIdsWhoFollowUp &&
+                        t.arrayOfUserIdsWhoFollowUp.includes(props.uuid)
+                          ? true
+                          : false
+                      }
+                      checked={
+                        (!t.whenUserHasSeen[localStorage.getItem('uuid')] &&
+                          'false') ||
+                        (t.lastCommentCreatedAt >
+                        t.whenUserHasSeen[localStorage.getItem('uuid')]
+                          ? 'false'
+                          : 'true')
+                      }
+                      onClick={() =>
+                        redirect(
+                          `/mainscreen/${props.match.params.id}/${t.spaceId}/${t.id}`
+                        )
+                      }
+                    />
+                  );
+                })}
+            </div>
+          ) : (
+            <Spinner />
+          )}
+        </StyledMainScreen>
+        <RightSidebar />
+      </MidRightContainer>
+    </StyledMain>
+  );
 };
 
 const MidRightContainer = styled.div`

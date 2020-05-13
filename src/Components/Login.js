@@ -2,6 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Context from './ContextProvider/Context';
 
+import { Icon, Message } from 'semantic-ui-react';
+
+// import Spinner
+import Spinner from './semantic-components/Spinner';
+
 //Import styling
 import {
   StyledButton,
@@ -37,7 +42,11 @@ const Login = props => {
     isLoggedIn,
     firebase,
     getDataWithWhere,
-    redirect
+    redirect,
+    loading,
+    startLoading,
+    stopLoading,
+    error
   } = useContext(Context);
 
   const [loginEmail, setEmail] = useState('');
@@ -46,6 +55,8 @@ const Login = props => {
   useEffect(() => {
     isLoggedIn('login');
   }, [isLoggedIn]);
+
+  console.log('error', error);
 
   const handleInputChange = e => {
     switch (e.target.name) {
@@ -63,6 +74,7 @@ const Login = props => {
   const handleLogIn = async e => {
     try {
       e.preventDefault();
+      startLoading();
       let data = await firebase
         .auth()
         .signInWithEmailAndPassword(loginEmail, loginPassword);
@@ -76,6 +88,8 @@ const Login = props => {
       };
       getDataWithWhere(request);
     } catch (error) {
+      console.log('error', error);
+      stopLoading();
       setError(error);
     }
   };
@@ -95,6 +109,9 @@ const Login = props => {
   };
 
   const isInvalid = loginPassword === '' || loginEmail === '';
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <StyledLogin>
@@ -138,6 +155,12 @@ const Login = props => {
             </StyledButton>
           </StyledLowerSignIn>
         </StyledForm>
+        {error && (
+          <Message warning attached="bottom">
+            <Icon name="warning" />
+            {error.message}
+          </Message>
+        )}
         {/* <Button
             color='google plus'
             onClick={() =>

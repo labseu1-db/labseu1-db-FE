@@ -227,16 +227,19 @@ const StyledTopicInput = styled.input`
   border: none;
   outline: none;
   width: 100%;
-  height: 56px;
+  height: 100%;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.11;
   margin-bottom: 20px;
+  padding-bottom: 40%;
 `;
 const StyledThreadInput = styled.div`
   border: none;
   outline: none;
+  display: flex;
+  align-content: flex-start;
   width: 100%;
   height: 320px;
 `;

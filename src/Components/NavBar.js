@@ -19,6 +19,7 @@ import peopleIcon from '../images/icon-people-lightgray.svg';
 
 // Context
 import Context from './ContextProvider/Context';
+import Spinner from './semantic-components/Spinner';
 
 const NavBar = props => {
   // state = {
@@ -35,7 +36,8 @@ const NavBar = props => {
     getSpacesWithOrg,
     firebase,
     getUserDataRealTime,
-    redirect
+    redirect,
+    loading
   } = useContext(Context);
 
   const [profileDropdown, setProfileDropdown] = useState('');
@@ -193,47 +195,53 @@ const NavBar = props => {
             <RowDiv to={`/users/${props.match.params.id}`}>Users</RowDiv>
           </RowContainer>
         )}
-        <div>
+        {!loading ? (
           <div>
-            <OuterOrgContainer>
-              <OrgContainer>
-                <img src={discIcon} alt="home icon" />
+            <div>
+              <OuterOrgContainer>
+                <OrgContainer>
+                  <img src={discIcon} alt="home icon" />
 
-                {props.match.params.id && (
-                  <NavBarOrgDropdown
-                    // setActiveOrg={props.setActiveOrg}
-                    activeOrg={props.match.params.id}
-                    orgOptions={orgOptions}
-                    setSelectedOrgToLocalStorage={setSelectedOrgToLocalStorage}
-                  />
-                )}
-              </OrgContainer>
-              <CreateNewSpaceModal {...props} />
-            </OuterOrgContainer>
-            <SpaceContainer>
-              {spaces && (
-                <div>
-                  {spaces.map((space, index) => (
-                    <RowDiv
-                      key={index}
-                      style={
-                        props.match.params.spaceId === space.id
-                          ? {
-                              backgroundColor: '#fff0ea',
-                              color: 'rgb(55, 71, 80)'
-                            }
-                          : {}
+                  {props.match.params.id && (
+                    <NavBarOrgDropdown
+                      // setActiveOrg={props.setActiveOrg}
+                      activeOrg={props.match.params.id}
+                      orgOptions={orgOptions}
+                      setSelectedOrgToLocalStorage={
+                        setSelectedOrgToLocalStorage
                       }
-                      to={`/mainscreen/${props.match.params.id}/${space.id}`}
-                    >
-                      {space.spaceName}
-                    </RowDiv>
-                  ))}
-                </div>
-              )}
-            </SpaceContainer>
+                    />
+                  )}
+                </OrgContainer>
+                <CreateNewSpaceModal {...props} />
+              </OuterOrgContainer>
+              <SpaceContainer>
+                {spaces && (
+                  <div>
+                    {spaces.map((space, index) => (
+                      <RowDiv
+                        key={index}
+                        style={
+                          props.match.params.spaceId === space.id
+                            ? {
+                                backgroundColor: '#fff0ea',
+                                color: 'rgb(55, 71, 80)'
+                              }
+                            : {}
+                        }
+                        to={`/mainscreen/${props.match.params.id}/${space.id}`}
+                      >
+                        {space.spaceName}
+                      </RowDiv>
+                    ))}
+                  </div>
+                )}
+              </SpaceContainer>
+            </div>
           </div>
-        </div>
+        ) : (
+          <Spinner />
+        )}
       </InnerContainer>
     </NavBarContainer>
   );
