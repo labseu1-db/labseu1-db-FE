@@ -1,6 +1,5 @@
 import Context from './Context';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Icon, Message } from 'semantic-ui-react';
 
 // firebase
 import firebase from 'firebase/app';
@@ -9,7 +8,6 @@ import 'firebase/firestore';
 
 // import Firebase Config
 import firebaseConfig from '../../firebase/firebaseConfig';
-import styled from 'styled-components';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -354,6 +352,7 @@ const ContextProvider = ({ children, ...props }) => {
     <Context.Provider
       value={{
         setError: setError,
+        error: error,
         isLoggedIn: isLoggedIn,
         firebase: firebase,
         getDataWithWhere: getDataWithWhere,
@@ -390,19 +389,8 @@ const ContextProvider = ({ children, ...props }) => {
       }}
     >
       {children}
-      {error && (
-        <StyledMessage warning attached="center">
-          <Icon name="warning" />
-          {error.message}
-        </StyledMessage>
-      )}
     </Context.Provider>
   );
 };
-
-const StyledMessage = styled(Message)`
-  position: absolute;
-  z-index: 2;
-`;
 
 export default ContextProvider;
