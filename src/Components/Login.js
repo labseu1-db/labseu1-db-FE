@@ -114,7 +114,7 @@ const Login = props => {
   }
 
   return (
-    <StyledLogin>
+    <StyledLogin aria-label="Login page">
       <StyledLoginCon>
         <StyledH1>Sign in</StyledH1>
         <StyledForm onSubmit={handleLogIn}>

@@ -87,7 +87,7 @@ const App = props => {
         render={props => <UserProfile {...props} />}
       />
       <Route
-        aria-label="Landing Page"
+        aria-label="Landing page"
         exact
         path="/"
         render={props => <LandingPage {...props} />}

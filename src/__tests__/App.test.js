@@ -2,15 +2,23 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import App from '../App';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, MemoryRouter } from 'react-router-dom';
 
 describe('<App />', () => {
-  it('Render Landing Page', () => {
+  it('Render landing page', () => {
     const { getByLabelText } = render(
-      <Router>
+      <MemoryRouter initialEntries={['/']}>
         <App />
-      </Router>
+      </MemoryRouter>
     );
-    expect(getByLabelText(/Landing Page/i)).toBeInTheDocument();
+    expect(getByLabelText(/Landing page/i)).toBeInTheDocument();
+  });
+  it('Render login page', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter initialEntries={['/login']}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Login page/i)).toBeInTheDocument();
   });
 });
