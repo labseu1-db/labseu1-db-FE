@@ -21,4 +21,12 @@ describe('<App />', () => {
     );
     expect(getByLabelText(/Login page/i)).toBeInTheDocument();
   });
+  it('Render register page', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter initialEntries={['/register']}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Register page/i)).toBeInTheDocument();
+  });
 });
