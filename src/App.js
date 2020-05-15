@@ -20,7 +20,7 @@ import UserProfile from './Components/UserProfile';
 // import Context API
 import Context from './Components/ContextProvider/Context';
 
-export const App = props => {
+const App = props => {
   return (
     <ContextProvider {...props}>
       <Route exact path="/register" render={props => <Register {...props} />} />
@@ -86,7 +86,12 @@ export const App = props => {
         path="/profile/:id"
         render={props => <UserProfile {...props} />}
       />
-      <Route exact path="/" render={props => <LandingPage {...props} />} />
+      <Route
+        aria-label="Landing page"
+        exact
+        path="/"
+        render={props => <LandingPage {...props} />}
+      />
     </ContextProvider>
   );
 };

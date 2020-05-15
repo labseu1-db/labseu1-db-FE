@@ -8,7 +8,7 @@ import ThreadMiddleComponent from './ThreadCardComponents/ThreadMiddleComponent'
 import ThreadRightComponent from './ThreadCardComponents/ThreadRightComponent';
 
 //Main component
-function ThreadCard(props) {
+export function ThreadCard(props) {
   const {
     createdBy,
     createdAt,
@@ -22,7 +22,7 @@ function ThreadCard(props) {
   } = props;
 
   return (
-    <div>
+    <div aria-label="Thread Card">
       <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText

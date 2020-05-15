@@ -5,7 +5,7 @@ function ScreenSectionHeading(props) {
   const { heading } = props;
   return (
     <div>
-      <StyledHeadingContainer>
+      <StyledHeadingContainer aria-label="Screen Section Heading">
         <div>{heading}</div>
       </StyledHeadingContainer>
     </div>

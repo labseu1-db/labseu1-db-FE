@@ -176,7 +176,7 @@ const Register = props => {
   const isInvalid =
     loginEmail === '' || loginPassword === '' || fullName === '';
   return (
-    <StyledLogin>
+    <StyledLogin aria-label="Register page">
       <StyledLoginCon>
         <StyledH1>Register</StyledH1>
         <StyledForm onSubmit={createAndLogInNewUser}>

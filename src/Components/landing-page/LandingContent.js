@@ -10,7 +10,7 @@ import productVideo from '../../images/product-video.mp4';
 export default class LandingContent extends React.Component {
   render() {
     return (
-      <StyledContent>
+      <StyledContent aria-label="Landing Content">
         <StyledContentSection>
           <video autoPlay loop muted playsInline>
             <source src={productVideo} type="video/mp4" />

@@ -8,7 +8,7 @@ export default class GifComponent extends Component {
 
   render() {
     return (
-      <div>
+      <div aria-label="Gif Component">
         <Picker
           onSelected={this.addGif}
           apiKey="ve8cXwfS3byLJzq27IQP23LyFHAGshPZ"

@@ -15,7 +15,7 @@ function ScreenHeading(props) {
   }
   return (
     <div>
-      <StyledHeadingContainer>
+      <StyledHeadingContainer aria-label="Screen Heading">
         <div className="heading">{heading}</div>
         <div className="topic">{topic}</div>
       </StyledHeadingContainer>

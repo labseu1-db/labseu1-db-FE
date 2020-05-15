@@ -10,7 +10,7 @@ import treeLogo from '../../images/pinely-logo.svg';
 export default class LandingNavbar extends React.Component {
   render() {
     return (
-      <StyledNavbar>
+      <StyledNavbar aria-label="Landing Nav">
         <NavbarContainer>
           <LeftNavbarContainer>
             <LogoContainer>

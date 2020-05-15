@@ -4,7 +4,7 @@ import backgroundImg from '../../images/background-login.svg';
 
 export default function loginAnimation() {
   return (
-    <SDContainer>
+    <SDContainer aria-label="Login Animation">
       <div />
     </SDContainer>
   );
