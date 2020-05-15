@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import App from '../App';
-import { BrowserRouter as Router, MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('<App />', () => {
   it('Render landing page', () => {
