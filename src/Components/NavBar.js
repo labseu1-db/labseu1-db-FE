@@ -140,7 +140,7 @@ const NavBar = props => {
     handleLogOut();
   }
   return (
-    <NavBarContainer>
+    <NavBarContainer aria-label="NavBar">
       <HeaderContainer>
         <InnerContainerHorizontal>
           {user.fullName && <AvatarFromLetter username={user.fullName} />}
