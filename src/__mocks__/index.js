@@ -15,6 +15,7 @@ const threads = [
     threadTopic: 'Testing 2'
   }
 ];
+export const match = { params: { id: 22 } };
 
 export const setError = () => {};
 export const isLoggedIn = () => {};

@@ -14,7 +14,8 @@ import {
   getSpacesWithOrg,
   getOrgWithUuid,
   getUsersFromOrg,
-  getThreadsWithOrg
+  getThreadsWithOrg,
+  match
 } from '../../__mocks__/index';
 
 describe('<MainScreen />', () => {
@@ -34,7 +35,7 @@ describe('<MainScreen />', () => {
             getThreadsWithOrg: getThreadsWithOrg
           }}
         >
-          <MainScreen match={{ params: { id: 22 } }} />
+          <MainScreen match={match} />
         </Context.Provider>
       </MemoryRouter>
     );
@@ -56,7 +57,7 @@ describe('<MainScreen />', () => {
             getThreadsWithOrg: getThreadsWithOrg
           }}
         >
-          <MainScreen match={{ params: { id: 22 } }} />
+          <MainScreen match={match} />
         </Context.Provider>
       </MemoryRouter>
     );
