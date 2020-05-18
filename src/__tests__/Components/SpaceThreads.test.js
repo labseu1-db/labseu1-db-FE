@@ -11,7 +11,6 @@ import {
   getSpacesWithOrg,
   getOrgWithUuid,
   getUsersFromOrg,
-  getThreadsWithOrg,
   match,
   getSpaceWithId,
   getThreadsWithSpace
