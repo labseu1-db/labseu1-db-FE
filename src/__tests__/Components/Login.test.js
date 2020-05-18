@@ -1,4 +1,3 @@
-import TestRenderer from 'react-test-renderer';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import Login from '../../Components/Login';
