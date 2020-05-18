@@ -1,14 +1,15 @@
 import TestRenderer from 'react-test-renderer';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import Register from '../../Components/Register';
+import Login from '../../Components/Login';
 import Context from '../../Components/ContextProvider/Context';
-import { BrowerRouter as Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
+import { render } from '@testing-library/react';
 
 describe('<Login />', () => {
   it('Render login page', () => {
-    const testRenderer = TestRenderer.create(
-      <Router>
+    const { getByLabelText } = render(
+      <MemoryRouter>
         <Context.Provider
           value={{
             setError: () => console.log('hello'),
@@ -16,9 +17,9 @@ describe('<Login />', () => {
             loading: false
           }}
         >
-          <Register />
+          <Login />
         </Context.Provider>
-      </Router>
+      </MemoryRouter>
     );
     expect(getByLabelText(/Login page/i)).toBeInTheDocument();
   });
