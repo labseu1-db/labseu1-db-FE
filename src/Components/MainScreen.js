@@ -121,7 +121,9 @@ const MainScreen = props => {
                 })}
             </div>
           ) : (
-            <Spinner />
+            <div aria-label="Threads spinner">
+              <Spinner />
+            </div>
           )}
         </StyledMainScreen>
         <RightSidebar />

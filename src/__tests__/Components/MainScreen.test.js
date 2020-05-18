@@ -8,6 +8,7 @@ import {
   setError,
   isLoggedIn,
   loadingFalse,
+  loadingTrue,
   useMountEffect,
   getUserDataRealTime,
   getSpacesWithOrg,
@@ -15,7 +16,6 @@ import {
   getUsersFromOrg,
   getThreadsWithOrg
 } from '../../__mocks__/index';
-import paramCase from 'param-case';
 
 describe('<MainScreen />', () => {
   it('Render MainScreen', () => {
@@ -39,5 +39,27 @@ describe('<MainScreen />', () => {
       </MemoryRouter>
     );
     expect(getByLabelText(/MainScreen/i)).toBeInTheDocument();
+  });
+  it('Render spinner instead of Threads', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter>
+        <Context.Provider
+          value={{
+            setError: setError,
+            isLoggedIn: isLoggedIn,
+            loading: loadingTrue,
+            useMountEffect: useMountEffect,
+            getUserDataRealTime: getUserDataRealTime,
+            getSpacesWithOrg: getSpacesWithOrg,
+            getOrgWithUuid: getOrgWithUuid,
+            getUsersFromOrg: getUsersFromOrg,
+            getThreadsWithOrg: getThreadsWithOrg
+          }}
+        >
+          <MainScreen match={{ params: { id: 22 } }} />
+        </Context.Provider>
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Threads spinner/i)).toBeInTheDocument();
   });
 });
