@@ -36,4 +36,22 @@ describe('<NavBar />', () => {
     );
     expect(getByLabelText(/NavBar/i)).toBeInTheDocument();
   });
+  it('Render Spinner instead of spaces', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter>
+        <Context.Provider
+          value={{
+            getOrgWithUuid: getOrgWithUuid,
+            getUserDataRealTime: getUserDataRealTime,
+            getUsersFromOrg: getUsersFromOrg,
+            getSpacesWithOrg: getSpacesWithOrg,
+            loading: loadingTrue
+          }}
+        >
+          <NavBar match={match} />
+        </Context.Provider>
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Spinner/i)).toBeInTheDocument();
+  });
 });
