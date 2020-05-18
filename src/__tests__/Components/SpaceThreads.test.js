@@ -41,4 +41,25 @@ describe('<SpaceThreads />', () => {
     );
     expect(getByLabelText(/SpaceThreads/i)).toBeInTheDocument();
   });
+  it('Render Spinner instead of MidRightContainer', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter>
+        <Context.Provider
+          value={{
+            getSpaceWithId: getSpaceWithId,
+            useMountEffect: useMountEffect,
+            getUserDataRealTime: getUserDataRealTime,
+            getUsersFromOrg: getUsersFromOrg,
+            getOrgWithUuid: getOrgWithUuid,
+            getSpacesWithOrg: getSpacesWithOrg,
+            getThreadsWithSpace: getThreadsWithSpace,
+            loading: loadingTrue
+          }}
+        >
+          <SpaceThreads match={match} />
+        </Context.Provider>
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Threads spinner/i)).toBeInTheDocument();
+  });
 });

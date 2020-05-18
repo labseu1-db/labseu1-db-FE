@@ -57,6 +57,8 @@ const SpaceThreads = props => {
     };
   }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
 
+  console.log('space', space);
+
   if (!space) {
     return (
       <StyledErrorScreen>
@@ -212,13 +214,17 @@ const SpaceThreads = props => {
                     })}
                 </div>
               ) : (
-                <Spinner />
+                <div aria-label="Threads spinner">
+                  <Spinner />
+                </div>
               )}
             </StyledMainScreen>
             <RightSidebar />
           </MidRightContainer>
         ) : (
-          <Spinner />
+          <div aria-label="Threads spinner">
+            <Spinner />
+          </div>
         )}
       </StyledMain>
     );
