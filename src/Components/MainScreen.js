@@ -47,7 +47,7 @@ const MainScreen = props => {
   }, [getThreadsWithOrg, props.match.params.id]);
 
   return (
-    <StyledMain>
+    <StyledMain aria-label="MainScreen">
       <NavBar {...props} />
       <MidRightContainer>
         <StyledMainScreen>
@@ -121,7 +121,9 @@ const MainScreen = props => {
                 })}
             </div>
           ) : (
-            <Spinner />
+            <div aria-label="Threads spinner">
+              <Spinner />
+            </div>
           )}
         </StyledMainScreen>
         <RightSidebar />

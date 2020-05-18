@@ -73,7 +73,7 @@ const SpaceThreads = props => {
     );
   } else {
     return (
-      <StyledMain>
+      <StyledMain aria-label="SpaceThreads">
         <NavBar {...props} />
         {!loading ? (
           <MidRightContainer>
@@ -212,13 +212,17 @@ const SpaceThreads = props => {
                     })}
                 </div>
               ) : (
-                <Spinner />
+                <div aria-label="Threads spinner">
+                  <Spinner />
+                </div>
               )}
             </StyledMainScreen>
             <RightSidebar />
           </MidRightContainer>
         ) : (
-          <Spinner />
+          <div aria-label="Threads spinner">
+            <Spinner />
+          </div>
         )}
       </StyledMain>
     );
