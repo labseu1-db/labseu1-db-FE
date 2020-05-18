@@ -4,6 +4,12 @@ import Login from '../../Components/Login';
 import Context from '../../Components/ContextProvider/Context';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
+import {
+  setError,
+  loadingTrue,
+  loadingFalse,
+  isLoggedIn
+} from '../../__mocks__/index';
 
 describe('<Login />', () => {
   it('Render login page', () => {
@@ -11,9 +17,9 @@ describe('<Login />', () => {
       <MemoryRouter>
         <Context.Provider
           value={{
-            setError: () => {},
-            isLoggedIn: () => {},
-            loading: false
+            setError: setError,
+            isLoggedIn: isLoggedIn,
+            loading: loadingFalse
           }}
         >
           <Login />
@@ -27,9 +33,9 @@ describe('<Login />', () => {
       <MemoryRouter>
         <Context.Provider
           value={{
-            setError: () => {},
-            isLoggedIn: () => {},
-            loading: true
+            setError: setError,
+            isLoggedIn: isLoggedIn,
+            loading: loadingTrue
           }}
         >
           <Login />
