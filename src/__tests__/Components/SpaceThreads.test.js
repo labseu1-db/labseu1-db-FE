@@ -5,9 +5,6 @@ import Context from '../../Components/ContextProvider/Context';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import {
-  setError,
-  isLoggedIn,
-  loadingFalse,
   loadingTrue,
   useMountEffect,
   getUserDataRealTime,
