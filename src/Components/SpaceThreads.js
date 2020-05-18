@@ -57,8 +57,6 @@ const SpaceThreads = props => {
     };
   }, [getSpaceWithId, getThreadsWithSpace, props.match.params.spaceId]);
 
-  console.log('space', space);
-
   if (!space) {
     return (
       <StyledErrorScreen>
