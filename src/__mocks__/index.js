@@ -16,6 +16,7 @@ const threads = [
   }
 ];
 export const match = { params: { id: 22 } };
+const space = { spaceName: 'Space 1' };
 
 export const setError = () => {};
 export const isLoggedIn = () => {};
@@ -27,3 +28,5 @@ export const getSpacesWithOrg = (setData, orgId) => () => setData(spaces);
 export const getOrgWithUuid = (setData, uuid) => () => setData(orgs);
 export const getUsersFromOrg = (setData, orgId) => () => setData(users);
 export const getThreadsWithOrg = (setData, orgId) => () => setData(threads);
+export const getSpaceWithId = (setData, spaceId) => () => setData(space);
+export const getThreadsWithSpace = (setData, spaceId) => () => setData(threads);

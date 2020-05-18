@@ -73,7 +73,7 @@ const SpaceThreads = props => {
     );
   } else {
     return (
-      <StyledMain>
+      <StyledMain aria-label="SpaceThreads">
         <NavBar {...props} />
         {!loading ? (
           <MidRightContainer>
