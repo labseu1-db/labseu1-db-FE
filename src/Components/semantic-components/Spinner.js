@@ -3,7 +3,7 @@ import { Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const Spinner = () => (
-  <StyledSpinner>
+  <StyledSpinner aria-label="Spinner">
     <Loader active size="small" />
   </StyledSpinner>
 );

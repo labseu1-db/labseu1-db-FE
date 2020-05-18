@@ -12,8 +12,8 @@ describe('<Login />', () => {
       <MemoryRouter>
         <Context.Provider
           value={{
-            setError: () => console.log('hello'),
-            isLoggedIn: name => console.log(name),
+            setError: () => {},
+            isLoggedIn: () => {},
             loading: false
           }}
         >
@@ -22,5 +22,21 @@ describe('<Login />', () => {
       </MemoryRouter>
     );
     expect(getByLabelText(/Login page/i)).toBeInTheDocument();
+  });
+  it('Render Spinner on login page', () => {
+    const { getByLabelText } = render(
+      <MemoryRouter>
+        <Context.Provider
+          value={{
+            setError: () => {},
+            isLoggedIn: () => {},
+            loading: true
+          }}
+        >
+          <Login />
+        </Context.Provider>
+      </MemoryRouter>
+    );
+    expect(getByLabelText(/Spinner/i)).toBeInTheDocument();
   });
 });

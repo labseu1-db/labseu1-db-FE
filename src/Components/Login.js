@@ -56,8 +56,6 @@ const Login = props => {
     isLoggedIn('login');
   }, [isLoggedIn]);
 
-  console.log('error', error);
-
   const handleInputChange = e => {
     switch (e.target.name) {
       case 'loginEmail':
