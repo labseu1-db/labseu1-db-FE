@@ -4,6 +4,7 @@ import Register from '../../Components/Register';
 import Context from '../../Components/ContextProvider/Context';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
+import { isLoggedIn, setError, loadingFalse } from '../../__mocks__/index';
 
 describe('<Regiset />', () => {
   it('Render Register page', () => {
@@ -11,9 +12,9 @@ describe('<Regiset />', () => {
       <MemoryRouter>
         <Context.Provider
           value={{
-            setError: () => {},
-            isLoggedIn: () => {},
-            loading: false
+            setError: setError,
+            isLoggedIn: isLoggedIn,
+            loading: loadingFalse
           }}
         >
           <Register />

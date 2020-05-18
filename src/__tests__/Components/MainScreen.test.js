@@ -38,5 +38,6 @@ describe('<MainScreen />', () => {
         </Context.Provider>
       </MemoryRouter>
     );
+    expect(getByLabelText(/MainScreen/i)).toBeInTheDocument();
   });
 });

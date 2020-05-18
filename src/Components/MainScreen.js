@@ -47,7 +47,7 @@ const MainScreen = props => {
   }, [getThreadsWithOrg, props.match.params.id]);
 
   return (
-    <StyledMain>
+    <StyledMain aria-label="MainScreen">
       <NavBar {...props} />
       <MidRightContainer>
         <StyledMainScreen>
