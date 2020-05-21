@@ -19,6 +19,7 @@ const threads = [
 ];
 export const match = { params: { id: 22 } };
 const space = { spaceName: 'Space 1' };
+const comments = [{ commentBody: 'Hello', id: 22 }];
 
 export const history = { goBack: () => {} };
 
@@ -35,5 +36,5 @@ export const getThreadsWithOrg = (setData, orgId) => () => setData(threads);
 export const getSpaceWithId = (setData, spaceId) => () => setData(space);
 export const getThreadsWithSpace = (setData, spaceId) => () => setData(threads);
 export const updateDataWithDoc = () => {};
-export const getCommentsWithThread = (setData, threadId) => () => setData();
+export const getCommentsWithThread = (setData, threadId) => () => setData([]);
 export const getThreadWithId = (setData, threadId) => () => setData();

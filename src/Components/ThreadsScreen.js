@@ -114,7 +114,9 @@ const ThreadsScreen = props => {
           <RightSidebar />
         </MidRightContainer>
       ) : (
-        <Spinner />
+        <div>
+          <Spinner />
+        </div>
       )}
     </StyledMain>
   );

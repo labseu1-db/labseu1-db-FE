@@ -6,7 +6,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import {
   setError,
-  loadingTrue,
   getUserDataRealTime,
   isLoggedIn,
   useMountEffect,
