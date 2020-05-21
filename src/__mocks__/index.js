@@ -20,6 +20,8 @@ const threads = [
 export const match = { params: { id: 22 } };
 const space = { spaceName: 'Space 1' };
 const comments = [{ commentBody: 'Hello', id: 22 }];
+export const resetPasswordStatusFalse = false;
+export const resetPasswordStatusTrue = true;
 
 export const history = { goBack: () => {} };
 

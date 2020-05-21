@@ -114,7 +114,7 @@ const ThreadsScreen = props => {
           <RightSidebar />
         </MidRightContainer>
       ) : (
-        <div>
+        <div aria-label="Spinner ThreadsScreen">
           <Spinner />
         </div>
       )}
