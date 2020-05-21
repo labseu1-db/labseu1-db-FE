@@ -5,6 +5,7 @@ const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
 const orgs = [{ orgName: 'Org 1' }, { orgName: 'Org 2' }];
 const users = [{ fullName: 'Thorben' }, { fullName: 'Sam' }];
 const user = { fullName: 'Thorben' };
+const org = { id: 22, createdByUserId: null };
 const threads = [
   {
     threadName: 'Thread 1',
@@ -40,3 +41,4 @@ export const getThreadsWithSpace = (setData, spaceId) => () => setData(threads);
 export const updateDataWithDoc = () => {};
 export const getCommentsWithThread = (setData, threadId) => () => setData([]);
 export const getThreadWithId = (setData, threadId) => () => setData();
+export const getOrgWithId = (setData, uuid) => () => setData(org);
