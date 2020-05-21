@@ -5,18 +5,11 @@ import Context from '../../Components/ContextProvider/Context';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import {
-  setError,
   getUserDataRealTime,
-  isLoggedIn,
-  useMountEffect,
   match,
-  history,
   getUsersFromOrg,
   getOrgWithUuid,
   getSpacesWithOrg,
-  updateDataWithDoc,
-  getCommentsWithThread,
-  getThreadWithId,
   resetPasswordStatusFalse
 } from '../../__mocks__/index';
 
