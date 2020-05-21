@@ -65,7 +65,7 @@ const ThreadsScreen = props => {
   ]);
 
   return (
-    <StyledMain>
+    <StyledMain aria-label="ThreadsScreen">
       <NavBar {...props} />
       {!loading ? (
         <MidRightContainer>
