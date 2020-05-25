@@ -10,8 +10,7 @@ import {
   getUsersFromOrg,
   getOrgWithUuid,
   getOrgWithId,
-  getSpacesWithOrg,
-  resetPasswordStatusFalse
+  getSpacesWithOrg
 } from '../../__mocks__/index';
 
 describe('<UpgradeAccount />', () => {
