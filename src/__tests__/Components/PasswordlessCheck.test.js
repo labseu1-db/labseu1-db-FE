@@ -28,5 +28,6 @@ describe('<PasswordlessCheck />', () => {
       </MemoryRouter>
     );
     expect(getByLabelText(/PasswordlessCheck/i)).toBeInTheDocument();
+    window.prompt.mockClear();
   });
 });
