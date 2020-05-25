@@ -18,6 +18,8 @@ const threads = [
     threadTopic: 'Testing 2'
   }
 ];
+
+export const error = false;
 export const match = { params: { id: 22 } };
 const space = { spaceName: 'Space 1' };
 const comments = [{ commentBody: 'Hello', id: 22 }];

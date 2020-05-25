@@ -62,7 +62,7 @@ const PasswordlessSubmit = props => {
 
   const isInvalid = loginEmail === '';
   return (
-    <StyledLogin>
+    <StyledLogin aria-label="PasswordlessSubmit">
       <StyledLoginCon>
         <StyledH1>Passwordless Sign In</StyledH1>
         <StyledForm
