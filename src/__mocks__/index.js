@@ -27,6 +27,15 @@ export const resetPasswordStatusFalse = false;
 export const resetPasswordStatusTrue = true;
 
 export const history = { goBack: () => {} };
+export const firebase = {
+  auth: () => {
+    return {
+      signInWithEmailLink: () => {
+        return { catch: () => {} };
+      }
+    };
+  }
+};
 
 export const setError = () => {};
 export const isLoggedIn = () => {};
