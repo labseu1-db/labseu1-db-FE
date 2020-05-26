@@ -49,7 +49,7 @@ const UpgradeAccount = props => {
     );
   }
   return (
-    <StyledMain>
+    <StyledMain aria-label="UpgradeAccount">
       <Navbar {...props} />
       <StyledMainScreen>
         <StyledFirstRow>

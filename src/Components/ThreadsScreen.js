@@ -65,7 +65,7 @@ const ThreadsScreen = props => {
   ]);
 
   return (
-    <StyledMain>
+    <StyledMain aria-label="ThreadsScreen">
       <NavBar {...props} />
       {!loading ? (
         <MidRightContainer>
@@ -114,7 +114,9 @@ const ThreadsScreen = props => {
           <RightSidebar />
         </MidRightContainer>
       ) : (
-        <Spinner />
+        <div aria-label="Spinner ThreadsScreen">
+          <Spinner />
+        </div>
       )}
     </StyledMain>
   );

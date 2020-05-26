@@ -143,7 +143,7 @@ const UserManagement = props => {
 
   if (org.createdByUserId === localStorage.getItem('uuid')) {
     return (
-      <Modal open={true} size="tiny">
+      <Modal open={true} size="tiny" aria-label="Admin">
         <StyledContainer>
           <StyledMainHeader>Your Team</StyledMainHeader>
 
@@ -260,7 +260,7 @@ const UserManagement = props => {
   }
   if (org.createdByUserId !== localStorage.getItem('uuid')) {
     return (
-      <Modal open={true} size="tiny">
+      <Modal open={true} size="tiny" aria-label="User">
         <StyledContainer>
           <StyledMainHeader>Your team</StyledMainHeader>
 

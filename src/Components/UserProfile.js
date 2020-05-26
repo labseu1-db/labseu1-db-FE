@@ -15,7 +15,7 @@ const UserProfile = props => {
     return <Redirect to={`/changePassword/${props.match.params.id}`} />;
   }
   return (
-    <StyledMain>
+    <StyledMain aria-label="UserProfile">
       <Navbar {...props} />
       <StyledMainScreen>
         <ProfileCard {...props} />

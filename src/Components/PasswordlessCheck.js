@@ -49,7 +49,7 @@ const PasswordlessCheck = props => {
   }, [getEmail, isLoggedIn]);
 
   return (
-    <div>
+    <div aria-label="PasswordlessCheck">
       <StyledH1>Verifying User...</StyledH1>
     </div>
   );

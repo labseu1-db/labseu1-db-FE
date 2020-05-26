@@ -72,7 +72,7 @@ const ForgotPassword = props => {
 
   const isInvalid = loginEmail === '';
   return (
-    <StyledLogin>
+    <StyledLogin aria-label="ForgotPassword">
       <StyledLoginCon>
         <StyledH1>Reset Password</StyledH1>
         <StyledForm

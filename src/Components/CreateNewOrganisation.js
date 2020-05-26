@@ -219,7 +219,7 @@ const CreateNewOrganisation = props => {
     return <Spinner />;
   }
   return (
-    <div>
+    <div aria-label="CreateNewOrganisation">
       {modal === 'CreateOrganisationModal' && (
         <CreateOrganisationModal
           shoudlBeOpen={true}
