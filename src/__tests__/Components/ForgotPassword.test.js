@@ -4,15 +4,7 @@ import ForgotPassword from '../../Components/ForgotPassword';
 import Context from '../../Components/ContextProvider/Context';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import {
-  getUserDataRealTime,
-  match,
-  redirect,
-  getUsersFromOrg,
-  getOrgWithUuid,
-  getOrgWithId,
-  getSpacesWithOrg
-} from '../../__mocks__/index';
+import { match, redirect } from '../../__mocks__/index';
 
 describe('<ForgotPassword />', () => {
   it('Render ForgotPassword', () => {
