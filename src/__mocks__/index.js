@@ -37,6 +37,7 @@ export const firebase = {
   }
 };
 
+export const setModal = () => {};
 export const redirect = () => {};
 export const setError = () => {};
 export const isLoggedIn = () => {};
