@@ -23,7 +23,7 @@ const CheckoutFormContainer = props => {
     <Modal
       trigger={
         <div>
-          <UpgradePlanButton onClick={handleOpen}>
+          <UpgradePlanButton onClick={handleOpen} aria-label="OpenModal">
             <div>Upgrade Plan</div>
           </UpgradePlanButton>
         </div>
