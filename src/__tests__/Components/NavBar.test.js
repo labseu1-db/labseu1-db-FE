@@ -29,7 +29,7 @@ describe('<NavBar />', () => {
         </Context.Provider>
       </MemoryRouter>
     );
-    expect(getByLabelText(/NavBar/i)).toBeInTheDocument();
+    expect(getByLabelText('NavBar')).toBeInTheDocument();
   });
   it('Render Spinner instead of spaces', () => {
     const { getByLabelText } = render(
@@ -47,6 +47,6 @@ describe('<NavBar />', () => {
         </Context.Provider>
       </MemoryRouter>
     );
-    expect(getByLabelText(/Spinner/i)).toBeInTheDocument();
+    expect(getByLabelText(/Spinner/)).toBeInTheDocument();
   });
 });
