@@ -26,7 +26,7 @@ const comments = [{ commentBody: 'Hello', id: 22 }];
 export const resetPasswordStatusFalse = false;
 export const resetPasswordStatusTrue = true;
 
-export const history = { goBack: () => {} };
+export const history = { goBack: () => {}, redirect: () => {} };
 export const firebase = {
   auth: () => {
     return {
@@ -37,6 +37,7 @@ export const firebase = {
   }
 };
 
+export const redirect = () => {};
 export const setError = () => {};
 export const isLoggedIn = () => {};
 export const loadingFalse = false;
