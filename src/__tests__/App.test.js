@@ -11,7 +11,7 @@ describe('<App />', () => {
         <App />
       </MemoryRouter>
     );
-    expect(getByLabelText(/Landing page/i)).toBeInTheDocument();
+    expect(getByLabelText('LandingPage')).toBeInTheDocument();
   });
   it('Render login page', () => {
     const { getByLabelText } = render(

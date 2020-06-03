@@ -10,7 +10,7 @@ import landingPageBanner from '../../images/landing-banner-bulb.svg';
 export default class LandingBanner extends React.Component {
   render() {
     return (
-      <StyledLandingBanner aria-label="Landing Banner">
+      <StyledLandingBanner aria-label="LandingBanner">
         <LandingHeader>
           <h1>
             Making decision making simpler, more pleasant and more productive

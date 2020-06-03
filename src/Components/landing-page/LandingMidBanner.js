@@ -9,7 +9,7 @@ import styled from 'styled-components';
 export default class LandingMidBanner extends React.Component {
   render() {
     return (
-      <StyledMidBanner aria-label="Landing Mid Banner">
+      <StyledMidBanner aria-label="LandingMidBanner">
         <h1>Better discussions, better decisions.</h1>
         <div>
           We believe, that better discussions bring better decisions. Get your

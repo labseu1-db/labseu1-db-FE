@@ -16,7 +16,7 @@ import backgroundTeam from '../../images/background-team.svg';
 export default class LandingTeam extends React.Component {
   render() {
     return (
-      <StyledTeamContainer id="team" aria-label="Landing Team">
+      <StyledTeamContainer id="team" aria-label="LandingTeam">
         <h3>The amazing team behind Pinely</h3>
         <StyledPeopleConatiner>
           <StyledCard>
