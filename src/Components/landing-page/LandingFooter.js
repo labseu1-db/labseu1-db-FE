@@ -9,7 +9,7 @@ import styled from 'styled-components';
 export default class LandingFooter extends React.Component {
   render() {
     return (
-      <StyledFooter aria-label="Landing Footer">
+      <StyledFooter aria-label="LandingFooter">
         Created in © 2019. All rights reserved.
       </StyledFooter>
     );
