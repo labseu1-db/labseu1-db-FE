@@ -65,7 +65,7 @@ const DeleteSpaceModal = props => {
   };
 
   return (
-    <Modal open={props.shoudlBeOpen} size="small">
+    <Modal open={props.shoudlBeOpen} size="small" aria-label="DeleteSpaceModal">
       <StyledContainer>
         <Modal.Header>
           <div>

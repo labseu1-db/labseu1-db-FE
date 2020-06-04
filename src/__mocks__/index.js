@@ -1,6 +1,7 @@
 import { comment } from 'postcss';
 
 // Data
+export const space = { spaceName: 'Test 1' };
 export const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
 const orgs = [{ orgName: 'Org 1' }, { orgName: 'Org 2' }];
 const users = [{ fullName: 'Thorben' }, { fullName: 'Sam' }];
@@ -24,7 +25,6 @@ export const emptyModal = '';
 export const newSpaceModal = 'CreateSpaceModal';
 export const error = false;
 export const match = { params: { id: 22 } };
-const space = { spaceName: 'Space 1' };
 const comments = [{ commentBody: 'Hello', id: 22 }];
 export const resetPasswordStatusFalse = false;
 export const resetPasswordStatusTrue = true;
