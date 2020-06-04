@@ -19,6 +19,8 @@ const threads = [
   }
 ];
 
+export const emptyModal = '';
+export const newSpaceModal = 'CreateSpaceModal';
 export const error = false;
 export const match = { params: { id: 22 } };
 const space = { spaceName: 'Space 1' };

@@ -103,12 +103,13 @@ const CreateNewSpaceModal = props => {
       <img
         src={plusIcon}
         alt="plus icon"
+        aria-label="OpenCreateNewSpaceModal"
         onClick={() => setModal('CreateSpaceModal')}
         disabled={!props.match.params.id}
       />
 
       {modal === 'CreateSpaceModal' && (
-        <Modal open={true} size="tiny">
+        <Modal open={true} size="tiny" aria-label="CreateNewSpaceModal">
           <StyledContainer>
             <Modal.Header>
               <div>
