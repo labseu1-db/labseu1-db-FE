@@ -19,6 +19,7 @@ const threads = [
   }
 ];
 
+export const isOpen = true;
 export const emptyModal = '';
 export const newSpaceModal = 'CreateSpaceModal';
 export const error = false;
