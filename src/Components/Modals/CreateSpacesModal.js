@@ -33,7 +33,7 @@ const CreateSpacesModal = props => {
   return (
     <Modal open={props.shoudlBeOpen} basic size="tiny">
       <ProgressBar activeDots={3} bulletpoints={3} />
-      <StyledModalH1>
+      <StyledModalH1 aria-label="CreateSpacesModal">
         <Modal.Header content="Create few spaces" />
       </StyledModalH1>
       <StyledModalCard>
