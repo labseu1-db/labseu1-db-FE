@@ -1,7 +1,10 @@
 import { comment } from 'postcss';
 
 // Data
-export const space = { spaceName: 'Test 1' };
+export const space = {
+  spaceName: 'Test 1',
+  arrayOfUserIdsInSpace: [24, 305, 348, 849084]
+};
 export const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
 const orgs = [{ orgName: 'Org 1' }, { orgName: 'Org 2' }];
 const users = [{ fullName: 'Thorben' }, { fullName: 'Sam' }];
@@ -41,6 +44,7 @@ export const firebase = {
 };
 
 export const setModal = () => {};
+export const closeModal = () => {};
 export const redirect = () => {};
 export const setError = () => {};
 export const isLoggedIn = () => {};

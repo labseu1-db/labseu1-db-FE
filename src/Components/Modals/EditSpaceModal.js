@@ -117,7 +117,7 @@ const EditSpaceModal = props => {
     }));
 
   return (
-    <Modal open={props.shoudlBeOpen} size="tiny">
+    <Modal open={props.shoudlBeOpen} size="tiny" aria-label="EditSpaceModal">
       <StyledContainer>
         <Modal.Header>
           <div>
