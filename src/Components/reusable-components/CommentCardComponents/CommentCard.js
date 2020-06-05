@@ -14,7 +14,7 @@ import AvatarFromLetter from '../AvatarFromLetter';
 import Context from '../../ContextProvider/Context';
 
 //Main component
-export const CommentCard = props => {
+const CommentCard = props => {
   // use context api
   const { updateDataWithDoc, deleteData, firebase } = useContext(Context);
 
@@ -64,7 +64,7 @@ export const CommentCard = props => {
     '0' + dateInfo.getMinutes()
   ).slice(-2)}`;
   return (
-    <StyledContainer>
+    <StyledContainer aria-label="CommentCard">
       <StyledCommentContainer
         className={`${isCommentDecided && 'paddingTop'}`}
         onMouseEnter={() => setIsHovering(true)}
