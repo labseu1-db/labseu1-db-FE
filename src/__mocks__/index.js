@@ -23,6 +23,11 @@ const threads = [
   }
 ];
 
+export const teamEmailAddress = [
+  'test1@gmail.com',
+  'test2@gmail.com',
+  'test3@gmail.com'
+];
 export const isOpen = true;
 export const emptyModal = '';
 export const newSpaceModal = 'CreateSpaceModal';
