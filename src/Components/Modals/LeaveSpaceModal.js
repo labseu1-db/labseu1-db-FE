@@ -41,7 +41,7 @@ const LeaveSpaceModal = props => {
   };
 
   return (
-    <Modal open={props.shoudlBeOpen} size="small">
+    <Modal open={props.shoudlBeOpen} size="small" aria-label="LeaveSpaceModal">
       <StyledContainer>
         <Modal.Header>
           <div>
