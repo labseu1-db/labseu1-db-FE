@@ -22,7 +22,7 @@ export function ThreadCard(props) {
   } = props;
 
   return (
-    <div aria-label="Thread Card">
+    <div aria-label="ThreadCard">
       <StyledThreadContainer onClick={onClick}>
         <ThreadLeftComponentImage checked={checked} createdBy={createdBy} />
         <ThreadLeftComponentText

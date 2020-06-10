@@ -114,7 +114,7 @@ const NewCommentCard = props => {
   };
 
   return (
-    <StyledCommentContainer>
+    <StyledCommentContainer aria-label="NewCommentCard">
       {error === 'wordIsTooLong' && (
         <Message warning attached="bottom">
           <Icon name="warning" />A word can only be 70 characters long

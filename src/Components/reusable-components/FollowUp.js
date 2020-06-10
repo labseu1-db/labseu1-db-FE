@@ -37,7 +37,7 @@ const FollowUp = props => {
   }, [getFollowUpThreads, props.match.params.id]);
 
   return (
-    <StyledMain>
+    <StyledMain aria-label="FollowUp">
       <NavBar {...props} />
       <StyledFollowUp>
         <StyledFirstRow>

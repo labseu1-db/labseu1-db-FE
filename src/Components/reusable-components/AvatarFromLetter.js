@@ -12,7 +12,7 @@ export default function AvatarFromLetter(props) {
     return <Spinner />;
   }
   return (
-    <StyledImageContainer style={style} aria-label="Avatar Letter">
+    <StyledImageContainer style={style} aria-label="AvatarFromLetter">
       <div
         className={
           props.username[0].toUpperCase() < 'E'

@@ -4,7 +4,7 @@ import ProfileOrgField from './ProfileOrgField';
 
 export function ProfileCardOrgsField(props) {
   return (
-    <StyledProfileCardOrgsField aria-label="Orgs Field">
+    <StyledProfileCardOrgsField aria-label="ProfileCardOrgsField">
       {props.orgs &&
         props.orgs.map(org => {
           return <ProfileOrgField key={org.id} org={org} user={props.user} />;

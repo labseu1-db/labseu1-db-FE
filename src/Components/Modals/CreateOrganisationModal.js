@@ -12,10 +12,14 @@ const CreateCompanyModal = props => {
   // };
 
   const [orgName, setOrgName] = useState('');
-
   //Render component
   return (
-    <Modal open={props.shoudlBeOpen} basic size="tiny">
+    <Modal
+      open={props.shoudlBeOpen}
+      basic
+      size="tiny"
+      aria-label="CreateOrganisationModal"
+    >
       <ProgressBar activeDots={1} bulletpoints={3} />
       <StyledModalH1>
         <Modal.Header content="Create an organisation" />

@@ -6,7 +6,7 @@ function ThreadMiddleComponent(props) {
   const { heading, info } = props;
   const shorterInfo = info.substr(0, 175);
   return (
-    <StyledMiddleContainer aria-label="Thread Middle">
+    <StyledMiddleContainer aria-label="ThreadMiddleComponent">
       <div className="thread-heading">{heading}</div>
       {/* If lenght of info is longer than 175 characters, make it shorter and add ...*/}
       {info.length < 170 ? (

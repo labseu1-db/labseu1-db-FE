@@ -1,11 +1,17 @@
-import { comment } from 'postcss';
-
 // Data
-const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
+export const space = {
+  spaceName: 'Test 1',
+  arrayOfUserIdsInSpace: [24, 305, 348, 849084]
+};
+export const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
 const orgs = [{ orgName: 'Org 1' }, { orgName: 'Org 2' }];
 const users = [{ fullName: 'Thorben' }, { fullName: 'Sam' }];
-const user = { fullName: 'Thorben' };
-const org = { id: 22, createdByUserId: null };
+export const user = {
+  fullName: 'Thorben',
+  userEmail: 'test1@gmail.com',
+  username: 'Test1'
+};
+export const org = { id: 22, createdByUserId: null, orgName: 'Org 1' };
 const threads = [
   {
     threadName: 'Thread 1',
@@ -19,10 +25,21 @@ const threads = [
   }
 ];
 
+export const info = 'Test info';
+export const topic = 'test topic';
+export const arrayOfUsersWhoLiked = [22, 359, 3959, 9459];
+export const teamEmailAddress = [
+  'test1@gmail.com',
+  'test2@gmail.com',
+  'test3@gmail.com'
+];
+export const isOpen = true;
+export const emptyModal = '';
+export const newSpaceModal = 'CreateSpaceModal';
 export const error = false;
 export const match = { params: { id: 22 } };
-const space = { spaceName: 'Space 1' };
-const comments = [{ commentBody: 'Hello', id: 22 }];
+export const comment = { content: 'Hello', id: 22 };
+export const comments = [{ content: 'Hello', id: 22 }];
 export const resetPasswordStatusFalse = false;
 export const resetPasswordStatusTrue = true;
 
@@ -38,6 +55,7 @@ export const firebase = {
 };
 
 export const setModal = () => {};
+export const closeModal = () => {};
 export const redirect = () => {};
 export const setError = () => {};
 export const isLoggedIn = () => {};
@@ -53,5 +71,6 @@ export const getSpaceWithId = (setData, spaceId) => () => setData(space);
 export const getThreadsWithSpace = (setData, spaceId) => () => setData(threads);
 export const updateDataWithDoc = () => {};
 export const getCommentsWithThread = (setData, threadId) => () => setData([]);
+export const getFollowUpThreads = (setData, threadId) => () => setData([]);
 export const getThreadWithId = (setData, threadId) => () => setData();
 export const getOrgWithId = (setData, uuid) => () => setData(org);

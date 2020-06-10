@@ -41,7 +41,7 @@ export const ThreadRightComponent = props => {
   };
 
   return (
-    <div>
+    <div aria-label="ThreadRightComponent">
       {!props.isFollowUpDecided && (
         <StyledRightContainer onClick={e => markAsFollowUp(e)}>
           <StyledFollowUpButton>Follow Up</StyledFollowUpButton>

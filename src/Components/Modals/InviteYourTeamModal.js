@@ -53,7 +53,12 @@ const InviteYourTeamModal = props => {
 
   //Render component
   return (
-    <Modal open={props.shoudlBeOpen} basic size="tiny">
+    <Modal
+      open={props.shoudlBeOpen}
+      basic
+      size="tiny"
+      aria-label="InviteYourTeamModal"
+    >
       <ProgressBar activeDots={2} bulletpoints={3} />
       <StyledModalH1>
         <Modal.Header content="Invite your team" />

@@ -25,7 +25,7 @@ export function ThreadInformationCard(props) {
     '0' + dateInfo.getMinutes()
   ).slice(-2)}`;
   return (
-    <StyledThreadContainer aria-label="Thread Information Card">
+    <StyledThreadContainer aria-label="ThreadInformationCard">
       <StyledTopContent>
         <AvatarFromLetter username={createdBy} marginBottom="8px" />
         <StyledRightSideOfContainer>

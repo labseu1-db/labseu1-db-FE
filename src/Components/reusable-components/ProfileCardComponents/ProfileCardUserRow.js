@@ -65,7 +65,7 @@ export const ProfileCardUserRow = props => {
   };
 
   return (
-    <StyledFirstRow onKeyDown={escFunction}>
+    <StyledFirstRow onKeyDown={escFunction} aria-label="ProfileCardUserRow">
       {/* <StyledImg src={props.user.profileUrl} alt='user' /> */}
       {!editingProfileStatus && (
         <StyledNameSpan aria-label="full name">{user.fullName}</StyledNameSpan>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export function ProfileOrgField(props) {
   return (
-    <StyledProfileOrgField aria-label="Org Field">
+    <StyledProfileOrgField aria-label="ProfileOrgField">
       <StyledOrgName>{props.org.orgName}</StyledOrgName>
       <div>
         <StyledProfileUserRole>User</StyledProfileUserRole>
