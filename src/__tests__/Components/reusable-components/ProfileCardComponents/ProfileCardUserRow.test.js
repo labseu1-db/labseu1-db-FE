@@ -7,7 +7,6 @@ import {
   updateDataWithDoc,
   getUserDataRealTime
 } from '../../../../__mocks__/index';
-import { getByLabelText } from 'react-testing-library';
 
 describe('<ProfileCardUserRow />', () => {
   it('Render ProfileCardUserRow', () => {
