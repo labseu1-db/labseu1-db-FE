@@ -36,7 +36,7 @@ export const CommentDropdown = props => {
   };
 
   return (
-    <StyledDropdown>
+    <StyledDropdown aria-label="CommentDropdown">
       <Dropdown>
         <Dropdown.Menu>
           {!props.isCommentDecided && (
