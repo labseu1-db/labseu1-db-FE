@@ -26,6 +26,7 @@ const threads = [
 ];
 
 export const info = 'Test info';
+export const topic = 'test topic';
 export const arrayOfUsersWhoLiked = [22, 359, 3959, 9459];
 export const teamEmailAddress = [
   'test1@gmail.com',

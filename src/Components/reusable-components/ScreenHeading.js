@@ -5,7 +5,7 @@ function ScreenHeading(props) {
   const { heading, info, topic } = props;
   if (!topic) {
     return (
-      <div>
+      <div aria-label="ScreenHeading without topic">
         <StyledHeadingContainer>
           <div className="heading">{heading}</div>
           <div className="info">{info}</div>
@@ -15,7 +15,7 @@ function ScreenHeading(props) {
   }
   return (
     <div>
-      <StyledHeadingContainer aria-label="Screen Heading">
+      <StyledHeadingContainer aria-label="ScreenHeading with topic">
         <div className="heading">{heading}</div>
         <div className="topic">{topic}</div>
       </StyledHeadingContainer>
