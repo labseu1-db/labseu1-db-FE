@@ -6,7 +6,11 @@ export const space = {
 export const spaces = [{ spaceName: 'Test 1' }, { spaceName: 'Test 2' }];
 const orgs = [{ orgName: 'Org 1' }, { orgName: 'Org 2' }];
 const users = [{ fullName: 'Thorben' }, { fullName: 'Sam' }];
-export const user = { fullName: 'Thorben', userEmail: 'test1@gmail.com' };
+export const user = {
+  fullName: 'Thorben',
+  userEmail: 'test1@gmail.com',
+  username: 'Test1'
+};
 export const org = { id: 22, createdByUserId: null, orgName: 'Org 1' };
 const threads = [
   {
