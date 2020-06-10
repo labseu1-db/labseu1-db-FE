@@ -70,5 +70,6 @@ export const getSpaceWithId = (setData, spaceId) => () => setData(space);
 export const getThreadsWithSpace = (setData, spaceId) => () => setData(threads);
 export const updateDataWithDoc = () => {};
 export const getCommentsWithThread = (setData, threadId) => () => setData([]);
+export const getFollowUpThreads = (setData, threadId) => () => setData([]);
 export const getThreadWithId = (setData, threadId) => () => setData();
 export const getOrgWithId = (setData, uuid) => () => setData(org);
