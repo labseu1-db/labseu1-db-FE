@@ -9,7 +9,7 @@ export class Placeholder extends React.Component {
   render() {
     const { heading, info, image } = this.props;
     return (
-      <div aria-label="Place Holder">
+      <div aria-label="Placeholder">
         {this.state.isPlaceholderActive && (
           <StyledPlaceholderContainer>
             <StyledPlaceholderHeading>
