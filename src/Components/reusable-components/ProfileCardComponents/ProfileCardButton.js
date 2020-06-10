@@ -13,7 +13,7 @@ export function ProfileCardButton(props) {
     <ProfileCardButtonStyled
       style={style}
       onClick={onClick}
-      aria-label="profile button"
+      aria-label="ProfileCardButton"
     >
       {content}
     </ProfileCardButtonStyled>
