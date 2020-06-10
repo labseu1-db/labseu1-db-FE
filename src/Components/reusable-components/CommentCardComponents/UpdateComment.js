@@ -39,6 +39,7 @@ export const UpdateComment = props => {
 
   return (
     <StyledCommentContainer
+      aria-label="UpdateComment"
       onSubmit={e => {
         this.props.setIsUpdating(false);
         this.updateComment(e);
