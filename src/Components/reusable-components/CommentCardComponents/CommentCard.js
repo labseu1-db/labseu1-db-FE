@@ -18,15 +18,8 @@ const CommentCard = props => {
   // use context api
   const { updateDataWithDoc, deleteData, firebase } = useContext(Context);
 
-  const [didUserLikeComment, setDidUserLikeComment] = useState(
-    props.arrayOfUsersWhoLiked.includes(localStorage.getItem('uuid'))
-  );
   const [isUpdating, setUpdating] = useState(false);
   const [isHovering, setHovering] = useState(false);
-
-  const toggleLikePhoto = () => {
-    setDidUserLikeComment(prevState => !prevState);
-  };
 
   const deleteComment = id => {
     let request = {
@@ -102,12 +95,13 @@ const CommentCard = props => {
             )}
             {gifUrl && <GifInComment src={gifUrl} alt="gif" />}
             <StyledLikesContainer>
-              {!didUserLikeComment && (
+              {!props.arrayOfUsersWhoLiked.includes(
+                localStorage.getItem('uuid')
+              ) && (
                 <img
                   src={heartIconBlack}
                   alt="heart icon"
                   onClick={() => {
-                    toggleLikePhoto();
                     let request = {
                       collection: 'comments',
                       docId: commentId,
@@ -121,15 +115,17 @@ const CommentCard = props => {
                   }}
                 />
               )}
-              {!didUserLikeComment && likes !== 0 && (
-                <div className="black-likes">{likes}</div>
-              )}
-              {didUserLikeComment && (
+              {!props.arrayOfUsersWhoLiked.includes(
+                localStorage.getItem('uuid')
+              ) &&
+                likes !== 0 && <div className="black-likes">{likes}</div>}
+              {props.arrayOfUsersWhoLiked.includes(
+                localStorage.getItem('uuid')
+              ) && (
                 <img
                   src={heartIconRed}
                   alt="heart icon"
                   onClick={() => {
-                    toggleLikePhoto();
                     let request = {
                       collection: 'comments',
                       docId: commentId,
@@ -143,7 +139,9 @@ const CommentCard = props => {
                   }}
                 />
               )}
-              {didUserLikeComment && <div className="red-likes">{likes}</div>}
+              {props.arrayOfUsersWhoLiked.includes(
+                localStorage.getItem('uuid')
+              ) && <div className="red-likes">{likes}</div>}
             </StyledLikesContainer>
           </StyledRightContainer>
         )}
